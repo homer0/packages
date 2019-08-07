@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+if hash yarn 2>/dev/null; then
+  yarn run lint
+else
+  npm run lint
+fi
