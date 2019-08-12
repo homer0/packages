@@ -6,13 +6,13 @@
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
   "license": "MIT",
   "dependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-node": "^9.1.0"
   },
   "devDependencies": {
-    "husky": "^3.0.2"
+    "husky": "^3.0.3"
   },
   "engine-strict": true,
   "engines": {
