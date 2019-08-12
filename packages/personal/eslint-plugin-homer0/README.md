@@ -39,7 +39,7 @@ Name: `plugin:homer0/node`
 
 #### Browser
 
-This extends the default rules and disable a few ones from the `import` plugin, as most of the browser code I wrote goes through transpilation, so there's no need to validate production/development dependencies.
+This extends the base rules and disables a few ones from the `import` plugin, as most of the browser code I wrote goes through transpilation, so there's no need to validate production/development dependencies.
 
 Name: `plugin:homer0/browser`
 
