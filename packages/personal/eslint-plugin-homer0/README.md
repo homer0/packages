@@ -240,7 +240,3 @@ Most of my projects are NPM packages, written for Node 8 (as the "oldest" LTS), 
 | `lint`         | Lint the modified files.            |
 | `lint:full`    | Lint the project code.              |
 | `todo`         | List all the pending to-do's.       |
-
-### Local
-
-The `local.js` file in the root directory is a symlink to `configurations/node.js` so the project can be linted using its own rules.
