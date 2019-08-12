@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
   },
   extends: [
-    './defaults.js',
-    './rules/transpilation.js',
+    './base.js',
+    '../rules/transpilation.js',
   ],
 };
