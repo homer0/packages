@@ -6,7 +6,6 @@ module.exports = {
   extends: [
     'airbnb-base',
     '../rules/best-practices.js',
-    '../rules/es6.js',
     '../rules/style.js',
   ],
   parserOptions: {
