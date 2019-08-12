@@ -5,7 +5,7 @@ module.exports = {
   extends: [
     './base.js',
     '../rules/jest.js',
-  ],
+  ].map(require.resolve),
   globals: {
     spyOn: true,
   },

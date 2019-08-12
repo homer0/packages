@@ -5,5 +5,5 @@ module.exports = {
   extends: [
     './base.js',
     '../rules/transpilation.js',
-  ],
+  ].map(require.resolve),
 };
