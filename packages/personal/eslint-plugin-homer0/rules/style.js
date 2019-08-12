@@ -3,6 +3,9 @@ const DEFAULT_INDENTATION = 2;
 module.exports = {
   rules: {
     'array-bracket-newline': ['error', 'consistent'],
+    /**
+     * @todo Remove 'comma-dangle' this on the next breaking release.
+     */
     'comma-dangle': ['error', {
       arrays: 'always-multiline',
       objects: 'always-multiline',
@@ -22,6 +25,9 @@ module.exports = {
       enforceInMethodNames: false,
     }],
     'operator-linebreak': ['error', 'after'],
+    /**
+     * @todo Remove 'prefer-object-spread' when the project Node version is set to 10.
+     */
     'prefer-object-spread': 'off',
   },
 };

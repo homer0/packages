@@ -2,6 +2,9 @@ module.exports = {
   rules: {
     complexity: ['warn'],
     'class-methods-use-this': 'off',
+    /**
+     * @todo Remove 'max-classes-per-file' this on the next breaking release.
+     */
     'max-classes-per-file': 'off',
     'no-magic-numbers': ['error', {
       ignore: [0, 1, -1, 1000],
