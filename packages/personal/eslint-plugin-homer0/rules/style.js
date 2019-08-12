@@ -22,5 +22,6 @@ module.exports = {
       enforceInMethodNames: false,
     }],
     'operator-linebreak': ['error', 'after'],
+    'prefer-object-spread': 'off',
   },
 };
