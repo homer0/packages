@@ -67,9 +67,15 @@ I want the linter to warn me if I'm writing big function/methods.
 
 I write almost everything using OOP, and some times I want to create a method to extract some logic and I don't want to be restricted by this rule.
 
+#### [`max-classes-per-file`](https://eslint.org/docs/rules/max-classes-per-file)
+
+> `['error', 1]` -> `off`
+
+I agree with this rule and this will probably be removed on the next breaking release, but for now, I don't intend to change code from projects that use this configuration(s).
+
 #### [`no-magic-numbers`](https://eslint.org/docs/rules/no-magic-numbers)
 
-> `off` -> `['error', { ignore: [0, 1, -1, 1000]}]
+> `off` -> `['error', { ignore: [0, 1, -1, 1000]}]`
 
 I like self explanatory code, and magic numbers get in the way of that. The reason I left those 4 "ignore cases" is because...
 
@@ -102,14 +108,6 @@ I haven't use `call` or `apply` for years now, as I believe that with ES6 you ca
 > `error` -> `off`
 
 Not all the time, but I use regular expressions quite a lot, and I have found cases in which this rule is unnecessarily triggered.
-
-### ES6+
-
-#### [`arrow-parens`](https://eslint.org/docs/rules/arrow-parens)
-
-> `['error', 'as-needed', {...}]` -> `['error', 'always']`
-
-I like my functions' style to be consistent.
 
 ### Node
 
@@ -210,6 +208,7 @@ Yes, the reason for having this rule enabled is valid, but I don't believe that'
 > }]
 > ```
 > ->
+>
 > ```
 > ['error', {
 >   allowAfterThis: true,
@@ -218,7 +217,7 @@ Yes, the reason for having this rule enabled is valid, but I don't believe that'
 > }]
 > ```
 
-Since I don't use [TypeScript](https://www.typescriptlang.org), I follow the convetion of prefixing protected/private property/methods.
+Since I don't use [TypeScript](https://www.typescriptlang.org), I follow the convetion of prefixing protected/private property/methods with underscore.
 
 #### [`operator-linebreak`](https://eslint.org/docs/rules/operator-linebreak)
 
@@ -226,15 +225,21 @@ Since I don't use [TypeScript](https://www.typescriptlang.org), I follow the con
 
 I know that having the operators at the beginning of the line may better for readability for some people, but in my case, I find it easier to read if they are at the end. Yes, I may be that I've been using it like this for years.
 
+#### [`prefer-object-spread`](https://eslint.org/docs/rules/prefer-object-spread)
+
+> `error` -> `off`
+
+Most of my projects are NPM packages, written for Node 8 (as the "oldest" LTS), which has no support for object spread. I'll remove this line once the LTS versions change.
+
 ## Development
 
 ### NPM/Yarn Tasks
 
-| Task                    | Description                         |
-|-------------------------|-------------------------------------|
-| `yarn run lint`         | Lint the modified files.            |
-| `yarn run lint:full`    | Lint the project code.              |
-| `yarn run todo`         | List all the pending to-do's.       |
+| Task           | Description                         |
+|----------------|-------------------------------------|
+| `lint`         | Lint the modified files.            |
+| `lint:full`    | Lint the project code.              |
+| `todo`         | List all the pending to-do's.       |
 
 ### Local
 
