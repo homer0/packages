@@ -5,4 +5,8 @@ module.exports = {
     'node/no-missing-require': 'off',
     'no-magic-numbers': 'off',
   },
+  globals: {
+    module: true,
+    process: true,
+  },
 };
