@@ -6,14 +6,14 @@
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
   "license": "MIT",
   "dependencies": {
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2",
+    "eslint": "^7.3.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-node": "^11.1.0"
   },
   "devDependencies": {
     "husky": "^4.2.5",
-    "leasot": "^10.2.0"
+    "leasot": "^11.0.0"
   },
   "engine-strict": true,
   "engines": {
