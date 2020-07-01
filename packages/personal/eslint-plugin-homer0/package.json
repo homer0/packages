@@ -13,7 +13,8 @@
   },
   "devDependencies": {
     "husky": "^4.2.5",
-    "leasot": "^11.1.0"
+    "leasot": "^11.1.0",
+    "lint-staged": "^10.2.11"
   },
   "engine-strict": true,
   "engines": {
@@ -25,6 +26,9 @@
       "pre-commit": "./utils/hooks/pre-commit",
       "post-merge": "./utils/hooks/post-merge"
     }
+  },
+  "lint-staged": {
+    "*.js": "eslint"
   },
   "scripts": {
     "lint": "./utils/scripts/lint",
