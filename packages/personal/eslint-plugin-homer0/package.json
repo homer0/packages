@@ -8,12 +8,12 @@
   "dependencies": {
     "eslint": "^7.3.1",
     "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^11.1.0"
   },
   "devDependencies": {
     "husky": "^4.2.5",
-    "leasot": "^11.0.0"
+    "leasot": "^11.1.0"
   },
   "engine-strict": true,
   "engines": {
