@@ -10,7 +10,8 @@
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsdoc": "^28.6.0",
-    "eslint-plugin-node": "^11.1.0"
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-sort-class-members": "^1.7.0"
   },
   "devDependencies": {
     "husky": "^4.2.5",
