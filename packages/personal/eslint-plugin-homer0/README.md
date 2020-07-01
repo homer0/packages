@@ -49,6 +49,12 @@ Jest is my favorite tool for testing, so all my projects (with test) use it. Thi
 
 Name: `plugin:homer0/jest`
 
+#### JSDoc
+
+I'm a big fan of documenting EVERY class, method/function, property, etc; so this configuration helps me validate that all my comments are valid [JSDoc](https://jsdoc.app).
+
+Name: `plugin:homer0/jsdoc`
+
 ## Rules
 
 Here's a list of the rules I modified and the reason **I** did it:
@@ -205,13 +211,197 @@ Yes, the reason for having this rule enabled is valid, but I don't believe that'
 > }]
 > ```
 
-Since I don't use [TypeScript](https://www.typescriptlang.org), I follow the convetion of prefixing protected/private property/methods with underscore.
+Since I don't use [TypeScript](https://www.typescriptlang.org), I follow the convention of prefixing protected/private property/methods with underscore.
 
 #### [`operator-linebreak`](https://eslint.org/docs/rules/operator-linebreak)
 
 > `['error', 'before', {...}]` -> `['error', 'after', {...}]`
 
 I know that having the operators at the beginning of the line may better for readability for some people, but in my case, I find it easier to read if they are at the end. Yes, I may be that I've been using it like this for years.
+
+### JSDoc
+
+These are not overwrites, [the plugin I use](http://yarnpkg.com/en/package/eslint-plugin-jsdoc) doesn't have a default preset, so I'm just going to explain why did enabled each rule and what values they have.
+
+#### [`jsdoc/check-access`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-check-access)
+
+> `'error'`
+
+Since most of the things I write are classes, I use the `@access` tag a lot, and this rule is more about protecting you from typos and invalid values than a restriction.
+
+#### [`jsdoc/check-alignment`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-check-alignment)
+
+> `'error'`
+
+It's not uncommon for IDEs/editors to "auto align" JSDoc blocks when you copy them and mess the alignment of the asterisks.
+
+#### [`jsdoc/check-param-names`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-check-param-names)
+
+> `['error', { allowExtraTrailingParamDocs: true }]`
+
+This is a big helper for when you update a function/method signature, you won't forget to update the JSDoc block.
+
+The `allowExtraTrailingParamDocs` option is enabled so you won't get errors when documenting parameters for abstract methods.
+
+#### [`jsdoc/check-property-names`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-check-property-names)
+
+> `'error'`
+
+It helps you prevent duplicated properties and avoid incomplete declarations.
+
+#### [`jsdoc/check-syntax`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-check-syntax)
+
+> `'error'`
+
+Helps avoid invalid syntax.
+
+#### [`jsdoc/check-tag-names`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-check-tag-names)
+
+> `'error'`
+
+Prevent the use of invalid JSDoc tags.
+
+#### [`jsdoc/check-types`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-check-types)
+
+> `'error'`
+
+Helps with consistency as it forces you to always use the same casing for native types.
+
+#### [`jsdoc/implements-on-classes`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-implements-on-classes)
+
+> `'error'`
+
+The `@implements` tag should only be used on classes.
+
+#### [`jsdoc/match-description`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-match-description)
+
+> `'error'`
+
+Consistency.
+
+#### [`jsdoc/newline-after-description`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-newline-after-description)
+
+> `'error'`
+
+The block looks better with a little padding.
+
+#### [`jsdoc/require-description`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-description)
+
+> `['error', { checkConstructors: false }]`
+
+Everything should have a description.
+
+The `checkConstructors ` option is to avoid comments like "class constructor".
+
+#### [`jsdoc/require-description-complete-sentence`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-description-complete-sentence)
+
+> `'error'`
+
+All descriptions should formatted as sentences.
+
+#### [`jsdoc/require-hyphen-before-param-description`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-hyphen-before-param-description)
+
+> `['error', 'never']`
+
+I never used, and I don't like, hyphens as separators on JSDoc blocks.
+
+#### [`jsdoc/require-jsdoc`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-jsdoc)
+
+> ```
+> ['error', {
+>   require: {
+>     allowAfterThis: true,
+>     ArrowFunctionExpression: true,
+>     ClassDeclaration: true,
+>     ClassExpression: true,
+>     FunctionDeclaration: true,
+>     MethodDefinition: true,
+>   }
+> }]
+> ```
+
+EVERYTHING should be documented!
+
+The `require` option is so the rule will be applied to all available contexts.
+
+#### [`jsdoc/require-param`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-param)
+
+> `'error'`
+
+Yes, every parameter should be documented.
+
+
+#### [`jsdoc/require-param-description`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-param-description)
+
+> `'error'`
+
+Yes, every parameter should have a human-readable description.
+
+#### [`jsdoc/require-param-name`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-param-name)
+
+> `'error'`
+
+I'm still not sure why this rule even exists, it should be part of `jsdoc/require-param`.
+
+#### [`jsdoc/require-param-type`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-param-type)
+
+> `'error'`
+
+Of course every parameter should have its type documented.
+
+#### [`jsdoc/require-property`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-property)
+
+> `'error'`
+
+The type `Object` is like the `any` on TypeScript, it doesn't say anything; if you are going to use it, you should documented the properties too.
+
+#### [`jsdoc/require-property-description`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-property-description)
+
+> `'error'`
+
+Yes, every property should have a human-readable description.
+
+#### [`jsdoc/require-property-name`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-property-name)
+
+> `'error'`
+
+Like `jsdoc/require-param-name`, this shouldn't exist.
+
+#### [`jsdoc/require-property-type`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-property-type)
+
+> `'error'`
+
+Yes, the types should be documented.
+
+#### [`jsdoc/require-returns`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-returns)
+
+> `'error'`
+
+Yes, the `@returns` tag is as importan as `@param`.
+
+#### [`jsdoc/require-returns-check`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-returns-check)
+
+> `'error'`
+
+I like this rule because is not that it validates the comments based on the code, but it's the other way around: if you use `@returns`, the function/method should have a `return` (_it's only logical_).
+
+#### [`jsdoc/require-returns-type`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-returns-type)
+
+> `'error'`
+
+Yes, if there's a `@returns`, it should have a `type`.
+
+#### [`jsdoc/require-throws`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-throws)
+
+> `'error'`
+
+This helps a lot when writing error handling code.
+
+#### [`jsdoc/valid-types`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-valid-types)
+
+> `'error'`
+
+Prevents invalid definitions.
 
 ## Development
 
