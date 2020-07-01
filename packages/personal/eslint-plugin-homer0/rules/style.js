@@ -3,16 +3,6 @@ const DEFAULT_INDENTATION = 2;
 module.exports = {
   rules: {
     'array-bracket-newline': ['error', 'consistent'],
-    /**
-     * @todo Remove 'comma-dangle' this on the next breaking release.
-     */
-    'comma-dangle': ['error', {
-      arrays: 'always-multiline',
-      objects: 'always-multiline',
-      imports: 'always-multiline',
-      exports: 'always-multiline',
-      functions: 'never',
-    }],
     indent: ['error', DEFAULT_INDENTATION, {
       MemberExpression: 0,
     }],

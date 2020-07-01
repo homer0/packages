@@ -151,12 +151,6 @@ This is because is not unusual **for me** to write `.sh` or extension-less files
 
 Consistency.
 
-#### [`comma-dangle`](https://eslint.org/docs/rules/comma-dangle)
-
-> `['error', {...}]` -> `['error', 2, {..., functions: 'never' }]`
-
-I only made this change because all my projects are using it that way right now. I'll probably remove it on a major release and update the projects.
-
 #### [`indent`](https://eslint.org/docs/rules/indent)
 
 > `['error', 2, {...}]` -> `['error', 2, {..., MemberExpression: 0 }]`
