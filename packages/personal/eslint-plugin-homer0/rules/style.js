@@ -15,9 +15,5 @@ module.exports = {
       enforceInMethodNames: false,
     }],
     'operator-linebreak': ['error', 'after'],
-    /**
-     * @todo Remove 'prefer-object-spread' when the project Node version is set to 10.
-     */
-    'prefer-object-spread': 'off',
   },
 };

@@ -213,12 +213,6 @@ Since I don't use [TypeScript](https://www.typescriptlang.org), I follow the con
 
 I know that having the operators at the beginning of the line may better for readability for some people, but in my case, I find it easier to read if they are at the end. Yes, I may be that I've been using it like this for years.
 
-#### [`prefer-object-spread`](https://eslint.org/docs/rules/prefer-object-spread)
-
-> `error` -> `off`
-
-Most of my projects are NPM packages, written for Node 8 (as the "oldest" LTS), which has no support for object spread. I'll remove this line once the LTS versions change.
-
 ## Development
 
 ### NPM/Yarn Tasks
