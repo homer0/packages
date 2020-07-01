@@ -67,12 +67,6 @@ I want the linter to warn me if I'm writing big function/methods.
 
 I write almost everything using OOP, and some times I want to create a method to extract some logic and I don't want to be restricted by this rule.
 
-#### [`max-classes-per-file`](https://eslint.org/docs/rules/max-classes-per-file)
-
-> `['error', 1]` -> `off`
-
-I agree with this rule and this will probably be removed on the next breaking release, but for now, I don't intend to change code from projects that use this configuration(s).
-
 #### [`no-magic-numbers`](https://eslint.org/docs/rules/no-magic-numbers)
 
 > `off` -> `['error', { ignore: [0, 1, -1, 1000]}]`
