@@ -481,10 +481,10 @@ eslint-plugin-import@^2.22.0:
     resolve "^1.17.0"
     tsconfig-paths "^3.9.0"
 
-eslint-plugin-jsdoc@^28.6.0:
-  version "28.6.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-28.6.0.tgz#4fc214a6e2a71e239a69104ff4bb1f8843a2fe49"
-  integrity sha512-4BeFeu5l+1KWQ8Ghq/3JKP4xTB2geocgT7WT3lU/SV8k0p1Uh3qyg5Uu8AmmeVgwODvj5Dihq5NAzGU9Ir0Saw==
+eslint-plugin-jsdoc@^28.6.1:
+  version "28.6.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jsdoc/-/eslint-plugin-jsdoc-28.6.1.tgz#c9e9da59d0d3cef4fb45ffb91c0acde43af4e418"
+  integrity sha512-Z3y7hcNPDuhL339D1KOf9SY8pMAxYxhaG4QLtu3KVn20k/hNF1u6WQv44wvuSCb6OfPJ4say37RUlSNqIjR+mw==
   dependencies:
     comment-parser "^0.7.5"
     debug "^4.1.1"
@@ -1069,9 +1069,9 @@ lint-staged@^10.2.11:
     stringify-object "^3.3.0"
 
 listr2@^2.1.0:
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/listr2/-/listr2-2.1.8.tgz#8af7ebc70cdbe866ddbb6c80909142bd45758f1f"
-  integrity sha512-Op+hheiChfAphkJ5qUxZtHgyjlX9iNnAeFS/S134xw7mVSg0YVrQo1IY4/K+ElY6XgOPg2Ij4z07urUXR+YEew==
+  version "2.1.9"
+  resolved "https://registry.yarnpkg.com/listr2/-/listr2-2.1.9.tgz#ec4ba417831197f71f63d716ff8869b292be096b"
+  integrity sha512-29IJuXMIDV6GYAW3SGfRl56EInP2Hr7gk4GNUPjUFkSq6jpKHqr5OpH3z8r6yj0XvHBIkhFSE14ytFoBLBfCLA==
   dependencies:
     chalk "^4.0.0"
     cli-truncate "^2.1.0"
@@ -1503,9 +1503,9 @@ run-parallel@^1.1.9:
   integrity sha512-DEqnSRTDw/Tc3FXf49zedI638Z9onwUotBMiUFKmrO2sdFKIbXamXGQ3Axd4qgphxKB4kw/qP1w5kTxnfU1B9Q==
 
 rxjs@^6.5.5:
-  version "6.5.5"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.5.tgz#c5c884e3094c8cfee31bf27eb87e54ccfc87f9ec"
-  integrity sha512-WfQI+1gohdf0Dai/Bbmk5L5ItH5tYqm3ki2c5GdWhKjalzjg93N3avFjVStyZZz+A2Em+ZxKH5bNghw9UeylGQ==
+  version "6.6.0"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.0.tgz#af2901eedf02e3a83ffa7f886240ff9018bbec84"
+  integrity sha512-3HMA8z/Oz61DUHe+SdOiQyzIf4tOx5oQHmMir7IZEu6TMqCLHT4LRcmNaUS0NwOz8VLvmmBduMsoaUvMaIiqzg==
   dependencies:
     tslib "^1.9.0"
 
