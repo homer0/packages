@@ -75,13 +75,13 @@ I write almost everything using OOP, and some times I want to create a method to
 
 #### [`no-magic-numbers`](https://eslint.org/docs/rules/no-magic-numbers)
 
-> `off` -> `['error', { ignore: [0, 1, -1, 1000]}]`
+> `off` -> `['error', { ignore: [0, 1, -1, 60, 1000]}]`
 
 I like self explanatory code, and magic numbers get in the way of that. The reason I left those 4 "ignore cases" is because...
 
 - `0` and `1`: To work with arrays. Examples: To check if an array is empty or not, and to check if an array has a single element or more.
 - `-1`: To work with `indexOf`.
-- `1000`: To work with timestamps.
+- `60` and `1000`: To work with timestamps.
 
 Now, this rule is disabled on the `jest` config, as it's not uncommon to use random numbers for "fake data" or to check calls with `.toHaveBeenCalledTimes()`.
 

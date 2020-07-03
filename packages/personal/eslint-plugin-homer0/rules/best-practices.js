@@ -3,7 +3,7 @@ module.exports = {
     complexity: ['warn'],
     'class-methods-use-this': 'off',
     'no-magic-numbers': ['error', {
-      ignore: [0, 1, -1, 1000],
+      ignore: [0, 1, -1, 60, 1000],
       ignoreArrayIndexes: true,
       enforceConst: false,
       detectObjects: false,
