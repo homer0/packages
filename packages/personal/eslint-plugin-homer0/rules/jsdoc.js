@@ -43,12 +43,6 @@ module.exports = {
   settings: {
     jsdoc: {
       mode: 'typescript',
-      /**
-       * @todo Remove once it becomes the default.
-       */
-      preferredTypes: {
-        object: 'Object',
-      },
     },
   },
 };
