@@ -153,7 +153,7 @@ This is because is not unusual **for me** to write `.sh` or extension-less files
 
 #### [`array-bracket-newline`](https://eslint.org/docs/rules/array-bracket-newline)
 
-> `off` -> `['error', 'consistent']
+> `off` -> `['error', 'consistent']`
 
 Consistency.
 
