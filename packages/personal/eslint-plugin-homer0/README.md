@@ -257,9 +257,15 @@ Helps avoid invalid syntax.
 
 #### [`jsdoc/check-tag-names`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-check-tag-names)
 
-> `'error'`
+> ```
+> ['error', {
+>   definedTags: ['parent'],
+> }]
+> ```
 
-Prevent the use of invalid JSDoc tags.
+This rule prevents the use of invalid JSDoc tags; the `definedTags` is used to add the following exceptions:
+
+- `parent`: I use it as an alias of `memberof` to be able use `module:` and avoid issues with the plugin. I transform it to `memberof` using the [`jsdoc-ts-utils`](https://yarnpkg.com/package/jsdoc-ts-utils) when generating the JSDoc site.
 
 #### [`jsdoc/check-types`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-check-types)
 
@@ -316,13 +322,14 @@ I never used, and I don't like, hyphens as separators on JSDoc blocks.
 >     ClassExpression: true,
 >     FunctionDeclaration: true,
 >     MethodDefinition: true,
->   }
+>   },
+>   exemptEmptyConstructors: true,
 > }]
 > ```
 
 EVERYTHING should be documented!
 
-The `require` option is so the rule will be applied to all available contexts.
+The `require` option is so the rule will be applied to all available contexts, and `exemptEmptyConstructors` is so it will skip constructors with no pameters.
 
 #### [`jsdoc/require-param`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-param)
 

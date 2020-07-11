@@ -7,7 +7,9 @@ module.exports = {
     }],
     'jsdoc/check-property-names': 'error',
     'jsdoc/check-syntax': 'error',
-    'jsdoc/check-tag-names': 'error',
+    'jsdoc/check-tag-names': ['error', {
+      definedTags: ['parent'],
+    }],
     'jsdoc/check-types': 'error',
     'jsdoc/implements-on-classes': 'error',
     'jsdoc/match-description': 'error',
@@ -25,6 +27,7 @@ module.exports = {
         FunctionDeclaration: true,
         MethodDefinition: true,
       },
+      exemptEmptyConstructors: true,
     }],
     'jsdoc/require-param': 'error',
     'jsdoc/require-param-description': 'error',
