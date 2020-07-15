@@ -419,3 +419,15 @@ Prevents invalid definitions.
 | `lint`         | Lint the modified files.            |
 | `lint:full`    | Lint the project code.              |
 | `todo`         | List all the pending to-do's.       |
+
+### Repository hooks
+
+I use [`husky`](https://yarnpkg.com/package/husky) to automatically install the repository hooks so the code will be tested and linted before any commit and the dependencies updated after every merge.
+
+The configuration is on the `husky` property of the `package.json` and the hooks' files are on `./utils/hooks`.
+
+#### Commits convention
+
+I use [conventional commits](https://www.conventionalcommits.org) with [`commitizen`](https://yarnpkg.com/package/commitizen) in order to support semantic releases. The one that sets it up is actually husky, that installs a script that runs commitizen on the `git commit` command.
+
+The hook for this is on `./utils/hooks/prepare-commit-msg` and the configuration for comitizen is on the `config.commitizen` property of the `package.json`.
