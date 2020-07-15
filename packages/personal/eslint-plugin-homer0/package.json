@@ -40,7 +40,7 @@
   },
   "scripts": {
     "lint": "./utils/scripts/lint",
-    "lint:full": "./utils/scripts/lint-full",
+    "lint:all": "./utils/scripts/lint-all",
     "todo": "./utils/scripts/todo"
   },
   "config": {

@@ -414,11 +414,11 @@ Prevents invalid definitions.
 
 ### NPM/Yarn Tasks
 
-| Task           | Description                         |
-|----------------|-------------------------------------|
-| `lint`         | Lint the modified files.            |
-| `lint:full`    | Lint the project code.              |
-| `todo`         | List all the pending to-do's.       |
+| Task       | Description                   |
+|------------|-------------------------------|
+| `lint`     | Lint the modified files.      |
+| `lint:all` | Lint the project code.        |
+| `todo`     | List all the pending to-do's. |
 
 ### Repository hooks
 
