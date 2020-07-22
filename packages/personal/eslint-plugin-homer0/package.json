@@ -6,10 +6,10 @@
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
   "license": "MIT",
   "dependencies": {
-    "eslint": "^7.4.0",
+    "eslint": "^7.5.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jsdoc": "^29.1.3",
+    "eslint-plugin-jsdoc": "^30.0.3",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-sort-class-members": "^1.7.0"
   },
