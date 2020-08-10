@@ -1,3 +1,10 @@
+## 5.0.2 (2020-08-10)
+
+
+### Bug Fixes
+
+* update dependencies ([73be095](https://github.com/homer0/packages/commit/73be095484748600643e78bc11457ac5b06276ec))
+
 ## 5.0.1 (2020-07-22)
 
 
