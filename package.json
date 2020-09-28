@@ -1,6 +1,6 @@
 {
   "name": "packages",
-  "description": "Monorepo for packages that don't deserve their own repo",
+  "description": "Monorepo",
   "homepage": "https://homer0.dev",
   "version": "0.0.0-development",
   "repository": "homer0/packages",
