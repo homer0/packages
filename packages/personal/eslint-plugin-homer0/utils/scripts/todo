@@ -1,2 +1,0 @@
-#!/bin/bash -e
-leasot 'rules/**/*.js' 'configurations/**/*.js' 'index.js' -x

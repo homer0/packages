@@ -1,0 +1,21 @@
+{
+  "name": "@homer0/eslint-plugin",
+  "description": "My custom configurations for ESLint",
+  "version": "5.0.2",
+  "repository": "homer0/packages",
+  "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
+  "license": "MIT",
+  "dependencies": {
+    "eslint": "^7.10.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsdoc": "^30.6.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-sort-class-members": "^1.8.0"
+  },
+  "engine-strict": true,
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "main": "index.js"
+}
