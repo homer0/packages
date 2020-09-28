@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+if ! hash yarn 2>/dev/null; then
+  echo -e "\n\033[31m  Error: Yarn is not installed: https://classic.yarnpkg.com/en/docs/install\033[39m" 1>&2
+  echo -e "\033[90m  Please read the project README to better understand the reason you can't use it with NPM.\033[39m\n"
+  exit 1
+fi

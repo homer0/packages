@@ -1,0 +1,6 @@
+#!/bin/bash -e
+
+${BASH_SOURCE%/*}/../scripts/require-yarn
+
+yarn run lint
+yarn test

@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+${BASH_SOURCE%/*}/../scripts/require-yarn
+
+commitlint -E HUSKY_GIT_PARAMS
