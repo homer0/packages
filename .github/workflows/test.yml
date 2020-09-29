@@ -16,9 +16,3 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: yarn --frozen-lockfile
       - run: yarn lint:all
-      - run: yarn test
-      - name: Coveralls
-        if: ${{ matrix.node == '10' }}
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
