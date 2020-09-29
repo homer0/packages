@@ -36,7 +36,7 @@
     "*.js": "eslint"
   },
   "scripts": {
-    "test": "echo \"soon...\"",
+    "test": "./utils/scripts/test",
     "lint": "./utils/scripts/lint",
     "lint:all": "./utils/scripts/lint-all",
     "todo": "./utils/scripts/todo"

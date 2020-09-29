@@ -25,4 +25,27 @@ This repository uses [Lerna](https://lerna.js.org) for managing the publication 
 
 Because the repository uses [Yarn Workspaces](https://classic.yarnpkg.com/en/docs/workspaces), **having Yarn installed is a MUST** and you can't use it with NPM. Following [this link](https://classic.yarnpkg.com/en/docs/install) you'll get the necessary instructions to install Yarn.
 
-Now, once installed, you just need to run `yarn` to install all the repository (and the packages) dependencies.
+Now, once installed, you just need to execute `yarn` to install all the repository (and the packages) dependencies.
+
+### Linting
+
+The entire repository is linted using [ESLint](https://eslint.org) and custom plugin you can find in `packages/personal/eslint-plugin`.
+
+There are two scripts you can use to lint files:
+
+- `yarn lint` will use [`lint-staged`](https://yarnpkg.com/package/lint-staged) to run ESLint on the files that are staged.
+- `yarn lint:all` will lint the entire repository.
+
+### Tests
+
+To run the tests of all the packages that have you just need to run `yarn test`, but if you want to run the tests for a single package, you can use the following command:
+
+```
+yarn test --scope [package-name-with-scope]
+```
+
+And if you need to send extra arguments to that package tests, you'll have to use two double dashes to separate them:
+
+```
+yarn test --scope [package-name-with-scope] -- -- [...args]
+```
