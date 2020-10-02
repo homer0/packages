@@ -10,6 +10,7 @@ module.exports = {
     'max-statements-per-line': ['error', { max: 1 }],
     'no-plusplus': 'off',
     'no-underscore-dangle': ['error', {
+      allow: ['__'],
       allowAfterThis: true,
       allowAfterSuper: true,
       enforceInMethodNames: false,
