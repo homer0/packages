@@ -1,5 +1,7 @@
 .github/*
 coverage/*
+coverage-e2e/*
+coverage-unit/*
 documentation/*
 node_modules/*
 docs/*
