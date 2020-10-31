@@ -16,6 +16,7 @@ module.exports = {
       enforceInMethodNames: false,
     }],
     'operator-linebreak': ['error', 'after'],
+    quotes: ['error', 'single', { avoidEscape: false }],
     'sort-class-members/sort-class-members': ['error', {
       accessorPairPositioning: 'getThenSet',
       order: [
