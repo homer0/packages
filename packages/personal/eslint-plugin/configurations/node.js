@@ -5,9 +5,6 @@ module.exports = {
   plugins: ['node'],
   extends: [
     'plugin:node/recommended',
-    ...[
-      './base.js',
-      '../rules/node.js',
-    ].map(require.resolve),
+    ...['./base.js', '../rules/node.js'].map(require.resolve),
   ],
 };

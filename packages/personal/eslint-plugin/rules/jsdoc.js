@@ -2,33 +2,45 @@ module.exports = {
   rules: {
     'jsdoc/check-access': 'error',
     'jsdoc/check-alignment': 'error',
-    'jsdoc/check-param-names': ['error', {
-      allowExtraTrailingParamDocs: true,
-    }],
+    'jsdoc/check-param-names': [
+      'error',
+      {
+        allowExtraTrailingParamDocs: true,
+      },
+    ],
     'jsdoc/check-property-names': 'error',
     'jsdoc/check-syntax': 'error',
-    'jsdoc/check-tag-names': ['error', {
-      definedTags: ['parent'],
-    }],
+    'jsdoc/check-tag-names': [
+      'error',
+      {
+        definedTags: ['parent'],
+      },
+    ],
     'jsdoc/check-types': 'error',
     'jsdoc/implements-on-classes': 'error',
     'jsdoc/match-description': 'error',
     'jsdoc/newline-after-description': 'error',
-    'jsdoc/require-description': ['error', {
-      checkConstructors: false,
-    }],
+    'jsdoc/require-description': [
+      'error',
+      {
+        checkConstructors: false,
+      },
+    ],
     'jsdoc/require-description-complete-sentence': 'error',
     'jsdoc/require-hyphen-before-param-description': ['error', 'never'],
-    'jsdoc/require-jsdoc': ['error', {
-      require: {
-        ArrowFunctionExpression: true,
-        ClassDeclaration: true,
-        ClassExpression: true,
-        FunctionDeclaration: true,
-        MethodDefinition: true,
+    'jsdoc/require-jsdoc': [
+      'error',
+      {
+        require: {
+          ArrowFunctionExpression: true,
+          ClassDeclaration: true,
+          ClassExpression: true,
+          FunctionDeclaration: true,
+          MethodDefinition: true,
+        },
+        exemptEmptyConstructors: true,
       },
-      exemptEmptyConstructors: true,
-    }],
+    ],
     'jsdoc/require-param': 'error',
     'jsdoc/require-param-description': 'error',
     'jsdoc/require-param-name': 'error',

@@ -6,10 +6,7 @@
  */
 const addPrettier = (config) => ({
   ...config,
-  extends: [
-    ...(config.extends || []),
-    'prettier',
-  ],
+  extends: [...(config.extends || []), 'prettier'],
 });
 
 module.exports.addPrettier = addPrettier;
