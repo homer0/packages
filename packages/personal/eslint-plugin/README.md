@@ -1,7 +1,6 @@
 # eslint-plugin-homer0
 
-[![David](https://img.shields.io/david/homer0/eslint-plugin-homer0.svg?style=flat-square)](https://david-dm.org/homer0/eslint-plugin-homer0)
-[![David](https://img.shields.io/david/dev/homer0/eslint-plugin-homer0.svg?style=flat-square)](https://david-dm.org/homer0/eslint-plugin-homer0?type=dev)
+![Dependencies status](https://img.shields.io/david/homer0/packages?path=packages%2Fpersonal%2Feslint-plugin)
 
 My custom configurations for ESLint
 
