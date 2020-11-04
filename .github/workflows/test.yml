@@ -25,6 +25,7 @@ jobs:
           parallel: true
           flag-name: public-prettier-plugin-jsdoc-unit
           path-to-lcov: ./packages/public/prettier-plugin-jsdoc/coverage-unit/lcov.info
+          base-path: ./packages/public/prettier-plugin-jsdoc
       - name: Coveralls (e2e) for public/prettier-plugin-jsdoc
         if: ${{ matrix.node == '10' }}
         uses: coverallsapp/github-action@master
@@ -33,6 +34,7 @@ jobs:
           parallel: true
           flag-name: public-prettier-plugin-jsdoc-e2e
           path-to-lcov: ./packages/public/prettier-plugin-jsdoc/coverage-e2e/lcov.info
+          base-path: ./packages/public/prettier-plugin-jsdoc
 
   finish:
       needs: build
