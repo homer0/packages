@@ -1,0 +1,31 @@
+name: Release NPM packages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Read .nvmrc
+        run: echo "::set-output name=NVMRC::$(cat .nvmrc)"
+        id: nvm
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '${{ steps.nvm.outputs.NVMRC }}'
+      - name: Install dependencies
+        env:
+          HUSKY_SKIP_INSTALL: 1
+        run: yarn --frozen-lockfile
+      - name: Configure Git User
+        run: |
+          git config --global user.name '@homer0'
+          git config --global user.email 'homer0@users.noreply.github.com'
+      - name: Tag versions
+        run: yarn lerna version --conventional-commits --yes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
