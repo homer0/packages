@@ -26,7 +26,7 @@ module.exports = {
         checkConstructors: false,
       },
     ],
-    'jsdoc/require-description-complete-sentence': 'error',
+    'jsdoc/require-description-complete-sentence': 'off',
     'jsdoc/require-hyphen-before-param-description': ['error', 'never'],
     'jsdoc/require-jsdoc': [
       'error',
