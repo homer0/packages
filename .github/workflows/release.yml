@@ -30,15 +30,17 @@ jobs:
         run: |
           git config --global user.name '@homer0'
           git config --global user.email 'homer0@users.noreply.github.com'
-      - name: Authenticate with Registry
-        run: |
-          echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
-          echo "@homer0:registry=http://registry.npmjs.org/" >> .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Tag versions
         run: yarn lerna version --conventional-commits --yes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Authenticate with Registry
+        run: |
+          echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
+          echo "@homer0:registry=http://registry.npmjs.org/" >> .npmrc
       - name: Make releases
-        run: yarn lerna publish
+        run: |
+          npm config set access public
+          yarn lerna publish from-git
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
