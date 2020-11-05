@@ -1,3 +1,36 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [6.0.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@5.0.2...@homer0/eslint-plugin@6.0.0) (2020-11-05)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** allow R.__ ([6de6446](https://github.com/homer0/packages/commit/6de6446ff760c4e40a4818cd8d27bce200c43b06))
+* **eslint-plugin:** disable the rule sentences on JSDoc descriptions ([ebca8be](https://github.com/homer0/packages/commit/ebca8beeff58ea95dc03dd8a1e3bf825d06537b2))
+* **eslint-plugin:** disallow double quotes ([e114ae4](https://github.com/homer0/packages/commit/e114ae496484df6f2527ad0ef484069eba412cdf))
+* **monorepo:** update dependencies ([cd892a8](https://github.com/homer0/packages/commit/cd892a865d8251cab3f80913a2c219c118d67e19))
+
+
+### Features
+
+* **eslint-plugin:** add variants with Prettier ([d845200](https://github.com/homer0/packages/commit/d84520063c23e20d7e18c5f39220de339691ac99))
+
+
+### BREAKING CHANGES
+
+* **eslint-plugin:** The rule that validates sentences on JSDoc descriptions was removed, and while
+it's a breaking changes as it won't validate it anymore, the rule expression is broken, as
+it gets triggered by the template tag.
+* **eslint-plugin:** Before this commit, using double quotes to avoid escaping a single quote
+was allowed, but now it will trigger an error.
+
+
+
+
+
 ## 5.0.2 (2020-08-10)
 
 
