@@ -34,10 +34,11 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
           echo "@homer0:registry=http://registry.npmjs.org/" >> .npmrc
-          npm whoami
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      # - name: Tag versions
-      #   run: yarn lerna version --conventional-commits --yes
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tag versions
+        run: yarn lerna version --conventional-commits --yes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Make releases
+        run: yarn lerna publish
