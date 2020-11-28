@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@6.0.0...@homer0/eslint-plugin@6.0.1) (2020-11-28)
+
+
+### Bug Fixes
+
+* include publishConfig and fix the format of the repository property ([4c25780](https://github.com/homer0/packages/commit/4c25780099bd60443a3625f5ab2c62a41a5c1314))
+
+
+
+
+
 # [6.0.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@5.0.2...@homer0/eslint-plugin@6.0.0) (2020-11-05)
 
 
