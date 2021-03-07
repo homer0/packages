@@ -1,0 +1,7 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+. "$(dirname "$0")/../utils/scripts/require-yarn"
+
+yarn run lint
+yarn test
+

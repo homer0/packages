@@ -38,7 +38,8 @@
     "test": "./utils/scripts/test",
     "lint": "./utils/scripts/lint",
     "lint:all": "./utils/scripts/lint-all",
-    "todo": "./utils/scripts/todo"
+    "todo": "./utils/scripts/todo",
+    "prepare": "./utils/scripts/prepare"
   },
   "workspaces": [
     "packages/public/*",
