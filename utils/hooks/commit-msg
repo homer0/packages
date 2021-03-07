@@ -1,5 +1,0 @@
-#!/bin/bash -e
-
-${BASH_SOURCE%/*}/../scripts/require-yarn
-
-yarn commitlint --edit $1
