@@ -8,4 +8,5 @@ yarn-error.log
 dist
 /docs
 /esm
+/.husky/_
 _x-*
