@@ -11,7 +11,7 @@
       "yes": true
     },
     "version": {
-      "allowBranch": "master"
+      "allowBranch": "main"
     }
   },
   "npmClient": "yarn",

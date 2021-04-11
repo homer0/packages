@@ -13,17 +13,17 @@
     "access": "public"
   },
   "dependencies": {
-    "eslint": "^7.21.0",
+    "eslint": "^7.24.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jsdoc": "^32.2.0",
+    "eslint-plugin-jsdoc": "^32.3.0",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-sort-class-members": "^1.9.0"
+    "eslint-plugin-sort-class-members": "^1.11.0"
   },
   "engine-strict": true,
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=12"
   },
   "main": "index.js"
 }
