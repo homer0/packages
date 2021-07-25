@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [8.0.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@7.0.0...@homer0/eslint-plugin@8.0.0) (2021-07-25)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** update dependencies ([c191d8c](https://github.com/homer0/packages/commit/c191d8ccea0111037419877da8e1406fa0d5b385))
+
+
+### BREAKING CHANGES
+
+* **eslint-plugin:** Latest version of eslint-plugin-jsdoc requires Node 12.20, so
+now this plugins requires too.
+
+
+
+
+
 # 7.0.0 (2021-04-11)
 
 
