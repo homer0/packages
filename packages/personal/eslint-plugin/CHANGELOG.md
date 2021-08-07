@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 8.0.1 (2021-08-07)
+
+**Note:** Version bump only for package @homer0/eslint-plugin
+
+
+
+
+
 # [8.0.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@7.0.0...@homer0/eslint-plugin@8.0.0) (2021-07-25)
 
 
