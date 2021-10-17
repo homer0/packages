@@ -37,7 +37,7 @@ jobs:
       - name: Authenticate with Registry
         run: |
           echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
-          echo "@homer0:registry=http://registry.npmjs.org/" >> .npmrc
+          echo "@homer0:registry=https://registry.npmjs.org/" >> .npmrc
       - name: Make releases
         run: |
           npm config set access public
