@@ -47,7 +47,6 @@ module.exports = {
               type: 'method',
               async: true,
               static: false,
-              sort: 'alphabetical',
             },
           ],
           'conventional-async-private-methods': [
@@ -56,7 +55,6 @@ module.exports = {
               name: '/_.+/',
               async: true,
               static: false,
-              sort: 'alphabetical',
             },
           ],
           'conventional-private-methods': [
@@ -65,7 +63,6 @@ module.exports = {
               name: '/_.+/',
               async: false,
               static: false,
-              sort: 'alphabetical',
             },
           ],
           methods: [
@@ -73,7 +70,6 @@ module.exports = {
               type: 'method',
               async: false,
               static: false,
-              sort: 'alphabetical',
             },
           ],
           'static-async-methods': [
@@ -81,7 +77,6 @@ module.exports = {
               type: 'method',
               async: true,
               static: true,
-              sort: 'alphabetical',
             },
           ],
           'static-methods': [
@@ -89,7 +84,6 @@ module.exports = {
               type: 'method',
               async: false,
               static: true,
-              sort: 'alphabetical',
             },
           ],
           getters: [
@@ -98,7 +92,6 @@ module.exports = {
               kind: 'get',
               async: false,
               static: false,
-              sort: 'alphabetical',
             },
           ],
         },
