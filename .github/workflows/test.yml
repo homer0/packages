@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '12', '14' ]
+        node: [ '14', '16' ]
     name: Run jest and ESLint (Node ${{ matrix.node }})
     steps:
       - uses: actions/checkout@v2
@@ -18,7 +18,7 @@ jobs:
       - run: yarn lint:all
       - run: yarn test
       - name: Coveralls (unit) for public/prettier-plugin-jsdoc
-        if: ${{ matrix.node == '12' }}
+        if: ${{ matrix.node == '14' }}
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -27,7 +27,7 @@ jobs:
           path-to-lcov: ./packages/public/prettier-plugin-jsdoc/coverage-unit/lcov.info
           base-path: ./packages/public/prettier-plugin-jsdoc
       - name: Coveralls (e2e) for public/prettier-plugin-jsdoc
-        if: ${{ matrix.node == '12' }}
+        if: ${{ matrix.node == '14' }}
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
