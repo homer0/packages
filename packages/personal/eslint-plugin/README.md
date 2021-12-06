@@ -409,6 +409,66 @@ This helps a lot when writing error handling code.
 
 Prevents invalid definitions.
 
+### TypeScript
+
+#### [`node/no-unsupported-features/es-syntax`](https://github.com/mysticatea/eslint-plugin-node/blob/master/docs/rules/no-unsupported-features/es-syntax.md)
+
+> `['error', { ignores: ['modules'] }]`
+
+Because TypeScript uses ES syntax.
+
+#### [`node/no-unpublished-import`](https://github.com/mysticatea/eslint-plugin-node/blob/master/docs/rules/no-unpublished-import.md)
+
+> `off`
+
+Like the version for `require`, not sure how the rule works.
+
+#### [`import/extensions`](https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/extensions.md)
+
+> `off`
+
+It's an overkill.
+
+#### [`import/prefer-detaul-export`](https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/prefer-default-export.md)
+
+> `off`
+
+Because TypeScript uses ES syntax, and the only case in which I would consider to enforce this rule would be CommonJS, where it's actual a destructuring assignment.
+
+#### [`lines-between-class-members`](https://eslint.org/docs/rules/lines-between-class-members)
+
+> `off`
+
+I enforce this rule when using JSDoc, as the blocks work as _separators_ between the methods. When working with TypeScript, I don't use that much JSDoc, so I want to be able to leave an empty line between the methods.
+
+#### [`@typescript-eslint/no-empty-function`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-empty-function.md)
+
+> `off`
+
+Empty function are a common resource for optional paramters/properties.
+
+#### [`@typescript-eslint/no-non-null-assertion`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-non-null-assertion.md)
+
+> `off`
+
+There are some cases, mostly on frontend, where you know the state is non-null, and I don't want to have to use optional chaining for EVERYTHING.
+
+#### [`@typescript-eslint/ban-ts-comment`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/ban-ts-comment.md)
+
+> ```
+> ['error', {
+>   require: {
+>     'ts-expect-error': 'allow-with-description',
+>     'ts-ignore': 'allow-with-description',
+>     'ts-nocheck': 'allow-with-description',
+>     'ts-check': 'allow-with-description',
+>   },
+>   exemptEmptyConstructors: true,
+> }]
+> ```
+
+I'm allowed to ignore TypeScript... with a valid excuse.
+
 ## Development
 
 ### NPM/Yarn Tasks
