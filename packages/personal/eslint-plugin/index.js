@@ -3,6 +3,7 @@ const browser = require('./configurations/browser');
 const jest = require('./configurations/jest');
 const jsdoc = require('./configurations/jsdoc');
 const node = require('./configurations/node');
+const typescript = require('./configurations/typescript');
 const { addPrettier } = require('./utils');
 
 module.exports = {
@@ -15,5 +16,6 @@ module.exports = {
     jsdoc,
     node,
     'node-with-prettier': addPrettier(node),
+    typescript,
   },
 };
