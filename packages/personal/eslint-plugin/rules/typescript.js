@@ -5,6 +5,10 @@ module.exports = {
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',
     'lines-between-class-members': 'off',
+    'no-useless-constructor': 'off',
+    'no-unused-vars': 'off',
+    'no-empty-function': 'off',
+    '@typescript-eslint/no-unused-vars': ['error'],
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/ban-ts-comment': [
