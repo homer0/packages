@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [9.0.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@8.0.2...@homer0/eslint-plugin@9.0.0) (2022-03-17)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** add a different config for ts node ([1a50594](https://github.com/homer0/packages/commit/1a5059455241a8dc19ab9d6d29c1be2d6fc5f04a))
+* **eslint-plugin:** add the recommended preset ([96ee211](https://github.com/homer0/packages/commit/96ee211fcee86b9585f2f53feedc800fe839e9bb))
+* **eslint-plugin:** install missing dependencies ([989382c](https://github.com/homer0/packages/commit/989382c043dee70fecadda41e396eada08b37ed1))
+* **eslint-plugin:** remove alph sort for class members ([abe489f](https://github.com/homer0/packages/commit/abe489f0365d4c9c6970164cab51050b36a2d5ca))
+* **eslint-plugin:** update dependencies ([82c1f40](https://github.com/homer0/packages/commit/82c1f407e1132ef20af3ff819fc0666591271b2f))
+* **monorepo:** drop Node 12 support ([7966821](https://github.com/homer0/packages/commit/79668213b982a93d5b91f1177cf404df0cd4fb3a))
+
+
+### Features
+
+* **eslint-plugin:** add React config ([645cd45](https://github.com/homer0/packages/commit/645cd45fe436f99721dd698c99681e962b5d28fb))
+* **eslint-plugin:** add Svelte config ([e3f6bb2](https://github.com/homer0/packages/commit/e3f6bb2bb6255859eb5312e76f9e5ba5bbcfc210))
+* **eslint-plugin:** add TypeScript configuration ([25c5fef](https://github.com/homer0/packages/commit/25c5fef348f2f9954822aa3a10835708a00dc654))
+
+
+### BREAKING CHANGES
+
+* **monorepo:** Node 12 is not longer supported. Node 14 is the minimum required version now.
+
+
+
+
+
 ## 8.0.2 (2021-10-17)
 
 
