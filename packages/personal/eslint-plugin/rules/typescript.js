@@ -1,7 +1,5 @@
 module.exports = {
   rules: {
-    'node/no-unsupported-features/es-syntax': ['error', { ignores: ['modules'] }],
-    'node/no-unpublished-import': 'off',
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',
     'lines-between-class-members': 'off',
