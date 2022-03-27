@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [9.0.1](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@9.0.0...@homer0/eslint-plugin@9.0.1) (2022-03-27)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** move node rules out from the ts generic rules ([0c7b62e](https://github.com/homer0/packages/commit/0c7b62ee64b26a7ccfe69a341b7c186ccd4b8e01))
+
+
+
+
+
 # [9.0.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@8.0.2...@homer0/eslint-plugin@9.0.0) (2022-03-17)
 
 
