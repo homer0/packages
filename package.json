@@ -21,13 +21,6 @@
   "engines": {
     "node": ">=14"
   },
-  "husky": {
-    "hooks": {
-      "commit-msg": "./utils/hooks/commit-msg",
-      "pre-commit": "./utils/hooks/pre-commit",
-      "post-merge": "./utils/hooks/post-merge"
-    }
-  },
   "commitlint": {
     "extends": ["@commitlint/config-conventional"]
   },
