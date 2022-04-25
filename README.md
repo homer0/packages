@@ -27,6 +27,8 @@ Because the repository uses [Yarn Workspaces](https://classic.yarnpkg.com/en/doc
 
 Now, once installed, you just need to execute `yarn` to install all the repository (and the packages) dependencies.
 
+> At the end of 2022, when I drop support for Node 14, I'll drop Yarn, as latest NPM version now has support for workspaces, added to the fact that Yarn doesn't respect lock files in monorepos.
+
 ### Linting
 
 The entire repository is linted using [ESLint](https://eslint.org) and custom plugin you can find in `packages/personal/eslint-plugin`.
