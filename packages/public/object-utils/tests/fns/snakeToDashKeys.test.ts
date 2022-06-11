@@ -1,0 +1,71 @@
+jest.unmock('../../src/fns/formatKeys');
+jest.unmock('../../src/fns/snakeToDashKeys');
+
+import { snakeToDashKeys } from '../../src/fns/snakeToDashKeys';
+
+describe('snakeToDashKeys', () => {
+  it('should transform all keys to dash case', () => {
+    // Given
+    const firstName = 'Rosario';
+    const nickName = 'Charito';
+    const target = {
+      first_name: firstName,
+      nick_name: nickName,
+    };
+    // When
+    const result = snakeToDashKeys<{ 'first-name': string; 'nick-name': string }>({
+      target,
+    });
+    // Then
+    expect(result).toEqual({
+      'first-name': firstName,
+      'nick-name': nickName,
+    });
+  });
+
+  it('should transform specific keys to dash case', () => {
+    // Given
+    const firstName = 'Rosario';
+    const nickName = 'Charito';
+    const target = {
+      name: {
+        first_name: firstName,
+        nick_name: nickName,
+      },
+    };
+    // When
+    const result = snakeToDashKeys<{ name: { 'first-name': string; nick_name: string } }>(
+      { target, include: ['name.first_name'] },
+    );
+    // Then
+    expect(result).toEqual({
+      name: {
+        'first-name': firstName,
+        nick_name: nickName,
+      },
+    });
+  });
+
+  it('should transform all keys to dash case except one', () => {
+    // Given
+    const firstName = 'Rosario';
+    const nickName = 'Charito';
+    const target = {
+      name_info: {
+        first_name: firstName,
+        nick_name: nickName,
+      },
+    };
+    // When
+    const result = snakeToDashKeys<{
+      'name-info': { first_name: string; 'nick-name': string };
+    }>({ target, exclude: ['name_info.first_name'] });
+    // Then
+    expect(result).toEqual({
+      'name-info': {
+        first_name: firstName,
+        'nick-name': nickName,
+      },
+    });
+  });
+});
