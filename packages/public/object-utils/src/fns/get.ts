@@ -32,7 +32,7 @@ export type GetOptions = {
  *     },
  *     propTwo: '!!!',
  *   };
- *   console.log(get(obj, 'propOne.propOneSub'));
+ *   console.log(get({ target: obj, path: 'propOne.propOneSub' }));
  *   // Will output 'Charito!'
  *
  */
