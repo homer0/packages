@@ -12,8 +12,9 @@ describe('snakeToDashKeys', () => {
       first_name: firstName,
       nick_name: nickName,
     };
+    type ExpectedType = { 'first-name': string; 'nick-name': string };
     // When
-    const result = snakeToDashKeys<{ 'first-name': string; 'nick-name': string }>({
+    const result: ExpectedType = snakeToDashKeys<ExpectedType>({
       target,
     });
     // Then
@@ -33,10 +34,12 @@ describe('snakeToDashKeys', () => {
         nick_name: nickName,
       },
     };
+    type ExpectedType = { name: { 'first-name': string; nick_name: string } };
     // When
-    const result = snakeToDashKeys<{ name: { 'first-name': string; nick_name: string } }>(
-      { target, include: ['name.first_name'] },
-    );
+    const result: ExpectedType = snakeToDashKeys<ExpectedType>({
+      target,
+      include: ['name.first_name'],
+    });
     // Then
     expect(result).toEqual({
       name: {
@@ -56,10 +59,14 @@ describe('snakeToDashKeys', () => {
         nick_name: nickName,
       },
     };
-    // When
-    const result = snakeToDashKeys<{
+    type ExpectedType = {
       'name-info': { first_name: string; 'nick-name': string };
-    }>({ target, exclude: ['name_info.first_name'] });
+    };
+    // When
+    const result: ExpectedType = snakeToDashKeys<ExpectedType>({
+      target,
+      exclude: ['name_info.first_name'],
+    });
     // Then
     expect(result).toEqual({
       'name-info': {

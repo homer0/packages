@@ -9,8 +9,9 @@ describe('merge', () => {
     const nickname = 'Charito';
     const objA: { name: string; random?: string } = { name };
     const objB: { nickname: string; random?: string } = { nickname };
+    type ExpectedType = typeof objA & typeof objB;
     // When
-    const result = merge<typeof objA & typeof objB>(objA, objB);
+    const result: ExpectedType = merge<ExpectedType>(objA, objB);
     objA.random = 'value';
     objB.random = 'value';
     // Then
@@ -25,8 +26,9 @@ describe('merge', () => {
     const arrA: Array<typeof itemA | string> = [itemA];
     const itemB: { nickname: string } = { nickname };
     const arrB: Array<typeof itemB | string> = [itemB];
+    type ExpectedType = Array<typeof itemA & typeof itemB>;
     // When
-    const result = merge<Array<typeof itemA & typeof itemB>>(arrA, arrB);
+    const result: ExpectedType = merge<ExpectedType>(arrA, arrB);
     arrA.push('value');
     arrB.push('value');
     // Then

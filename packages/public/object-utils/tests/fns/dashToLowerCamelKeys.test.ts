@@ -12,8 +12,9 @@ describe('dashToLowerCamelKeys', () => {
       'first-name': firstName,
       'nick-name': nickName,
     };
+    type ExpectedType = { firstName: string; nickName: string };
     // When
-    const result = dashToLowerCamelKeys<{ firstName: string; nickName: string }>({
+    const result: ExpectedType = dashToLowerCamelKeys<ExpectedType>({
       target,
     });
     // Then
@@ -33,10 +34,11 @@ describe('dashToLowerCamelKeys', () => {
         'nick-name': nickName,
       },
     };
-    // When
-    const result = dashToLowerCamelKeys<{
+    type ExpectedType = {
       name: { firstName: string; 'nick-name': string };
-    }>({
+    };
+    // When
+    const result: ExpectedType = dashToLowerCamelKeys<ExpectedType>({
       target,
       include: ['name.first-name'],
     });
@@ -59,10 +61,14 @@ describe('dashToLowerCamelKeys', () => {
         'nick-name': nickName,
       },
     };
-    // When
-    const result = dashToLowerCamelKeys<{
+    type ExpectedType = {
       nameInfo: { 'first-name': string; nickName: string };
-    }>({ target, exclude: ['name-info.first-name'] });
+    };
+    // When
+    const result: ExpectedType = dashToLowerCamelKeys<ExpectedType>({
+      target,
+      exclude: ['name-info.first-name'],
+    });
     // Then
     expect(result).toEqual({
       nameInfo: {
