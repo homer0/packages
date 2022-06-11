@@ -1,3 +1,9 @@
+/**
+ * The callback that will be used to replace a key.
+ *
+ * @param substring  The captured string to replace.
+ * @param args       The list of groups captured by the expression.
+ */
 export type FormatKeysReplaceFn = (substring: string, ...args: string[]) => string;
 
 export type FormatKeysOptions = {
