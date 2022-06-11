@@ -13,8 +13,9 @@ describe('formatKeys', () => {
       nickname,
       age,
     };
+    type ExpectedType = { Name: string; Nickname: string; Age: number };
     // When
-    const result = formatKeys<{ Name: string; Nickname: string; Age: number }>({
+    const result: ExpectedType = formatKeys<ExpectedType>({
       target,
       search: /^\w/,
       replace: (letter) => letter.toUpperCase(),
@@ -41,14 +42,19 @@ describe('formatKeys', () => {
       likes,
       hates,
     };
-    // When
-    const result = formatKeys<{
+    type ExpectedType = {
       Name: string;
       Nickname: string;
       Age: number;
       likes: null;
       hates: undefined;
-    }>({ target, search: /^\w/, replace: (letter) => letter.toUpperCase() });
+    };
+    // When
+    const result: ExpectedType = formatKeys<ExpectedType>({
+      target,
+      search: /^\w/,
+      replace: (letter) => letter.toUpperCase(),
+    });
     // Then
     expect(result).toEqual({
       Name: name,
@@ -73,15 +79,16 @@ describe('formatKeys', () => {
       age,
       likes,
     };
-    // When
-    const result = formatKeys<{
+    type ExpectedType = {
       name: {
         First: string;
         nickname: string;
       };
       age: number;
       Likes: string;
-    }>({
+    };
+    // When
+    const result: ExpectedType = formatKeys<ExpectedType>({
       target,
       search: /^\w/,
       replace: (letter) => letter.toUpperCase(),
@@ -112,15 +119,16 @@ describe('formatKeys', () => {
       age,
       likes,
     };
-    // When
-    const result = formatKeys<{
+    type ExpectedType = {
       name: {
         First: string;
         Nickname: string;
       };
       age: number;
       Likes: string;
-    }>({
+    };
+    // When
+    const result: ExpectedType = formatKeys<ExpectedType>({
       target,
       search: /^\w/,
       replace: (letter) => letter.toUpperCase(),
@@ -151,15 +159,16 @@ describe('formatKeys', () => {
       age,
       likes,
     };
-    // When
-    const result = formatKeys<{
+    type ExpectedType = {
       Name: {
         first: string;
         Nickname: string;
       };
       Age: number;
       likes: string;
-    }>({
+    };
+    // When
+    const result: ExpectedType = formatKeys<ExpectedType>({
       target,
       search: /^\w/,
       replace: (letter) => letter.toUpperCase(),
@@ -191,8 +200,16 @@ describe('formatKeys', () => {
       age,
       likes,
     };
+    type ExpectedType = {
+      Name: {
+        first: string;
+        nickname: string;
+      };
+      Age: number;
+      likes: string;
+    };
     // When
-    const result = formatKeys({
+    const result: ExpectedType = formatKeys<ExpectedType>({
       target,
       search: /^\w/,
       replace: (letter) => letter.toUpperCase(),
