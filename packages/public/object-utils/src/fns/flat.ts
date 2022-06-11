@@ -43,7 +43,7 @@ export type FlatOptions = {
  * },
  * propTwo: '!!!',
  * };
- * console.log(ObjectUtils.flat(target);
+ * console.log(flat(target);
  * // Will output { 'propOne.propOneSub': 'Charito!', propTwo: '!!!' }
  *
  */

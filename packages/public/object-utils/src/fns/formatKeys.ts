@@ -49,7 +49,7 @@ export type FormatKeysExtensionOptions = Omit<FormatKeysOptions, 'search' | 'rep
  *     prop_one: 'Charito!',
  *   };
  *   console.log(
- *     ObjectUtils.formatKeys(
+ *     formatKeys(
  *       target,
  *       // Find all the keys with snake case.
  *       /([a-z])_([a-z])/g,
