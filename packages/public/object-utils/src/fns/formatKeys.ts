@@ -36,6 +36,7 @@ export type FormatKeysExtensionOptions = Omit<FormatKeysOptions, 'search' | 'rep
  * that also works recursively and with _"object paths"_.
  *
  * @param options  The set of options to customize the transformation.
+ * @template T  The type of the returned object.
  * @example
  *
  *   const target = {
