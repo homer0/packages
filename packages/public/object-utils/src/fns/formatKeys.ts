@@ -56,9 +56,9 @@ export type FormatKeysExtensionOptions = Omit<FormatKeysOptions, 'search' | 'rep
  *   // Will output { propOne: 'Charito!}.
  *
  */
-export const formatKeys = <R = Record<string, unknown>>(
+export const formatKeys = <T = Record<string, unknown>>(
   options: FormatKeysOptions,
-): R => {
+): T => {
   const {
     target,
     search,
@@ -259,5 +259,5 @@ export const formatKeys = <R = Record<string, unknown>>(
     }
     // "Done", return the new object with the "new key" and the "new value".
     return { ...newObj, [newKey]: newValue };
-  }, {}) as R;
+  }, {}) as T;
 };
