@@ -24,6 +24,8 @@
   },
   "devDependencies": {
     "@types/extend": "^3.0.1",
+    "jest": "^28.1.1",
+    "ts-jest": "^28.0.4",
     "typescript": "^4.7.3"
   },
   "engine-strict": true,
