@@ -34,7 +34,7 @@ export type SetOptions = {
  * @example
  *
  *   const target = {};
- *   console.log(set(target, 'some.prop.path', 'some-value'));
+ *   console.log(set({ target, path: 'some.prop.path', value: 'some-value' }));
  *   // Will output { some: { prop: { path: 'some-value' } } }
  *
  */

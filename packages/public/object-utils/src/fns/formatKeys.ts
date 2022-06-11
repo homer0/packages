@@ -49,16 +49,16 @@ export type FormatKeysExtensionOptions = Omit<FormatKeysOptions, 'search' | 'rep
  *     prop_one: 'Charito!',
  *   };
  *   console.log(
- *     formatKeys(
+ *     formatKeys({
  *       target,
  *       // Find all the keys with snake case.
- *       /([a-z])_([a-z])/g,
+ *       search: /([a-z])_([a-z])/g,
  *       // Using the same .replace style callback, replace it with lower camel case.
- *       (fullMatch, firstLetter, secondLetter) => {
+ *       replace: (_, firstLetter, secondLetter) => {
  *         const newSecondLetter = secondLetter.toUpperCase();
  *         return `${firstLetter}${newSecondLetter}`;
  *       },
- *     ),
+ *     }),
  *   );
  *   // Will output { propOne: 'Charito!}.
  *
