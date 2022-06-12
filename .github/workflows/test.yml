@@ -44,6 +44,15 @@ jobs:
           flag-name: public-object-utils
           path-to-lcov: ./packages/public/object-utils/coverage/lcov.info
           base-path: ./packages/public/object-utils
+      - name: Coveralls for public/deep-assign
+        if: ${{ matrix.node == '14' }}
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+          flag-name: public-deep-assign
+          path-to-lcov: ./packages/public/deep-assign/coverage/lcov.info
+          base-path: ./packages/public/deep-assign
 
   finish:
       needs: build
