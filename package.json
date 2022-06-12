@@ -31,7 +31,7 @@
       "prettier --write"
     ],
     "*.{ts,tsx,js}": [
-      "eslint --max-warnings 0 --fix"
+      "eslint"
     ]
   },
   "scripts": {
