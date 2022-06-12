@@ -1,10 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type GenericFn = (...args: any[]) => unknown;
-type Resource<N extends string, K extends string, F extends GenericFn> = {
-  [NN in N]: true;
-} & {
-  [KK in K]: F;
-} & Record<string, unknown>;
+import type { GenericFn, Resource } from './fns.types';
+
 /**
  * Generates a resource entity with a specific function Jimple or an abstraction of jimple
  * can make use of.
