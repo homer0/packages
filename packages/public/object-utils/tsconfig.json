@@ -1,9 +1,12 @@
 {
   "extends": "@homer0/tsconfig/tsconfig.node.json",
   "compilerOptions": {
-    "outDir": "dist"
+    "outDir": "dist",
+    "emitDecoratorMetadata": false,
+    "incremental": false
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "tsup.config.ts"
   ],
 }
