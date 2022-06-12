@@ -22,10 +22,17 @@
     "node": ">=14"
   },
   "commitlint": {
-    "extends": ["@commitlint/config-conventional"]
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "lint-staged": {
-    "*.js": "eslint"
+    "*.{ts,tsx,js,json,css,scss,md}": [
+      "prettier --write"
+    ],
+    "*.{ts,tsx,js}": [
+      "eslint --max-warnings 0 --fix"
+    ]
   },
   "scripts": {
     "test": "./utils/scripts/test",
