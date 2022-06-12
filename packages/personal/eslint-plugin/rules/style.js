@@ -31,58 +31,30 @@ module.exports = {
         order: [
           '[static-properties]',
           '[static-methods]',
-          '[static-async-methods]',
           '[properties]',
           '[conventional-private-properties]',
           'constructor',
           '[methods]',
-          '[async-methods]',
           '[getters]',
           '[conventional-private-methods]',
-          '[conventional-async-private-methods]',
         ],
         groups: {
-          'async-methods': [
-            {
-              type: 'method',
-              async: true,
-              static: false,
-            },
-          ],
-          'conventional-async-private-methods': [
-            {
-              type: 'method',
-              name: '/_.+/',
-              async: true,
-              static: false,
-            },
-          ],
           'conventional-private-methods': [
             {
               type: 'method',
               name: '/_.+/',
-              async: false,
               static: false,
             },
           ],
           methods: [
             {
               type: 'method',
-              async: false,
               static: false,
-            },
-          ],
-          'static-async-methods': [
-            {
-              type: 'method',
-              async: true,
-              static: true,
             },
           ],
           'static-methods': [
             {
               type: 'method',
-              async: false,
               static: true,
             },
           ],
@@ -90,7 +62,6 @@ module.exports = {
             {
               type: 'method',
               kind: 'get',
-              async: false,
               static: false,
             },
           ],
