@@ -1,0 +1,44 @@
+{
+  "name": "@homer0/extend-promise",
+  "description": "Extends a promise with custom properties",
+  "version": "0.0.0-development",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/homer0/packages.git",
+    "directory": "packages/public/extend-promise"
+  },
+  "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
+  "license": "MIT",
+  "keywords": [
+    "promise",
+    "custom",
+    "utility",
+    "wootils",
+    "javascript"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "build/"
+  ],
+  "devDependencies": {
+    "@types/jest": "^28.1.1",
+    "jest": "^28.1.1",
+    "ts-jest": "^28.0.4",
+    "tsup": "^6.1.2",
+    "typescript": "^4.7.3"
+  },
+  "engine-strict": true,
+  "engines": {
+    "node": ">=14"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "test": "jest -c ./.jestrc.js",
+    "build": "tsup src/index.ts",
+    "prepublishOnly": "npm run build"
+  }
+}
