@@ -7,5 +7,5 @@ module.exports = {
   },
   plugins: ['@homer0'],
   extends: ['plugin:@homer0/node-typescript-with-prettier'],
-  ignorePatterns: ['.eslintrc.js'],
+  ignorePatterns: ['.eslintrc.js', 'dist/'],
 };
