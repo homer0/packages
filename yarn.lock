@@ -5508,6 +5508,11 @@ jest@^28.1.1:
     import-local "^3.0.2"
     jest-cli "^28.1.1"
 
+jimple@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/jimple/-/jimple-1.5.0.tgz#a964bf4862bb2b488ce3830266a4dd8e8ef1213b"
+  integrity sha512-lV8T+LMLvq4qYomJvXtIoL+rwT3tQ2fjq6Bv+vgO0zEtfIw6oXlOmSbHusq5TgR5IKP2avouqWVpGFjbsWlR2Q==
+
 joycon@^3.0.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/joycon/-/joycon-3.1.1.tgz#bce8596d6ae808f8b68168f5fc69280996894f03"
