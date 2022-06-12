@@ -1,17 +1,17 @@
 {
-  "name": "@homer0/object-utils",
-  "description": "A small collection of utility methods to work with objects",
+  "name": "@homer0/deep-assign",
+  "description": "Deep merge (and copy) of objects and Arrays using native spread syntax",
   "version": "0.0.0-development",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",
-    "directory": "packages/public/object-utils"
+    "directory": "packages/public/deep-assign"
   },
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
   "license": "MIT",
   "keywords": [
     "object",
-    "extend",
+    "merge",
     "utility",
     "wootils",
     "javascript"
@@ -22,11 +22,7 @@
   "files": [
     "build/"
   ],
-  "dependencies": {
-    "extend": "^3.0.2"
-  },
   "devDependencies": {
-    "@types/extend": "^3.0.1",
     "@types/jest": "^28.1.1",
     "jest": "^28.1.1",
     "ts-jest": "^28.0.4",
