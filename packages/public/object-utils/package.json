@@ -34,8 +34,11 @@
   "engines": {
     "node": ">=14"
   },
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "jest -c ./.jestrc.js"
+    "test": "jest -c ./.jestrc.js",
+    "build": "tsup src/index.ts"
   }
 }
