@@ -19,6 +19,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "build/"
+  ],
   "dependencies": {
     "extend": "^3.0.2"
   },
@@ -39,6 +42,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "test": "jest -c ./.jestrc.js",
-    "build": "tsup src/index.ts"
+    "build": "tsup src/index.ts",
+    "prepublishOnly": "npm run build"
   }
 }
