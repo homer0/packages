@@ -9,7 +9,7 @@ module.exports = {
   collectCoverage: true,
   testPathIgnorePatterns: ['/node_modules/'],
   unmockedModulePathPatterns: ['/node_modules/'],
-  coveragePathIgnorePatterns: ['/node_modules/'],
+  coveragePathIgnorePatterns: ['/node_modules/', 'src/jimplemod/jimple.type'],
   testEnvironment: 'node',
   globals: {
     'ts-jest': {
