@@ -1,5 +1,5 @@
-import { provider, providerCreator, providers } from '../../src/helpers';
 import { Jimple } from '../../src/jimple';
+import { provider, providerCreator, providers, createProviders } from '../../src/helpers';
 
 describe('providers', () => {
   it('should create a collection of providers', () => {
@@ -22,5 +22,29 @@ describe('providers', () => {
     expect(itemTwoCreator).toHaveBeenCalledTimes(1);
     expect(itemTwo.register).toHaveBeenCalledTimes(1);
     expect(itemTwo.register).toHaveBeenCalledWith(container);
+  });
+
+  describe('createProviders', () => {
+    it('should create a collection of providers', () => {
+      // Given
+      class TestContainer extends Jimple {
+        public test: boolean = true;
+      }
+      const container = new TestContainer();
+      const testProviders = createProviders<TestContainer>();
+      let found = false;
+      const services = testProviders({
+        itemOne: {
+          provider: true,
+          register: (c) => {
+            found = c.test;
+          },
+        },
+      });
+      // When
+      container.register(services);
+      // Then
+      expect(found).toBe(true);
+    });
   });
 });
