@@ -1,17 +1,15 @@
-jest.unmock('../../src/fns/resource');
-jest.unmock('../../src/fns/resourceCreator');
+import { resourceCreatorFactory } from '../../src/factories';
 
-import { resourceCreator } from '../../src/fns/resourceCreator';
-
-describe('resourceCreator', () => {
+describe('resourceCreatorFactory', () => {
   it('should create a resource creator', () => {
     // Given
+    type ResourceFn = (arg0: string) => string;
     const name = 'providerCreator';
     const key = 'register';
-    const resourceFn = jest.fn(() => 'Batman');
+    const resourceFn: ResourceFn = jest.fn(() => 'Batman');
     const creatorFn = jest.fn(() => resourceFn);
     // When
-    const sut = resourceCreator(name, key, creatorFn);
+    const sut = resourceCreatorFactory<ResourceFn>()(name, key, creatorFn);
     // Then
     expect(sut[name]).toBe(true);
     expect(sut[key]).toBe(resourceFn);
@@ -20,12 +18,13 @@ describe('resourceCreator', () => {
 
   it('should only create the non-configured resource once', () => {
     // Given
+    type ResourceFn = (arg0: string) => string;
     const name = 'providerCreator';
     const key = 'register';
-    const resourceFn = jest.fn(() => 'Pilar');
+    const resourceFn: ResourceFn = jest.fn(() => 'Pilar');
     const creatorFn = jest.fn(() => resourceFn);
     // When
-    const sut = resourceCreator(name, key, creatorFn);
+    const sut = resourceCreatorFactory<ResourceFn>()(name, key, creatorFn);
     // Then
     expect(sut[name]).toBe(true);
     expect(sut[key]).toBe(resourceFn);
@@ -36,13 +35,14 @@ describe('resourceCreator', () => {
 
   it('should allow to configure the resource', () => {
     // Given
+    type ResourceFn = (arg0: string) => string;
     const name = 'providerCreator';
     const key = 'register';
-    const resourceFn = jest.fn(() => 'Rosario');
+    const resourceFn: ResourceFn = jest.fn(() => 'Rosario');
     const creatorFn = jest.fn(() => resourceFn);
     const arg = 'hello world';
     // When
-    const sut = resourceCreator(name, key, creatorFn);
+    const sut = resourceCreatorFactory<ResourceFn>()(name, key, creatorFn);
     // @ts-expect-error - we're testing that the argument is being sent.
     const configured = sut(arg);
     // Then
