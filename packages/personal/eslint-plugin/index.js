@@ -1,6 +1,7 @@
 const base = require('./configurations/base');
 const browser = require('./configurations/browser');
 const jest = require('./configurations/jest');
+const jestNodeTypeScript = require('./configurations/jest-node-typescript');
 const jsdoc = require('./configurations/jsdoc');
 const node = require('./configurations/node');
 const nodeTypeScript = require('./configurations/node-typescript');
@@ -12,6 +13,7 @@ const { addPrettier } = require('./utils');
 const coreConfigs = Object.entries({
   browser,
   jest,
+  'jest-node-typescript': jestNodeTypeScript,
   node,
   'node-typescript': nodeTypeScript,
   react,
