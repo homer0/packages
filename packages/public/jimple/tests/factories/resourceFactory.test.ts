@@ -1,20 +1,20 @@
-jest.unmock('../../src/fns/resource');
+import { resourceFactory } from '../../src/factories';
 
-import { resource } from '../../src/fns/resource';
-
-describe('resource', () => {
+describe('resourceFactory', () => {
   it('should create an resource', () => {
     // Given
+    type ResourceFn = (arg0: string) => string;
     const name = 'provider';
     const key = 'register';
-    const fn = jest.fn();
+    const fn: ResourceFn = jest.fn((arg0) => arg0);
     const arg = 'hello world';
     type ExpectedType = {
       [name]: true;
       [key]: typeof fn;
     };
     // When
-    const result: ExpectedType = resource(name, key, fn);
+    const providerFactory = resourceFactory<ResourceFn>();
+    const result: ExpectedType = providerFactory(name, key, fn);
     result[key](arg);
     // Then
     expect(result).toEqual({
