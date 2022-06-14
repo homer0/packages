@@ -1,11 +1,17 @@
 import type { Jimple } from '../jimple';
-import { resourceFactory, type Resource } from '../factories';
+import { resourceFactory } from '../factories';
 
 export type ProviderName = 'provider';
 export type ProviderKey = 'register';
-export type ProviderRegisterFn = (container: Jimple) => void;
-export type Provider = Resource<ProviderName, ProviderKey, ProviderRegisterFn>;
+export type ProviderRegisterFn<ContainerType extends Jimple = Jimple> = (
+  container: ContainerType,
+) => void;
 
-const providerFactory = resourceFactory<ProviderRegisterFn>();
-export const provider = (register: ProviderRegisterFn): Provider =>
-  providerFactory('provider', 'register', register);
+export const createProvider = <ContainerType extends Jimple = Jimple>() => {
+  type RegisterFn = ProviderRegisterFn<ContainerType>;
+  const factory = resourceFactory<RegisterFn>();
+  return (register: RegisterFn) => factory('provider', 'register', register);
+};
+
+export const provider = createProvider();
+export type Provider = ReturnType<typeof provider>;

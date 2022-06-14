@@ -24,7 +24,7 @@ export class Container {
    *
    * @param key  The key of the parameter or service to return.
    * @returns The object related to the service or the value of the parameter
-   *          associated with the key informed.
+   *          associated with the given key.
    * @template T  The type of the returned object.
    * @throws If the key does not exist.
    */
@@ -52,7 +52,7 @@ export class Container {
    * @param fn  The function that constructs the service that is a factory.
    * @returns The same function passed as parameter.
    */
-  factory(fn: (arg0: Container) => unknown): (arg0: Container) => unknown {}
+  factory<C = this>(fn: (arg0: C) => unknown): (arg0: C) => unknown {}
   /**
    * Defines a function as a parameter, so that function is not considered a service.
    *
@@ -73,7 +73,7 @@ export class Container {
    * @throws If the key saved in the container does not correspond to a service.
    * @throws If the function passed it not...well, a function.
    */
-  extend(key: string, fn: (arg0: unknown, arg1: Container) => unknown): void {}
+  extend<C = this>(key: string, fn: (arg0: unknown, arg1: C) => unknown): void {}
   /**
    * Uses an provider to extend the service, so it's easy to split the service and
    * parameter definitions across the system.
@@ -81,7 +81,7 @@ export class Container {
    * @param provider  The provider to be used to register services and parameters in
    *                  this container.
    */
-  register(provider: { register: (arg0: Container) => unknown }): void {}
+  register<C = this>(provider: { register: (arg0: C) => void }): void {}
   /**
    * Returns the raw value of a service or parameter. So, in the case of a service,
    * for example, the value returned is the function used to construct the service.

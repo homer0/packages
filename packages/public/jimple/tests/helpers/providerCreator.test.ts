@@ -1,4 +1,5 @@
-import { providerCreator } from '../../src/helpers';
+import { Jimple } from '../../src/jimple';
+import { providerCreator, createProviderCreator } from '../../src/helpers';
 
 describe('providerCreator', () => {
   it('should create a provider creator for Jimple', () => {
@@ -34,5 +35,24 @@ describe('providerCreator', () => {
     expect(creatorFn).toHaveBeenCalledTimes(2);
     expect(creatorFn).toHaveBeenNthCalledWith(1, prefixArg);
     expect(creatorFn).toHaveBeenNthCalledWith(2);
+  });
+
+  describe('createProviderCreator', () => {
+    it('should create a custom provider creator', () => {
+      // Given
+      class TestContainer extends Jimple {
+        public test: boolean = true;
+      }
+      const container = new TestContainer();
+      const testProviderCreator = createProviderCreator<TestContainer>();
+      let found = false;
+      const service = testProviderCreator(() => (c) => {
+        found = c.test;
+      });
+      // When
+      container.register(service);
+      // Then
+      expect(found).toBe(true);
+    });
   });
 });

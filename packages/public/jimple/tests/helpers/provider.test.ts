@@ -1,4 +1,5 @@
-import { provider } from '../../src/helpers';
+import { Jimple } from '../../src/jimple';
+import { provider, createProvider } from '../../src/helpers';
 
 describe('provider', () => {
   it('should create a Jimple provider', () => {
@@ -10,6 +11,25 @@ describe('provider', () => {
     expect(sut).toStrictEqual({
       provider: true,
       register: registerFn,
+    });
+  });
+
+  describe('createProvider', () => {
+    it('should create a custom provider', () => {
+      // Given
+      class TestContainer extends Jimple {
+        public test: boolean = true;
+      }
+      const container = new TestContainer();
+      const testProvider = createProvider<TestContainer>();
+      let found = false;
+      const service = testProvider((c) => {
+        found = c.test;
+      });
+      // When
+      container.register(service);
+      // Then
+      expect(found).toBe(true);
     });
   });
 });
