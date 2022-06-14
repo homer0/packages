@@ -25,6 +25,7 @@ export class Container {
    * @param key  The key of the parameter or service to return.
    * @returns The object related to the service or the value of the parameter
    *          associated with the key informed.
+   * @template T  The type of the returned object.
    * @throws If the key does not exist.
    */
   get<T = unknown>(key: string): T {}
