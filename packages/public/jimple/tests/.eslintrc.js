@@ -6,9 +6,6 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['@homer0'],
-  extends: [
-    'plugin:@homer0/node-typescript-with-prettier',
-    'plugin:@homer0/jest-with-prettier',
-  ],
+  extends: ['plugin:@homer0/jest-node-typescript-with-prettier'],
   ignorePatterns: ['.eslintrc.js'],
 };
