@@ -5,10 +5,11 @@ const path = require('path');
  */
 module.exports = {
   preset: 'ts-jest',
-  automock: true,
+  automock: false,
   collectCoverage: true,
   testPathIgnorePatterns: ['/node_modules/'],
   unmockedModulePathPatterns: ['/node_modules/'],
+  coveragePathIgnorePatterns: ['/node_modules/'],
   testEnvironment: 'node',
   globals: {
     'ts-jest': {
