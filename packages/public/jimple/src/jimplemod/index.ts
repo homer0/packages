@@ -4,4 +4,5 @@ import { Container as JimpleContainer } from './jimple.type';
 
 const Jimple = JimpleOriginal as typeof JimpleContainer;
 
-export { Jimple, JimpleContainer };
+export { Jimple };
+export type { JimpleContainer };
