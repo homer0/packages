@@ -199,6 +199,6 @@ As this project is part of the `packages` monorepo, it requires Yarn, and some o
 
 ## Motivation
 
-This used to be part of the [`wootils`](https://www.npmjs.com/package/wootils), my personal lib of utilities, but I decided to extract them into individual packages, as part of the `packages` monorepo, and take the oportunity to migrate them to TypeScript.
+This used to be part of the [`wootils`](https://www.npmjs.com/package/wootils) package, my personal lib of utilities, but I decided to extract them into individual packages, as part of the `packages` monorepo, and take the oportunity to migrate them to TypeScript.
 
 Now, the reason I created this, rather than use `merge` from my own `object-utils` lib, it's because `extend` doesn't support symbols as keys, they don't want to support for it, and since merging with spread syntax already does... "how hard could it be to use spread syntax recursively?".
