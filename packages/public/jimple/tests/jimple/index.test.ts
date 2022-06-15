@@ -1,4 +1,4 @@
-import { Jimple } from '../../src/jimple';
+import { Jimple, jimple } from '../../src/jimple';
 
 describe('Jimple', () => {
   describe('try', () => {
@@ -14,6 +14,22 @@ describe('Jimple', () => {
       // Then
       expect(savedValue).toBe(resource);
       expect(invalidValue).toBeUndefined();
+    });
+  });
+
+  describe('shorthand', () => {
+    it('should create a container with a function', () => {
+      // Given
+      const resource = 'Batman';
+      const name = 'Hero';
+      // When
+      const container = jimple({
+        [name]: resource,
+      });
+      const value = container.get<string>(name);
+      // Then
+      expect(value).toBe(resource);
+      expect(container).toBeInstanceOf(Jimple);
     });
   });
 });

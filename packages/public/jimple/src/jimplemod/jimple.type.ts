@@ -16,7 +16,7 @@ export class Container {
    * @param values  An optional object whose keys and values will be associated in the
    *                container at initialization.
    */
-  constructor(values?: unknown | null) {}
+  constructor(values?: Record<string, unknown>) {}
   /**
    * Return the specified parameter or service. If the service is not built yet, this
    * function will construct the service injecting all the dependencies needed in it's
