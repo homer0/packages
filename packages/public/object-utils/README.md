@@ -223,6 +223,6 @@ As this project is part of the `packages` monorepo, it requires Yarn, and some o
 
 ## Motivation
 
-This used to be part of the [`wootils`](https://www.npmjs.com/package/wootils), my personal lib of utilities, but I decided to extract them into individual packages, as part of the `packages` monorepo, and take the oportunity to migrate them to TypeScript.
+This used to be part of the [`wootils`](https://www.npmjs.com/package/wootils) package, my personal lib of utilities, but I decided to extract them into individual packages, as part of the `packages` monorepo, and take the oportunity to migrate them to TypeScript.
 
 What I like most about this library is that it's VERY small, and it only has one single dependency.
