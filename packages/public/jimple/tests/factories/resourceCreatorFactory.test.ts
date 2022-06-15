@@ -33,6 +33,26 @@ describe('resourceCreatorFactory', () => {
     expect(creatorFn).toHaveBeenCalledTimes(1);
   });
 
+  it('should allow to configure the resource (multiple times)', () => {
+    // Given
+    type ResourceFn = (arg0: string) => string;
+    const name = 'providerCreator';
+    const key = 'register';
+    const finalResource = 'Batman';
+    const prefixArgOne = 'prefix:';
+    const prefixArgTwo = 'other:';
+    const creatorFn = jest.fn((arg0: string = '') =>
+      jest.fn(() => `${arg0}${finalResource}`),
+    );
+    // When
+    const sut = resourceCreatorFactory<ResourceFn>()(name, key, creatorFn);
+    const configuredResultOne = sut(prefixArgOne).register();
+    const configuredResultTwo = sut(prefixArgTwo).register();
+    // Then
+    expect(configuredResultOne).toBe(`${prefixArgOne}${finalResource}`);
+    expect(configuredResultTwo).toBe(`${prefixArgTwo}${finalResource}`);
+  });
+
   it('should allow to configure the resource', () => {
     // Given
     type ResourceFn = (arg0: string) => string;
