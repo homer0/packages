@@ -78,11 +78,11 @@ const req = makeTheRequest()
 setTimeout(() => req.abort(), 1000);
 ```
 
-## 🤘 Development
+### 🤘 Development
 
 As this project is part of the `packages` monorepo, it requires Yarn, and some of the tooling, like ESLint and Husky, are installed on the root's `package.json`.
 
-### Yarn tasks
+#### Yarn tasks
 
 | Task    | Description          |
 | ------- | -------------------- |
