@@ -62,6 +62,15 @@ jobs:
           flag-name: public-extend-promise
           path-to-lcov: ./packages/public/extend-promise/coverage/lcov.info
           base-path: ./packages/public/extend-promise
+      - name: Coveralls for public/jimple
+        if: ${{ matrix.node == '14' }}
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+          flag-name: public-jimple
+          path-to-lcov: ./packages/public/jimple/coverage/lcov.info
+          base-path: ./packages/public/jimple
 
   finish:
       needs: build
