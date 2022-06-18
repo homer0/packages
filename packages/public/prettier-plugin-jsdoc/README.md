@@ -68,8 +68,8 @@ A [Prettier](https://prettier.io) plugin to format [JSDoc](https://jsdoc.app) bl
 
 ##### Allow the @description tag
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
+| Option                     | Type    | Default |
+| -------------------------- | ------- | ------- |
 | `jsdocAllowDescriptionTag` | boolean | `false` |
 
 Whether or not the `@description` tag can be used on JSDoc blocks. When disabled, if a `@description` tag is found, its contents will be moved to the block body:
@@ -93,8 +93,8 @@ Whether or not the `@description` tag can be used on JSDoc blocks. When disabled
 
 ##### Use the @description tag
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
+| Option                   | Type    | Default |
+| ------------------------ | ------- | ------- |
 | `jsdocUseDescriptionTag` | boolean | `false` |
 
 Whether or not to use the `@description` tag when a description is found on the block body or following a type/callback definition.
@@ -120,9 +120,9 @@ Whether or not to use the `@description` tag when a description is found on the 
 
 ##### Format @example tags
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocFormatExamples` | boolean | `true` |
+| Option                | Type    | Default |
+| --------------------- | ------- | ------- |
+| `jsdocFormatExamples` | boolean | `true`  |
 
 Whether or not to attempt to format the `@example` tags using Prettier itself.
 
@@ -147,9 +147,9 @@ Whether or not to attempt to format the `@example` tags using Prettier itself.
 
 ##### Add lines around @example tags' content
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocLinesBetweenExampleTagAndCode` | int | `1` |
+| Option                               | Type | Default |
+| ------------------------------------ | ---- | ------- |
+| `jsdocLinesBetweenExampleTagAndCode` | int  | `1`     |
 
 How many lines should there be between an `@example` tag and its code.
 
@@ -173,9 +173,9 @@ How many lines should there be between an `@example` tag and its code.
 
 ##### Manage indentation on formatted examples
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocIndentFormattedExamples` | boolean | `true` |
+| Option                         | Type    | Default |
+| ------------------------------ | ------- | ------- |
+| `jsdocIndentFormattedExamples` | boolean | `true`  |
 
 Whether or not to add an indentation level to the code snippets of `@example` tags. The indentation space will be taken from the `tabWidth` option.
 
@@ -200,8 +200,8 @@ Whether or not to add an indentation level to the code snippets of `@example` ta
 
 ##### Manage indentation for pseudo code examples
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
+| Option                           | Type    | Default |
+| -------------------------------- | ------- | ------- |
 | `jsdocIndentUnformattedExamples` | boolean | `false` |
 
 Whether or not to add an indentation level to the code snippets of `@example` tags that couldn't be formatted with Prettier. This is only valid if `jsdocFormatExamples` is `true`.
@@ -227,9 +227,9 @@ Whether or not to add an indentation level to the code snippets of `@example` ta
 
 ##### Allow @access tag
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocAllowAccessTag` | boolean | `true` |
+| Option                | Type    | Default |
+| --------------------- | ------- | ------- |
+| `jsdocAllowAccessTag` | boolean | `true`  |
 
 Whether or not the `@access` tag can be used; if `false`, when a tag is found, it will replaced with a tag of its value:
 
@@ -249,9 +249,9 @@ Whether or not the `@access` tag can be used; if `false`, when a tag is found, i
 
 ##### Enfore the use of the @access tag
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocEnforceAccessTag` | boolean | `true` |
+| Option                  | Type    | Default |
+| ----------------------- | ------- | ------- |
+| `jsdocEnforceAccessTag` | boolean | `true`  |
 
 Whether or not to transform the tags `@private`, `@public` and `@protected` into `@access [type]` tags:
 
@@ -273,9 +273,9 @@ Whether or not to transform the tags `@private`, `@public` and `@protected` into
 
 ##### Format types with string literals
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocFormatStringLiterals` | boolean | `true` |
+| Option                      | Type    | Default |
+| --------------------------- | ------- | ------- |
+| `jsdocFormatStringLiterals` | boolean | `true`  |
 
 Whether or not to apply transformations to string literal types.
 
@@ -295,9 +295,9 @@ Whether or not to apply transformations to string literal types.
 
 ##### Specify quotes types for string literals
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocUseSingleQuotesForStringLiterals` | boolean | `true` |
+| Option                                  | Type    | Default |
+| --------------------------------------- | ------- | ------- |
+| `jsdocUseSingleQuotesForStringLiterals` | boolean | `true`  |
 
 Whether or not to use single quotes for string literals' types.
 
@@ -317,9 +317,9 @@ Whether or not to use single quotes for string literals' types.
 
 ##### Specify space around string literals
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocSpacesBetweenStringLiterals` | int | `1` |
+| Option                             | Type | Default |
+| ---------------------------------- | ---- | ------- |
+| `jsdocSpacesBetweenStringLiterals` | int  | `1`     |
 
 How many spaces should there be between string literals on a type.
 
@@ -341,9 +341,9 @@ How many spaces should there be between string literals on a type.
 
 ##### Use TypeScript casing for basic types
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocUseTypeScriptTypesCasing` | boolean | `true` |
+| Option                          | Type    | Default |
+| ------------------------------- | ------- | ------- |
+| `jsdocUseTypeScriptTypesCasing` | boolean | `true`  |
 
 Whether or not to transform the casing of the basic types to make them compatible with TypeScript. This applies to `string`, `number`, `boolean`, `Object` and `Array`.
 
@@ -371,9 +371,9 @@ Whether or not to transform the casing of the basic types to make them compatibl
 
 ##### Format complex types with Prettier as TypeScript
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocFormatComplexTypesWithPrettier` | boolean | `true` |
+| Option                                | Type    | Default |
+| ------------------------------------- | ------- | ------- |
+| `jsdocFormatComplexTypesWithPrettier` | boolean | `true`  |
 
 Whether or not to format complex type definitions (compatibles with TypeScript) using Prettier.
 
@@ -399,9 +399,9 @@ Whether or not to format complex type definitions (compatibles with TypeScript) 
 
 ##### Transform arrays into their shorter form
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocUseShortArrays` | boolean | `true` |
+| Option                | Type    | Default |
+| --------------------- | ------- | ------- |
+| `jsdocUseShortArrays` | boolean | `true`  |
 
 Whether or not to transform the type `Array<type>` into `type[]` when possible. If inside the symbols there's more than a type, the transformation won't happen:
 
@@ -423,9 +423,9 @@ Whether or not to transform the type `Array<type>` into `type[]` when possible. 
 
 ##### Modify the dot used for the generics of arrays and objects
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocFormatDotForArraysAndObjects` | boolean | `true` |
+| Option                              | Type    | Default |
+| ----------------------------------- | ------- | ------- |
+| `jsdocFormatDotForArraysAndObjects` | boolean | `true`  |
 
 Whether or not to apply transformations regarding the dot `Array` and `Object` types can have before their generics (`Array.<...`):
 
@@ -445,9 +445,9 @@ Whether or not to apply transformations regarding the dot `Array` and `Object` t
 
 ##### Ensure the use or not of the dot for the generics of arrays and objects
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocUseDotForArraysAndObjects` | boolean | `true` |
+| Option                           | Type    | Default |
+| -------------------------------- | ------- | ------- |
+| `jsdocUseDotForArraysAndObjects` | boolean | `true`  |
 
 If the formatting for dots is enabled, this options will specify whether the dot is added or removed.
 
@@ -469,9 +469,9 @@ If the formatting for dots is enabled, this options will specify whether the dot
 
 ##### Replace tags synonyms
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocReplaceTagsSynonyms` | boolean | `true` |
+| Option                     | Type    | Default |
+| -------------------------- | ------- | ------- |
+| `jsdocReplaceTagsSynonyms` | boolean | `true`  |
 
 Whether or not to replace tags synonyms with their _official_ tag.
 
@@ -497,9 +497,9 @@ Whether or not to replace tags synonyms with their _official_ tag.
 
 ##### Sort tags
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocSortTags` | boolean | `true` |
+| Option          | Type    | Default |
+| --------------- | ------- | ------- |
+| `jsdocSortTags` | boolean | `true`  |
 
 Whether or not to sort the tags of a JSDoc block.
 
@@ -525,8 +525,8 @@ Whether or not to sort the tags of a JSDoc block.
 
 ##### Tags order
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
+| Option           | Type  | Default                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| ---------------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `jsdocTagsOrder` | array | <ul><li>`type`</li><li>`typedef`</li><li>`callback`</li><li>`function`</li><li>`method`</li><li>`class`</li><li>`file`</li><li>`constant`</li><li>`description`</li><li>`classdesc`</li><li>`example`</li><li>`param`</li><li>`property`</li><li>`returns`</li><li>`template`</li><li>`augments`</li><li>`extends`</li><li>`throws`</li><li>`yields`</li><li>`fires`</li><li>`listens`</li><li>`async`</li><li>`abstract`</li><li>`override`</li><li>`private`</li><li>`protected`</li><li>`public`</li><li>`access`</li><li>`desprecated`</li><li>`author`</li><li>`version`</li><li>`since`</li><li>`member`</li><li>`memberof`</li><li>`category`</li><li>`external`</li><li>`see`</li><li>`other`</li><li>`todo`</li></ul> |
 
 A list specifing the order in which the the tags of a JSDoc block should be sorted. It supports an `other` item to place tags that are not on the list.
@@ -535,9 +535,9 @@ A list specifing the order in which the the tags of a JSDoc block should be sort
 
 ##### Use columns
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocUseColumns` | boolean | `true` |
+| Option            | Type    | Default |
+| ----------------- | ------- | ------- |
+| `jsdocUseColumns` | boolean | `true`  |
 
 Whether or not to try to use columns for type, name and description when possible; if `false`, the descriptions will be moved to a new line.
 
@@ -602,9 +602,9 @@ The alternative:
 
 ##### Group columns
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocGroupColumnsByTag` | boolean | `true` |
+| Option                   | Type    | Default |
+| ------------------------ | ------- | ------- |
+| `jsdocGroupColumnsByTag` | boolean | `true`  |
 
 Whether to respect column alignment within the same tag. For example: all `@param` tags are agligned with eachother, but not with all the `@throws` tags.
 
@@ -636,9 +636,9 @@ Whether to respect column alignment within the same tag. For example: all `@para
 
 ##### Consistent columns
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocConsistentColumns` | boolean | `true` |
+| Option                   | Type    | Default |
+| ------------------------ | ------- | ------- |
+| `jsdocConsistentColumns` | boolean | `true`  |
 
 This is for when the columns are algined by tags; if `true` and one tag can't use columns, no other tag will use them either.
 
@@ -673,17 +673,17 @@ This is for when the columns are algined by tags; if `true` and one tag can't us
 
 ##### Avoid small columns for descriptions
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocDescriptionColumnMinLength` | int | `35` |
+| Option                            | Type | Default |
+| --------------------------------- | ---- | ------- |
+| `jsdocDescriptionColumnMinLength` | int  | `35`    |
 
 When using columns, this is the minimum available space the description column must have; if it's less, the description will be moved to a new line and columns will be disabled for the tag, and if consistent columns are enabled, for the entire block.
 
 ##### Tag spacing: Between tag and type
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocMinSpacesBetweenTagAndType` | int | `1` |
+| Option                            | Type | Default |
+| --------------------------------- | ---- | ------- |
+| `jsdocMinSpacesBetweenTagAndType` | int  | `1`     |
 
 How many spaces should there be between a tag and a type:
 
@@ -693,9 +693,9 @@ How many spaces should there be between a tag and a type:
 
 ##### Tag spacing: Between type and name
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocMinSpacesBetweenTypeAndName` | int | `1` |
+| Option                             | Type | Default |
+| ---------------------------------- | ---- | ------- |
+| `jsdocMinSpacesBetweenTypeAndName` | int  | `1`     |
 
 How many spaces should there be between a type and a name:
 
@@ -705,9 +705,9 @@ How many spaces should there be between a type and a name:
 
 ##### Tag spacing: Between name and description
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocMinSpacesBetweenNameAndDescription` | int | `2` |
+| Option                                    | Type | Default |
+| ----------------------------------------- | ---- | ------- |
+| `jsdocMinSpacesBetweenNameAndDescription` | int  | `2`     |
 
 How many spaces should there be between a name and a description column.
 
@@ -717,9 +717,9 @@ How many spaces should there be between a name and a description column.
 
 ##### Space between description body and tags
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocLinesBetweenDescriptionAndTags` | int | `1` |
+| Option                                | Type | Default |
+| ------------------------------------- | ---- | ------- |
+| `jsdocLinesBetweenDescriptionAndTags` | int  | `1`     |
 
 How many lines should there be between a description body and the tags.
 
@@ -742,9 +742,9 @@ How many lines should there be between a description body and the tags.
 
 ##### Make sure descriptions are valid sentences
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocEnsureDescriptionsAreSentences` | boolean | `true` |
+| Option                                | Type    | Default |
+| ------------------------------------- | ------- | ------- |
+| `jsdocEnsureDescriptionsAreSentences` | boolean | `true`  |
 
 If enabled, it will make sure descriptions start with an upper case letter and end with a period.
 
@@ -768,8 +768,8 @@ If enabled, it will make sure descriptions start with an upper case letter and e
 
 ### Allow descriptions to be on different lines
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
+| Option                                   | Type  | Default                                                                                                                                                         |
+| ---------------------------------------- | ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `jsdocAllowDescriptionOnNewLinesForTags` | array | <ul><li>`classdesc`</li><li>`license`</li><li>`desc`</li><li>`description`</li><li>`file`</li><li>`fileoverview`</li><li>`overview`</li><li>`summary`</li></ul> |
 
 A list of tags that are allowed to have their description on a new line.
@@ -802,9 +802,9 @@ A list of tags that are allowed to have their description on a new line.
 
 ##### Ignore tags for consistent columns
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocIgnoreNewLineDescriptionsForConsistentColumns` | boolean | `true` |
+| Option                                               | Type    | Default |
+| ---------------------------------------------------- | ------- | ------- |
+| `jsdocIgnoreNewLineDescriptionsForConsistentColumns` | boolean | `true`  |
 
 If enabled, when evaluating the rule for consistent columns, tags with description on a new line, allowed by `jsdocAllowDescriptionOnNewLinesForTags`, will be ignored.
 
@@ -828,24 +828,24 @@ Whether or not to use a single line JSDoc block when there\'s only one tag.
 
 ##### Custom width
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocPrintWidth` | int | `0` (uses `printWidth`) |
+| Option            | Type | Default                 |
+| ----------------- | ---- | ----------------------- |
+| `jsdocPrintWidth` | int  | `0` (uses `printWidth`) |
 
 This is an override for the `printWidth` option, in case the length of the documentation lines needs to be different.
 
 ##### Turn the plugin on and off
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
-| `jsdocPluginEnabled` | boolean | `true` |
+| Option               | Type    | Default |
+| -------------------- | ------- | ------- |
+| `jsdocPluginEnabled` | boolean | `true`  |
 
 Whether or not the plugin will parse and transform JSDoc blocks.
 
 ##### Let the plugin know that it's being extended
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
+| Option                | Type    | Default |
+| --------------------- | ------- | ------- |
 | `jsdocPluginExtended` | boolean | `false` |
 
 This will prevent the plugin from running from the original package. The idea is for it to be enabled when the plugin is being extended on the implementation.
@@ -854,8 +854,8 @@ This will prevent the plugin from running from the original package. The idea is
 
 ##### Parse comments without tags
 
-| Option | Type | Default |
-| ------ | ---- | ------- |
+| Option                                       | Type    | Default |
+| -------------------------------------------- | ------- | ------- |
 | `jsdocExperimentalFormatCommentsWithoutTags` | boolean | `false` |
 
 By default, the plugin will only parse comments with tags. Use this option, at your own risk, if you want to format blocks without tags.
@@ -933,7 +933,6 @@ module.exports = get(getPlugin)();
 
 That's all, the plugin was successfully extended 🎉!
 
-
 ### 📖 Troubleshooting
 
 #### Forcing new lines in paragraphs and lists
@@ -998,11 +997,11 @@ The way you can solve this is by adding a period at the end of the line, which w
  */
 ```
 
-## 🤘 Development
+### 🤘 Development
 
 As this project is part of the `packages` monorepo, it requires Yarn, and some of the tooling, like ESLint and Husky, are installed on the root's `package.json`.
 
-### Yarn tasks
+#### Yarn tasks
 
 | Task        | Description                |
 | ----------- | -------------------------- |
@@ -1010,7 +1009,7 @@ As this project is part of the `packages` monorepo, it requires Yarn, and some o
 | `test:e2e`  | Runs the functional tests. |
 | `test`      | Runs all tests.            |
 
-### Testing
+#### Testing
 
 I use [Jest](https://jestjs.io) to test the project, both with unit tests and functional tests.
 
@@ -1018,7 +1017,7 @@ The configurations files are `.jestrc-e2e` and `.jestrc-unit`, and the test file
 
 In the case of the functional tests, there's a special environment on `./tests/utils` that loads and parses a list of fixture files in order to save them on the global object. In reality, there's only one test file for the functional tests, the one that reads the global object and dynamically generates the `it(...)`: `index.e2e.js`.
 
-## 🐞 Validating bugs
+### 🐞 Validating bugs
 
 > Yes, since this is in a monorepo (for now), I can't put this on the issue template.
 
