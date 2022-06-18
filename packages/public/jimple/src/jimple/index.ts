@@ -18,6 +18,11 @@ export class Jimple extends JimpleMod {
     return this.get<T>(key);
   }
 }
-
+/**
+ * Shorthand for `new Jimple()`.
+ *
+ * @param args  The same parameters as the {@link Jimple} constructor.
+ * @returns A new instance of {@link Jimple}.
+ */
 export const jimple = (...args: ConstructorParameters<typeof Jimple>): Jimple =>
   new Jimple(...args);
