@@ -20,7 +20,7 @@
     "access": "public"
   },
   "files": [
-    "build/"
+    "dist/"
   ],
   "devDependencies": {
     "@types/jest": "^28.1.1",
