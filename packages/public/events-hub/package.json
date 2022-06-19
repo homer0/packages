@@ -1,17 +1,17 @@
 {
-  "name": "@homer0/deferred",
-  "description": "Small utility to create a deferred promise",
+  "name": "@homer0/events-hub",
+  "description": "A simple implementation of a pubsub service for handling events",
   "version": "0.0.0-development",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",
-    "directory": "packages/public/deferred"
+    "directory": "packages/public/events-hub"
   },
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
   "license": "MIT",
   "keywords": [
-    "promise",
-    "deferred",
+    "events",
+    "pubsub",
     "utility",
     "wootils",
     "javascript"
