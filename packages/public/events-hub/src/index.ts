@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- It's a generic function.
 type GenericFn = (...args: any[]) => any;
+type GenericParams = Parameters<GenericFn>;
 type OnceWrapperFn = GenericFn & {
   once: boolean;
 };
@@ -140,6 +141,50 @@ export class EventsHub {
     });
 
     toClean.forEach((info) => this.off(info.event, info.listener));
+  }
+
+  async reduce<Target, ReducerArgs extends GenericParams>(
+    event: string | string[],
+    target: Target,
+    ...args: ReducerArgs
+  ): Promise<Target> {
+    const events = Array.isArray(event) ? event : [event];
+    const toClean: { event: string; listener: GenericFn }[] = [];
+    const result = await events.reduce<Promise<Target>>(
+      (eventAcc, name) =>
+        eventAcc.then((eventCurrent) => {
+          const subscribers = this.getSubscribers(name);
+          return subscribers.reduce(
+            (subAcc, subscriber) =>
+              subAcc.then((subCurrent) => {
+                let useCurrent;
+                if (Array.isArray(subCurrent)) {
+                  useCurrent = subCurrent.slice();
+                } else if (typeof subCurrent === 'object') {
+                  useCurrent = { ...subCurrent };
+                } else {
+                  useCurrent = subCurrent;
+                }
+
+                const nextStep = subscriber(...[useCurrent, ...args]);
+                if ('once' in subscriber) {
+                  toClean.push({
+                    event: name,
+                    listener: subscriber,
+                  });
+                }
+
+                return nextStep;
+              }),
+            Promise.resolve(eventCurrent),
+          );
+        }),
+      Promise.resolve(target),
+    );
+
+    toClean.forEach((info) => this.off(info.event, info.listener));
+
+    return result;
   }
 }
 
