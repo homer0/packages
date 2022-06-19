@@ -7,7 +7,7 @@ Small utility to create a deferred promise
 - ⚙️ [Examples](#%EF%B8%8F-examples)
 - 🤘 [Development](#-development)
 
-### ⚙️ Example
+### ⚙️ Examples
 
 Using it is really simple, you call the `deferred()` function and get an object with `promise`, `resolve` and `reject`. You return the `promise` property and then call `resolve` or `reject` to either resolve the promise or reject it.
 
