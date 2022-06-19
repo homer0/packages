@@ -1,6 +1,6 @@
 jest.unmock('../src');
 
-import { EventsHub } from '../src';
+import { EventsHub, eventsHub } from '../src';
 
 describe('EventsHub', () => {
   it('should allow new subscribers for events', () => {
@@ -180,5 +180,12 @@ describe('EventsHub', () => {
     // Then
     expect(subscriberOne).toHaveBeenCalledTimes(0);
     expect(subscriberTwo).toHaveBeenCalledTimes(0);
+  });
+
+  describe('shorthand', () => {
+    it('should create a hub with a function', () => {
+      // Given/When/Then
+      expect(eventsHub()).toBeInstanceOf(EventsHub);
+    });
   });
 });
