@@ -186,6 +186,41 @@ export class EventsHub {
 
     return result;
   }
+
+  reduceSync<Target, ReducerArgs extends GenericParams>(
+    event: string | string[],
+    target: Target,
+    ...args: ReducerArgs
+  ): Target {
+    const events = Array.isArray(event) ? event : [event];
+    const toClean: { event: string; listener: GenericFn }[] = [];
+    const result = events.reduce((eventAcc, name) => {
+      const subscribers = this.getSubscribers(name);
+      return subscribers.reduce((subAcc, subscriber) => {
+        let useCurrent;
+        if (Array.isArray(subAcc)) {
+          useCurrent = subAcc.slice();
+        } else if (typeof subAcc === 'object') {
+          useCurrent = { ...subAcc };
+        } else {
+          useCurrent = subAcc;
+        }
+
+        const nextStep = subscriber(...[useCurrent, ...args]);
+        if ('once' in subscriber) {
+          toClean.push({
+            event: name,
+            listener: subscriber,
+          });
+        }
+
+        return nextStep;
+      }, eventAcc);
+    }, target);
+
+    toClean.forEach((info) => this.off(info.event, info.listener));
+    return result;
+  }
 }
 
 export const eventsHub = () => new EventsHub();
