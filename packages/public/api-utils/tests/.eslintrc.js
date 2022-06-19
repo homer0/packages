@@ -11,4 +11,10 @@ module.exports = {
     'plugin:@homer0/jest-with-prettier',
   ],
   ignorePatterns: ['.eslintrc.js'],
+  globals: {
+    fetch: true,
+  },
+  rules: {
+    'import/no-extraneous-dependencies': 'off',
+  },
 };
