@@ -142,3 +142,5 @@ export class EventsHub {
     toClean.forEach((info) => this.off(info.event, info.listener));
   }
 }
+
+export const eventsHub = () => new EventsHub();
