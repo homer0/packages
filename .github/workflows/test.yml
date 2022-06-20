@@ -16,6 +16,7 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: yarn --frozen-lockfile
       - run: yarn lint:all
+      - run: yarn build
       - run: yarn test
       - name: Coveralls (unit) for public/prettier-plugin-jsdoc
         if: ${{ matrix.node == '14' }}
