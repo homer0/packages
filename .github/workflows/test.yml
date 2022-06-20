@@ -16,8 +16,6 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: yarn --frozen-lockfile
       - run: yarn lint:all
-      - run: yarn build --scope @homer0/jimple --stream
-      - run: yarn build --scope @homer0/object-utils --stream
       - run: yarn build
       - run: yarn test
       - name: Coveralls (unit) for public/prettier-plugin-jsdoc
