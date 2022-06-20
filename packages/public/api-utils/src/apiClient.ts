@@ -103,6 +103,19 @@ export class APIClient {
     this.defaultHeaders = defaultHeaders;
   }
   /**
+   * Generates an endpoint's URL.
+   *
+   * @param key         The key property of the endpoint in the flatten dictionary.
+   * @param parameters  A dictionary of paramteres that will replace the placeholders
+   *                    in the path. If a parameter doesn't have a placeholder, it will
+   *                    be added to the query string.
+   * @returns A generated endpoint URL.
+   * @throws If the endpoint wasn't specified in the dictionary.
+   */
+  endpoint(key: string, parameters: Record<string, unknown> = {}): string {
+    return this.endpoints.get(key, parameters);
+  }
+  /**
    * Makes a `GET` request.
    *
    * @param url      The request URL.
