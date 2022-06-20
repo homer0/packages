@@ -12,7 +12,13 @@ module.exports = {
     'node/no-extraneous-import': [
       'error',
       {
-        allowModules: ['@homer0/jimple'],
+        allowModules: ['@homer0/jimple', '@homer0/deferred', '@homer0/path-utils'],
+      },
+    ],
+    'node/no-missing-import': [
+      'error',
+      {
+        allowModules: ['package-json-type'],
       },
     ],
   },
