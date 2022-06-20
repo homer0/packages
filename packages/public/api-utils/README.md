@@ -2,8 +2,6 @@
 
 A really basic client to work with an API endpoints requests.
 
-It doesn't require any configuration or have customization options: You listen for an event with `on`, emit an event with `emit`, and, you could reduce a variable through an event with `reduce` (or `reduceSync`).
-
 ## 🍿 Usage
 
 > If you are wondering why I built this, go to the [Motivation](#motivation) section.

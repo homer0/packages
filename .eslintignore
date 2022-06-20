@@ -6,3 +6,4 @@ documentation/*
 node_modules/*
 docs/*
 esm/*
+_x-*/*
