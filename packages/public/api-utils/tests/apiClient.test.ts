@@ -25,6 +25,7 @@ describe('APIClient', () => {
     });
     // Then
     expect(sut).toBeInstanceOf(APIClient);
+    expect(sut.endpoint('one')).toBe(`${url}${endpoints.one}`);
     expect(sut.getUrl()).toBe(url);
     expect(sut.getEndpoints()).toEqual(endpoints);
     expect(sut.getFetchClient()).toBe(fetch);
