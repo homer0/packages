@@ -40,7 +40,7 @@ export type APIClientOptions = {
      *
      * @see {@link EndpointsGeneratorOptions} .
      */
-    options?: EndpointsGeneratorOptions;
+    options?: Omit<EndpointsGeneratorOptions, 'url' | 'endpoints'>;
   };
 };
 /**
