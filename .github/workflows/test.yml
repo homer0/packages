@@ -16,6 +16,7 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: yarn --frozen-lockfile
       - run: yarn lint:all
+      - run: yarn build --scope @homer0/jimple --stream
       - run: yarn build --scope @homer0/object-utils --stream
       - run: yarn build
       - run: yarn test
@@ -100,6 +101,15 @@ jobs:
           flag-name: public-api-utils
           path-to-lcov: ./packages/public/api-utils/coverage/lcov.info
           base-path: ./packages/public/api-utils
+      - name: Coveralls for public/path-utils
+        if: ${{ matrix.node == '14' }}
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+          flag-name: public-path-utils
+          path-to-lcov: ./packages/public/path-utils/coverage/lcov.info
+          base-path: ./packages/public/path-utils
 
   finish:
       needs: build
