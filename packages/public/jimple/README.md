@@ -188,6 +188,69 @@ export const providerCreator = createProviderCreator<MyContainer>();
 export const providers = createProviders<MyContainer>();
 ```
 
+#### Inject helper
+
+The inject helper is a resource you can use when creating reusable services, and it takes care of resolving instances and injections:
+
+##### Ensuring you always get an instance
+
+Let's say that your service has a dependency on another service, and you want to give the ability to the implementation to inject it, but at the same time, if the implementation doesn't send it, you need an instance of the dependency to work with.
+
+You could do an `if` with the parameters, but after a few of them, it gets ugly, so that's why the helper has the `.get` method:
+
+```ts
+// Let's define our dependency dictionary.
+type Dependencies = {
+  dep: string;
+};
+// Create the helper with it.
+const helper = new InjectHelper<Dependencies>();
+// Define the options for the service, that can be used for the injection.
+type MyServiceOptions = {
+  inject?: Partial<Dependencies>;
+};
+const myService = ({ inject = {} }: MyServiceOptions) => {
+  // Ensure `dep` is always a `string`
+  const dep = helper.get(inject, 'dep', () => 'default');
+  console.log('dep:', dep);
+};
+```
+
+#### Resolving dependencies on the provider
+
+Another use case when creating a reusable service, is to give the ability to the provider (creator) to specify the name of the services that should be injected from the container.
+
+Keeping with the previous example, we could look for `dep` on the container, but if the implementation used a different name? This is why we have the `.resolve` method:
+
+```ts
+// Let's define our dependency dictionary.
+type Dependencies = {
+  dep: string;
+};
+// Create the helper with it.
+const helper = new InjectHelper<Dependencies>();
+
+// Define the options for the provider.
+type MyProviderOptions = {
+  services?: {
+    [key in keyof Dependencies]?: string;
+  };
+};
+
+const myProvider = providerCreator(
+  ({ services = {} }: MyProviderOptions) =>
+    (container) => {
+      container.set('myService', () => {
+        // Tell the helper to look for `dep` in the container.
+        const inject = helper.resolve(['dep'], container, services);
+        return myService({ inject });
+      });
+    },
+);
+```
+
+For each dependency, the method will first check if a new name was specified (on `services`), and try to get it with that name, otherwise, it will try to get it with the default name (`dep`), and if it doesn't exist, it will just keep it as `undefined`.
+
 ### ⚙️ Factories
 
 The factories are in charge of creating the functions for the providers, and can be used to create other types of _objects_.

@@ -16,8 +16,6 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: yarn --frozen-lockfile
       - run: yarn lint:all
-      - run: yarn build --scope @homer0/jimple --stream
-      - run: yarn build --scope @homer0/object-utils --stream
       - run: yarn build
       - run: yarn test
       - name: Coveralls (unit) for public/prettier-plugin-jsdoc
@@ -119,6 +117,15 @@ jobs:
           flag-name: public-env-utils
           path-to-lcov: ./packages/public/env-utils/coverage/lcov.info
           base-path: ./packages/public/env-utils
+      - name: Coveralls for public/package-info
+        if: ${{ matrix.node == '14' }}
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+          flag-name: public-package-info
+          path-to-lcov: ./packages/public/package-info/coverage/lcov.info
+          base-path: ./packages/public/package-info
 
   finish:
       needs: build
