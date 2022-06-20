@@ -1,6 +1,6 @@
 # 🚚 Events hub
 
-A simple implementation of a pubsub service for handling events
+A simple implementation of a pubsub service for handling events.
 
 It doesn't require any configuration or have customization options: You listen for an event with `on`, emit an event with `emit`, and, you could reduce a variable through an event with `reduce` (or `reduceSync`).
 
