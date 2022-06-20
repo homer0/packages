@@ -1,17 +1,43 @@
 import urijs from 'urijs';
 import { flat, copy } from '@homer0/object-utils';
 import type { EndpointDefinition, EndpointDefinitionProps, EndpointsDict } from './types';
-
+/**
+ * The options for the service constructor.
+ */
 export type EndpointsGeneratorOptions = {
+  /**
+   * The base URL for the endpoints.
+   */
   url: string;
+  /**
+   * The dictionary with the endpoints' definitions.
+   */
   endpoints: EndpointsDict;
+  /**
+   * The format the placeholders must have in order to be replaced by the service. It can
+   * be anything that includes `%name%`, for example `:%name%`, or `{{%name%}}`.
+   *
+   * @default ':%name%'
+   */
   paramsPlaceholder?: string;
 };
-
+/**
+ * A service that allows the generation of endpoints in a easy way.
+ */
 export class EndpointsGenerator {
-  url: string;
-  endpoints: Record<string, EndpointDefinition>;
-  paramsPlaceholder: string;
+  /**
+   * The base URL for the endpoints.
+   */
+  protected url: string;
+  /**
+   * A flatten dictionary with the endpoints' definitions.
+   */
+  protected endpoints: Record<string, EndpointDefinition>;
+  /**
+   * The format the placeholders must have in order to be replaced by the service. It can
+   * be anything that includes `%name%`, for example `:%name%`, or `{{%name%}}`.
+   */
+  protected paramsPlaceholder: string;
   constructor({
     url,
     endpoints,
@@ -27,7 +53,16 @@ export class EndpointsGenerator {
     });
     this.paramsPlaceholder = paramsPlaceholder;
   }
-
+  /**
+   * Generates an endpoint's URL.
+   *
+   * @param key         The key property of the endpoint in the flatten dictionary.
+   * @param parameters  A dictionary of paramteres that will replace the placeholders
+   *                    in the path. If a parameter doesn't have a placeholder, it will
+   *                    be added to the query string.
+   * @returns A generated endpoint URL.
+   * @throws If the endpoint doesn't exist in the dictionary.
+   */
   get(key: string, parameters: Record<string, unknown> = {}): string {
     // Get the endpoint information.
     const info = this.endpoints[key];
@@ -90,9 +125,17 @@ export class EndpointsGenerator {
     // Return the `urijs` object as a string.
     return uri.toString();
   }
-
+  /**
+   * Gets the dictionary of endpoints the service uses.
+   */
   getEndpoints(): Record<string, EndpointDefinition> {
     return copy(this.endpoints);
+  }
+  /**
+   * Gets the base URL for the endpoints.
+   */
+  getUrl(): string {
+    return this.url;
   }
 }
 /**
