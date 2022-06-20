@@ -1,4 +1,3 @@
-jest.unmock('@homer0/object-utils');
 jest.unmock('../src/endpointsGenerator');
 
 import { EndpointsGenerator, endpointsGenerator } from '../src/endpointsGenerator';

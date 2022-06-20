@@ -1,4 +1,3 @@
-jest.unmock('@homer0/object-utils');
 jest.unmock('../src/apiClient');
 jest.unmock('../src/endpointsGenerator');
 
