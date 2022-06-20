@@ -3,7 +3,7 @@ import * as fsPromises from 'fs/promises';
 import type { IPackageJson } from 'package-json-type';
 import { pathUtils, type PathUtils } from '@homer0/path-utils';
 import { deferred, type DeferredPromise } from '@homer0/deferred';
-import { providerCreator } from '@homer0/jimple';
+import { providerCreator, injectHelper } from '@homer0/jimple';
 /**
  * The dictionary of dependencies that need to be injected in {@link PackageInfo}.
  */
@@ -14,9 +14,9 @@ type PackageInfoInjectOptions = {
   pathUtils: PathUtils;
 };
 /**
- * The list of services the provider will check when registering the service.
+ * The inject helper to resolve the dependencies.
  */
-const INJECT_NAMES: Array<keyof PackageInfoInjectOptions> = ['pathUtils'];
+const deps = injectHelper<PackageInfoInjectOptions>();
 /**
  * The options for the service constructor.
  */
@@ -45,9 +45,8 @@ export class PackageInfo {
    * The absolute path to the package.json file.
    */
   protected filepath: string;
-  constructor(options: PackageInfoOptions = {}) {
-    const { inject = {} } = options;
-    const usePathUtils = inject.pathUtils || pathUtils();
+  constructor({ inject = {} }: PackageInfoOptions = {}) {
+    const usePathUtils = deps.get(inject, 'pathUtils', () => pathUtils());
     this.filepath = usePathUtils.join('package.json');
   }
   /**
@@ -120,23 +119,7 @@ export const packageInfoProvider = providerCreator(
     (container) => {
       container.set(serviceName, () => {
         const { services = {} } = rest;
-        const inject = INJECT_NAMES.reduce<Partial<PackageInfoInjectOptions>>(
-          (acc, key) => {
-            const injectName = key as keyof PackageInfoInjectOptions;
-            if (services[injectName]) {
-              acc[injectName] = container.get<
-                PackageInfoInjectOptions[typeof injectName]
-              >(services[injectName]);
-            } else if (container.has(injectName)) {
-              acc[injectName] =
-                container.get<PackageInfoInjectOptions[typeof injectName]>(injectName);
-            }
-
-            return acc;
-          },
-          {},
-        );
-
+        const inject = deps.resolve(['pathUtils'], container, services);
         return new PackageInfo({ inject });
       });
     },
