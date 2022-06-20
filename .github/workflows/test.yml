@@ -117,6 +117,15 @@ jobs:
           flag-name: public-env-utils
           path-to-lcov: ./packages/public/env-utils/coverage/lcov.info
           base-path: ./packages/public/env-utils
+      - name: Coveralls for public/package-info
+        if: ${{ matrix.node == '14' }}
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+          flag-name: public-package-info
+          path-to-lcov: ./packages/public/package-info/coverage/lcov.info
+          base-path: ./packages/public/package-info
 
   finish:
       needs: build
