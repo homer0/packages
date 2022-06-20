@@ -10,6 +10,6 @@ buildPkg deferred;
 buildPkg api-utils;
 buildPkg events-hub;
 buildPkg extend-promise;
-buildPkg package-info;
 buildPkg path-utils;
+buildPkg package-info;
 buildPkg env-utils;
