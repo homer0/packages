@@ -6,34 +6,90 @@ import type {
   FetchClient,
   FetchOptions,
 } from './types';
-
+/**
+ * The options for the client constructor.
+ */
 export type APIClientOptions = {
+  /**
+   * The base URL for the endpoints.
+   */
   url: string;
+  /**
+   * The dictionary with the endpoints' definitions.
+   */
   endpoints: EndpointsDict;
+  /**
+   * The fetch client that will be used to make the requests.
+   */
   fetchClient: FetchClient;
+  /**
+   * A dictionary with default headers to include on every request.
+   */
   defaultHeaders?: Record<string, unknown>;
+  /**
+   * Custom options for the service in charge of the endpoints.
+   */
   endpointsGenerator?: {
+    /**
+     * The class to use for the endpoints generator. It has to to be a subclass of
+     * {@link EndpointsGenerator}.
+     */
     Class?: typeof EndpointsGenerator;
+    /**
+     * Custom options for the endpoints generator.
+     *
+     * @see {@link EndpointsGeneratorOptions} .
+     */
     options?: EndpointsGeneratorOptions;
   };
 };
-
+/**
+ * A custom overwrite for the fetch body, since the client supports objects, and later
+ * stringifies them.
+ */
 export type APIClientBodyInit = string | Record<string | number, unknown> | BodyInit;
-
+/**
+ * A custom overwrite for the fetch options, to support the custom body type, and the
+ * option for formatting.
+ */
 export type APIClientFetchOptions = Omit<FetchOptions, 'body'> & {
+  /**
+   * The body of the request.
+   */
   body?: APIClientBodyInit;
+  /**
+   * Whether or not the response should _"JSON decoded"_.
+   */
   json?: boolean;
 };
-
+/**
+ * Responses with an status equal or greater than this one will be considered failed, and
+ * their promises will be rejected.
+ *
+ * The reason for the variable is to avoid a magic number in the code, and to install a
+ * lib just to get a single status code.
+ */
 const BAD_REQUEST_STATUS = 400;
-
+/**
+ * A very simple client to work with an API.
+ */
 export class APIClient {
-  protected url: string;
+  /**
+   * The service in charge of generating the URLs for the endpoints.
+   */
   protected endpoints: EndpointsGenerator;
+  /**
+   * A dictionary with default headers to include on every request.
+   */
   protected defaultHeaders: Record<string, unknown>;
+  /**
+   * A "bearer" authentication token to include on every request.
+   */
   protected authorizationToken: string = '';
+  /**
+   * The fetch client that will be used to make the requests.
+   */
   protected fetchClient: FetchClient;
-
   constructor({
     url,
     endpoints,
@@ -41,27 +97,45 @@ export class APIClient {
     defaultHeaders = {},
     endpointsGenerator = {},
   }: APIClientOptions) {
-    this.url = url;
     const { Class = EndpointsGenerator, options = {} } = endpointsGenerator;
     this.endpoints = new Class({ ...options, url, endpoints });
     this.fetchClient = fetchClient;
     this.defaultHeaders = defaultHeaders;
   }
-
+  /**
+   * Makes a `GET` request.
+   *
+   * @param url      The request URL.
+   * @param options  The request options.
+   * @template ResponseType  The data type for the response.
+   */
   get<ResponseType = unknown>(
     url: string,
     options: APIClientFetchOptions = {},
   ): Promise<ResponseType> {
     return this.fetch(url, options);
   }
-
+  /**
+   * Makes a `HEAD` request.
+   *
+   * @param url      The request URL.
+   * @param options  The request options.
+   * @template ResponseType  The data type for the response.
+   */
   head<ResponseType = unknown>(
     url: string,
     options: APIClientFetchOptions = {},
   ): Promise<ResponseType> {
     return this.fetch(url, { ...options, method: 'head' });
   }
-
+  /**
+   * Makes a `POST` request.
+   *
+   * @param url      The request URL.
+   * @param body     The request payload.
+   * @param options  The request options.
+   * @template ResponseType  The data type for the response.
+   */
   post<ResponseType = unknown>(
     url: string,
     body: APIClientBodyInit,
@@ -69,7 +143,14 @@ export class APIClient {
   ): Promise<ResponseType> {
     return this.fetch(url, { method: 'post', ...options, body });
   }
-
+  /**
+   * Makes a `PATCH` request.
+   *
+   * @param url      The request URL.
+   * @param body     The request payload.
+   * @param options  The request options.
+   * @template ResponseType  The data type for the response.
+   */
   patch<ResponseType = unknown>(
     url: string,
     body: APIClientBodyInit,
@@ -77,7 +158,14 @@ export class APIClient {
   ): Promise<ResponseType> {
     return this.post(url, body, { ...options, method: 'patch' });
   }
-
+  /**
+   * Makes a `PUT` request.
+   *
+   * @param url      The request URL.
+   * @param body     The request payload.
+   * @param options  The request options.
+   * @template ResponseType  The data type for the response.
+   */
   put<ResponseType = unknown>(
     url: string,
     body: APIClientBodyInit,
@@ -85,7 +173,14 @@ export class APIClient {
   ): Promise<ResponseType> {
     return this.post(url, body, { ...options, method: 'put' });
   }
-
+  /**
+   * Makes a `DELETE` request.
+   *
+   * @param url      The request URL.
+   * @param body     The request payload.
+   * @param options  The request options.
+   * @template ResponseType  The data type for the response.
+   */
   delete<ResponseType = unknown>(
     url: string,
     body: APIClientBodyInit = {},
@@ -93,13 +188,31 @@ export class APIClient {
   ): Promise<ResponseType> {
     return this.post(url, body, { ...options, method: 'delete' });
   }
-
-  protected formatError<Err extends ErrorResponse>(response: Err, status: number) {
+  /**
+   * Formats an error response into a proper Error object. This method should proabably be
+   * overwritten to accomodate the error messages for the API it's being used for.
+   *
+   * @param response  A received response from a request.
+   * @param status    The HTTP status of the response.
+   * @template ResponseType  The type of the error response.
+   */
+  protected formatError<ResponseType extends ErrorResponse>(
+    response: ResponseType,
+    status: number,
+  ) {
     const error = response.error || 'Unknown error';
     const message = `[${status}]: ${error}`;
     return new Error(message);
   }
-
+  /**
+   * Generates a dictionary of headers using the service's
+   * {@link APIClient.defaultHeaders} property as base.
+   * If a token was set using {@link APIClient.setAuthorizationToken}, the method will add
+   * an `Authorization`
+   * header for the bearer token.
+   *
+   * @param overwrites  Extra headers to add.
+   */
   protected getHeaders(overwrites: Record<string, unknown> = {}): Record<string, string> {
     const headers = { ...this.defaultHeaders };
     if (this.authorizationToken) {
@@ -115,7 +228,13 @@ export class APIClient {
       {},
     );
   }
-
+  /**
+   * Makes a request.
+   *
+   * @param url      The request URL.
+   * @param options  The request options.
+   * @template ResponseType  The data type for the response.
+   */
   protected async fetch<ResponseType = unknown>(
     url: string,
     options: APIClientFetchOptions,
@@ -181,40 +300,66 @@ export class APIClient {
 
     return nextStep as ResponseType;
   }
-
+  /**
+   * Sets a bearer token for all the requests.
+   *
+   * @param token  The new authorization token. If the value is empty, it will remove
+   *               any token previously saved.
+   */
   setAuthorizationToken(token: string = '') {
     this.authorizationToken = token;
   }
-
+  /**
+   * Gets the current authorization token used by the service.
+   */
   getAuthorizationToken(): string {
     return this.authorizationToken;
   }
-
+  /**
+   * Sets the default headers for all the requests.
+   *
+   * @param headers    The new default headers.
+   * @param overwrite  If `false`, it will merge the new default headers with the
+   *                   current ones.
+   */
   setDefaultHeaders(headers: Record<string, string> = {}, overwrite: boolean = true) {
     this.defaultHeaders = {
       ...(overwrite ? {} : this.defaultHeaders),
       ...headers,
     };
   }
-
+  /**
+   * Gets the current default headers used by the service.
+   */
   getDefaultHeaders(): Record<string, unknown> {
     return {
       ...this.defaultHeaders,
     };
   }
-
+  /**
+   * Gets the dictionary of endpoints the service uses.
+   */
   getEndpoints(): Record<string, EndpointDefinition> {
     return this.endpoints.getEndpoints();
   }
-
+  /**
+   * Gets the fetch client the service uses for making the requests.
+   */
   getFetchClient(): FetchClient {
     return this.fetchClient;
   }
-
+  /**
+   * Gets the base URL the service uses for the endpoints.
+   */
   getUrl() {
-    return this.url;
+    return this.endpoints.getUrl();
   }
 }
-
+/**
+ * Shorthand for `new APIClient()`.
+ *
+ * @param args  The same parameters as the {@link APIClient} constructor.
+ * @returns A new instance of {@link APIClient}.
+ */
 export const apiClient = (...args: ConstructorParameters<typeof APIClient>): APIClient =>
   new APIClient(...args);

@@ -7,14 +7,16 @@ import type { EndpointsDict } from '../src/types';
 describe('EndpointsGenertor', () => {
   it('should be correctly initialized', () => {
     // Given
+    const url = 'http://homer0.dev';
     const endpoints: EndpointsDict = {};
     // When
     const sut = new EndpointsGenerator({
-      url: '',
+      url,
       endpoints,
     });
     // Then
     expect(sut).toBeInstanceOf(EndpointsGenerator);
+    expect(sut.getUrl()).toBe(url);
   });
 
   it('should format a list of endpoints', () => {
