@@ -13,3 +13,4 @@ buildPkg extend-promise;
 buildPkg path-utils;
 buildPkg package-info;
 buildPkg env-utils;
+buildPkg root-file;
