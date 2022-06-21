@@ -12,7 +12,7 @@ import { PackageInfo, packageInfo, packageInfoProvider } from '../src';
 const mockFsSync = originalFsSync as jest.Mocked<typeof originalFsSync>;
 const mockFsPromises = originalFsPromises as jest.Mocked<typeof originalFsPromises>;
 
-describe('PathUtils', () => {
+describe('PackageInfo', () => {
   describe('class', () => {
     beforeEach(() => {
       mockFsSync.readFileSync.mockReset();
