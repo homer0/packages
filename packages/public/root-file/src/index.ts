@@ -34,12 +34,22 @@ export class RootFile {
   constructor({ inject = {} }: RootFileOptions = {}) {
     this.pathUtils = deps.get(inject, 'pathUtils', () => pathUtils());
   }
-
+  /**
+   * Require a file with a path relative to the project root.
+   *
+   * @param filepath  The path to the file, relative to the project root.
+   * @template FileType  The type of the required file.
+   */
   require<FileType = unknown>(filepath: string): FileType {
     // eslint-disable-next-line
     return require(this.pathUtils.join(filepath)) as FileType;
   }
-
+  /**
+   * Import a file with a path relative to the project root.
+   *
+   * @param filepath  The path to the file, relative to the project root.
+   * @template FileType  The type of the required file.
+   */
   import<FileType = unknown>(filepath: string): Promise<FileType> {
     // eslint-disable-next-line
     return import(this.pathUtils.join(filepath)) as Promise<FileType>;
