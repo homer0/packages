@@ -1,4 +1,4 @@
-# 📦 Root file
+# ⚓️ Root file
 
 Import or require a file for the project root.
 
