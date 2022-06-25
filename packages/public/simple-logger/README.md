@@ -120,7 +120,7 @@ const logger = container.get('simpleLogger');
 And since the provider is a "provider creator" (created with [my custom version of Jimple](https:///npmjs.com/package/@homer0/jimple)), you can customize its service name:
 
 ```ts
-constainer.register(
+container.register(
   simpleLoggerProvider({
     serviceName: 'myLogger',
   }),
@@ -147,6 +147,26 @@ logger.log('Starting the app');
 ```
 
 You can also specify a `appLoggerPrefix` on your `package.json`, and it will use that instead of the `name`.
+
+##### Dependencies
+
+The "app logger provider" depends on the following services, and it will try to find them in the container, otherwise, it will create new instances:
+
+- [`@homer0/package-info`](https://npmjs.com/package/@homer0/package-info), with the name `package-info`. Used to get the project's `package.json` information.
+- [`@homer0/path-utils`](https://npmjs.com/package/@homer0/path-utils), with the name `pathUtils`. Needed by `package-info` to generate the paths relative to the project root.
+
+If you already implement the dependencies, but with a different name, you can specify them in the provider:
+
+```ts
+container.register(
+  appLoggerProvider({
+    services: {
+      packageInfo: 'myPackageInfo',
+      pathUtils: 'myPathUtils',
+    },
+  }),
+);
+```
 
 ### 🤘 Development
 
