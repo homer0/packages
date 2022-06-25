@@ -135,6 +135,15 @@ jobs:
           flag-name: public-root-file
           path-to-lcov: ./packages/public/root-file/coverage/lcov.info
           base-path: ./packages/public/root-file
+      - name: Coveralls for public/simple-logger
+        if: ${{ matrix.node == '14' }}
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+          flag-name: public-simple-logger
+          path-to-lcov: ./packages/public/simple-logger/coverage/lcov.info
+          base-path: ./packages/public/simple-logger
 
   finish:
       needs: build
