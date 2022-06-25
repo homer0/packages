@@ -8,13 +8,7 @@ module.exports = {
   automock: true,
   collectCoverage: true,
   testPathIgnorePatterns: ['/node_modules/'],
-  unmockedModulePathPatterns: [
-    '/node_modules/',
-    'jimple',
-    'path-utils',
-    'package-info',
-    'mocks',
-  ],
+  unmockedModulePathPatterns: ['/node_modules/', 'jimple', 'path-utils', 'mocks'],
   coveragePathIgnorePatterns: ['/node_modules/', '/mocks/'],
   testEnvironment: 'node',
   globals: {

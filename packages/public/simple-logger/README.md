@@ -146,7 +146,7 @@ logger.log('Starting the app');
 // your package.json
 ```
 
-You can also specify a `nameForCLI` on your `package.json`, and it will use that instead of the `name`.
+You can also specify a `appLoggerPrefix` on your `package.json`, and it will use that instead of the `name`.
 
 ### 🤘 Development
 
