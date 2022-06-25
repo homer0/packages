@@ -15,3 +15,4 @@ buildPkg package-info;
 buildPkg env-utils;
 buildPkg root-file;
 buildPkg simple-logger;
+buildPkg error-handler;
