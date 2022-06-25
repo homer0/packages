@@ -22,6 +22,10 @@
   "files": [
     "dist/"
   ],
+  "dependencies": {
+    "@homer0/jimple": "^0.0.0-development",
+    "@homer0/path-utils": "^0.0.0-development"
+  },
   "devDependencies": {
     "@types/jest": "^28.1.1",
     "jest": "^28.1.1",
@@ -39,6 +43,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "test": "jest -c ./.jestrc.js",
+    "types:check": "tsc --noEmit",
     "build": "tsup src/index.ts",
     "prepublishOnly": "npm run build"
   }

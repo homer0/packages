@@ -37,6 +37,7 @@
   "scripts": {
     "build": "./utils/scripts/build",
     "test": "./utils/scripts/test",
+    "types:check": "./utils/scripts/types-check",
     "lint": "./utils/scripts/lint",
     "lint:all": "./utils/scripts/lint-all",
     "todo": "./utils/scripts/todo",

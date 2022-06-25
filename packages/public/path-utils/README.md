@@ -89,7 +89,7 @@ const paths = container.get('pathUtils');
 And since the provider is a "provider creator" (created with [my custom version of Jimple](https:///npmjs.com/package/@homer0/jimple)), you can customize its service name, and even the constructor options:
 
 ```ts
-constainer.register(
+container.register(
   pathUtilsProvider({
     serviceName: 'myPathUtils',
     home: '/some-other-root-folder',

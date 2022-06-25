@@ -1,17 +1,17 @@
 {
-  "name": "@homer0/object-utils",
-  "description": "A small collection of utility methods to work with objects",
+  "name": "@homer0/simple-logger",
+  "description": "A small service to log messages in the console",
   "version": "0.0.0-development",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",
-    "directory": "packages/public/object-utils"
+    "directory": "packages/public/simple-logger"
   },
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
   "license": "MIT",
   "keywords": [
-    "object",
-    "extend",
+    "logger",
+    "console",
     "utility",
     "wootils",
     "javascript"
@@ -23,10 +23,12 @@
     "dist/"
   ],
   "dependencies": {
-    "extend": "^3.0.2"
+    "colors": "^1.4.0",
+    "@homer0/jimple": "^0.0.0-development",
+    "@homer0/package-info": "^0.0.0-development",
+    "@homer0/path-utils": "^0.0.0-development"
   },
   "devDependencies": {
-    "@types/extend": "^3.0.1",
     "@types/jest": "^28.1.1",
     "jest": "^28.1.1",
     "ts-jest": "^28.0.4",
