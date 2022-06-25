@@ -22,9 +22,14 @@
   "files": [
     "dist/"
   ],
+  "dependencies": {
+    "colors": "^1.4.0",
+    "@homer0/jimple": "^0.0.0-development",
+    "@homer0/package-info": "^0.0.0-development",
+    "@homer0/path-utils": "^0.0.0-development"
+  },
   "devDependencies": {
     "@types/jest": "^28.1.1",
-    "colors": "^1.4.0",
     "jest": "^28.1.1",
     "ts-jest": "^28.0.4",
     "tsup": "^6.1.2",
