@@ -6,4 +6,5 @@ export default defineConfig({
   format: ['esm', 'cjs'],
   legacyOutput: true,
   dts: true,
+  bundle: false,
 });
