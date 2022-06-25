@@ -2,6 +2,7 @@
 /* eslint-disable max-classes-per-file */
 // eslint-disable-next-line global-require
 jest.mock('colors/safe', () => require('./mocks/colors'));
+jest.mock('@homer0/package-info');
 jest.unmock('../src');
 
 import colorsOriginal from 'colors/safe';
@@ -387,7 +388,7 @@ describe('SimpleLogger', () => {
       expect(sut.prefix).toBe(pkgJson.name);
     });
 
-    it('should use nameForCLI instead of the package name', () => {
+    it('should use appLoggerPrefix instead of the package name', () => {
       // Given
       const getFn = jest.fn();
       const setFn = jest.fn();
@@ -409,7 +410,7 @@ describe('SimpleLogger', () => {
       });
       const pkgJson = {
         name: 'my-app',
-        nameForCLI: 'my-cli-app',
+        appLoggerPrefix: 'my-cli-app',
       };
       jest.spyOn(usePackageInfo, 'getSync').mockReturnValueOnce(pkgJson);
       const container = new Container({
@@ -427,7 +428,7 @@ describe('SimpleLogger', () => {
       // Then
       expect(serviceName).toBe('appLogger');
       expect(sut).toBeInstanceOf(SimpleLogger);
-      expect(sut.prefix).toBe(pkgJson.nameForCLI);
+      expect(sut.prefix).toBe(pkgJson.appLoggerPrefix);
     });
 
     it('should create the services to inject if they are not available', () => {
