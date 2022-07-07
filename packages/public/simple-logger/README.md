@@ -152,7 +152,7 @@ You can also specify a `appLoggerPrefix` on your `package.json`, and it will use
 
 The "app logger provider" depends on the following services, and it will try to find them in the container, otherwise, it will create new instances:
 
-- [`@homer0/package-info`](https://npmjs.com/package/@homer0/package-info), with the name `package-info`. Used to get the project's `package.json` information.
+- [`@homer0/package-info`](https://npmjs.com/package/@homer0/package-info), with the name `packageInfo`. Used to get the project's `package.json` information.
 - [`@homer0/path-utils`](https://npmjs.com/package/@homer0/path-utils), with the name `pathUtils`. Needed by `package-info` to generate the paths relative to the project root.
 
 If you already implement the dependencies, but with a different name, you can specify them in the provider:
