@@ -1,11 +1,6 @@
-module.exports = {
-  root: true,
-  parserOptions: {
-    tsconfigRootDir: __dirname,
-    project: 'tsconfig.json',
-    sourceType: 'module',
-  },
-  plugins: ['@homer0'],
-  extends: ['plugin:@homer0/node-typescript-with-prettier'],
-  ignorePatterns: ['.eslintrc.js', 'dist/'],
-};
+const preset = require('@homer0/eslint-plugin/presets/typescript');
+
+module.exports = preset({
+  rootDir: __dirname,
+  configs: ['node-typescript-with-prettier'],
+});

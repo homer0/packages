@@ -1,5 +1,4 @@
-/* eslint-disable dot-notation */
-/* eslint-disable max-classes-per-file */
+/* eslint-disable dot-notation, no-process-env */
 jest.unmock('../src');
 
 import { Jimple } from '@homer0/jimple';

@@ -4,7 +4,8 @@ A really small service to centralize the place where you read and write environm
 
 ## 🍿 Usage
 
-> If you are wondering why I built this, go to the [Motivation](#motivation) section.
+> - ⚠️ **This package is only for Node**.
+> - If you are wondering why I built this, go to the [Motivation](#motivation) section.
 
 - ⚙️ [Examples](#%EF%B8%8F-examples)
 - 🤘 [Development](#-development)

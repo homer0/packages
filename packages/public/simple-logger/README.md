@@ -4,6 +4,8 @@ A small service to log messages in the console.
 
 ## 🍿 Usage
 
+> ⚠️ **This package is only for Node**.
+
 - ⚙️ [Examples](#%EF%B8%8F-examples)
 - 🤘 [Development](#-development)
 

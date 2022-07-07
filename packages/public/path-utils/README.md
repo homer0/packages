@@ -6,7 +6,8 @@ When writing static `require`/`import` statements is easy: The file you are requ
 
 ## 🍿 Usage
 
-> If you are wondering why I built this, go to the [Motivation](#motivation) section.
+> - ⚠️ **This package is only for Node**.
+> - If you are wondering why I built this, go to the [Motivation](#motivation) section.
 
 - ⚙️ [Examples](#%EF%B8%8F-examples)
 - 🤘 [Development](#-development)

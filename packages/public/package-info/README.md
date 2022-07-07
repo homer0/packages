@@ -4,6 +4,8 @@ A tiny service that reads the contents of the project's `package.json`, sync & a
 
 ## 🍿 Usage
 
+> ⚠️ **This package is only for Node**.
+
 - ⚙️ [Examples](#%EF%B8%8F-examples)
 - 🤘 [Development](#-development)
 

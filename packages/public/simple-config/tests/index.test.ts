@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 jest.unmock('../src');
 
 import * as path from 'path';

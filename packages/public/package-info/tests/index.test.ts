@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 jest.mock('fs');
 jest.mock('fs/promises');
 jest.unmock('../src');

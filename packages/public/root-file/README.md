@@ -4,6 +4,8 @@ Import or require a file for the project root.
 
 ## 🍿 Usage
 
+> ⚠️ **This package is only for Node**.
+
 - ⚙️ [Examples](#%EF%B8%8F-examples)
 - 🤘 [Development](#-development)
 

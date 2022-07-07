@@ -8,6 +8,8 @@ Well, `ErrorHandler` listens for these kind of exceptions, unhandled errors and 
 
 ## 🍿 Usage
 
+> ⚠️ **This package is only for Node**.
+
 - ⚙️ [Examples](#%EF%B8%8F-examples)
 - 🤘 [Development](#-development)
 

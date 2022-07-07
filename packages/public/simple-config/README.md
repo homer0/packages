@@ -4,6 +4,8 @@ A very simple configuration management for your projects. It takes care of loadi
 
 ## 🍿 Usage
 
+> ⚠️ **This package is only for Node**.
+
 - ⚙️ [Examples](#%EF%B8%8F-examples)
 - 🤘 [Development](#-development)
 
