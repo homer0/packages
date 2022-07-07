@@ -7,6 +7,7 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'node/no-missing-require': 'off',
     'no-magic-numbers': 'off',
+    'max-classes-per-file': 'off',
   },
   globals: {
     module: true,
