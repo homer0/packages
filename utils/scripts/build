@@ -16,3 +16,4 @@ buildPkg env-utils;
 buildPkg root-file;
 buildPkg simple-logger;
 buildPkg error-handler;
+buildPkg simple-logger;
