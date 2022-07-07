@@ -321,6 +321,92 @@ describe('SimpleConfig', () => {
         );
       });
 
+      it('should load the default config from transpiled CJS file', async () => {
+        // Given
+        const fileConfig = {
+          oldest: 'Rosario',
+          youngest: 'Pilar',
+        };
+        const fileContents = {
+          default: fileConfig,
+        };
+        class MyRootFile extends RootFile {
+          override import<FileType = unknown>(): Promise<FileType> {
+            return Promise.resolve(fileContents as unknown as FileType);
+          }
+        }
+        const myRootFile = new MyRootFile();
+        // When
+        const sut = new SimpleConfig({
+          inject: {
+            rootFile: myRootFile,
+          },
+        });
+        const updatedConfig = await sut.loadFromFile();
+        // Then
+        expect(updatedConfig).toEqual(fileConfig);
+      });
+
+      it('should load the default config from a file that exports a fn', async () => {
+        // Given
+        const fileConfig = {
+          oldest: 'Rosario',
+          youngest: 'Pilar',
+        };
+        const fileContents = jest.fn(() => fileConfig);
+        class MyRootFile extends RootFile {
+          override import<FileType = unknown>(): Promise<FileType> {
+            return Promise.resolve(fileContents as unknown as FileType);
+          }
+        }
+        const myRootFile = new MyRootFile();
+        const defaultConfig = {
+          oldest: 'Rosario',
+          youngest: 'Pilar',
+        };
+        // When
+        const sut = new SimpleConfig({
+          inject: {
+            rootFile: myRootFile,
+          },
+          defaultConfig,
+        });
+        const updatedConfig = await sut.loadFromFile();
+        // Then
+        expect(updatedConfig).toEqual(fileConfig);
+        expect(fileContents).toHaveBeenCalledWith(defaultConfig);
+      });
+
+      it('should load the default config from a file that exports an async fn', async () => {
+        // Given
+        const fileConfig = {
+          oldest: 'Rosario',
+          youngest: 'Pilar',
+        };
+        const fileContents = jest.fn(() => Promise.resolve(fileConfig));
+        class MyRootFile extends RootFile {
+          override import<FileType = unknown>(): Promise<FileType> {
+            return Promise.resolve(fileContents as unknown as FileType);
+          }
+        }
+        const myRootFile = new MyRootFile();
+        const defaultConfig = {
+          oldest: 'Rosario',
+          youngest: 'Pilar',
+        };
+        // When
+        const sut = new SimpleConfig({
+          inject: {
+            rootFile: myRootFile,
+          },
+          defaultConfig,
+        });
+        const updatedConfig = await sut.loadFromFile();
+        // Then
+        expect(updatedConfig).toEqual(fileConfig);
+        expect(fileContents).toHaveBeenCalledWith(defaultConfig);
+      });
+
       it('should load a config that extends from another file', async () => {
         // Given
         const fileAConfigName = 'ages';

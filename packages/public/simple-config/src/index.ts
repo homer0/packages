@@ -5,6 +5,20 @@ import { pathUtils, type PathUtils } from '@homer0/path-utils';
 import { rootFile, type RootFile } from '@homer0/root-file';
 import { providerCreator, injectHelper } from '@homer0/jimple';
 /**
+ * The type of function a configuration file can export.
+ */
+export type SimpleConfigFileModuleFn<T = unknown> = (config: unknown) => T | Promise<T>;
+/**
+ * The contents of a configuration file.
+ */
+export type SimpleConfigFileModule<T = unknown> =
+  | {
+      default: T | SimpleConfigFileModuleFn<T>;
+    }
+  | T
+  | SimpleConfigFileModuleFn<T>;
+
+/**
  * The dictionary of dependencies that need to be injected in {@link SimpleConfig}.
  */
 type SimpleConfigInjectOptions = {
@@ -337,7 +351,10 @@ export class SimpleConfig {
    * @template T  The type of the configuration, for the return value.
    * @throws If the configuration file can't be loaded.
    */
-  async loadFromFile<T>(name: string = '', switchTo: boolean = true): Promise<T> {
+  async loadFromFile<T = unknown>(
+    name: string = '',
+    switchTo: boolean = true,
+  ): Promise<T> {
     const {
       path: thisPath,
       filenameFormat,
@@ -351,7 +368,25 @@ export class SimpleConfig {
 
     let config: T;
     try {
-      config = await this.rootFile.import(filepath);
+      const mod = await this.rootFile.import<SimpleConfigFileModule<T>>(filepath);
+      let mainExport: T | SimpleConfigFileModuleFn<T>;
+      if ('default' in mod) {
+        mainExport = mod.default;
+      } else {
+        mainExport = mod;
+      }
+
+      if (typeof mainExport === 'function') {
+        const mainExportFn = mainExport as SimpleConfigFileModuleFn<T>;
+        const mainExportValue = mainExportFn(this.getConfig());
+        if ('then' in mainExportValue && typeof mainExportValue.then === 'function') {
+          config = await mainExportValue;
+        } else {
+          config = mainExportValue as T;
+        }
+      } else {
+        config = mainExport;
+      }
     } catch (error) {
       throw new Error(`Could not load config from file: ${filepath}`);
     }
