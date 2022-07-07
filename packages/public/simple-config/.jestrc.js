@@ -8,7 +8,7 @@ module.exports = {
   automock: true,
   collectCoverage: true,
   testPathIgnorePatterns: ['/node_modules/'],
-  unmockedModulePathPatterns: ['/node_modules/', 'jimple', 'path-utils'],
+  unmockedModulePathPatterns: ['/node_modules/', 'jimple', 'object-utils'],
   testEnvironment: 'node',
   globals: {
     'ts-jest': {

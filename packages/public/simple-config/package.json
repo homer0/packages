@@ -25,6 +25,8 @@
   "dependencies": {
     "@homer0/jimple": "^0.0.0-development",
     "@homer0/env-utils": "^0.0.0-development",
+    "@homer0/object-utils": "^0.0.0-development",
+    "@homer0/path-utils": "^0.0.0-development",
     "@homer0/root-file": "^0.0.0-development"
   },
   "devDependencies": {
