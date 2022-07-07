@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 jest.unmock('../src');
 
 import { Jimple } from '@homer0/jimple';

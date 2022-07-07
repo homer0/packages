@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-/* eslint-disable max-classes-per-file */
 // eslint-disable-next-line global-require
 jest.mock('colors/safe', () => require('./mocks/colors'));
 jest.mock('@homer0/package-info');
