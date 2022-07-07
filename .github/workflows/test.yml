@@ -153,6 +153,15 @@ jobs:
           flag-name: public-error-handler
           path-to-lcov: ./packages/public/error-handler/coverage/lcov.info
           base-path: ./packages/public/error-handler
+      - name: Coveralls for public/simple-config
+        if: ${{ matrix.node == '14' }}
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+          flag-name: public-simple-config
+          path-to-lcov: ./packages/public/simple-config/coverage/lcov.info
+          base-path: ./packages/public/simple-config
 
   finish:
       needs: build
