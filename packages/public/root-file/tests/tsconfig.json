@@ -1,10 +1,4 @@
 {
-  "extends": "@homer0/tsconfig/tsconfig.node.json",
-  "compilerOptions": {
-    "types": ["jest", "node"],
-    "strict": true,
-    "noImplicitAny": true,
-    "resolveJsonModule": true
-  },
+  "extends": "@homer0/tsconfig/tsconfig.jest-node.json",
   "include": ["./"]
 }
