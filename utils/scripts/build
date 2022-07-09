@@ -17,3 +17,4 @@ buildPkg root-file;
 buildPkg simple-logger;
 buildPkg error-handler;
 buildPkg simple-logger;
+buildPkg simple-storage;
