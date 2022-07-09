@@ -162,6 +162,15 @@ jobs:
           flag-name: public-simple-config
           path-to-lcov: ./packages/public/simple-config/coverage/lcov.info
           base-path: ./packages/public/simple-config
+      - name: Coveralls for public/simple-storage
+        if: ${{ matrix.node == '14' }}
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+          flag-name: public-simple-storage
+          path-to-lcov: ./packages/public/simple-storage/coverage/lcov.info
+          base-path: ./packages/public/simple-storage
 
   finish:
       needs: build
