@@ -9,10 +9,11 @@ import type {
   SimpleStorageOptions,
 } from './types';
 /**
- * A service that allows you to build functionality that relays on browser storage
- * (session/local) and simplifies the way you work it. You can specify the storage type
- * you want to use, the format in which you want to handle the data, and even expiration
- * time for it.
+ * A service that allows you to build functionalities that relay on browser storage
+ * (session/local), and simplifies the way you work it.
+ *
+ * You can specify the storage type you want to use, the format in which you want to
+ * handle the data, and even expiration time for it.
  *
  * @template T  The type of the value stored in the storage.
  * @template E  The type of the entries stored in the storage.

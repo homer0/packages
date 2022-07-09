@@ -1,6 +1,6 @@
 {
   "name": "@homer0/simple-storage",
-  "description": "An abstract way to interact with browser storage",
+  "description": "A service that allows you to build functionalities that relay on browser storage",
   "version": "0.0.0-development",
   "repository": {
     "type": "git",
