@@ -90,7 +90,7 @@ export class FsCache {
    *
    * <caption>Basic</caption>
    *
-   *   const cachedResponse = await cache.useEntry({
+   *   const cachedResponse = await cache.use({
    *     key: 'my-key',
    *     init: async () => {
    *       const res = await fetch('https://example.com');
@@ -103,7 +103,7 @@ export class FsCache {
    *
    * <caption>Custom TTL</caption>
    *
-   *   const cachedResponse = await cache.useEntry({
+   *   const cachedResponse = await cache.use({
    *     key: 'my-key',
    *     ttl: 60 * 60 * 24, // 1 day
    *     init: async () => {
@@ -114,7 +114,7 @@ export class FsCache {
    *   });
    *
    */
-  async useEntry(options: FsCacheEntryOptions<string>): Promise<string> {
+  async use(options: FsCacheEntryOptions<string>): Promise<string> {
     const {
       key,
       init,
@@ -208,19 +208,19 @@ export class FsCache {
     }
   }
   /**
-   * This is a wrapper on top of {@link FsCache.useEntry} that allows for custom
+   * This is a wrapper on top of {@link FsCache.use} that allows for custom
    * serialization/deserialization so the value can be something different than a string.
-   * Yes, this is used behind {@link FsCache.useJSONEntry}.
+   * Yes, this is used behind {@link FsCache.useJSON}.
    *
    * @param options  The options to generate the entry.
    * @template T  The type of the value.
    */
-  async useCustomEntry<T = unknown>({
+  async useCustom<T = unknown>({
     serialize,
     deserialize,
     ...options
   }: FsCacheCustomEntryOptions<T>): Promise<T> {
-    const value = await this.useEntry({
+    const value = await this.use({
       ...options,
       init: async () => {
         const result = await options.init();
@@ -237,8 +237,8 @@ export class FsCache {
    * @param options  The options to generate the entry.
    * @template T  The type of the value.
    */
-  async useJSONEntry<T = unknown>(options: FsCacheEntryOptions<T>): Promise<T> {
-    return this.useCustomEntry({
+  async useJSON<T = unknown>(options: FsCacheEntryOptions<T>): Promise<T> {
+    return this.useCustom({
       ...options,
       serialize: JSON.stringify,
       deserialize: JSON.parse,

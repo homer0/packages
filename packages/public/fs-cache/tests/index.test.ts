@@ -94,7 +94,7 @@ describe('FsCache', () => {
       ).toThrow(/the ttl cannot be less than or equal to zero/i);
     });
 
-    describe('useEntry', () => {
+    describe('use', () => {
       beforeEach(() => {
         resetFs();
         jest.useFakeTimers();
@@ -115,7 +115,7 @@ describe('FsCache', () => {
         };
         // When
         const sut = new FsCache();
-        const result = await sut.useEntry(options);
+        const result = await sut.use(options);
         // Then
         expect(result).toBe(value);
         expect(fs.access).toHaveBeenCalledTimes(0);
@@ -134,8 +134,8 @@ describe('FsCache', () => {
         // When
         const sut = new FsCache();
         const [resultOne, resultTwo] = await Promise.all([
-          sut.useEntry(options),
-          sut.useEntry(options),
+          sut.use(options),
+          sut.use(options),
         ]);
         // Then
         expect(resultOne).toBe(value);
@@ -156,8 +156,8 @@ describe('FsCache', () => {
         // When/Then
         const sut = new FsCache();
         await Promise.all([
-          expect(sut.useEntry(options)).rejects.toThrow(message),
-          expect(sut.useEntry(options)).rejects.toThrow(message),
+          expect(sut.use(options)).rejects.toThrow(message),
+          expect(sut.use(options)).rejects.toThrow(message),
         ]);
       });
 
@@ -191,7 +191,7 @@ describe('FsCache', () => {
         const expectedFilepath = [sutOptions.path, expectedFilename].join('/');
         // When
         const sut = new FsCache(sutOptions);
-        const result = await sut.useEntry(entryOptions);
+        const result = await sut.use(entryOptions);
         // Then
         expect(result).toBe(value);
         expect(joinFn).toHaveBeenCalledTimes(2);
@@ -244,8 +244,8 @@ describe('FsCache', () => {
         const expectedFilepath = [sutOptions.path, expectedFilename].join('/');
         // When
         const sut = new FsCache(sutOptions);
-        const resultOne = await sut.useEntry(entryOptions);
-        const resultTwo = await sut.useEntry(entryOptions);
+        const resultOne = await sut.use(entryOptions);
+        const resultTwo = await sut.use(entryOptions);
         // Then
         expect(resultOne).toBe(value);
         expect(resultTwo).toBe(value);
@@ -289,8 +289,8 @@ describe('FsCache', () => {
         const expectedFilepath = [sutOptions.path, expectedFilename].join('/');
         // When
         const sut = new FsCache(sutOptions);
-        const resultOne = await sut.useEntry(entryOptions);
-        const resultTwo = await sut.useEntry(entryOptions);
+        const resultOne = await sut.use(entryOptions);
+        const resultTwo = await sut.use(entryOptions);
         // Then
         expect(resultOne).toBe(value);
         expect(resultTwo).toBe(value);
@@ -338,9 +338,9 @@ describe('FsCache', () => {
         const expectedFilepath = [sutOptions.path, expectedFilename].join('/');
         // When
         const sut = new FsCache(sutOptions);
-        const resultOne = await sut.useEntry(entryOptions);
+        const resultOne = await sut.use(entryOptions);
         jest.runAllTimers();
-        const resultTwo = await sut.useEntry(entryOptions);
+        const resultTwo = await sut.use(entryOptions);
         // Then
         expect(resultOne).toBe(value);
         expect(resultTwo).toBe(value);
@@ -397,8 +397,8 @@ describe('FsCache', () => {
         const expectedFilepath = [sutOptions.path, expectedFilename].join('/');
         // When
         const sut = new FsCache(sutOptions);
-        const resultOne = await sut.useEntry(entryOptions);
-        const resultTwo = await sut.useEntry(entryOptions);
+        const resultOne = await sut.use(entryOptions);
+        const resultTwo = await sut.use(entryOptions);
         // Then
         expect(resultOne).toBe(value);
         expect(resultTwo).toBe(value);
@@ -424,8 +424,8 @@ describe('FsCache', () => {
         // When/Then
         const sut = new FsCache();
         await Promise.all([
-          expect(sut.useEntry(options)).rejects.toThrow(message),
-          expect(sut.useEntry(options)).rejects.toThrow(message),
+          expect(sut.use(options)).rejects.toThrow(message),
+          expect(sut.use(options)).rejects.toThrow(message),
         ]);
       });
 
@@ -437,7 +437,7 @@ describe('FsCache', () => {
         });
         // When/Then
         await expect(
-          sut.useEntry({ key: 'key', ttl: 12, init: () => Promise.resolve('') }),
+          sut.use({ key: 'key', ttl: 12, init: () => Promise.resolve('') }),
         ).rejects.toThrow(/the ttl cannot be greater than the service max ttl/i);
       });
 
@@ -446,12 +446,12 @@ describe('FsCache', () => {
         const sut = new FsCache();
         // When/Then
         await expect(
-          sut.useEntry({ key: 'key', ttl: -1, init: () => Promise.resolve('') }),
+          sut.use({ key: 'key', ttl: -1, init: () => Promise.resolve('') }),
         ).rejects.toThrow(/the ttl cannot be less than or equal to zero/i);
       });
     });
 
-    describe('useJSONEntry', () => {
+    describe('useJSON', () => {
       beforeEach(() => {
         resetFs();
         jest.useFakeTimers();
@@ -493,7 +493,7 @@ describe('FsCache', () => {
         const expectedFilepath = [sutOptions.path, expectedFilename].join('/');
         // When
         const sut = new FsCache(sutOptions);
-        const result = await sut.useJSONEntry(entryOptions);
+        const result = await sut.useJSON(entryOptions);
         // Then
         expect(result).toEqual(value);
         expect(fs.writeFile).toHaveBeenCalledTimes(1);
@@ -544,8 +544,8 @@ describe('FsCache', () => {
         const expectedFilepath = [sutOptions.path, expectedFilename].join('/');
         // When
         const sut = new FsCache(sutOptions);
-        const resultOne = await sut.useJSONEntry(entryOptions);
-        const resultTwo = await sut.useJSONEntry(entryOptions);
+        const resultOne = await sut.useJSON(entryOptions);
+        const resultTwo = await sut.useJSON(entryOptions);
         // Then
         expect(resultOne).toEqual(value);
         expect(resultTwo).toEqual(value);
