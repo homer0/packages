@@ -8,7 +8,6 @@ import type {
   FsCacheCustomEntryOptions,
   FsCacheMemoryEntry,
 } from './types';
-
 /**
  * The dictionary of dependencies that need to be injected in {@link FsCache}.
  */
@@ -34,12 +33,30 @@ const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
  * The inject helper to resolve the dependencies.
  */
 const deps = injectHelper<FsCacheInjectOptions>();
-
+/**
+ * A small and friendly service to cache data on the file system.
+ */
 export class FsCache {
+  /**
+   * The service customization options.
+   */
   protected options: FsCacheOptions;
+  /**
+   * A dictionary with timeout functions for the entries that need to be expired.
+   */
   protected deletionTasks: Record<string, NodeJS.Timeout> = {};
+  /**
+   * A dictionary of deferred promises for the entries, in case the same entry is
+   * requested multiple times.
+   */
   protected promises: Record<string, DeferredPromise<string>> = {};
+  /**
+   * The "in memory cache" the service uses.
+   */
   protected memory: Record<string, FsCacheMemoryEntry> = {};
+  /**
+   * The service that generates paths relative to the project root.
+   */
   protected pathUtils: PathUtils;
   constructor({ inject = {}, ...options }: FsCacheConstructorOptions = {}) {
     this.pathUtils = deps.get(inject, 'pathUtils', () => pathUtils());
@@ -52,19 +69,51 @@ export class FsCache {
       ...options,
     };
 
-    if (this.options.defaultTTL <= 0) {
-      throw new Error('The TTL cannot be less than or equal to zero.');
-    }
-
-    if (this.options.defaultTTL > this.options.maxTTL) {
-      throw new Error('The default TTL cannot be greater than the max TTL.');
-    }
+    this.validateOptions();
   }
-
+  /**
+   * Gets the service options.
+   */
   getOptions(): FsCacheOptions {
     return { ...this.options };
   }
-
+  /**
+   * Generates a cache entry: given the unique `key` and the `init` function, the service
+   * will try to recover a cached value in order to return, but if it doesn't exist or is
+   * expired, it will call the `init` function and cache it result.
+   *
+   * @param options  The options to generate the entry.
+   * @returns The value, cached or not.
+   * @throws If the TTL is less than or equal to zero.
+   * @throws If the TTL is greater than the service max TTL.
+   * @example
+   *
+   * <caption>Basic</caption>
+   *
+   *   const cachedResponse = await cache.useEntry({
+   *     key: 'my-key',
+   *     init: async () => {
+   *       const res = await fetch('https://example.com');
+   *       const data = await res.json();
+   *       return JSON.stringify(data);
+   *     },
+   *   });
+   *
+   * @example
+   *
+   * <caption>Custom TTL</caption>
+   *
+   *   const cachedResponse = await cache.useEntry({
+   *     key: 'my-key',
+   *     ttl: 60 * 60 * 24, // 1 day
+   *     init: async () => {
+   *       const res = await fetch('https://example.com');
+   *       const data = await res.json();
+   *       return JSON.stringify(data);
+   *     },
+   *   });
+   *
+   */
   async useEntry(options: FsCacheEntryOptions<string>): Promise<string> {
     const {
       key,
@@ -158,7 +207,14 @@ export class FsCache {
       throw error;
     }
   }
-
+  /**
+   * This is a wrapper on top of {@link FsCache.useEntry} that allows for custom
+   * serialization/deserialization so the value can be something different than a string.
+   * Yes, this is used behind {@link FsCache.useJSONEntry}.
+   *
+   * @param options  The options to generate the entry.
+   * @template T  The type of the value.
+   */
   async useCustomEntry<T = unknown>({
     serialize,
     deserialize,
@@ -174,7 +230,13 @@ export class FsCache {
 
     return deserialize(value);
   }
-
+  /**
+   * Generates a JSON entry: The value will be stored as a JSON string, and parsed when
+   * read.
+   *
+   * @param options  The options to generate the entry.
+   * @template T  The type of the value.
+   */
   async useJSONEntry<T = unknown>(options: FsCacheEntryOptions<T>): Promise<T> {
     return this.useCustomEntry({
       ...options,
@@ -182,7 +244,26 @@ export class FsCache {
       deserialize: JSON.parse,
     });
   }
+  /**
+   * Validates the options sent to the constructor.
+   *
+   * @throws If the default TTL is less than or equal to zero.
+   * @throws If the default TTL is greater than the max TTL.
+   */
+  protected validateOptions() {
+    if (this.options.defaultTTL <= 0) {
+      throw new Error('The TTL cannot be less than or equal to zero.');
+    }
 
+    if (this.options.defaultTTL > this.options.maxTTL) {
+      throw new Error('The default TTL cannot be greater than the max TTL.');
+    }
+  }
+  /**
+   * Small utility to validate if a path exists in the file system.
+   *
+   * @param filepath  The filepath to validate.
+   */
   protected async pathExists(filepath: string): Promise<boolean> {
     let exists = false;
     try {
@@ -199,7 +280,9 @@ export class FsCache {
 
     return exists;
   }
-
+  /**
+   * Ensures that the cache directory exists: if it doesn't, it will create it.
+   */
   protected async ensureCacheDir(): Promise<void> {
     const exists = await this.pathExists(this.pathUtils.join(this.options.path));
     if (!exists) {
@@ -207,7 +290,6 @@ export class FsCache {
     }
   }
 }
-
 /**
  * Shorthand for `new FsCache()`.
  *
