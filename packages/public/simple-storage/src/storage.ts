@@ -5,7 +5,7 @@ import type {
   StorageType,
   StorageName,
   Storage,
-  SimpleStoragePartialOptions,
+  SimpleStorageConstructorOptions,
   SimpleStorageOptions,
 } from './types';
 /**
@@ -38,7 +38,7 @@ export class SimpleStorage<T extends Dict, E = unknown> {
    * need to do something.
    */
   protected data: T = {} as T;
-  constructor(options: SimpleStoragePartialOptions<T> = {}) {
+  constructor(options: SimpleStorageConstructorOptions<T> = {}) {
     this.options = this.mergeOptions(
       {
         window,
@@ -259,7 +259,7 @@ export class SimpleStorage<T extends Dict, E = unknown> {
    */
   protected mergeOptions(
     defaults: SimpleStorageOptions<T>,
-    custom: SimpleStoragePartialOptions<T>,
+    custom: SimpleStorageConstructorOptions<T>,
   ): SimpleStorageOptions<T> {
     const { window: windowCustom, memoryStorage } = custom;
     // eslint-disable-next-line no-param-reassign
@@ -569,5 +569,5 @@ export class SimpleStorage<T extends Dict, E = unknown> {
  * @template E  The type of the entries stored in the storage.
  */
 export const simpleStorage = <T extends Dict, E>(
-  options?: SimpleStoragePartialOptions<T>,
+  options?: SimpleStorageConstructorOptions<T>,
 ): SimpleStorage<T, E> => new SimpleStorage<T, E>(options);
