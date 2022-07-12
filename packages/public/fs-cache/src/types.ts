@@ -68,6 +68,11 @@ export type FsCacheEntryOptions<T = string> = {
    * service default will be used.
    */
   keepInMemory?: boolean;
+  /**
+   * This can be used to overwrite the extension the file should use.
+   * If is not specified, the service option will be used.
+   */
+  extension?: string;
 };
 /**
  * The options to create a custom cache entry. By custom, it means that it has a
@@ -97,4 +102,82 @@ export type FsCacheMemoryEntry = {
    * The actual data that was cached.
    */
   value: string;
+};
+/**
+ * The object sent to the function that allows the implementation to validate if an entry
+ * should be removed during cleaning process.
+ */
+export type FsCacheShouldRemoveFileInfo = {
+  /**
+   * The name of the file.
+   */
+  filename: string;
+  /**
+   * The absolute filepath.
+   */
+  filepath: string;
+  /**
+   * The cache entry key.
+   */
+  key: string;
+  /**
+   * The modification time of the file, in milliseconds.
+   */
+  mtime: number;
+  /**
+   * Whether the file is expired, based on the given TTL for the deletion process.
+   */
+  expired: boolean;
+};
+/**
+ * The utility functiont that allows the implementation to decide whether an entry file
+ * should be removed or not during a cleaning process.
+ *
+ * @param info  The information about the entry file.
+ */
+export type FsCacheShouldRemoveFn = (
+  info: FsCacheShouldRemoveFileInfo,
+) => boolean | Promise<boolean>;
+/**
+ * The base options for the clean methods.
+ */
+export type FsCacheCleanOptions = {
+  /**
+   * This function could be used to decide whether or not to actually remove a file.
+   * If not specified, the default implementation will always return `true`.
+   */
+  shouldRemove?: FsCacheShouldRemoveFn;
+  /**
+   * This can be used to overwrite the extension the cache files should have.
+   * If is not specified, the service option will be used.
+   */
+  extension?: string;
+  /**
+   * A TTL to use to validate whether the file is expired or not.
+   * If is not specified, the service default will be used.
+   */
+  ttl?: number;
+};
+/**
+ * The options to clean the entries in memory.
+ */
+export type FsCacheCleanMemoryOptions = FsCacheCleanOptions & {
+  /**
+   * Whether or not to try to remove the files for each entry that gets removed.
+   *
+   * @default true
+   */
+  includeFs?: boolean;
+};
+/**
+ * The options to clean the entries from the fs.
+ */
+export type FsCacheCleanFsOptions = FsCacheCleanOptions & {
+  /**
+   * Whether or not to try to remove the entries on memory for each file that gets
+   * removed.
+   *
+   * @default true
+   */
+  includeMemory?: boolean;
 };

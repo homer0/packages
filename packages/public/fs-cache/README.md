@@ -122,6 +122,29 @@ const data = await cache.useJSON({
 });
 ```
 
+#### Removing entries
+
+If you want to ensure an entry is removed from both the file system and memory, you can use the `remove` method:
+
+```ts
+await cache.remove('my-key');
+```
+
+But you can also use `removeFromMemory`, or `removeFromFs`, to remove the entry from either cache.
+
+When using `removeFromFs`, the custom options allow you to send a callback to actually evaluate if the entry should be removed. You may be thinking "why would I need the callback if I alaready told the service to remove it?", well, the callback will give you more information about the file, like when was it last modified, its absolute path, and whether or not it's expired.
+
+```ts
+await cache.removeFromFs('my-key', {
+  shouldRemove: async ({ key, filepath, filename, mtime, expired }) => {
+    // ...
+    return true;
+  },
+});
+```
+
+And yes, you can also send the same callback to `remove`.
+
 #### Jimple provider
 
 If your app uses a [Jimple container](https://npmjs.com/package/jimple), you can register `FsCache` as the `fsCache` service by using its provider:

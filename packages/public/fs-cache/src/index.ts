@@ -1,3 +1,4 @@
+import * as path from 'path';
 import * as fs from 'fs/promises';
 import { deferred, type DeferredPromise } from '@homer0/deferred';
 import { pathUtils, type PathUtils } from '@homer0/path-utils';
@@ -7,6 +8,10 @@ import type {
   FsCacheEntryOptions,
   FsCacheCustomEntryOptions,
   FsCacheMemoryEntry,
+  FsCacheCleanFsOptions,
+  FsCacheCleanMemoryOptions,
+  FsCacheShouldRemoveFileInfo,
+  FsCacheCleanOptions,
 } from './types';
 /**
  * The dictionary of dependencies that need to be injected in {@link FsCache}.
@@ -120,6 +125,7 @@ export class FsCache {
       init,
       ttl = this.options.defaultTTL,
       keepInMemory = this.options.keepInMemory,
+      extension = this.options.extension,
       skip = false,
     } = options;
 
@@ -171,8 +177,7 @@ export class FsCache {
         delete this.deletionTasks[key];
       }
 
-      const filename = `${key}.${this.options.extension}`;
-      const filepath = this.pathUtils.join(this.options.path, filename);
+      const [filepath] = this.getFilepathInfo(key, extension);
       const exists = await this.pathExists(filepath);
       if (exists) {
         const stats = await fs.stat(filepath);
@@ -245,6 +250,122 @@ export class FsCache {
     });
   }
   /**
+   * Removes an entry from the service memory.
+   *
+   * @param key      The key of the entry.
+   * @param options  Custom options in case the file for the removed entry should be
+   *                 removed too.
+   */
+  async removeFromMemory(
+    key: string,
+    options: FsCacheCleanMemoryOptions = {},
+  ): Promise<void> {
+    const { includeFs = true, ...fsOptions } = options;
+    if (this.deletionTasks[key]) {
+      clearTimeout(this.deletionTasks[key]);
+      delete this.deletionTasks[key];
+    }
+
+    delete this.memory[key];
+    if (includeFs) {
+      await this.removeFromFs(key, {
+        ...fsOptions,
+        includeMemory: false,
+      });
+    }
+  }
+  /**
+   * Removes an entry from the fs.
+   *
+   * @param key      The key of the entry.
+   * @param options  Custom options to validate the file before removing it.
+   */
+  async removeFromFs(key: string, options: FsCacheCleanFsOptions = {}): Promise<void> {
+    const {
+      includeMemory = true,
+      extension = this.options.extension,
+      shouldRemove = () => true,
+      ttl = this.options.defaultTTL,
+    } = options;
+    const [filepath, filename] = this.getFilepathInfo(key, extension);
+    const exists = await this.pathExists(filepath);
+    if (exists) {
+      const stats = await fs.stat(filepath);
+      const expired = Date.now() - stats.mtimeMs > ttl;
+      const param: FsCacheShouldRemoveFileInfo = {
+        key,
+        filepath,
+        filename,
+        mtime: stats.mtimeMs,
+        expired,
+      };
+
+      const shouldRemoveResult = shouldRemove(param);
+      const should =
+        typeof shouldRemoveResult === 'boolean'
+          ? shouldRemoveResult
+          : await shouldRemoveResult;
+      if (should) {
+        await fs.unlink(filepath);
+      }
+    }
+
+    if (includeMemory) {
+      await this.removeFromMemory(key, { includeFs: false });
+    }
+  }
+  /**
+   * Removes an entry from the service memory, and the fs.
+   *
+   * @param key      The key of the entry.
+   * @param options  Custom options to validate the file before removing it.
+   */
+  remove(key: string, options: FsCacheCleanOptions = {}): Promise<void> {
+    return this.removeFromFs(key, {
+      ...options,
+      includeMemory: true,
+    });
+  }
+  /**
+   * Removes all entries from the service memory.
+   *
+   * @param options  Custom options in case the files for the removed entries should be
+   *                 removed too.
+   */
+  async cleanMemory(options: FsCacheCleanMemoryOptions = {}): Promise<void> {
+    await Promise.all(
+      Object.keys(this.memory).map(async (key) => this.removeFromMemory(key, options)),
+    );
+  }
+  /**
+   * Removes all entries from the fs.
+   *
+   * @param options  Custom options to validate the files before removing them.
+   */
+  async cleanFiles(options: FsCacheCleanFsOptions = {}): Promise<void> {
+    const { extension = this.options.extension } = options;
+    const dirPath = this.pathUtils.join(this.options.path);
+    const dirContents = await fs.readdir(dirPath);
+    const files = this.filterFiles(dirContents, extension);
+    await Promise.all(
+      files.map(async (file) => {
+        const key = this.getKeyFromFilepath(file, extension);
+        return this.removeFromFs(key, options);
+      }),
+    );
+  }
+  /**
+   * Removes all entries from the service memory, and the fs.
+   *
+   * @param options  Custom options to validate the files before removing them.
+   */
+  clean(options: Omit<FsCacheCleanFsOptions, 'includeMemory'> = {}): Promise<void> {
+    return this.cleanFiles({
+      ...options,
+      includeMemory: true,
+    });
+  }
+  /**
    * Validates the options sent to the constructor.
    *
    * @throws If the default TTL is less than or equal to zero.
@@ -288,6 +409,41 @@ export class FsCache {
     if (!exists) {
       await fs.mkdir(this.options.path);
     }
+  }
+  /**
+   * Generates the file (name and path) information for an entry key.
+   *
+   * @param key        The key of the entry.
+   * @param extension  The extension to add.
+   * @returns The filename for the entry, and its absolute path.
+   */
+  protected getFilepathInfo(
+    key: string,
+    extension: string,
+  ): [filepath: string, filename: string] {
+    const filename = `${key}.${extension}`;
+    const filepath = this.pathUtils.join(this.options.path, filename);
+    return [filepath, filename];
+  }
+  /**
+   * Extracts an entry key from a filepath.
+   *
+   * @param filepath   The filepath to an entry.
+   * @param extension  The extension to remove.
+   */
+  protected getKeyFromFilepath(filepath: string, extension: string): string {
+    const filename = path.basename(filepath);
+    return filename.slice(0, -(extension.length + 1));
+  }
+  /**
+   * Filters a list of files by validating it against the extension set in the
+   * constructor.
+   *
+   * @param files      The files to filter.
+   * @param extension  The extension the files should have.
+   */
+  protected filterFiles(files: string[], extension: string): string[] {
+    return files.filter((file) => file.endsWith(`.${extension}`));
   }
 }
 /**
