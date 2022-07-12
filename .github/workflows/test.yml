@@ -171,6 +171,15 @@ jobs:
           flag-name: public-simple-storage
           path-to-lcov: ./packages/public/simple-storage/coverage/lcov.info
           base-path: ./packages/public/simple-storage
+      - name: Coveralls for public/fs-cache
+        if: ${{ matrix.node == '14' }}
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+          flag-name: public-fs-cache
+          path-to-lcov: ./packages/public/fs-cache/coverage/lcov.info
+          base-path: ./packages/public/fs-cache
 
   finish:
       needs: build
