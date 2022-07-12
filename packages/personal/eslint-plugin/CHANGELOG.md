@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 9.1.1 (2022-07-12)
+
+### Bug Fixes
+
+- **monorepo:** force publish unpublished tags ([ce339bc](https://github.com/homer0/packages/commit/ce339bcbffb697e7127ecc213242feb54822f775))
+
 # 9.1.0 (2022-07-12)
 
 ### Bug Fixes
