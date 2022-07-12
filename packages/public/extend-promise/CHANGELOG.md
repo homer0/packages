@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1](https://github.com/homer0/packages/compare/@homer0/extend-promise@0.0.0-development.0...@homer0/extend-promise@1.0.1) (2022-07-12)
+
+### Bug Fixes
+
+- **monorepo:** remove dev versions ([92c5ff5](https://github.com/homer0/packages/commit/92c5ff5cc9c579879f371c08edbc111b7e1d4319))
+
 # 0.0.0-development.0 (2022-07-12)
 
 ### Bug Fixes

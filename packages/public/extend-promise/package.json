@@ -1,7 +1,7 @@
 {
   "name": "@homer0/extend-promise",
   "description": "Extends a promise with custom properties",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",
