@@ -13,7 +13,6 @@ import {
 } from '../src';
 import { FsCacheEntryOptions } from '../src/types';
 
-const originalDate = global.Date;
 const fs = originalFsPromises as jest.Mocked<typeof originalFsPromises>;
 
 describe('FsCache', () => {
@@ -1711,7 +1710,6 @@ describe('FsCache', () => {
 
       afterEach(() => {
         jest.runOnlyPendingTimers();
-        global.Date = originalDate;
       });
 
       it('should remove expired entries from the memory and the fs', async () => {
@@ -1789,8 +1787,9 @@ describe('FsCache', () => {
         const sut = new FsCache(sutOptions);
         const resultOneFileOne = await sut.use(entryOptionsOne);
         const resultOneFileTwo = await sut.use(entryOptionsTwo);
-        // @ts-expect-error - we're mocking the Date object
-        global.Date = { now: () => now + sutOptions.defaultTTL * 2 };
+        jest
+          .spyOn(global.Date, 'now')
+          .mockReturnValueOnce(now + sutOptions.defaultTTL! * 2);
         await sut.purgeMemory();
         const resultTwoFileOne = await sut.use(entryOptionsOne);
         const resultTwoFileTwo = await sut.use(entryOptionsTwo);
