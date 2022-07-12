@@ -1,0 +1,49 @@
+{
+  "name": "@homer0/api-utils",
+  "description": "A few utilities to work with APIs",
+  "version": "0.0.0-development",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/homer0/packages.git",
+    "directory": "packages/public/api-utils"
+  },
+  "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
+  "license": "MIT",
+  "keywords": [
+    "api",
+    "fetch",
+    "utility",
+    "wootils",
+    "javascript"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist/"
+  ],
+  "devDependencies": {
+    "@homer0/object-utils": "^0.0.0-development",
+    "@types/jest": "^28.1.4",
+    "@types/urijs": "^1.19.19",
+    "jest": "^28.1.2",
+    "jest-fetch-mock": "^3.0.3",
+    "ts-jest": "^28.0.5",
+    "tsup": "^6.1.3",
+    "typescript": "^4.7.4",
+    "urijs": "^1.19.11"
+  },
+  "engine-strict": true,
+  "engines": {
+    "node": ">=14"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "test": "jest -c ./.jestrc.js",
+    "types:check": "tsc --noEmit && tsc --noEmit --project ./tests/tsconfig.json",
+    "build": "tsup src/index.ts",
+    "prepublishOnly": "npm run build"
+  }
+}

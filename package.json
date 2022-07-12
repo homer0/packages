@@ -9,26 +9,35 @@
   "private": true,
   "dependencies": {},
   "devDependencies": {
-    "@commitlint/cli": "^16.2.3",
-    "@commitlint/config-conventional": "^16.2.1",
-    "eslint": "^8.14.0",
-    "husky": "^7.0.4",
+    "@commitlint/cli": "^17.0.3",
+    "@commitlint/config-conventional": "^17.0.3",
+    "eslint": "^8.19.0",
+    "husky": "^8.0.1",
     "leasot": "^13.1.0",
-    "lerna": "^4.0.0",
-    "lint-staged": "^12.4.0"
+    "lerna": "^5.1.8",
+    "lint-staged": "^13.0.3"
   },
   "engine-strict": true,
   "engines": {
     "node": ">=14"
   },
   "commitlint": {
-    "extends": ["@commitlint/config-conventional"]
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "lint-staged": {
-    "*.js": "eslint"
+    "*.{ts,tsx,js,json,css,scss,md}": [
+      "prettier --write"
+    ],
+    "*.{ts,tsx,js}": [
+      "eslint"
+    ]
   },
   "scripts": {
+    "build": "./utils/scripts/build",
     "test": "./utils/scripts/test",
+    "types:check": "./utils/scripts/types-check",
     "lint": "./utils/scripts/lint",
     "lint:all": "./utils/scripts/lint-all",
     "todo": "./utils/scripts/todo",

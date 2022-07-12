@@ -1,8 +1,9 @@
 .github/*
-coverage/*
-coverage-e2e/*
-coverage-unit/*
+**/coverage/*
+**/coverage-e2e/*
+**/coverage-unit/*
 documentation/*
-node_modules/*
+**/node_modules/*
 docs/*
 esm/*
+_x-*/*

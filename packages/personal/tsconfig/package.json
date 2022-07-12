@@ -1,0 +1,21 @@
+{
+  "name": "@homer0/tsconfig",
+  "description": "My custom configurations for TypeScript",
+  "version": "0.0.0-development",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/homer0/packages.git",
+    "directory": "packages/personal/tsconfig"
+  },
+  "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "tsconfig.json",
+  "dependencies": {
+    "@types/node": "^18.0.3",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6"
+  }
+}
