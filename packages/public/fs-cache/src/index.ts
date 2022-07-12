@@ -29,6 +29,14 @@ export type FsCacheConstructorOptions = Partial<FsCacheOptions> & {
   inject?: Partial<FsCacheInjectOptions>;
 };
 
+type FsCacheCleanFsData = {
+  filename: string;
+  filepath: string;
+  expired: boolean;
+  exists: boolean;
+  mtime: number;
+};
+
 /* eslint-disable no-magic-numbers */
 const FIVE_MINUTES = 5 * 60 * 1000;
 const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
@@ -281,38 +289,23 @@ export class FsCache {
    * @param options  Custom options to validate the file before removing it.
    */
   async removeFromFs(key: string, options: FsCacheCleanFsOptions = {}): Promise<void> {
-    const {
-      includeMemory = true,
-      extension = this.options.extension,
-      shouldRemove = () => true,
-      ttl = this.options.defaultTTL,
-    } = options;
+    const { extension = this.options.extension, ttl = this.options.defaultTTL } = options;
     const [filepath, filename] = this.getFilepathInfo(key, extension);
     const exists = await this.pathExists(filepath);
-    if (exists) {
+    const data: FsCacheCleanFsData = {
+      filename,
+      filepath,
+      exists,
+      expired: true,
+      mtime: 0,
+    };
+    if (data.exists) {
       const stats = await fs.stat(filepath);
-      const expired = Date.now() - stats.mtimeMs > ttl;
-      const param: FsCacheShouldRemoveFileInfo = {
-        key,
-        filepath,
-        filename,
-        mtime: stats.mtimeMs,
-        expired,
-      };
-
-      const shouldRemoveResult = shouldRemove(param);
-      const should =
-        typeof shouldRemoveResult === 'boolean'
-          ? shouldRemoveResult
-          : await shouldRemoveResult;
-      if (should) {
-        await fs.unlink(filepath);
-      }
+      data.expired = Date.now() - stats.mtimeMs > ttl;
+      data.mtime = stats.mtimeMs;
     }
 
-    if (includeMemory) {
-      await this.removeFromMemory(key, { includeFs: false });
-    }
+    return this.removeEntryFromFs(key, options, data);
   }
   /**
    * Removes an entry from the service memory, and the fs.
@@ -361,6 +354,70 @@ export class FsCache {
    */
   clean(options: Omit<FsCacheCleanFsOptions, 'includeMemory'> = {}): Promise<void> {
     return this.cleanFiles({
+      ...options,
+      includeMemory: true,
+    });
+  }
+  /**
+   * Removes all expired entries from the service memory.
+   *
+   * @param options  Custom options in case the files for the removed entries should be
+   *                 removed too.
+   */
+  async purgeMemory(options: FsCacheCleanMemoryOptions = {}): Promise<void> {
+    const { ttl = this.options.defaultTTL } = options;
+    const now = Date.now();
+    const expiredKeys = Object.keys(this.memory).filter((key) => {
+      const entry = this.memory[key]!;
+      return now - entry.time > ttl;
+    });
+
+    if (!expiredKeys.length) return;
+    await Promise.all(expiredKeys.map((key) => this.removeFromMemory(key, options)));
+  }
+  /**
+   * Removes all expired entries from the fs.
+   *
+   * @param options  Custom options to validate the files before removing them.
+   */
+  async purgeFs(options: FsCacheCleanFsOptions = {}): Promise<void> {
+    const { extension = this.options.extension, ttl = this.options.defaultTTL } = options;
+    const dirPath = this.pathUtils.join(this.options.path);
+    const dirContents = await fs.readdir(dirPath);
+    const files = this.filterFiles(dirContents, extension);
+    const info = await Promise.all(
+      files.map(async (file) => {
+        const filepath = path.join(dirPath, file);
+        const stats = await fs.stat(filepath);
+        const expired = Date.now() - stats.mtimeMs > ttl;
+        return {
+          filename: file,
+          filepath,
+          expired,
+          mtime: stats.mtimeMs,
+        };
+      }),
+    );
+
+    const expiredFiles = info.filter(({ expired }) => expired);
+    if (!expiredFiles.length) return;
+    await Promise.all(
+      expiredFiles.map(async (fileInfo) => {
+        const key = this.getKeyFromFilepath(fileInfo.filename, extension);
+        return this.removeEntryFromFs(key, options, {
+          ...fileInfo,
+          exists: true,
+        });
+      }),
+    );
+  }
+  /**
+   * Removes all expired entries from the fs and the service memory.
+   *
+   * @param options  Custom options to validate the files before removing them.
+   */
+  async purge(options: Omit<FsCacheCleanFsOptions, 'includeMemory'> = {}): Promise<void> {
+    return this.purgeFs({
       ...options,
       includeMemory: true,
     });
@@ -444,6 +501,45 @@ export class FsCache {
    */
   protected filterFiles(files: string[], extension: string): string[] {
     return files.filter((file) => file.endsWith(`.${extension}`));
+  }
+  /**
+   * This is actually the method behind {@link FsCache.removeFromFs}. The logic is
+   * separated in two methods because the the removal functionality could be called from
+   * different places, and we don't want to repeat calls to the file system (to check if
+   * the file exists and get the stats).
+   *
+   * @param key      The key of the entry.
+   * @param options  Custom options to validate the file before removing it.
+   */
+  protected async removeEntryFromFs(
+    key: string,
+    options: FsCacheCleanFsOptions,
+    data: FsCacheCleanFsData,
+  ): Promise<void> {
+    const { includeMemory = true, shouldRemove = () => true } = options;
+    const { exists, expired, filename, filepath, mtime } = data;
+    if (exists) {
+      const param: FsCacheShouldRemoveFileInfo = {
+        key,
+        filepath,
+        filename,
+        mtime,
+        expired,
+      };
+
+      const shouldRemoveResult = shouldRemove(param);
+      const should =
+        typeof shouldRemoveResult === 'boolean'
+          ? shouldRemoveResult
+          : await shouldRemoveResult;
+      if (should) {
+        await fs.unlink(filepath);
+      }
+    }
+
+    if (includeMemory) {
+      await this.removeFromMemory(key, { includeFs: false });
+    }
   }
 }
 /**

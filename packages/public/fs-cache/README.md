@@ -145,6 +145,24 @@ await cache.removeFromFs('my-key', {
 
 And yes, you can also send the same callback to `remove`.
 
+#### Purging the cache
+
+You can remove all expired entries from both the file system and the service memory by using the `purge` method:
+
+```ts
+await cache.purge();
+```
+
+Now, since the service doesn't know if you overwrote the TTL of any entry, it will use the `defaultTTL`, or a specified TTL, to decide whether or not the entry is expired:
+
+```ts
+await cache.purge({
+  ttl: 60 * 60 * 1000, // 1 hour
+});
+```
+
+And just like with `remove`, you can also use `purgeMemory` or `purgeFs` to purge the entries from either cache.
+
 #### Jimple provider
 
 If your app uses a [Jimple container](https://npmjs.com/package/jimple), you can register `FsCache` as the `fsCache` service by using its provider:

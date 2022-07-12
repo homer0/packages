@@ -13,6 +13,7 @@ import {
 } from '../src';
 import { FsCacheEntryOptions } from '../src/types';
 
+const originalDate = global.Date;
 const fs = originalFsPromises as jest.Mocked<typeof originalFsPromises>;
 
 describe('FsCache', () => {
@@ -1690,6 +1691,526 @@ describe('FsCache', () => {
         expect(resultTwoFileTwo).toBe(valueTwo);
         expect(fs.readdir).toHaveBeenCalledTimes(1);
         expect(fs.readdir).toHaveBeenCalledWith(sutOptions.path);
+        expect(fs.unlink).toHaveBeenCalledTimes(2);
+        expect(fs.unlink).toHaveBeenNthCalledWith(1, expectedFilepathOne);
+        expect(fs.unlink).toHaveBeenNthCalledWith(2, expectedFilepathTwo);
+        expect(fs.writeFile).toHaveBeenCalledTimes(4);
+        expect(fs.writeFile).toHaveBeenNthCalledWith(1, expectedFilepathOne, valueOne);
+        expect(fs.writeFile).toHaveBeenNthCalledWith(2, expectedFilepathTwo, valueTwo);
+        expect(fs.writeFile).toHaveBeenNthCalledWith(3, expectedFilepathOne, valueOne);
+        expect(fs.writeFile).toHaveBeenNthCalledWith(4, expectedFilepathTwo, valueTwo);
+      });
+    });
+
+    describe('purgeMemory', () => {
+      beforeEach(() => {
+        resetFs();
+        jest.useFakeTimers();
+        jest.setTimeout(10000);
+      });
+
+      afterEach(() => {
+        jest.runOnlyPendingTimers();
+        global.Date = originalDate;
+      });
+
+      it('should remove expired entries from the memory and the fs', async () => {
+        // Given
+        const valueOne = 'Rosario & Pilar';
+        const initFnOne = jest.fn(() => Promise.resolve(valueOne));
+        const filenameOne = 'daughters-fs-clean-one';
+        const valueTwo = 'Pilar & Rosario';
+        const initFnTwo = jest.fn(() => Promise.resolve(valueTwo));
+        const filenameTwo = 'daughters-fs-clean-two';
+        const [usePathUtils] = getPathUtils();
+        const sutOptions: FsCacheConstructorOptions = {
+          inject: {
+            pathUtils: usePathUtils,
+          },
+          path: '.cache',
+          extension: 'tmp',
+          keepInMemory: true,
+          defaultTTL: 100,
+        };
+        const entryOptionsOne: FsCacheEntryOptions = {
+          key: filenameOne,
+          init: initFnOne,
+        };
+        const entryOptionsTwo: FsCacheEntryOptions = {
+          key: filenameTwo,
+          init: initFnTwo,
+        };
+        const now = Date.now();
+        // - First file, first cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - First file, first check
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // - First file creation
+        fs.writeFile.mockResolvedValueOnce();
+        // - Second file, first cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - Second file, first check
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // - Second file creation
+        fs.writeFile.mockResolvedValueOnce();
+        // - First file, deletion check
+        fs.access.mockResolvedValueOnce();
+        // - First file, stats for removal check
+        fs.stat.mockResolvedValueOnce({
+          mtimeMs: now,
+        } as Stats);
+        // - Second file, deletion check
+        fs.access.mockResolvedValueOnce();
+        // - Second file, stats for removal check
+        fs.stat.mockResolvedValueOnce({
+          mtimeMs: now,
+        } as Stats);
+        // - First File, deletion
+        fs.unlink.mockResolvedValueOnce();
+        // - Second File, deletion
+        fs.unlink.mockResolvedValueOnce();
+        // - First file, second cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - First file, second check
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // - First file, second creation
+        fs.writeFile.mockResolvedValueOnce();
+        // - Second file, second cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - Second file, second check
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // - Second file, second creation
+        fs.writeFile.mockResolvedValueOnce();
+        const expectedFilenameOne = `${filenameOne}.${sutOptions.extension}`;
+        const expectedFilepathOne = [sutOptions.path, expectedFilenameOne].join('/');
+        const expectedFilenameTwo = `${filenameTwo}.${sutOptions.extension}`;
+        const expectedFilepathTwo = [sutOptions.path, expectedFilenameTwo].join('/');
+        // When
+        const sut = new FsCache(sutOptions);
+        const resultOneFileOne = await sut.use(entryOptionsOne);
+        const resultOneFileTwo = await sut.use(entryOptionsTwo);
+        // @ts-expect-error - we're mocking the Date object
+        global.Date = { now: () => now + sutOptions.defaultTTL * 2 };
+        await sut.purgeMemory();
+        const resultTwoFileOne = await sut.use(entryOptionsOne);
+        const resultTwoFileTwo = await sut.use(entryOptionsTwo);
+        // Then
+        expect(resultOneFileOne).toBe(valueOne);
+        expect(resultOneFileTwo).toBe(valueTwo);
+        expect(resultTwoFileOne).toBe(valueOne);
+        expect(resultTwoFileTwo).toBe(valueTwo);
+        expect(fs.access).toHaveBeenCalledTimes(10);
+        expect(fs.access).toHaveBeenNthCalledWith(1, sutOptions.path);
+        expect(fs.access).toHaveBeenNthCalledWith(2, expectedFilepathOne);
+        expect(fs.access).toHaveBeenNthCalledWith(3, sutOptions.path);
+        expect(fs.access).toHaveBeenNthCalledWith(4, expectedFilepathTwo);
+        expect(fs.access).toHaveBeenNthCalledWith(5, expectedFilepathOne);
+        expect(fs.access).toHaveBeenNthCalledWith(6, expectedFilepathTwo);
+        expect(fs.access).toHaveBeenNthCalledWith(7, sutOptions.path);
+        expect(fs.access).toHaveBeenNthCalledWith(8, expectedFilepathOne);
+        expect(fs.access).toHaveBeenNthCalledWith(9, sutOptions.path);
+        expect(fs.access).toHaveBeenNthCalledWith(10, expectedFilepathTwo);
+        expect(fs.stat).toHaveBeenCalledTimes(2);
+        expect(fs.stat).toHaveBeenNthCalledWith(1, expectedFilepathOne);
+        expect(fs.stat).toHaveBeenNthCalledWith(2, expectedFilepathTwo);
+        expect(fs.unlink).toHaveBeenCalledTimes(2);
+        expect(fs.unlink).toHaveBeenNthCalledWith(1, expectedFilepathOne);
+        expect(fs.unlink).toHaveBeenNthCalledWith(2, expectedFilepathTwo);
+        expect(fs.writeFile).toHaveBeenCalledTimes(4);
+        expect(fs.writeFile).toHaveBeenNthCalledWith(1, expectedFilepathOne, valueOne);
+        expect(fs.writeFile).toHaveBeenNthCalledWith(2, expectedFilepathTwo, valueTwo);
+        expect(fs.writeFile).toHaveBeenNthCalledWith(3, expectedFilepathOne, valueOne);
+        expect(fs.writeFile).toHaveBeenNthCalledWith(4, expectedFilepathTwo, valueTwo);
+      });
+
+      it("shouldn't remove non expired entries", async () => {
+        // Given
+        const valueOne = 'Rosario & Pilar';
+        const initFnOne = jest.fn(() => Promise.resolve(valueOne));
+        const filenameOne = 'daughters-fs-clean-one';
+        const valueTwo = 'Pilar & Rosario';
+        const initFnTwo = jest.fn(() => Promise.resolve(valueTwo));
+        const filenameTwo = 'daughters-fs-clean-two';
+        const [usePathUtils] = getPathUtils();
+        const sutOptions: FsCacheConstructorOptions = {
+          inject: {
+            pathUtils: usePathUtils,
+          },
+          path: '.cache',
+          extension: 'tmp',
+          keepInMemory: true,
+          defaultTTL: 100,
+        };
+        const entryOptionsOne: FsCacheEntryOptions = {
+          key: filenameOne,
+          init: initFnOne,
+        };
+        const entryOptionsTwo: FsCacheEntryOptions = {
+          key: filenameTwo,
+          init: initFnTwo,
+        };
+        // - First file, first cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - First file, first check
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // - First file creation
+        fs.writeFile.mockResolvedValueOnce();
+        // - Second file, first cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - Second file, first check
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // - Second file creation
+        fs.writeFile.mockResolvedValueOnce();
+        // - First file, second cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - First file, read check
+        fs.access.mockResolvedValueOnce();
+        // - First file, stats for reading
+        fs.stat.mockResolvedValueOnce({
+          mtimeMs: Date.now(),
+        } as Stats);
+        // - First file, reading
+        fs.readFile.mockResolvedValueOnce(valueOne);
+        // - Second file, read check
+        fs.access.mockResolvedValueOnce();
+        // - Second file, stats for reading
+        fs.stat.mockResolvedValueOnce({
+          mtimeMs: Date.now(),
+        } as Stats);
+        // - Second file, reading
+        fs.readFile.mockResolvedValueOnce(valueTwo);
+        const expectedFilenameOne = `${filenameOne}.${sutOptions.extension}`;
+        const expectedFilepathOne = [sutOptions.path, expectedFilenameOne].join('/');
+        const expectedFilenameTwo = `${filenameTwo}.${sutOptions.extension}`;
+        const expectedFilepathTwo = [sutOptions.path, expectedFilenameTwo].join('/');
+        // When
+        const sut = new FsCache(sutOptions);
+        const resultOneFileOne = await sut.use(entryOptionsOne);
+        const resultOneFileTwo = await sut.use(entryOptionsTwo);
+        await sut.purgeMemory();
+        const resultTwoFileOne = await sut.use(entryOptionsOne);
+        const resultTwoFileTwo = await sut.use(entryOptionsTwo);
+        // Then
+        expect(resultOneFileOne).toBe(valueOne);
+        expect(resultOneFileTwo).toBe(valueTwo);
+        expect(resultTwoFileOne).toBe(valueOne);
+        expect(resultTwoFileTwo).toBe(valueTwo);
+        expect(fs.unlink).toHaveBeenCalledTimes(0);
+        expect(fs.writeFile).toHaveBeenCalledTimes(2);
+        expect(fs.writeFile).toHaveBeenNthCalledWith(1, expectedFilepathOne, valueOne);
+        expect(fs.writeFile).toHaveBeenNthCalledWith(2, expectedFilepathTwo, valueTwo);
+      });
+    });
+
+    describe('purgeFs', () => {
+      beforeEach(() => {
+        resetFs();
+        jest.useFakeTimers();
+      });
+
+      afterEach(() => {
+        jest.runOnlyPendingTimers();
+      });
+
+      it('should remove expired entries from the memory and the fs', async () => {
+        // Given
+        const valueOne = 'Rosario & Pilar';
+        const initFnOne = jest.fn(() => Promise.resolve(valueOne));
+        const filenameOne = 'daughters-fs-clean-one';
+        const valueTwo = 'Pilar & Rosario';
+        const initFnTwo = jest.fn(() => Promise.resolve(valueTwo));
+        const filenameTwo = 'daughters-fs-clean-two';
+        const [usePathUtils] = getPathUtils();
+        const sutOptions: FsCacheConstructorOptions = {
+          inject: {
+            pathUtils: usePathUtils,
+          },
+          path: '.cache',
+          extension: 'tmp',
+          keepInMemory: true,
+          defaultTTL: 100,
+        };
+        const entryOptionsOne: FsCacheEntryOptions = {
+          key: filenameOne,
+          init: initFnOne,
+        };
+        const entryOptionsTwo: FsCacheEntryOptions = {
+          key: filenameTwo,
+          init: initFnTwo,
+        };
+        const now = Date.now();
+        // - First file, first cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - First file, first check
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // - First file creation
+        fs.writeFile.mockResolvedValueOnce();
+        // - Second file, first cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - Second file, first check
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // - Second file creation
+        fs.writeFile.mockResolvedValueOnce();
+        // - Read cache dir
+        fs.readdir.mockResolvedValueOnce([
+          `${filenameOne}.${sutOptions.extension}`,
+          `${filenameTwo}.${sutOptions.extension}`,
+        ] as unknown as Dirent[]);
+        // - First file, stats for removal check
+        fs.stat.mockResolvedValueOnce({
+          mtimeMs: now / 2,
+        } as Stats);
+        // - Second file, stats for removal check
+        fs.stat.mockResolvedValueOnce({
+          mtimeMs: now / 2,
+        } as Stats);
+        // - First File, deletion
+        fs.unlink.mockResolvedValueOnce();
+        // - Second File, deletion
+        fs.unlink.mockResolvedValueOnce();
+        // - First file, second cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - First file, second check
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // - First file, second creation
+        fs.writeFile.mockResolvedValueOnce();
+        // - Second file, second cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - Second file, second check
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // - Second file, second creation
+        fs.writeFile.mockResolvedValueOnce();
+        const expectedFilenameOne = `${filenameOne}.${sutOptions.extension}`;
+        const expectedFilepathOne = [sutOptions.path, expectedFilenameOne].join('/');
+        const expectedFilenameTwo = `${filenameTwo}.${sutOptions.extension}`;
+        const expectedFilepathTwo = [sutOptions.path, expectedFilenameTwo].join('/');
+        // When
+        const sut = new FsCache(sutOptions);
+        const resultOneFileOne = await sut.use(entryOptionsOne);
+        const resultOneFileTwo = await sut.use(entryOptionsTwo);
+        await sut.purgeFs();
+        const resultTwoFileOne = await sut.use(entryOptionsOne);
+        const resultTwoFileTwo = await sut.use(entryOptionsTwo);
+        // Then
+        expect(resultOneFileOne).toBe(valueOne);
+        expect(resultOneFileTwo).toBe(valueTwo);
+        expect(resultTwoFileOne).toBe(valueOne);
+        expect(resultTwoFileTwo).toBe(valueTwo);
+        expect(fs.access).toHaveBeenCalledTimes(8);
+        expect(fs.access).toHaveBeenNthCalledWith(1, sutOptions.path);
+        expect(fs.access).toHaveBeenNthCalledWith(2, expectedFilepathOne);
+        expect(fs.access).toHaveBeenNthCalledWith(3, sutOptions.path);
+        expect(fs.access).toHaveBeenNthCalledWith(4, expectedFilepathTwo);
+        expect(fs.access).toHaveBeenNthCalledWith(5, sutOptions.path);
+        expect(fs.access).toHaveBeenNthCalledWith(6, expectedFilepathOne);
+        expect(fs.access).toHaveBeenNthCalledWith(7, sutOptions.path);
+        expect(fs.access).toHaveBeenNthCalledWith(8, expectedFilepathTwo);
+        expect(fs.stat).toHaveBeenCalledTimes(2);
+        expect(fs.stat).toHaveBeenNthCalledWith(1, expectedFilepathOne);
+        expect(fs.stat).toHaveBeenNthCalledWith(2, expectedFilepathTwo);
+        expect(fs.unlink).toHaveBeenCalledTimes(2);
+        expect(fs.unlink).toHaveBeenNthCalledWith(1, expectedFilepathOne);
+        expect(fs.unlink).toHaveBeenNthCalledWith(2, expectedFilepathTwo);
+        expect(fs.writeFile).toHaveBeenCalledTimes(4);
+        expect(fs.writeFile).toHaveBeenNthCalledWith(1, expectedFilepathOne, valueOne);
+        expect(fs.writeFile).toHaveBeenNthCalledWith(2, expectedFilepathTwo, valueTwo);
+        expect(fs.writeFile).toHaveBeenNthCalledWith(3, expectedFilepathOne, valueOne);
+        expect(fs.writeFile).toHaveBeenNthCalledWith(4, expectedFilepathTwo, valueTwo);
+      });
+
+      it("shouldn't remove non expired entries", async () => {
+        // Given
+        const valueOne = 'Rosario & Pilar';
+        const initFnOne = jest.fn(() => Promise.resolve(valueOne));
+        const filenameOne = 'daughters-fs-clean-one';
+        const valueTwo = 'Pilar & Rosario';
+        const initFnTwo = jest.fn(() => Promise.resolve(valueTwo));
+        const filenameTwo = 'daughters-fs-clean-two';
+        const [usePathUtils] = getPathUtils();
+        const sutOptions: FsCacheConstructorOptions = {
+          inject: {
+            pathUtils: usePathUtils,
+          },
+          path: '.cache',
+          extension: 'tmp',
+          keepInMemory: true,
+          defaultTTL: 100,
+        };
+        const entryOptionsOne: FsCacheEntryOptions = {
+          key: filenameOne,
+          init: initFnOne,
+        };
+        const entryOptionsTwo: FsCacheEntryOptions = {
+          key: filenameTwo,
+          init: initFnTwo,
+        };
+        const now = Date.now();
+        // - First file, first cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - First file, first check
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // - First file creation
+        fs.writeFile.mockResolvedValueOnce();
+        // - Second file, first cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - Second file, first check
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // - Second file creation
+        fs.writeFile.mockResolvedValueOnce();
+        // - Read cache dir
+        fs.readdir.mockResolvedValueOnce([
+          `${filenameOne}.${sutOptions.extension}`,
+          `${filenameTwo}.${sutOptions.extension}`,
+        ] as unknown as Dirent[]);
+        // - First file, stats for removal check
+        fs.stat.mockResolvedValueOnce({
+          mtimeMs: now,
+        } as Stats);
+        // - Second file, stats for removal check
+        fs.stat.mockResolvedValueOnce({
+          mtimeMs: now,
+        } as Stats);
+        // - First file, second cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - First file, second check
+        fs.access.mockResolvedValueOnce();
+        // - First file, reading
+        fs.readFile.mockResolvedValueOnce(valueOne);
+        // - Second file, second cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - Second file, second check
+        fs.access.mockResolvedValueOnce();
+        // - Second file, reading
+        fs.readFile.mockResolvedValueOnce(valueTwo);
+        const expectedFilenameOne = `${filenameOne}.${sutOptions.extension}`;
+        const expectedFilepathOne = [sutOptions.path, expectedFilenameOne].join('/');
+        const expectedFilenameTwo = `${filenameTwo}.${sutOptions.extension}`;
+        const expectedFilepathTwo = [sutOptions.path, expectedFilenameTwo].join('/');
+        // When
+        const sut = new FsCache(sutOptions);
+        const resultOneFileOne = await sut.use(entryOptionsOne);
+        const resultOneFileTwo = await sut.use(entryOptionsTwo);
+        await sut.purgeFs();
+        const resultTwoFileOne = await sut.use(entryOptionsOne);
+        const resultTwoFileTwo = await sut.use(entryOptionsTwo);
+        // Then
+        expect(resultOneFileOne).toBe(valueOne);
+        expect(resultOneFileTwo).toBe(valueTwo);
+        expect(resultTwoFileOne).toBe(valueOne);
+        expect(resultTwoFileTwo).toBe(valueTwo);
+        expect(fs.unlink).toHaveBeenCalledTimes(0);
+        expect(fs.writeFile).toHaveBeenCalledTimes(2);
+        expect(fs.writeFile).toHaveBeenNthCalledWith(1, expectedFilepathOne, valueOne);
+        expect(fs.writeFile).toHaveBeenNthCalledWith(2, expectedFilepathTwo, valueTwo);
+      });
+    });
+
+    describe('purge', () => {
+      beforeEach(() => {
+        resetFs();
+        jest.useFakeTimers();
+      });
+
+      afterEach(() => {
+        jest.runOnlyPendingTimers();
+      });
+
+      it('should remove all expired entries from the memory and the fs', async () => {
+        // Given
+        const valueOne = 'Rosario & Pilar';
+        const initFnOne = jest.fn(() => Promise.resolve(valueOne));
+        const filenameOne = 'daughters-fs-clean-one';
+        const valueTwo = 'Pilar & Rosario';
+        const initFnTwo = jest.fn(() => Promise.resolve(valueTwo));
+        const filenameTwo = 'daughters-fs-clean-two';
+        const [usePathUtils] = getPathUtils();
+        const sutOptions: FsCacheConstructorOptions = {
+          inject: {
+            pathUtils: usePathUtils,
+          },
+          path: '.cache',
+          extension: 'tmp',
+          keepInMemory: true,
+          defaultTTL: 100,
+        };
+        const entryOptionsOne: FsCacheEntryOptions = {
+          key: filenameOne,
+          init: initFnOne,
+        };
+        const entryOptionsTwo: FsCacheEntryOptions = {
+          key: filenameTwo,
+          init: initFnTwo,
+        };
+        const now = Date.now();
+        // - First file, first cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - First file, first check
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // - First file creation
+        fs.writeFile.mockResolvedValueOnce();
+        // - Second file, first cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - Second file, first check
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // - Second file creation
+        fs.writeFile.mockResolvedValueOnce();
+        // - Read cache dir
+        fs.readdir.mockResolvedValueOnce([
+          `${filenameOne}.${sutOptions.extension}`,
+          `${filenameTwo}.${sutOptions.extension}`,
+        ] as unknown as Dirent[]);
+        // - First file, stats for removal check
+        fs.stat.mockResolvedValueOnce({
+          mtimeMs: now / 2,
+        } as Stats);
+        // - Second file, stats for removal check
+        fs.stat.mockResolvedValueOnce({
+          mtimeMs: now / 2,
+        } as Stats);
+        // - First File, deletion
+        fs.unlink.mockResolvedValueOnce();
+        // - Second File, deletion
+        fs.unlink.mockResolvedValueOnce();
+        // - First file, second cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - First file, second check
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // - First file, second creation
+        fs.writeFile.mockResolvedValueOnce();
+        // - Second file, second cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - Second file, second check
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // - Second file, second creation
+        fs.writeFile.mockResolvedValueOnce();
+        const expectedFilenameOne = `${filenameOne}.${sutOptions.extension}`;
+        const expectedFilepathOne = [sutOptions.path, expectedFilenameOne].join('/');
+        const expectedFilenameTwo = `${filenameTwo}.${sutOptions.extension}`;
+        const expectedFilepathTwo = [sutOptions.path, expectedFilenameTwo].join('/');
+        // When
+        const sut = new FsCache(sutOptions);
+        const resultOneFileOne = await sut.use(entryOptionsOne);
+        const resultOneFileTwo = await sut.use(entryOptionsTwo);
+        await sut.purge();
+        const resultTwoFileOne = await sut.use(entryOptionsOne);
+        const resultTwoFileTwo = await sut.use(entryOptionsTwo);
+        // Then
+        expect(resultOneFileOne).toBe(valueOne);
+        expect(resultOneFileTwo).toBe(valueTwo);
+        expect(resultTwoFileOne).toBe(valueOne);
+        expect(resultTwoFileTwo).toBe(valueTwo);
+        expect(fs.access).toHaveBeenCalledTimes(8);
+        expect(fs.access).toHaveBeenNthCalledWith(1, sutOptions.path);
+        expect(fs.access).toHaveBeenNthCalledWith(2, expectedFilepathOne);
+        expect(fs.access).toHaveBeenNthCalledWith(3, sutOptions.path);
+        expect(fs.access).toHaveBeenNthCalledWith(4, expectedFilepathTwo);
+        expect(fs.access).toHaveBeenNthCalledWith(5, sutOptions.path);
+        expect(fs.access).toHaveBeenNthCalledWith(6, expectedFilepathOne);
+        expect(fs.access).toHaveBeenNthCalledWith(7, sutOptions.path);
+        expect(fs.access).toHaveBeenNthCalledWith(8, expectedFilepathTwo);
+        expect(fs.stat).toHaveBeenCalledTimes(2);
+        expect(fs.stat).toHaveBeenNthCalledWith(1, expectedFilepathOne);
+        expect(fs.stat).toHaveBeenNthCalledWith(2, expectedFilepathTwo);
         expect(fs.unlink).toHaveBeenCalledTimes(2);
         expect(fs.unlink).toHaveBeenNthCalledWith(1, expectedFilepathOne);
         expect(fs.unlink).toHaveBeenNthCalledWith(2, expectedFilepathTwo);
