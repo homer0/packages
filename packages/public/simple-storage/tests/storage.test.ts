@@ -3,7 +3,7 @@ import {
   simpleStorage,
   SimpleStorage,
   type Dict,
-  type SimpleStoragePartialOptions,
+  type SimpleStorageConstructorOptions,
   type StorageWindow,
 } from '../src';
 
@@ -89,7 +89,7 @@ describe('SimpleStorage', () => {
         initial: 'data',
       };
       const getInitialDataFn = jest.fn(() => initialData);
-      const newOptions: SimpleStoragePartialOptions<typeof initialData> = {
+      const newOptions: SimpleStorageConstructorOptions<typeof initialData> = {
         initialize: false,
         storage: {
           name: 'mySimpleStorage',
@@ -163,7 +163,7 @@ describe('SimpleStorage', () => {
         // Given
         const storageKey = 'myStorage';
         const [storageMocks, storage] = getStorageProxy();
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory', 'local', 'session'],
@@ -190,7 +190,7 @@ describe('SimpleStorage', () => {
         const [storageMocks, storage] = getStorageProxy({
           [storageKey]: savedData,
         });
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory', 'local', 'session'],
@@ -214,7 +214,7 @@ describe('SimpleStorage', () => {
           warn: jest.fn(),
         };
         const fakeWindow = {} as StorageWindow;
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           window: fakeWindow,
           storage: {
             priority: ['local', 'memory', 'session'],
@@ -239,7 +239,7 @@ describe('SimpleStorage', () => {
           warning: jest.fn(),
         };
         const fakeWindow = {} as StorageWindow;
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           window: fakeWindow,
           storage: {
             priority: ['local', 'memory', 'session'],
@@ -265,7 +265,7 @@ describe('SimpleStorage', () => {
             warn: jest.fn(),
           },
         } as unknown as StorageWindow;
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           window: fakeWindow,
           storage: {
             priority: ['local', 'memory', 'session'],
@@ -295,7 +295,7 @@ describe('SimpleStorage', () => {
         const [storageMocks, storage] = getStorageProxy({
           [storageKey]: savedData,
         });
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory', 'local', 'session'],
@@ -326,7 +326,7 @@ describe('SimpleStorage', () => {
         const [storageMocks, storage] = getStorageProxy({
           [storageKey]: savedData,
         });
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory', 'local', 'session'],
@@ -358,7 +358,7 @@ describe('SimpleStorage', () => {
         // Given
         const storageKey = 'myStorage';
         const [storageMocks, storage] = getStorageProxy();
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory', 'local', 'session'],
@@ -386,7 +386,7 @@ describe('SimpleStorage', () => {
         // Given
         const storageKey = 'myStorage';
         const [storageMocks, storage] = getStorageProxy();
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory', 'local', 'session'],
@@ -410,7 +410,7 @@ describe('SimpleStorage', () => {
         // Given
         const storageKey = 'myStorage';
         const [storageMocks, storage] = getStorageProxy();
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory', 'local', 'session'],
@@ -435,7 +435,7 @@ describe('SimpleStorage', () => {
         // Given
         const storageKey = 'myStorage';
         const [storageMocks, storage] = getStorageProxy();
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory', 'local', 'session'],
@@ -460,7 +460,7 @@ describe('SimpleStorage', () => {
         // Given
         const storageKey = 'myStorage';
         const [storageMocks, storage] = getStorageProxy();
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory', 'local', 'session'],
@@ -494,7 +494,7 @@ describe('SimpleStorage', () => {
           initial: 'data',
         };
         const getInitialData = jest.fn(() => initialData);
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           entries: {
             enabled: true,
           },
@@ -518,7 +518,7 @@ describe('SimpleStorage', () => {
         // Given
         const storageKey = 'myStorage';
         const [storageMocks, storage] = getStorageProxy();
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory', 'local', 'session'],
@@ -561,7 +561,7 @@ describe('SimpleStorage', () => {
         // Given
         const storageKey = 'myStorage';
         const [, storage] = getStorageProxy();
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory', 'local', 'session'],
@@ -592,7 +592,7 @@ describe('SimpleStorage', () => {
         const [storageMocks, storage] = getStorageProxy({
           [storageKey]: savedData,
         });
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory'],
@@ -640,7 +640,7 @@ describe('SimpleStorage', () => {
         const [storageMocks, storage] = getStorageProxy({
           [storageKey]: savedData,
         });
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory'],
@@ -680,7 +680,7 @@ describe('SimpleStorage', () => {
         const [storageMocks, storage] = getStorageProxy({
           [storageKey]: savedData,
         });
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory'],
@@ -704,7 +704,7 @@ describe('SimpleStorage', () => {
         // Given
         const storageKey = 'myStorage';
         const [storageMocks, storage] = getStorageProxy();
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory'],
@@ -742,7 +742,7 @@ describe('SimpleStorage', () => {
           name: 'Rosario',
         };
         const [storageMocks, storage] = getStorageProxy();
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory'],
@@ -785,7 +785,7 @@ describe('SimpleStorage', () => {
         const entryKey = 'user';
         const entryValue = ['Rosario', 'Charo', 'Charito'];
         const [storageMocks, storage] = getStorageProxy();
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory'],
@@ -830,7 +830,7 @@ describe('SimpleStorage', () => {
           name: 'Rosario',
         };
         const [storageMocks, storage] = getStorageProxy();
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory'],
@@ -870,7 +870,7 @@ describe('SimpleStorage', () => {
         };
         const entryPromise = Promise.resolve(entryValue);
         const [storageMocks, storage] = getStorageProxy();
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory'],
@@ -915,7 +915,7 @@ describe('SimpleStorage', () => {
           name: 'Rosario',
         };
         const [storageMocks, storage] = getStorageProxy();
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory'],
@@ -962,7 +962,7 @@ describe('SimpleStorage', () => {
           name: 'Rosario',
         };
         const [storageMocks, storage] = getStorageProxy();
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory'],
@@ -999,7 +999,7 @@ describe('SimpleStorage', () => {
         // Given
         const storageKey = 'myStorage';
         const [, storage] = getStorageProxy();
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           storage: {
             key: storageKey,
             priority: ['memory'],
@@ -1025,7 +1025,7 @@ describe('SimpleStorage', () => {
         const fakeWindow = {
           [`${storageName}Storage`]: storage,
         } as unknown as StorageWindow;
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           window: fakeWindow,
           storage: {
             key: storageKey,
@@ -1055,7 +1055,7 @@ describe('SimpleStorage', () => {
         const fakeWindow = {
           [`${storageName}Storage`]: storage,
         } as unknown as StorageWindow;
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           window: fakeWindow,
           storage: {
             key: storageKey,
@@ -1084,7 +1084,7 @@ describe('SimpleStorage', () => {
         const fakeWindow = {
           [`${storageName}Storage`]: storage,
         } as unknown as StorageWindow;
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           window: fakeWindow,
           storage: {
             priority: [other, storageName],
@@ -1117,7 +1117,7 @@ describe('SimpleStorage', () => {
         const fakeWindow = {
           [`${storageName}Storage`]: storage,
         } as unknown as StorageWindow;
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           window: fakeWindow,
           storage: {
             key: storageKey,
@@ -1146,7 +1146,7 @@ describe('SimpleStorage', () => {
         const fakeWindow = {
           [`${storageName}Storage`]: storage,
         } as unknown as StorageWindow;
-        const options: SimpleStoragePartialOptions = {
+        const options: SimpleStorageConstructorOptions = {
           window: fakeWindow,
           storage: {
             key: storageKey,

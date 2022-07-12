@@ -18,3 +18,4 @@ buildPkg simple-logger;
 buildPkg error-handler;
 buildPkg simple-logger;
 buildPkg simple-storage;
+buildPkg fs-cache;

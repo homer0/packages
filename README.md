@@ -77,6 +77,10 @@ A small service to log messages in the console.
 
 A service that allows you to build functionalities that relay on browser storage (session/local), and simplifies the way you work it.
 
+#### [🗄 FS Cache](./packages/public/fs-cache)
+
+Small cache utility that uses the file system and supports TTL.
+
 ### Personal
 
 These packages are related to personal configuration and/or tooling; the only difference with the "public packages" is that I'll probably won't accept feature/change requests for them.
