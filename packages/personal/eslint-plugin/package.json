@@ -1,6 +1,6 @@
 {
   "name": "@homer0/eslint-plugin",
-  "description": "My custom configurations for ESLint",
+  "description": "My custom configurations for ESLint.",
   "version": "9.1.0",
   "repository": {
     "type": "git",
