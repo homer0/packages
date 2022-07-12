@@ -26,6 +26,7 @@ jobs:
         env:
           HUSKY_SKIP_INSTALL: 1
         run: yarn --frozen-lockfile
+      - run: yarn build
       - name: Configure Git User
         run: |
           git config --global user.name '@homer0'
