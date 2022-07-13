@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.2 (2022-07-13)
+
+### Bug Fixes
+
+- **fs-cache:** rename cleanFiles to cleanFs ([bc23b66](https://github.com/homer0/packages/commit/bc23b66aa25aedde72455c1702c7c190cfe1ae72))
+
 ## [1.0.1](https://github.com/homer0/packages/compare/@homer0/fs-cache@0.0.0-development.0...@homer0/fs-cache@1.0.1) (2022-07-12)
 
 ### Bug Fixes
