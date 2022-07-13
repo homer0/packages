@@ -163,6 +163,16 @@ await cache.purge({
 
 And just like with `remove`, you can also use `purgeMemory` or `purgeFs` to purge the entries from either cache.
 
+#### Cleaning the cache
+
+If you want to remove all entries, regardless of its expiration time, you can use the `clean` method:
+
+```ts
+await cache.clean();
+```
+
+Like `purge` and `remove`, you have the _cache-specific_ versions: `cleanMemory` and `cleanFs`.
+
 #### Jimple provider
 
 If your app uses a [Jimple container](https://npmjs.com/package/jimple), you can register `FsCache` as the `fsCache` service by using its provider:
