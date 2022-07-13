@@ -335,7 +335,7 @@ export class FsCache {
    *
    * @param options  Custom options to validate the files before removing them.
    */
-  async cleanFiles(options: FsCacheCleanFsOptions = {}): Promise<void> {
+  async cleanFs(options: FsCacheCleanFsOptions = {}): Promise<void> {
     const { extension = this.options.extension } = options;
     const dirPath = this.pathUtils.join(this.options.path);
     const dirContents = await fs.readdir(dirPath);
@@ -353,7 +353,7 @@ export class FsCache {
    * @param options  Custom options to validate the files before removing them.
    */
   clean(options: Omit<FsCacheCleanFsOptions, 'includeMemory'> = {}): Promise<void> {
-    return this.cleanFiles({
+    return this.cleanFs({
       ...options,
       includeMemory: true,
     });

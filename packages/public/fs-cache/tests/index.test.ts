@@ -1271,7 +1271,7 @@ describe('FsCache', () => {
       });
     });
 
-    describe('cleanFiles', () => {
+    describe('cleanFs', () => {
       beforeEach(() => {
         resetFs();
         jest.useFakeTimers();
@@ -1359,7 +1359,7 @@ describe('FsCache', () => {
         const sut = new FsCache(sutOptions);
         const resultOneFileOne = await sut.use(entryOptionsOne);
         const resultOneFileTwo = await sut.use(entryOptionsTwo);
-        await sut.cleanFiles();
+        await sut.cleanFs();
         const resultTwoFileOne = await sut.use(entryOptionsOne);
         const resultTwoFileTwo = await sut.use(entryOptionsTwo);
         // Then
@@ -1447,7 +1447,7 @@ describe('FsCache', () => {
         const sut = new FsCache(sutOptions);
         const resultOneFileOne = await sut.use(entryOptionsOne);
         const resultOneFileTwo = await sut.use(entryOptionsTwo);
-        await sut.cleanFiles({
+        await sut.cleanFs({
           includeMemory: false,
           shouldRemove,
         });
