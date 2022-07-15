@@ -1,6 +1,6 @@
 {
   "name": "@homer0/object-utils",
-  "description": "A small collection of utility methods to work with objects",
+  "description": "A small collection of utility methods to work with objects.",
   "version": "1.1.0",
   "repository": {
     "type": "git",
