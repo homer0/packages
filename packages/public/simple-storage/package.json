@@ -24,7 +24,6 @@
   ],
   "devDependencies": {
     "@homer0/deep-assign": "^1.0.1",
-    "@types/jest": "^28.1.4",
     "jest": "^28.1.2",
     "jest-environment-jsdom": "^28.1.2",
     "ts-jest": "^28.0.5",
