@@ -42,6 +42,6 @@ jobs:
       - name: Make releases
         run: |
           npm config set access public
-          yarn lerna publish from-git
+          yarn lerna publish from-git --concurrency 1
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
