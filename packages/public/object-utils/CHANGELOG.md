@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0 (2022-07-15)
+
+### Features
+
+- **object-utils:** add short form for get ([3859918](https://github.com/homer0/packages/commit/38599182c8dbd34d2a546193c54a8d332552c73e))
+- **object-utils:** add short form for remove ([73516a5](https://github.com/homer0/packages/commit/73516a5ebdec834062ce73e02fbe6e570f5ef1ee))
+- **object-utils:** add short form for set ([14f5ed9](https://github.com/homer0/packages/commit/14f5ed92a0d013adcbde63f53aab47905aadfbca))
+
 ## 1.0.2 (2022-07-15)
 
 **Note:** Version bump only for package @homer0/object-utils

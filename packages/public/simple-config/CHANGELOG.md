@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0 (2022-07-15)
+
+### Features
+
+- **simple-config:** add an option to not throw if a file doesn't exist ([eac7182](https://github.com/homer0/packages/commit/eac7182b59aea0f3c8a58f62c438b6ff41ab82d0))
+
 ## 1.0.2 (2022-07-15)
 
 **Note:** Version bump only for package @homer0/simple-config
