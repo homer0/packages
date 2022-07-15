@@ -30,6 +30,22 @@ describe('get', () => {
     expect(result).toBe(name);
   });
 
+  it('should read a property using the short form', () => {
+    // Given
+    const name = 'Springfield';
+    const target = {
+      address: {
+        city: {
+          name,
+        },
+      },
+    };
+    // When
+    const result: string | undefined = get(target, 'address.city.name');
+    // Then
+    expect(result).toBe(name);
+  });
+
   it('should read a property from an object using a custom path', () => {
     // Given
     const name = 'Springfield';

@@ -42,16 +42,31 @@ export type RemoveOptions = {
  *   // Will output { propTwo: '!!!' }
  *
  */
-export const remove = <T = unknown>(options: RemoveOptions): T | undefined => {
+function remove<T = unknown>(options: RemoveOptions): T | undefined;
+function remove<T = unknown>(options: unknown, path: string): T | undefined;
+function remove<T = unknown>(
+  options: RemoveOptions | unknown,
+  path?: string,
+): T | undefined {
+  let useOptions: RemoveOptions;
+  if (typeof path === 'string') {
+    useOptions = {
+      target: options,
+      path,
+    };
+  } else {
+    useOptions = options as RemoveOptions;
+  }
+
   const {
     target,
-    path,
+    path: usePath,
     pathDelimiter = '.',
     cleanEmptyProperties = true,
     failWithError = false,
-  } = options;
+  } = useOptions;
 
-  const parts = path.split(pathDelimiter);
+  const parts = usePath.split(pathDelimiter);
   const last = parts.pop()!;
   const result = copy(target) as Record<string, unknown>;
   if (!parts.length) {
@@ -82,4 +97,6 @@ export const remove = <T = unknown>(options: RemoveOptions): T | undefined => {
   }
 
   return result as T;
-};
+}
+
+export { remove };

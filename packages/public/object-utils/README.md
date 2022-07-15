@@ -64,13 +64,21 @@ const obj = {
   propTwo: '!!!',
 };
 
+console.log(get(obj, 'propOne.propOneSub'));
+// Will output 'Charito!'
+```
+
+You can also use an options object to specify things like the `pathDelimiter`:
+
+```ts
 console.log(
   get({
     target: obj,
     path: 'propOne.propOneSub',
+    pathDelimiter: '.',
   }),
 );
-// Will output 'Charito!'
+// Will also output 'Charito!'
 ```
 
 #### `set`
@@ -82,14 +90,22 @@ import { set } from '@homer0/object-utils';
 
 const target = {};
 
+console.log(set(target, 'some.prop.path', 'some-value'));
+// Will output { some: { prop: { path: 'some-value' } } }
+```
+
+And just like `get`, you can also use an options object:
+
+```ts
 console.log(
   set({
     target,
     path: 'some.prop.path',
     value: 'some-value',
+    pathDelimiter: '.',
   }),
 );
-// Will output { some: { prop: { path: 'some-value' } } }
+// Will also output { some: { prop: { path: 'some-value' } } }
 ```
 
 #### `extract`
@@ -133,13 +149,20 @@ const target = {
   propTwo: '!!!',
 };
 
+console.log(remove(target, 'propOne.propOneSub'));
+// Will output { propTwo: '!!!' }
+```
+
+You can also use an options object instead of the target and the path:
+
+```ts
 console.log(
   remove({
     target,
     path: 'propOne.propOneSub',
   }),
 );
-// Will output { propTwo: '!!!' }
+// Will also output { propTwo: '!!!' }
 ```
 
 #### `flat`
