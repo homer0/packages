@@ -27,7 +27,6 @@
     "@homer0/path-utils": "^1.0.1"
   },
   "devDependencies": {
-    "@types/jest": "^28.1.4",
     "jest": "^28.1.2",
     "ts-jest": "^28.0.5",
     "tsup": "^6.1.3",

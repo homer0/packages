@@ -24,7 +24,6 @@
   ],
   "devDependencies": {
     "@homer0/object-utils": "^1.0.1",
-    "@types/jest": "^28.1.4",
     "@types/urijs": "^1.19.19",
     "jest": "^28.1.2",
     "jest-fetch-mock": "^3.0.3",
