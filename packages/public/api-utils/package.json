@@ -1,7 +1,7 @@
 {
   "name": "@homer0/api-utils",
   "description": "A few utilities to work with APIs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",
@@ -23,7 +23,7 @@
     "dist/"
   ],
   "devDependencies": {
-    "@homer0/object-utils": "^1.0.1",
+    "@homer0/object-utils": "^1.0.2",
     "@types/urijs": "^1.19.19",
     "jest": "^28.1.2",
     "jest-fetch-mock": "^3.0.3",

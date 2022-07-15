@@ -1,7 +1,7 @@
 {
   "name": "@homer0/simple-logger",
   "description": "A small service to log messages in the console",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",
@@ -23,9 +23,9 @@
     "dist/"
   ],
   "dependencies": {
-    "@homer0/jimple": "^1.0.1",
-    "@homer0/package-info": "^1.0.1",
-    "@homer0/path-utils": "^1.0.1",
+    "@homer0/jimple": "^1.0.2",
+    "@homer0/package-info": "^1.0.2",
+    "@homer0/path-utils": "^1.0.2",
     "colors": "^1.4.0"
   },
   "devDependencies": {

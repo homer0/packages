@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.2 (2022-07-15)
+
+### Bug Fixes
+
+- **tsconfig:** add types for Jest ([a01de3e](https://github.com/homer0/packages/commit/a01de3e4896201fa0d1cb1c79b3044c4ab9263eb))
+
 ## [1.0.1](https://github.com/homer0/packages/compare/@homer0/tsconfig@0.0.0-development.0...@homer0/tsconfig@1.0.1) (2022-07-12)
 
 ### Bug Fixes
