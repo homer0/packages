@@ -344,17 +344,30 @@ export class SimpleConfig {
   /**
    * Loads a configuration from a file, by importing it.
    *
-   * @param name      The name of the configuration.
-   * @param switchTo  If the service should switch to the new configuration after
-   *                  loading it.
+   * @param name           The name of the configuration.
+   * @param switchTo       If the service should switch to the new configuration after
+   *                       loading it.
+   * @param failWithError  If this is true and the file doesn't exist, it throw an
+   *                       error.
    * @returns The settings of the loaded configuration.
    * @template T  The type of the configuration, for the return value.
    * @throws If the configuration file can't be loaded.
    */
   async loadFromFile<T = unknown>(
+    name?: string,
+    switchTo?: boolean,
+    failWithError?: true,
+  ): Promise<T>;
+  async loadFromFile<T = unknown>(
+    name?: string,
+    switchTo?: boolean,
+    failWithError?: false,
+  ): Promise<T | undefined>;
+  async loadFromFile<T = unknown>(
     name: string = '',
     switchTo: boolean = true,
-  ): Promise<T> {
+    failWithError: boolean = true,
+  ): Promise<T | undefined> {
     const {
       path: thisPath,
       filenameFormat,
@@ -368,7 +381,16 @@ export class SimpleConfig {
 
     let config: T;
     try {
-      const mod = await this.rootFile.import<SimpleConfigFileModule<T>>(filepath);
+      let mod: SimpleConfigFileModule<T>;
+      try {
+        mod = await this.rootFile.import<SimpleConfigFileModule<T>>(filepath);
+      } catch (error) {
+        if (failWithError) {
+          throw error;
+        }
+
+        return undefined;
+      }
       let mainExport: T | SimpleConfigFileModuleFn<T>;
       if ('default' in mod) {
         mainExport = mod.default;
@@ -388,7 +410,8 @@ export class SimpleConfig {
         config = mainExport;
       }
     } catch (error) {
-      throw new Error(`Could not load config from file: ${filepath}`);
+      const message = error instanceof Error ? error.message : String(error);
+      throw new Error(`Could not load config from file: ${filepath} - ${message}`);
     }
 
     const extendsFrom =

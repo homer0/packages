@@ -485,6 +485,45 @@ describe('SimpleConfig', () => {
           /could not load config from file/i,
         );
       });
+
+      it('should throw an error if the promise to load a file was rejected', async () => {
+        // Given
+        class MyRootFile extends RootFile {
+          override import<FileType = unknown>(filepath: string): Promise<FileType> {
+            // eslint-disable-next-line prefer-promise-reject-errors -- Testing non-errors.
+            return Promise.reject(`Something went wrong with ${filepath}`);
+          }
+        }
+        const myRootFile = new MyRootFile();
+        // When/Then
+        const sut = new SimpleConfig({
+          inject: {
+            rootFile: myRootFile,
+          },
+        });
+        expect(() => sut.loadFromFile()).rejects.toThrow(
+          /could not load config from file/i,
+        );
+      });
+
+      it("shouldn't throw an error if fileWithError was set to false", async () => {
+        // Given
+        class MyRootFile extends RootFile {
+          override import<FileType = unknown>(): Promise<FileType> {
+            throw new Error('DOOOOM');
+          }
+        }
+        const myRootFile = new MyRootFile();
+        // When
+        const sut = new SimpleConfig({
+          inject: {
+            rootFile: myRootFile,
+          },
+        });
+        const result = await sut.loadFromFile('', true, false);
+        // Then
+        expect(result).toBeUndefined();
+      });
     });
 
     describe('load', () => {
