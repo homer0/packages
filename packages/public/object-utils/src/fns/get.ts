@@ -36,15 +36,32 @@ export type GetOptions = {
  *   // Will output 'Charito!'
  *
  */
-export const get = <T>(options: GetOptions): T | undefined => {
-  const { target, path, pathDelimiter = '.', failWithError = false } = options;
+function get<T>(options: GetOptions): T | undefined;
+function get<T>(options: unknown, path: string): T | undefined;
+function get<T>(options: GetOptions | unknown, path?: string): T | undefined {
+  let useOptions: GetOptions;
+  if (typeof path === 'string') {
+    useOptions = {
+      target: options,
+      path,
+    };
+  } else {
+    useOptions = options as GetOptions;
+  }
+
+  const {
+    target,
+    path: usePath,
+    pathDelimiter = '.',
+    failWithError = false,
+  } = useOptions;
   const useTarget = target as Record<string, unknown>;
-  const parts = path.split(pathDelimiter);
+  const parts = usePath.split(pathDelimiter);
   const first = parts.shift()!;
   let currentElement = useTarget[first] as Record<string, unknown>;
   if (typeof currentElement === 'undefined') {
     if (failWithError) {
-      throw new Error(`There's nothing on '${path}'`);
+      throw new Error(`There's nothing on '${usePath}'`);
     }
 
     return undefined;
@@ -71,4 +88,6 @@ export const get = <T>(options: GetOptions): T | undefined => {
   });
 
   return currentElement as T;
-};
+}
+
+export { get };

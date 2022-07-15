@@ -64,13 +64,21 @@ const obj = {
   propTwo: '!!!',
 };
 
+console.log(get(obj, 'propOne.propOneSub'));
+// Will output 'Charito!'
+```
+
+You can also use an options object to specify things like the `pathDelimiter`:
+
+```ts
 console.log(
   get({
     target: obj,
     path: 'propOne.propOneSub',
+    pathDelimiter: '.',
   }),
 );
-// Will output 'Charito!'
+// Will also output 'Charito!'
 ```
 
 #### `set`
