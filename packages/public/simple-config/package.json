@@ -1,7 +1,7 @@
 {
   "name": "@homer0/simple-config",
   "description": "Simple configuration management for your projects.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",
@@ -25,7 +25,7 @@
   "dependencies": {
     "@homer0/env-utils": "^1.0.2",
     "@homer0/jimple": "^1.0.2",
-    "@homer0/object-utils": "^1.1.0",
+    "@homer0/object-utils": "^1.1.1",
     "@homer0/path-utils": "^1.0.2",
     "@homer0/root-file": "^1.0.2"
   },

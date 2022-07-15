@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.4](https://github.com/homer0/packages/compare/@homer0/api-utils@1.0.3...@homer0/api-utils@1.0.4) (2022-07-15)
+
+### Bug Fixes
+
+- **monorepo:** force publish unpublished tags ([4477e00](https://github.com/homer0/packages/commit/4477e0088e178915a61baac6fa276b16c9921764))
+
 ## 1.0.3 (2022-07-15)
 
 **Note:** Version bump only for package @homer0/api-utils
