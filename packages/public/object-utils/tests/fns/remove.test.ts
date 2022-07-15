@@ -38,6 +38,23 @@ describe('remove', () => {
     expect(target).toEqual(targetCopy);
   });
 
+  it('should delete a property using the short form', () => {
+    // Given
+    const topElement = 'name';
+    const childElement = 'first';
+    const target = {
+      [topElement]: {
+        [childElement]: 'something',
+      },
+    };
+    const targetCopy = copy(target);
+    // When
+    const result = remove(target, `${topElement}.${childElement}`);
+    // Then
+    expect(result).toEqual({});
+    expect(target).toEqual(targetCopy);
+  });
+
   it('should delete a property from an object using a custom path', () => {
     // Given
     const topElement = 'name';

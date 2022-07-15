@@ -149,13 +149,20 @@ const target = {
   propTwo: '!!!',
 };
 
+console.log(remove(target, 'propOne.propOneSub'));
+// Will output { propTwo: '!!!' }
+```
+
+You can also use an options object instead of the target and the path:
+
+```ts
 console.log(
   remove({
     target,
     path: 'propOne.propOneSub',
   }),
 );
-// Will output { propTwo: '!!!' }
+// Will also output { propTwo: '!!!' }
 ```
 
 #### `flat`
