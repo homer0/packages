@@ -23,6 +23,7 @@
     "dist/"
   ],
   "dependencies": {
+    "@homer0/deferred": "^1.0.2",
     "@homer0/jimple": "^1.0.2",
     "@homer0/path-utils": "^1.0.2"
   },
