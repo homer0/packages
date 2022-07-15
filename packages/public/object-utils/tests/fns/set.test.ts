@@ -55,6 +55,32 @@ describe('set', () => {
     expect(target).toEqual(targetCopy);
   });
 
+  it('should set a property using the short form', () => {
+    // Given
+    const topElement = 'person';
+    const target = {
+      [topElement]: {},
+    };
+    const targetCopy = copy(target);
+    const childElement = 'name';
+    const objPath = `${topElement}.${childElement}`;
+    const value = 'Rosario';
+    type ExpectedType = {
+      [topElement]: {
+        [childElement]: typeof value;
+      };
+    };
+    // When
+    const result: ExpectedType | undefined = set<ExpectedType>(target, objPath, value);
+    // Then
+    expect(result).toEqual({
+      [topElement]: {
+        [childElement]: value,
+      },
+    });
+    expect(target).toEqual(targetCopy);
+  });
+
   it('should set a property on an object using a custom path', () => {
     // Given
     const topElement = 'person';

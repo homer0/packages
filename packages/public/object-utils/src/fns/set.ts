@@ -38,15 +38,42 @@ export type SetOptions = {
  *   // Will output { some: { prop: { path: 'some-value' } } }
  *
  */
-export const set = <T = Record<string, unknown>>(options: SetOptions): T | undefined => {
-  const { target, path, value, pathDelimiter = '.', failWithError = false } = options;
+function set<T = Record<string, unknown>>(options: SetOptions): T | undefined;
+function set<T = Record<string, unknown>>(
+  options: SetOptions | unknown,
+  path: string,
+  value: unknown,
+): T | undefined;
+function set<T = Record<string, unknown>>(
+  options: SetOptions | unknown,
+  path?: string,
+  value?: unknown,
+): T | undefined {
+  let useOptions: SetOptions;
+  if (typeof path === 'string') {
+    useOptions = {
+      target: options,
+      path,
+      value,
+    };
+  } else {
+    useOptions = options as SetOptions;
+  }
+
+  const {
+    target,
+    path: usePath,
+    value: useValue,
+    pathDelimiter = '.',
+    failWithError = false,
+  } = useOptions;
   const result = copy(target) as Record<string, unknown>;
-  if (!path.includes(pathDelimiter)) {
-    result[path] = value;
+  if (!usePath.includes(pathDelimiter)) {
+    result[usePath] = useValue;
     return result as T;
   }
 
-  const parts = path.split(pathDelimiter);
+  const parts = usePath.split(pathDelimiter);
   const last = parts.pop();
   let currentElement = result;
   let currentPath = '';
@@ -75,8 +102,10 @@ export const set = <T = Record<string, unknown>>(options: SetOptions): T | undef
   if (foundInvalid) return undefined;
 
   if (result && last) {
-    currentElement[last] = value;
+    currentElement[last] = useValue;
   }
 
   return result as T | undefined;
-};
+}
+
+export { set };

@@ -90,14 +90,22 @@ import { set } from '@homer0/object-utils';
 
 const target = {};
 
+console.log(set(target, 'some.prop.path', 'some-value'));
+// Will output { some: { prop: { path: 'some-value' } } }
+```
+
+And just like `get`, you can also use an options object:
+
+```ts
 console.log(
   set({
     target,
     path: 'some.prop.path',
     value: 'some-value',
+    pathDelimiter: '.',
   }),
 );
-// Will output { some: { prop: { path: 'some-value' } } }
+// Will also output { some: { prop: { path: 'some-value' } } }
 ```
 
 #### `extract`
