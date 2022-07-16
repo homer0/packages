@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.3 (2022-07-16)
+
+### Bug Fixes
+
+- **jimple:** respect params on creator fns ([e9752e4](https://github.com/homer0/packages/commit/e9752e4ef2e82426ce85b9f8f6688606149f958f))
+
 ## 1.0.2 (2022-07-15)
 
 **Note:** Version bump only for package @homer0/jimple
