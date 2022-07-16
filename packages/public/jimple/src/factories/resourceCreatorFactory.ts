@@ -57,7 +57,7 @@ export const resourceCreatorFactory =
     name: Name,
     key: Key,
     creatorFn: CreatorFn,
-  ): ResourceCreator<Name, Key, CreatorFn> => {
+  ): ResourceCreator<Name, Key, CreatorFn, ResourceFn> => {
     const fnToProxy: ResourceCreatorCurriedFn<Name, Key, CreatorFn> = (...args) => {
       const actualResource = creatorFn(...args) as ReturnType<CreatorFn>;
       return resourceFactory<ResFn>()(name, key, actualResource);
@@ -88,6 +88,7 @@ export const resourceCreatorFactory =
     return new Proxy(fnToProxy, handler) as unknown as ResourceCreator<
       Name,
       Key,
-      CreatorFn
+      CreatorFn,
+      ResourceFn
     >;
   };

@@ -28,6 +28,7 @@ export type ResourceCreatorHandler<
 export type ResourceCreator<
   Name extends string,
   Key extends string,
-  Fn extends GenericCurriedFn,
-> = ((...args: Parameters<Fn>) => Resource<Name, Key, ReturnType<Fn>>) &
-  Resource<Name, Key, ReturnType<Fn>>;
+  CreatorFn extends GenericCurriedFn,
+  ResourceFn extends GenericFn,
+> = ((...args: Parameters<CreatorFn>) => Resource<Name, Key, ResourceFn>) &
+  Resource<Name, Key, ResourceFn>;

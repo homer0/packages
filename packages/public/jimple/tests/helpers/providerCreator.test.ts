@@ -7,9 +7,10 @@ describe('providerCreator', () => {
     const finalResource = 'Batman';
     const registerFn = jest.fn(() => finalResource);
     const creatorFn = jest.fn(() => registerFn);
+    const container = new Jimple();
     // When
     const sut = providerCreator(creatorFn);
-    const result = sut.register();
+    const result = sut.register(container);
     // Then
     expect(result).toBe(finalResource);
     expect(creatorFn).toHaveBeenCalledTimes(1);
@@ -25,10 +26,11 @@ describe('providerCreator', () => {
       registerFn = jest.fn(() => `${arg0}${finalResource}`);
       return registerFn;
     });
+    const container = new Jimple();
     // When
     const sut = providerCreator(creatorFn);
-    const configuredResult = sut(prefixArg).register();
-    const result = sut.register();
+    const configuredResult = sut(prefixArg).register(container);
+    const result = sut.register(container);
     // Then
     expect(configuredResult).toBe(`${prefixArg}${finalResource}`);
     expect(result).toBe(finalResource);
