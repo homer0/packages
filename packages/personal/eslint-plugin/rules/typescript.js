@@ -3,6 +3,7 @@ module.exports = {
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',
     'lines-between-class-members': 'off',
+    'sort-class-members/sort-class-members': 'off',
     'no-useless-constructor': 'off',
     'no-unused-vars': 'off',
     'no-empty-function': 'off',
