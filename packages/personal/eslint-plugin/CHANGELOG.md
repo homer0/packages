@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 9.1.2 (2022-07-17)
+
+### Bug Fixes
+
+- **eslint-plugin:** disable sort-class-members for ts ([b3dcbef](https://github.com/homer0/packages/commit/b3dcbef779af6a1e34fbb18f1fbae6cbce5f6e4e))
+
 ## 9.1.1 (2022-07-12)
 
 ### Bug Fixes
