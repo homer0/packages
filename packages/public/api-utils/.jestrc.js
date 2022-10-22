@@ -10,10 +10,13 @@ module.exports = {
   testPathIgnorePatterns: ['/node_modules/'],
   unmockedModulePathPatterns: ['/node_modules/', 'object-utils'],
   testEnvironment: 'node',
-  globals: {
-    'ts-jest': {
-      tsconfig: path.join(__dirname, 'tests', 'tsconfig.json'),
-    },
-  },
   setupFiles: ['./tests/jest.setup.js'],
+  transform: {
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        tsconfig: path.join(__dirname, 'tests', 'tsconfig.json'),
+      },
+    ],
+  },
 };

@@ -29,10 +29,10 @@
     "colors": "^1.4.0"
   },
   "devDependencies": {
-    "jest": "^28.1.2",
-    "ts-jest": "^28.0.5",
-    "tsup": "^6.1.3",
-    "typescript": "^4.7.4"
+    "jest": "^29.2.1",
+    "ts-jest": "^29.0.3",
+    "tsup": "^6.3.0",
+    "typescript": "^4.8.4"
   },
   "engine-strict": true,
   "engines": {
@@ -42,6 +42,7 @@
   "module": "./dist/esm/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
+    "lint": "eslint .",
     "test": "jest -c ./.jestrc.js",
     "types:check": "tsc --noEmit && tsc --noEmit --project ./tests/tsconfig.json",
     "build": "tsup src/index.ts",

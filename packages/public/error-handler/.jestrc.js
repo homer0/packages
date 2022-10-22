@@ -10,9 +10,12 @@ module.exports = {
   testPathIgnorePatterns: ['/node_modules/'],
   unmockedModulePathPatterns: ['/node_modules/', 'jimple', 'simple-logger'],
   testEnvironment: 'node',
-  globals: {
-    'ts-jest': {
-      tsconfig: path.join(__dirname, 'tests', 'tsconfig.json'),
-    },
+  transform: {
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        tsconfig: path.join(__dirname, 'tests', 'tsconfig.json'),
+      },
+    ],
   },
 };
