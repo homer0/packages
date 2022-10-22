@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.4 (2022-10-22)
+
+### Bug Fixes
+
+- update dependencies ([abcf502](https://github.com/homer0/packages/commit/abcf5027fce4cb7d37d9e4cf9aafc1846c7bceb0))
+
 ## 1.0.3 (2022-07-16)
 
 **Note:** Version bump only for package @homer0/root-file

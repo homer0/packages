@@ -1,7 +1,7 @@
 {
   "name": "@homer0/root-file",
   "description": "Import or require a file for the project root",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",
@@ -23,8 +23,8 @@
     "dist/"
   ],
   "dependencies": {
-    "@homer0/jimple": "^1.0.3",
-    "@homer0/path-utils": "^1.0.3"
+    "@homer0/jimple": "^1.0.4",
+    "@homer0/path-utils": "^1.0.4"
   },
   "devDependencies": {
     "jest": "^29.2.1",
