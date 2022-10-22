@@ -4,6 +4,7 @@
 **/coverage-unit/*
 documentation/*
 **/node_modules/*
+**/dist/*
 docs/*
 esm/*
 _x-*/*

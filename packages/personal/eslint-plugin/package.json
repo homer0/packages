@@ -28,5 +28,8 @@
   "engines": {
     "node": ">=14"
   },
-  "main": "index.js"
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint ."
+  }
 }
