@@ -11,9 +11,12 @@ module.exports = {
   unmockedModulePathPatterns: ['/node_modules/'],
   coveragePathIgnorePatterns: ['/node_modules/', 'src/jimplemod/jimple.type'],
   testEnvironment: 'node',
-  globals: {
-    'ts-jest': {
-      tsconfig: path.join(__dirname, 'tests', 'tsconfig.json'),
-    },
+  transform: {
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        tsconfig: path.join(__dirname, 'tests', 'tsconfig.json'),
+      },
+    ],
   },
 };

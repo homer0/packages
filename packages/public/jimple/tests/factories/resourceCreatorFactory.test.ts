@@ -74,20 +74,4 @@ describe('resourceCreatorFactory', () => {
     expect(creatorFn).toHaveBeenCalledTimes(1);
     expect(creatorFn).toHaveBeenCalledWith(arg);
   });
-
-  it.only('should create a resource creator x', () => {
-    // Given
-    type ResourceFn = (arg0: string) => string;
-    const name = 'providerCreator';
-    const key = 'register';
-    const resourceFn = jest.fn(() => 'Batman');
-    const creatorFn = jest.fn(() => resourceFn);
-    // When
-    const sut = resourceCreatorFactory<ResourceFn>()(name, key, creatorFn);
-    sut.register('something');
-    // Then
-    expect(sut[name]).toBe(true);
-    expect(sut[key]).toBe(resourceFn);
-    expect(creatorFn).toHaveBeenCalledTimes(1);
-  });
 });
