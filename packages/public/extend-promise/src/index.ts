@@ -94,7 +94,7 @@ class PromiseExtender<T extends Promise<unknown>, P extends Record<string, unkno
       },
     });
 
-    return extended as ExtendedPromise<T, P>;
+    return extended as unknown as ExtendedPromise<T, P>;
   }
   /**
    * Creates a proxy for a promise function (`then`/`catch`/`finally`) so the returned
