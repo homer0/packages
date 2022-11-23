@@ -156,10 +156,12 @@ describe('FsCache', () => {
         };
         // When/Then
         const sut = new FsCache();
+        jest.useRealTimers();
         await Promise.all([
           expect(sut.use(options)).rejects.toThrow(message),
           expect(sut.use(options)).rejects.toThrow(message),
         ]);
+        jest.useFakeTimers();
       });
 
       it('should cache a value in the fs', async () => {
@@ -424,10 +426,12 @@ describe('FsCache', () => {
         fs.access.mockRejectedValueOnce(new Error(message));
         // When/Then
         const sut = new FsCache();
+        jest.useRealTimers();
         await Promise.all([
           expect(sut.use(options)).rejects.toThrow(message),
           expect(sut.use(options)).rejects.toThrow(message),
         ]);
+        jest.useFakeTimers();
       });
 
       it('should throw an error if the TTL is greater than the service max TTL', async () => {

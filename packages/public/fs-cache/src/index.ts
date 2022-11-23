@@ -160,9 +160,12 @@ export class FsCache {
         delete this.promises[key];
         return result;
       } catch (error) {
-        def.reject(error);
-        delete this.promises[key];
-        throw error;
+        setTimeout(() => {
+          def.reject(error);
+          delete this.promises[key];
+        }, 0);
+
+        return def.promise;
       }
     }
 
@@ -215,9 +218,11 @@ export class FsCache {
       delete this.promises[key];
       return value;
     } catch (error) {
-      def.reject(error);
-      delete this.promises[key];
-      throw error;
+      setTimeout(() => {
+        def.reject(error);
+        delete this.promises[key];
+      }, 0);
+      return def.promise;
     }
   }
   /**
