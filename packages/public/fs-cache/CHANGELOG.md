@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.6](https://github.com/homer0/packages/compare/@homer0/fs-cache@1.0.5...@homer0/fs-cache@1.0.6) (2022-11-23)
+
+### Bug Fixes
+
+- **fs-cache:** avoid double throw when there's an error ([0febe31](https://github.com/homer0/packages/commit/0febe31b0de556cb5cc0f132b0bff67dff5869a7))
+
 ## 1.0.5 (2022-10-22)
 
 ### Bug Fixes
