@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.0.0 (2022-12-27)
+
+### Bug Fixes
+
+- drop Yarn ([e41698c](https://github.com/homer0/packages/commit/e41698c310996d1ca520bd6a9a2220017e1a3d49))
+- **monorepo:** drop Node 14 support ([4df5a23](https://github.com/homer0/packages/commit/4df5a23c1c3e5d1632679f4902c0c73113252bc0))
+- **monorepo:** update all dependencies ([0ba6a5a](https://github.com/homer0/packages/commit/0ba6a5a68413ab557cce5a5afbd6314e42d86671))
+- **simple-config:** add extra type validation ([a1753c5](https://github.com/homer0/packages/commit/a1753c50d0d8c1150fe2fec1332d06d2701d6a65))
+
+### BREAKING CHANGES
+
+- **monorepo:** Node 14 is not longer supported. Node 16 is the minimum required version now.
+
 ## 1.1.3 (2022-10-22)
 
 ### Bug Fixes

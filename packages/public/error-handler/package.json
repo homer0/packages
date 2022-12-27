@@ -1,7 +1,7 @@
 {
   "name": "@homer0/error-handler",
   "description": "Captures uncaught exceptions and unhandled rejections in order to log them to the console",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",
@@ -23,8 +23,8 @@
     "dist/"
   ],
   "dependencies": {
-    "@homer0/jimple": "^1.0.4",
-    "@homer0/simple-logger": "^1.0.5"
+    "@homer0/jimple": "^2.0.0",
+    "@homer0/simple-logger": "^2.0.0"
   },
   "devDependencies": {
     "jest": "^29.3.1",
