@@ -8,7 +8,7 @@ My custom configurations for ESLint
 
 Let's start with... **I LOVE** [ESLint](https://eslint.org/) and I use it on every project.
 
-Together with ESLint, I use the [Airbnb's plugin](http://yarnpkg.com/en/package/eslint-config-airbnb-base), [`eslint-plugin-import`](http://yarnpkg.com/en/package/eslint-plugin-import) and [`eslint-plugin-node`](http://yarnpkg.com/en/package/eslint-plugin-import).
+Together with ESLint, I use the [Airbnb's plugin](https://www.npmjs.com/package/eslint-config-airbnb-base), [`eslint-plugin-import`](https://www.npmjs.com/package/eslint-plugin-import) and [`eslint-plugin-node`](https://www.npmjs.com/package/eslint-plugin-import).
 
 Everything is great, but...I'm always overwriting the same rules, and every time one the packages mentioned above is released, I have to go and update [every single project](https://www.npmjs.com/~homer0).
 
@@ -44,7 +44,7 @@ Name: `plugin:homer0/browser`
 
 #### Jest
 
-Jest is my favorite tool for testing, so all my projects (with test) use it. This configuration not only changes the environment to `jest` but it also disables a few rules from the `import` plugin. In this case, the reason for the disabled rules is that I also use (my own) [`jest-ex`](https://yarnpkg.com/en/package/jest-ex), which allows the use of absolute paths (that reference the root of the project).
+Jest is my favorite tool for testing, so all my projects (with test) use it. This configuration not only changes the environment to `jest` but it also disables a few rules from the `import` plugin.
 
 Name: `plugin:homer0/jest`
 
@@ -200,6 +200,7 @@ Yes, the reason for having this rule enabled is valid, but I don't believe that'
 >   enforceInMethodNames: true,
 > }]
 > ```
+>
 > ->
 >
 > ```
@@ -220,7 +221,7 @@ I know that having the operators at the beginning of the line may better for rea
 
 ### JSDoc
 
-These are not overwrites, [the plugin I use](http://yarnpkg.com/en/package/eslint-plugin-jsdoc) doesn't have a default preset, so I'm just going to explain why did enabled each rule and what values they have.
+These are not overwrites, [the plugin I use](https://www.npmjs.com/package/eslint-plugin-jsdoc) doesn't have a default preset, so I'm just going to explain why did enabled each rule and what values they have.
 
 #### [`jsdoc/check-access`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-check-access)
 
@@ -264,7 +265,7 @@ Helps avoid invalid syntax.
 
 This rule prevents the use of invalid JSDoc tags; the `definedTags` is used to add the following exceptions:
 
-- `parent`: I use it as an alias of `memberof` to be able use `module:` and avoid issues with the plugin. I transform it to `memberof` using the [`jsdoc-ts-utils`](https://yarnpkg.com/package/jsdoc-ts-utils) when generating the JSDoc site.
+- `parent`: I use it as an alias of `memberof` to be able use `module:` and avoid issues with the plugin. I transform it to `memberof` using the [`jsdoc-ts-utils`](https://www.npmjs.com/package/jsdoc-ts-utils) when generating the JSDoc site.
 
 #### [`jsdoc/check-types`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-check-types)
 
@@ -335,7 +336,6 @@ The `require` option is so the rule will be applied to all available contexts, a
 > `'error'`
 
 Yes, every parameter should be documented.
-
 
 #### [`jsdoc/require-param-description`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-param-description)
 
@@ -471,22 +471,22 @@ I'm allowed to ignore TypeScript... with a valid excuse.
 
 ## Development
 
-### NPM/Yarn Tasks
+### NPM Tasks
 
 | Task       | Description                   |
-|------------|-------------------------------|
+| ---------- | ----------------------------- |
 | `lint`     | Lint the modified files.      |
 | `lint:all` | Lint the project code.        |
 | `todo`     | List all the pending to-do's. |
 
 ### Repository hooks
 
-I use [`husky`](https://yarnpkg.com/package/husky) to automatically install the repository hooks so the code will be tested and linted before any commit and the dependencies updated after every merge.
+I use [`husky`](https://www.npmjs.com/package/husky) to automatically install the repository hooks so the code will be tested and linted before any commit and the dependencies updated after every merge.
 
 The configuration is on the `husky` property of the `package.json` and the hooks' files are on `./utils/hooks`.
 
 #### Commits convention
 
-I use [conventional commits](https://www.conventionalcommits.org) with [`commitizen`](https://yarnpkg.com/package/commitizen) in order to support semantic releases. The one that sets it up is actually husky, that installs a script that runs commitizen on the `git commit` command.
+I use [conventional commits](https://www.conventionalcommits.org) with [`commitizen`](https://www.npmjs.com/package/commitizen) in order to support semantic releases. The one that sets it up is actually husky, that installs a script that runs commitizen on the `git commit` command.
 
 The hook for this is on `./utils/hooks/prepare-commit-msg` and the configuration for comitizen is on the `config.commitizen` property of the `package.json`.

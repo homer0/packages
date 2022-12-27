@@ -27,6 +27,9 @@ describe('resourceCreatorFactory', () => {
     const sut = resourceCreatorFactory<ResourceFn>()(name, key, creatorFn);
     // Then
     expect(sut[name]).toBe(true);
+    expect(name in sut).toBe(true);
+    expect(key in sut).toBe(true);
+    expect('apply' in sut).toBe(true);
     expect(sut[key]).toBe(resourceFn);
     expect(sut.apply).toEqual(expect.any(Function));
     // eslint-disable-next-line dot-notation

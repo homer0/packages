@@ -392,7 +392,7 @@ export class SimpleConfig {
         return undefined;
       }
       let mainExport: T | SimpleConfigFileModuleFn<T>;
-      if ('default' in mod) {
+      if (mod && typeof mod === 'object' && 'default' in mod) {
         mainExport = mod.default;
       } else {
         mainExport = mod;
@@ -401,7 +401,12 @@ export class SimpleConfig {
       if (typeof mainExport === 'function') {
         const mainExportFn = mainExport as SimpleConfigFileModuleFn<T>;
         const mainExportValue = mainExportFn(this.getConfig());
-        if ('then' in mainExportValue && typeof mainExportValue.then === 'function') {
+        if (
+          mainExportValue &&
+          typeof mainExportValue === 'object' &&
+          'then' in mainExportValue &&
+          typeof mainExportValue.then === 'function'
+        ) {
           config = await mainExportValue;
         } else {
           config = mainExportValue as T;

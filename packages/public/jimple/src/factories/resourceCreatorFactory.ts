@@ -83,6 +83,14 @@ export const resourceCreatorFactory =
 
         return result;
       },
+      has(target, property) {
+        if (property === this.name || property === key) {
+          return true;
+        }
+
+        const targetKey = property as keyof typeof target;
+        return targetKey in target;
+      },
     };
 
     return new Proxy(fnToProxy, handler) as unknown as ResourceCreator<

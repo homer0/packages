@@ -87,15 +87,7 @@ These packages are related to personal configuration and/or tooling; the only di
 
 ## Development
 
-### Yarn
-
-This repository uses [Lerna](https://lerna.js.org) for managing the publication and the version of the packages, and [Yarn](https://classic.yarnpkg.com) for the dependencies.
-
-Because the repository uses [Yarn Workspaces](https://classic.yarnpkg.com/en/docs/workspaces), **having Yarn installed is a MUST** and you can't use it with NPM. Following [this link](https://classic.yarnpkg.com/en/docs/install) you'll get the necessary instructions to install Yarn.
-
-Now, once installed, you just need to execute `yarn` to install all the repository (and the packages) dependencies.
-
-> At the end of 2022, when I drop support for Node 14, I'll drop Yarn, as latest NPM version now has support for workspaces, added to the fact that Yarn doesn't respect lock files in monorepos.
+This repository uses [Lerna](https://lerna.js.org) for managing the publication and the version of the packages, and [NPM](http://npmjs.com) for the dependencies.
 
 ### Linting
 
@@ -103,19 +95,19 @@ The entire repository is linted using [ESLint](https://eslint.org) and custom pl
 
 There are two scripts you can use to lint files:
 
-- `yarn lint` will use [`lint-staged`](https://yarnpkg.com/package/lint-staged) to run ESLint on the files that are staged.
-- `yarn lint:all` will lint the entire repository.
+- `npm run lint` will use [`lint-staged`](https://npmjs.com/package/lint-staged) to run ESLint on the files that are staged.
+- `npm run lint:all` will lint the entire repository.
 
 ### Tests
 
-To run the tests of all the packages that have you just need to run `yarn test`, but if you want to run the tests for a single package, you can use the following command:
+To run the tests of all the packages that have you just need to run `npm test`, but if you want to run the tests for a single package, you can use the following command:
 
 ```
-yarn test --scope [package-name-with-scope]
+npm test -- --scope [package-name-with-scope]
 ```
 
 And if you need to send extra arguments to that package tests, you'll have to use two double dashes to separate them:
 
 ```
-yarn test --scope [package-name-with-scope] -- -- [...args]
+npm test -- --scope [package-name-with-scope] -- -- [...args]
 ```
