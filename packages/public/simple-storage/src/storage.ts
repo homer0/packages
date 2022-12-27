@@ -557,7 +557,12 @@ export class SimpleStorage<T extends Dict, E = unknown> {
    * @param value  The object to test.
    */
   protected isPromise<P>(value: P | Promise<P>): value is Promise<P> {
-    return !!value && 'then' in value && typeof value.then === 'function';
+    return (
+      !!value &&
+      typeof value === 'object' &&
+      'then' in value &&
+      typeof value.then === 'function'
+    );
   }
 }
 /**
