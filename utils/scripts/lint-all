@@ -1,4 +1,4 @@
 #!/bin/bash -e
 # eslint ./ --ext .js --ext .jsx --ext .ts --ext .tsx --debug
 IGNORE_PATH="${PWD}/.eslintignore"
-lerna run lint -- -- --ignore-path="${IGNORE_PATH}"
+lerna run lint -- --ignore-path="${IGNORE_PATH}"
