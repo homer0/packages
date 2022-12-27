@@ -103,9 +103,9 @@ container.register(
 
 ### 🤘 Development
 
-As this project is part of the `packages` monorepo, it requires Yarn, and some of the tooling, like ESLint and Husky, are installed on the root's `package.json`.
+As this project is part of the `packages` monorepo, some of the tooling, like ESLint and Husky, are installed on the root's `package.json`.
 
-#### Yarn tasks
+#### NPM tasks
 
 | Task    | Description          |
 | ------- | -------------------- |

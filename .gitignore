@@ -4,7 +4,6 @@ coverage-e2e
 coverage-unit
 .DS_Store
 npm-debug.log
-yarn-error.log
 dist
 /docs
 /esm

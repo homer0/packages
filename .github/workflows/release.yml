@@ -25,14 +25,14 @@ jobs:
       - name: Install dependencies
         env:
           HUSKY_SKIP_INSTALL: 1
-        run: yarn --frozen-lockfile
-      - run: yarn build
+        run: npm ci
+      - run: npm run build
       - name: Configure Git User
         run: |
           git config --global user.name '@homer0'
           git config --global user.email 'homer0@users.noreply.github.com'
       - name: Tag versions
-        run: yarn lerna version --conventional-commits --yes
+        run: npx lerna version --conventional-commits --yes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Authenticate with Registry
@@ -42,6 +42,6 @@ jobs:
       - name: Make releases
         run: |
           npm config set access public
-          yarn lerna publish from-git --concurrency 1
+          npx lerna publish from-git --concurrency 1
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

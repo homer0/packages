@@ -1,8 +1,5 @@
 {
-  "packages": [
-    "packages/public/*",
-    "packages/personal/*"
-  ],
+  "packages": ["packages/public/*", "packages/personal/*"],
   "version": "independent",
   "command": {
     "publish": {
@@ -14,6 +11,6 @@
       "allowBranch": "main"
     }
   },
-  "npmClient": "yarn",
+  "npmClient": "npm",
   "useWorkspaces": true
 }
