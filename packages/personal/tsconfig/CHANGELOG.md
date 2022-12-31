@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.5](https://github.com/homer0/packages/compare/@homer0/tsconfig@1.0.4...@homer0/tsconfig@1.0.5) (2022-12-31)
+
+### Bug Fixes
+
+- **monorepo:** update all dependencies ([613418f](https://github.com/homer0/packages/commit/613418f3efbe3aeb595a12964ae16cf803316aa0))
+
 ## 1.0.4 (2022-12-27)
 
 ### Bug Fixes
