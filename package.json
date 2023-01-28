@@ -9,12 +9,12 @@
   "private": true,
   "dependencies": {},
   "devDependencies": {
-    "@commitlint/cli": "^17.3.0",
-    "@commitlint/config-conventional": "^17.3.0",
-    "eslint": "^8.30.0",
-    "husky": "^8.0.2",
-    "leasot": "^13.2.0",
-    "lerna": "^6.3.0",
+    "@commitlint/cli": "^17.4.2",
+    "@commitlint/config-conventional": "^17.4.2",
+    "eslint": "^8.32.0",
+    "husky": "^8.0.3",
+    "leasot": "^13.3.0",
+    "lerna": "^6.4.1",
     "lint-staged": "^13.1.0"
   },
   "engine-strict": true,
