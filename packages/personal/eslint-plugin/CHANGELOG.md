@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.0.3](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@10.0.2...@homer0/eslint-plugin@10.0.3) (2023-03-05)
+
+### Bug Fixes
+
+- **monorepo:** update all dependencies ([7fe0f9a](https://github.com/homer0/packages/commit/7fe0f9a39ec89e9b3fa9530e9332828916f3a108))
+
 ## [10.0.2](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@10.0.1...@homer0/eslint-plugin@10.0.2) (2023-01-28)
 
 ### Bug Fixes
