@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.1.1](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@10.1.0...@homer0/eslint-plugin@10.1.1) (2023-03-15)
+
+### Bug Fixes
+
+- **eslint-plugin:** use kebab-case for the next config ([1f67dd7](https://github.com/homer0/packages/commit/1f67dd735ce317fc50214be54474bd9204711e7e))
+
 # [10.1.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@10.0.3...@homer0/eslint-plugin@10.1.0) (2023-03-15)
 
 ### Bug Fixes
