@@ -13,7 +13,7 @@
  * Generates an ESLint configuration for TypeScript.
  *
  * @param {PresetOptions} options  The options for the preset.
- * @returns {Object}
+ * @returns {import('eslint').Linter.Config}
  */
 const createPreset = ({
   rootDir,
