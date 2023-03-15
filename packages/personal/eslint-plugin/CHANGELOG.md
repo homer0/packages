@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.2.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@10.1.2...@homer0/eslint-plugin@10.2.0) (2023-03-15)
+
+### Bug Fixes
+
+- **eslint-plugin:** use project as an array in the preset ([3d23c53](https://github.com/homer0/packages/commit/3d23c53cb027e9dfaa54b6cc5e7e07ee7e69524d))
+
+### Features
+
+- **eslint-plugin:** add preset for next ([2deeff0](https://github.com/homer0/packages/commit/2deeff09d2b072bcda706baae04f9370f38f7e7e))
+
 ## [10.1.2](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@10.1.1...@homer0/eslint-plugin@10.1.2) (2023-03-15)
 
 ### Bug Fixes
