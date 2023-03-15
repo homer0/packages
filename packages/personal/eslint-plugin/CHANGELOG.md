@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [10.1.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@10.0.3...@homer0/eslint-plugin@10.1.0) (2023-03-15)
+
+### Bug Fixes
+
+- **eslint-plugin:** disable missing import on ts ([920ab51](https://github.com/homer0/packages/commit/920ab5127d745d4565323b5d9e3261b974a3d020))
+- **eslint-plugin:** update dependencies ([873e5c8](https://github.com/homer0/packages/commit/873e5c80cd6a98febc83a532a1977327017ce198))
+- **eslint-plugin:** use ts version of the dot notation rule ([34ca9bc](https://github.com/homer0/packages/commit/34ca9bcaa3d557896238adbe1112ca829c8cddf2))
+- **monorepo:** update all dependencies ([7fe0f9a](https://github.com/homer0/packages/commit/7fe0f9a39ec89e9b3fa9530e9332828916f3a108))
+
+### Features
+
+- **eslint-plugin:** add base config for next ([4900c7e](https://github.com/homer0/packages/commit/4900c7e9992fc508176fcc24140133eb3e1793aa))
+
 ## [10.0.3](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@10.0.2...@homer0/eslint-plugin@10.0.3) (2023-03-05)
 
 ### Bug Fixes
