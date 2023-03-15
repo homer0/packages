@@ -25,7 +25,7 @@ const createPreset = ({
   root,
   parserOptions: {
     tsconfigRootDir: rootDir,
-    project: tsConfig,
+    project: [tsConfig],
     sourceType,
   },
   plugins: ['@homer0'],
