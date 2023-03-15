@@ -15,7 +15,7 @@ const coreConfigs = Object.entries({
   browser,
   jest,
   'jest-node-typescript': jestNodeTypeScript,
-  nextBase,
+  'next-base': nextBase,
   node,
   'node-typescript': nodeTypeScript,
   react,
