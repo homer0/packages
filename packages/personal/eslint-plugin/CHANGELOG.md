@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.2.1](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@10.2.0...@homer0/eslint-plugin@10.2.1) (2023-03-18)
+
+### Bug Fixes
+
+- **eslint-plugin:** disable import/no-unresolved for ts ([56aad06](https://github.com/homer0/packages/commit/56aad0633a5decb51570d480e378735067c64ec5))
+
 # [10.2.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@10.1.2...@homer0/eslint-plugin@10.2.0) (2023-03-15)
 
 ### Bug Fixes
