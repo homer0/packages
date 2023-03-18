@@ -2,6 +2,7 @@ module.exports = {
   rules: {
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',
+    'import/no-unresolved': 'off',
     'lines-between-class-members': 'off',
     'sort-class-members/sort-class-members': 'off',
     'no-useless-constructor': 'off',
