@@ -11,9 +11,13 @@ jobs:
     name: Run jest and ESLint (Node ${{ matrix.node }})
     steps:
       - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
+          cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
       - run: pnpm run lint:all
