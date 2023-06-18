@@ -17,7 +17,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-          cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
       - run: pnpm run lint:all

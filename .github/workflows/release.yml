@@ -22,7 +22,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-          cache: 'pnpm'
       - name: Install dependencies
         env:
           HUSKY_SKIP_INSTALL: 1
