@@ -9,6 +9,7 @@
   "private": true,
   "dependencies": {},
   "devDependencies": {
+    "@homer0/eslint-plugin": "workspace:*",
     "@homer0/prettier-config": "workspace:*",
     "@homer0/prettier-plugin-jsdoc": "workspace:*",
     "@commitlint/cli": "^17.6.5",
