@@ -10,6 +10,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^17.6.5
         version: 17.6.5
+      '@homer0/eslint-plugin':
+        specifier: workspace:*
+        version: link:packages/personal/eslint-plugin
       '@homer0/prettier-config':
         specifier: workspace:*
         version: link:packages/personal/prettier-config
