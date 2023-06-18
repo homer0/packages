@@ -465,7 +465,7 @@ I'm allowed to ignore TypeScript... with a valid excuse.
 
 ## Development
 
-### NPM Tasks
+### Tasks
 
 | Task       | Description                   |
 | ---------- | ----------------------------- |

@@ -9,8 +9,12 @@
   "private": true,
   "dependencies": {},
   "devDependencies": {
+    "@homer0/prettier-config": "workspace:*",
+    "@homer0/prettier-plugin-jsdoc": "workspace:*",
     "@commitlint/cli": "^17.6.5",
     "@commitlint/config-conventional": "^17.6.5",
+    "@types/jest": "^29.5.2",
+    "@types/node": "^20.3.1",
     "eslint": "^8.43.0",
     "husky": "^8.0.3",
     "leasot": "^13.3.0",
@@ -42,9 +46,5 @@
     "lint:all": "./utils/scripts/lint-all",
     "todo": "./utils/scripts/todo",
     "prepare": "./utils/scripts/prepare"
-  },
-  "workspaces": [
-    "./packages/public/*",
-    "./packages/personal/*"
-  ]
+  }
 }

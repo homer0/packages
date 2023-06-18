@@ -23,10 +23,12 @@
     "dist/"
   ],
   "dependencies": {
-    "@homer0/jimple": "^2.0.2",
-    "@homer0/simple-logger": "^2.0.2"
+    "@homer0/jimple": "workspace:*",
+    "@homer0/simple-logger": "workspace:*"
   },
   "devDependencies": {
+    "@homer0/eslint-plugin": "workspace:*",
+    "@homer0/tsconfig": "workspace:*",
     "jest": "^29.5.0",
     "ts-jest": "^29.1.0",
     "tsup": "^7.0.0",
@@ -44,6 +46,6 @@
     "test": "jest -c ./.jestrc.js",
     "types:check": "tsc --noEmit && tsc --noEmit --project ./tests/tsconfig.json",
     "build": "tsup src/index.ts",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "pnpm run build"
   }
 }
