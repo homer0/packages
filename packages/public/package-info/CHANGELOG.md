@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.0.3 (2023-06-18)
+
+### Bug Fixes
+
+- **monorepo:** update all dependencies ([e48d13a](https://github.com/homer0/packages/commit/e48d13a474ce710f73128a49ca6ad4ac2da23ef0))
+
 ## [2.0.2](https://github.com/homer0/packages/compare/@homer0/package-info@2.0.1...@homer0/package-info@2.0.2) (2023-03-05)
 
 ### Bug Fixes

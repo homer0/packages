@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.2.2](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@10.2.1...@homer0/eslint-plugin@10.2.2) (2023-06-18)
+
+### Bug Fixes
+
+- **eslint-plugin:** remove deprecated option from JSDoc plugin ([a0938dd](https://github.com/homer0/packages/commit/a0938ddc017c54f277ce1ea82796577ab54bacc8))
+- **monorepo:** update all dependencies ([e48d13a](https://github.com/homer0/packages/commit/e48d13a474ce710f73128a49ca6ad4ac2da23ef0))
+
 ## [10.2.1](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@10.2.0...@homer0/eslint-plugin@10.2.1) (2023-03-18)
 
 ### Bug Fixes
