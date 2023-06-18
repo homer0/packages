@@ -1,7 +1,7 @@
 {
   "name": "@homer0/eslint-plugin",
   "description": "My custom configurations for ESLint.",
-  "version": "10.2.1",
+  "version": "10.2.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",
