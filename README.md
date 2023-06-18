@@ -95,19 +95,19 @@ The entire repository is linted using [ESLint](https://eslint.org) and custom pl
 
 There are two scripts you can use to lint files:
 
-- `npm run lint` will use [`lint-staged`](https://npmjs.com/package/lint-staged) to run ESLint on the files that are staged.
-- `npm run lint:all` will lint the entire repository.
+- `pnpm run lint` will use [`lint-staged`](https://npmjs.com/package/lint-staged) to run ESLint on the files that are staged.
+- `pnpm run lint:all` will lint the entire repository.
 
 ### Tests
 
 To run the tests of all the packages that have you just need to run `npm test`, but if you want to run the tests for a single package, you can use the following command:
 
 ```
-npm test -- --scope [package-name-with-scope]
+pnpm test -- --scope [package-name-with-scope]
 ```
 
 And if you need to send extra arguments to that package tests, you'll have to use two double dashes to separate them:
 
 ```
-npm test -- --scope [package-name-with-scope] -- -- [...args]
+pnpm test -- --scope [package-name-with-scope] -- -- [...args]
 ```

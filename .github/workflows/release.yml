@@ -25,8 +25,8 @@ jobs:
       - name: Install dependencies
         env:
           HUSKY_SKIP_INSTALL: 1
-        run: npm ci
-      - run: npm run build
+        run: pnpm install --frozen-lockfile
+      - run: pnpm run build
       - name: Configure Git User
         run: |
           git config --global user.name '@homer0'
@@ -42,6 +42,6 @@ jobs:
       - name: Make releases
         run: |
           npm config set access public
-          npx lerna publish from-git --concurrency 1
+          pnpm exec lerna publish from-git --concurrency 1
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

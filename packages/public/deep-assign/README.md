@@ -190,7 +190,7 @@ console.log(generateOptions({
 
 As this project is part of the `packages` monorepo, some of the tooling, like ESLint and Husky, are installed on the root's `package.json`.
 
-#### NPM tasks
+#### Tasks
 
 | Task    | Description          |
 | ------- | -------------------- |
