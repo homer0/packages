@@ -5,9 +5,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [1.0.9](https://github.com/homer0/packages/compare/@homer0/tsconfig@1.0.7...@homer0/tsconfig@1.0.9) (2023-06-18)
 
-### Bug Fixes
-
-- **monorepo:** update all dependencies ([f35a06f](https://github.com/homer0/packages/commit/f35a06ffd2b74405dffe108a0bc2189ccc79de85))
+Nothing changed in this version, I just messed up the commits.
 
 ## 1.0.8 (2023-06-18)
 

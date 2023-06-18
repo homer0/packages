@@ -5,21 +5,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [10.3.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@10.0.3...@homer0/eslint-plugin@10.3.0) (2023-06-18)
 
-### Bug Fixes
-
-- **eslint-plugin:** disable import/no-unresolved for ts ([a99a583](https://github.com/homer0/packages/commit/a99a583af4d35693ed2ee1219d7c7d07323e12ae))
-- **eslint-plugin:** disable missing import on ts ([b07ec05](https://github.com/homer0/packages/commit/b07ec052fffb6fe6a71fe07b7b7cd5375760fefc))
-- **eslint-plugin:** remove deprecated option from JSDoc plugin ([f31afe7](https://github.com/homer0/packages/commit/f31afe738da7ef3d41dabc7a533e2a70842b35e8))
-- **eslint-plugin:** update dependencies ([441f16c](https://github.com/homer0/packages/commit/441f16c49bdb9754edc3d2a0bdfdea5ad9dd29ab))
-- **eslint-plugin:** use kebab-case for the next config ([2145cab](https://github.com/homer0/packages/commit/2145cabde03f12bc4b2004f2e4d68c431789fa98))
-- **eslint-plugin:** use project as an array in the preset ([00ee195](https://github.com/homer0/packages/commit/00ee19568be4079f90dbe6993d63fef71f33b0c3))
-- **eslint-plugin:** use ts version of the dot notation rule ([4bce7a0](https://github.com/homer0/packages/commit/4bce7a02c1ca5c5a78ba24239961fa2281ac5c66))
-- **monorepo:** update all dependencies ([f35a06f](https://github.com/homer0/packages/commit/f35a06ffd2b74405dffe108a0bc2189ccc79de85))
-
-### Features
-
-- **eslint-plugin:** add base config for next ([9b66595](https://github.com/homer0/packages/commit/9b6659574f35bd3f5cb4b04844bbccd6cbb772eb))
-- **eslint-plugin:** add preset for next ([7488c42](https://github.com/homer0/packages/commit/7488c42d97e1e892d1e8c7dc9aa58d1122d5f4ed))
+Nothing changed in this version, I just messed up the commits.
 
 ## [10.2.2](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@10.2.1...@homer0/eslint-plugin@10.2.2) (2023-06-18)
 

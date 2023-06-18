@@ -5,9 +5,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [2.0.4](https://github.com/homer0/packages/compare/@homer0/env-utils@2.0.2...@homer0/env-utils@2.0.4) (2023-06-18)
 
-### Bug Fixes
-
-- **monorepo:** update all dependencies ([f35a06f](https://github.com/homer0/packages/commit/f35a06ffd2b74405dffe108a0bc2189ccc79de85))
+Nothing changed in this version, I just messed up the commits.
 
 ## 2.0.3 (2023-06-18)
 
