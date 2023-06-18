@@ -21,12 +21,13 @@
   },
   "dependencies": {
     "comment-parser": "^1.3.1",
-    "prettier": "^2.8.4",
-    "ramda": "0.28.0"
+    "prettier": "^2.8.8",
+    "ramda": "0.29.0"
   },
   "devDependencies": {
-    "jest": "^29.4.3",
-    "jest-environment-node": "^29.4.3"
+    "@homer0/eslint-plugin": "workspace:*",
+    "jest": "^29.5.0",
+    "jest-environment-node": "^29.5.0"
   },
   "engine-strict": true,
   "engines": {
@@ -37,6 +38,6 @@
     "lint": "eslint .",
     "test:unit": "jest -c ./.jestrc-unit.js",
     "test:e2e": "jest -c ./.jestrc-e2e.js",
-    "test": "npm run test:unit && npm run test:e2e"
+    "test": "pnpm run test:unit && pnpm run test:e2e"
   }
 }

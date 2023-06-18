@@ -23,16 +23,18 @@
     "dist/"
   ],
   "dependencies": {
-    "@homer0/jimple": "^2.0.2",
-    "@homer0/package-info": "^2.0.2",
-    "@homer0/path-utils": "^2.0.2",
+    "@homer0/jimple": "workspace:*",
+    "@homer0/package-info": "workspace:*",
+    "@homer0/path-utils": "workspace:*",
     "colors": "^1.4.0"
   },
   "devDependencies": {
-    "jest": "^29.4.3",
-    "ts-jest": "^29.0.5",
-    "tsup": "^6.6.3",
-    "typescript": "^4.9.5"
+    "@homer0/tsconfig": "workspace:*",
+    "@homer0/eslint-plugin": "workspace:*",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "tsup": "^7.0.0",
+    "typescript": "^5.1.3"
   },
   "engine-strict": true,
   "engines": {
@@ -46,6 +48,6 @@
     "test": "jest -c ./.jestrc.js",
     "types:check": "tsc --noEmit && tsc --noEmit --project ./tests/tsconfig.json",
     "build": "tsup src/index.ts",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "pnpm run build"
   }
 }

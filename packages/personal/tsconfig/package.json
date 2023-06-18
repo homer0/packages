@@ -14,9 +14,9 @@
   },
   "main": "tsconfig.json",
   "dependencies": {
-    "@types/jest": "^29.4.0",
-    "@types/node": "^18.14.6",
-    "@types/react": "^18.0.28",
-    "@types/react-dom": "^18.0.11"
+    "@types/jest": "^29.5.2",
+    "@types/node": "^20.3.1",
+    "@types/react": "^18.2.12",
+    "@types/react-dom": "^18.2.5"
   }
 }

@@ -19,7 +19,6 @@ module.exports = {
     'jsdoc/check-types': 'error',
     'jsdoc/implements-on-classes': 'error',
     'jsdoc/match-description': 'error',
-    'jsdoc/newline-after-description': 'error',
     'jsdoc/require-description': [
       'error',
       {

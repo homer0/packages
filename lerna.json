@@ -11,6 +11,5 @@
       "allowBranch": "main"
     }
   },
-  "npmClient": "npm",
-  "useWorkspaces": true
+  "npmClient": "pnpm"
 }
