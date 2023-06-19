@@ -285,12 +285,6 @@ The `@implements` tag should only be used on classes.
 
 Consistency.
 
-#### [`jsdoc/newline-after-description`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-newline-after-description)
-
-> `'error'`
-
-The block looks better with a little padding.
-
 #### [`jsdoc/require-description`](https://github.com/gajus/eslint-plugin-jsdoc#eslint-plugin-jsdoc-rules-require-description)
 
 > `['error', { checkConstructors: false }]`
