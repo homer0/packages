@@ -12,15 +12,16 @@
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/prettier-config": "workspace:*",
     "@homer0/prettier-plugin-jsdoc": "workspace:*",
-    "@commitlint/cli": "^17.6.5",
-    "@commitlint/config-conventional": "^17.6.5",
-    "@types/jest": "^29.5.2",
-    "@types/node": "^20.3.1",
-    "eslint": "^8.43.0",
+    "@commitlint/cli": "^17.6.6",
+    "@commitlint/config-conventional": "^17.6.6",
+    "@types/jest": "^29.5.3",
+    "@types/node": "^20.4.2",
+    "eslint": "^8.45.0",
     "husky": "^8.0.3",
     "leasot": "^13.3.0",
-    "lerna": "^7.0.2",
-    "lint-staged": "^13.2.2"
+    "lerna": "^7.1.4",
+    "lint-staged": "^13.2.3",
+    "prettier": "^3.0.0"
   },
   "engine-strict": true,
   "engines": {

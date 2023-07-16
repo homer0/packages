@@ -1,6 +1,3 @@
-jest.mock('../../../src/fns/getLanguages', () => ({
-  getLanguages: () => 'languages',
-}));
 jest.mock('../../../src/fns/getParsers', () => ({
   getParsers: () => 'parsers',
 }));
@@ -13,10 +10,28 @@ jest.unmock('../../../src/fns/getPlugin');
 const { getPlugin } = require('../../../src/fns/getPlugin');
 
 describe('getPlugin', () => {
-  it('should generate the plugin main exports', () => {
-    // Given/When/Then
-    expect(getPlugin()).toEqual({
-      languages: 'languages',
+  it('should generate the plugin main exports', async () => {
+    // Given/When
+    const result = await getPlugin();
+    // Then
+    expect(result).toEqual({
+      languages: expect.arrayContaining([
+        expect.objectContaining({
+          name: 'JavaScript',
+        }),
+        expect.objectContaining({
+          name: 'JSX',
+        }),
+        expect.objectContaining({
+          name: 'TypeScript',
+        }),
+        expect.objectContaining({
+          name: 'TSX',
+        }),
+        expect.objectContaining({
+          name: 'Flow',
+        }),
+      ]),
       options: 'options',
       defaultOptions: 'defaultOptions',
       parsers: 'parsers',
