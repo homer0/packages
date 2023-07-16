@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.1.3 (2023-07-16)
+
+### Bug Fixes
+
+- **prettier-config:** remove depreacted config ([2430680](https://github.com/homer0/packages/commit/2430680706512cbed31dee607d2f03cd42768068))
+
 ## 1.1.2 (2022-07-12)
 
 ### Bug Fixes
