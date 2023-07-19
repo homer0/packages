@@ -57,10 +57,6 @@ A tiny service that reads the contents of the project's `package.json`, sync & a
 
 An easy way to manage locations and build paths relative to those locations on a Node app.
 
-#### [𝍌 JSDoc plugin for Prettier](./packages/public/prettier-jsdoc)
-
-A [Prettier](https://prettier.io) plugin to format [JSDoc](https://jsdoc.app) blocks.
-
 #### [⚓️ Root file](./packages/public/root-file)
 
 Import or require a file for the project root.
