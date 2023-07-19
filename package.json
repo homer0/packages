@@ -11,7 +11,7 @@
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/prettier-config": "workspace:*",
-    "@homer0/prettier-plugin-jsdoc": "workspace:*",
+    "@homer0/prettier-plugin-jsdoc": "^7.0.2",
     "@commitlint/cli": "^17.6.6",
     "@commitlint/config-conventional": "^17.6.6",
     "@types/jest": "^29.5.3",
