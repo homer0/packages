@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [11.0.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@10.3.2...@homer0/eslint-plugin@11.0.0) (2023-07-29)
+
+### Bug Fixes
+
+- **eslint-plugin:** update config for Svelte ([2b4a473](https://github.com/homer0/packages/commit/2b4a47393cf7797badbc9393d236de829988a64f))
+
+### BREAKING CHANGES
+
+- **eslint-plugin:** The ESLint config for Svelte now requires eslint-plugin-svelte
+
 ## [10.3.2](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@10.3.1...@homer0/eslint-plugin@10.3.2) (2023-07-16)
 
 ### Bug Fixes
