@@ -8,6 +8,7 @@ const node = require('./configurations/node');
 const nodeTypeScript = require('./configurations/node-typescript');
 const react = require('./configurations/react');
 const svelte = require('./configurations/svelte');
+const svelteWithPrettier = require('./configurations/svelte-with-prettier');
 const typescript = require('./configurations/typescript');
 const { addPrettier } = require('./utils');
 
@@ -19,7 +20,6 @@ const coreConfigs = Object.entries({
   node,
   'node-typescript': nodeTypeScript,
   react,
-  svelte,
 }).reduce(
   (acc, [name, config]) => ({
     ...acc,
@@ -35,5 +35,7 @@ module.exports = {
     base,
     jsdoc,
     typescript,
+    svelte,
+    'svelte-with-prettier': svelteWithPrettier,
   },
 };

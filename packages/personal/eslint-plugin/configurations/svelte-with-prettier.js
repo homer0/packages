@@ -4,7 +4,7 @@ module.exports = {
   },
   extends: [
     require.resolve('./browser.js'),
-    'plugin:svelte/recommended',
+    'plugin:svelte/prettier',
     require.resolve('../rules/svelte.js'),
   ],
 };
