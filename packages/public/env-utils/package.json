@@ -28,10 +28,10 @@
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
-    "jest": "^29.6.1",
+    "jest": "^29.7.0",
     "ts-jest": "^29.1.1",
-    "tsup": "^7.1.0",
-    "typescript": "^5.1.6"
+    "tsup": "^7.2.0",
+    "typescript": "^5.2.2"
   },
   "engine-strict": true,
   "engines": {
