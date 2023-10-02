@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/homer0/packages/compare/@homer0/deep-assign@2.0.7...@homer0/deep-assign@3.0.0) (2023-10-02)
+
+### Bug Fixes
+
+- **monorepo:** drop Node 16 support ([41988da](https://github.com/homer0/packages/commit/41988da8e3f15a1c2daecfe0d7c9243eb19f9351))
+- **monorepo:** update dependencies ([e36d163](https://github.com/homer0/packages/commit/e36d1630c8fc754d9359665100c8a027b15cfb9e))
+
+### BREAKING CHANGES
+
+- **monorepo:** Node 16 is not longer supported. Node 18 is the minimum required version now.
+
 ## [2.0.7](https://github.com/homer0/packages/compare/@homer0/deep-assign@2.0.6...@homer0/deep-assign@2.0.7) (2023-07-29)
 
 **Note:** Version bump only for package @homer0/deep-assign

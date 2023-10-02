@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [12.0.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@11.0.0...@homer0/eslint-plugin@12.0.0) (2023-10-02)
+
+### Bug Fixes
+
+- **monorepo:** drop Node 16 support ([41988da](https://github.com/homer0/packages/commit/41988da8e3f15a1c2daecfe0d7c9243eb19f9351))
+- **monorepo:** update dependencies ([e36d163](https://github.com/homer0/packages/commit/e36d1630c8fc754d9359665100c8a027b15cfb9e))
+
+### BREAKING CHANGES
+
+- **monorepo:** Node 16 is not longer supported. Node 18 is the minimum required version now.
+
 # [11.0.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@10.3.2...@homer0/eslint-plugin@11.0.0) (2023-07-29)
 
 ### Bug Fixes
