@@ -39,7 +39,7 @@
   },
   "engine-strict": true,
   "engines": {
-    "node": ">=16"
+    "node": ">=18 <21"
   },
   "main": "./dist/index.js",
   "module": "./dist/esm/index.js",
