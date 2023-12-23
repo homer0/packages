@@ -1,21 +1,3 @@
 #!/bin/bash -e
-buildPkg() {
-  lerna run build --scope @homer0/${1} --stream
-}
 
-buildPkg jimple;
-buildPkg deep-assign;
-buildPkg object-utils;
-buildPkg deferred;
-buildPkg api-utils;
-buildPkg events-hub;
-buildPkg extend-promise;
-buildPkg path-utils;
-buildPkg package-info;
-buildPkg env-utils;
-buildPkg root-file;
-buildPkg simple-logger;
-buildPkg error-handler;
-buildPkg simple-logger;
-buildPkg simple-storage;
-buildPkg fs-cache;
+lerna run build --stream
