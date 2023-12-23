@@ -77,6 +77,10 @@ A service that allows you to build functionalities that relay on browser storage
 
 Small cache utility that uses the file system and supports TTL.
 
+#### [☢️ TS Async Import](./packages/public/ts-async-import)
+
+A wrapper to do dynamic imports in TypeScript contexts that target CommonJS.
+
 ### Personal
 
 These packages are related to personal configuration and/or tooling; the only difference with the "public packages" is that I'll probably won't accept feature/change requests for them.

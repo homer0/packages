@@ -103,14 +103,16 @@ container.register(
 
 ### 🤘 Development
 
-As this project is part of the `packages` monorepo, some of the tooling, like ESLint and Husky, are installed on the root's `package.json`.
+As this project is part of the `packages` monorepo, some of the tooling, like `lint-staged` and `husky`, are installed on the root's `package.json`.
 
 #### Tasks
 
-| Task    | Description          |
-| ------- | -------------------- |
-| `test`  | Runs the unit tests. |
-| `build` | Bundles the project. |
+| Task          | Description                     |
+| ------------- | ------------------------------- |
+| `lint`        | Lints the package.              |
+| `test`        | Runs the unit tests.            |
+| `build`       | Transpiles the project.         |
+| `types:check` | Validates the TypeScript types. |
 
 ## Motivation
 
