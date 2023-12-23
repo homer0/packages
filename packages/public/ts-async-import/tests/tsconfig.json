@@ -1,0 +1,4 @@
+{
+  "extends": "@homer0/tsconfig/tsconfig.jest-node.json",
+  "include": ["./"]
+}

@@ -1,16 +1,16 @@
 const path = require('path');
 
 /**
- * @type {import('ts-jest').InitialOptionsTsJest}
+ * @type {import('ts-jest').JestConfigWithTsJest}
  */
 module.exports = {
   preset: 'ts-jest',
   automock: true,
   collectCoverage: true,
   testPathIgnorePatterns: ['/node_modules/'],
-  unmockedModulePathPatterns: ['/node_modules/', 'object-utils'],
+  unmockedModulePathPatterns: ['/node_modules/', 'fixtures'],
+  coveragePathIgnorePatterns: ['/node_modules/', 'fixtures'],
   testEnvironment: 'node',
-  setupFiles: ['./tests/jest.setup.js'],
   transform: {
     '^.+\\.tsx?$': [
       'ts-jest',
