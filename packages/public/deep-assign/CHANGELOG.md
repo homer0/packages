@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/homer0/packages/compare/@homer0/deep-assign@3.0.0...@homer0/deep-assign@3.0.1) (2023-12-23)
+
+### Bug Fixes
+
+- **monorepo:** update all dependencies ([2e55bc2](https://github.com/homer0/packages/commit/2e55bc20351f39fb52b9555f564102833e168dc1))
+
 # [3.0.0](https://github.com/homer0/packages/compare/@homer0/deep-assign@2.0.7...@homer0/deep-assign@3.0.0) (2023-10-02)
 
 ### Bug Fixes
