@@ -165,6 +165,15 @@ jobs:
           flag-name: public-fs-cache
           path-to-lcov: ./packages/public/fs-cache/coverage/lcov.info
           base-path: ./packages/public/fs-cache
+      - name: Coveralls for public/ts-async-import
+        if: ${{ matrix.node == '18' }}
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+          flag-name: public-ts-async-import
+          path-to-lcov: ./packages/public/ts-async-import/coverage/lcov.info
+          base-path: ./packages/public/ts-async-import
 
   finish:
       needs: build
