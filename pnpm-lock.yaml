@@ -536,6 +536,24 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
+  packages/public/ts-async-import:
+    devDependencies:
+      '@homer0/eslint-plugin':
+        specifier: workspace:*
+        version: link:../../personal/eslint-plugin
+      '@homer0/tsconfig':
+        specifier: workspace:*
+        version: link:../../personal/tsconfig
+      jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@types/node@20.10.5)
+      ts-jest:
+        specifier: ^29.1.1
+        version: 29.1.1(@babel/core@7.23.6)(esbuild@0.19.10)(jest@29.7.0)(typescript@5.3.3)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
 packages:
 
   /@aashutoshrathi/word-wrap@1.2.6:
