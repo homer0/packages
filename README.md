@@ -57,6 +57,10 @@ A tiny service that reads the contents of the project's `package.json`, sync & a
 
 An easy way to manage locations and build paths relative to those locations on a Node app.
 
+#### [🪄 React SSR config](./packages/public/react-ssr-config)
+
+A way to have dynamic config sent from SSR and accessible in the client.
+
 #### [⚓️ Root file](./packages/public/root-file)
 
 Import or require a file for the project root.
