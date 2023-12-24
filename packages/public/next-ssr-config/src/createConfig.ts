@@ -2,13 +2,30 @@ import { DEFAULT_CONFIG_STORE, SCRIPT_CONFIG_ID } from './consts';
 import { Config } from './config';
 import { getStore } from './store';
 import type { GenericConfig, ConfigSlice } from './types';
-
+/**
+ * The options to create a config.
+ */
 type ConfigOptions<Slices extends Record<string, ConfigSlice<string, GenericConfig>>> = {
-  name?: string;
-  configClass?: typeof Config;
+  /**
+   * The dictionary of slices that will compose the config.
+   */
   slices: Slices;
+  /**
+   * The name of the config. If none is provider, the function will use a default name.
+   */
+  name?: string;
+  /**
+   * A custom class to handle the config, in case you want to extend the default one.
+   */
+  configClass?: typeof Config;
 };
-
+/**
+ * Creates a config instance.
+ *
+ * @param options  The slices and/or customization options for the config.
+ * @returns A new config instance.
+ * @throws If a config with the same name already exists.
+ */
 function createConfig<Slices extends Record<string, ConfigSlice<string, GenericConfig>>>(
   options: Slices | ConfigOptions<Slices>,
 ): Config<Slices> {
