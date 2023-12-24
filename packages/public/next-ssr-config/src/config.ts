@@ -40,11 +40,7 @@ export class Config<
 
   protected getAll(): Settings {
     if (this.isServer) {
-      if (!this.server) {
-        throw new Error('The config was not loaded in the server');
-      }
-
-      return this.server;
+      return this.server!;
     }
 
     if (!this.client) {
