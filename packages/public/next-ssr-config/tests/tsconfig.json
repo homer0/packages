@@ -1,4 +1,7 @@
 {
   "extends": "@homer0/tsconfig/tsconfig.jest-node.json",
+  "compilerOptions": {
+    "jsx": "react-jsx"
+  },
   "include": ["./"]
 }
