@@ -1,6 +1,6 @@
 import { DEFAULT_CONFIG_STORE, SCRIPT_CONFIG_ID } from './consts';
 import { Config } from './config';
-import { store } from './store';
+import { getStore } from './store';
 import type { GenericConfig, ConfigSlice } from './types';
 
 type ConfigOptions<Slices extends Record<string, ConfigSlice<string, GenericConfig>>> = {
@@ -25,6 +25,7 @@ function createConfig<Slices extends Record<string, ConfigSlice<string, GenericC
     configClass: ConfigClass = Config,
   } = useOptions;
 
+  const store = getStore();
   if (store[name]) {
     throw new Error(`The config "${name}" already exists`);
   }

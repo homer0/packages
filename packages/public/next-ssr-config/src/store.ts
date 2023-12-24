@@ -1,7 +1,8 @@
 import { Config } from './config';
 import type { GenericConfig, ConfigSlice } from './types';
 
-export const store: Record<
-  string,
-  Config<Record<string, ConfigSlice<string, GenericConfig>>>
-> = {};
+type Store = Record<string, Config<Record<string, ConfigSlice<string, GenericConfig>>>>;
+
+const store: Store = {};
+
+export const getStore = (): Store => store;

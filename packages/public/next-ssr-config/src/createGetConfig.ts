@@ -1,4 +1,4 @@
-import { store } from './store';
+import { getStore } from './store';
 import { DEFAULT_CONFIG_STORE } from './consts';
 import type { Config } from './config';
 import type { GenericConfig, ConfigSlice } from './types';
@@ -12,6 +12,7 @@ export const createGetConfig = <
 >(
   configName: string = DEFAULT_CONFIG_STORE,
 ): ConfigFromSettings<TSettings>['getConfig'] => {
+  const store = getStore();
   const config = store[configName] as ConfigFromSettings<TSettings> | undefined;
   if (!config) {
     throw new Error(`No config with name ${configName} found`);
