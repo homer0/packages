@@ -15,7 +15,7 @@ export const createGetConfig = <
   const store = getStore();
   const config = store[configName] as ConfigFromSettings<TSettings> | undefined;
   if (!config) {
-    throw new Error(`No config with name ${configName} found`);
+    throw new Error(`No config with name "${configName}" found`);
   }
 
   return config.getConfig;
@@ -30,4 +30,8 @@ export const getConfig = (...args: Parameters<Getter>): ReturnType<Getter> => {
   }
 
   return defaultGetConfig(...args);
+};
+
+export const resetGetConfig = (): void => {
+  defaultGetConfig = undefined;
 };
