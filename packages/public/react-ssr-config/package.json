@@ -9,7 +9,6 @@
   },
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
   "license": "UNLICENSED",
-  "private": true,
   "main": "./dist/index.js",
   "module": "./dist/esm/index.js",
   "types": "./src/index.ts",
