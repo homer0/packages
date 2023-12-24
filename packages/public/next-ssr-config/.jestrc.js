@@ -9,8 +9,7 @@ module.exports = {
   collectCoverage: true,
   testPathIgnorePatterns: ['/node_modules/'],
   unmockedModulePathPatterns: ['/node_modules/', 'object-utils'],
-  testEnvironment: 'node',
-  setupFiles: ['./tests/jest.setup.js'],
+  testEnvironment: 'jsdom',
   transform: {
     '^.+\\.tsx?$': [
       'ts-jest',
