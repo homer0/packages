@@ -14,10 +14,6 @@ type ConfigOptions<Slices extends Record<string, ConfigSlice<string, GenericConf
    * The name of the config. If none is provider, the function will use a default name.
    */
   name?: string;
-  /**
-   * A custom class to handle the config, in case you want to extend the default one.
-   */
-  configClass?: typeof Config;
 };
 /**
  * Creates a config instance.
@@ -36,11 +32,7 @@ function createConfig<Slices extends Record<string, ConfigSlice<string, GenericC
     useOptions = { slices: options as Slices };
   }
 
-  const {
-    slices,
-    name = DEFAULT_CONFIG_STORE,
-    configClass: ConfigClass = Config,
-  } = useOptions;
+  const { slices, name = DEFAULT_CONFIG_STORE } = useOptions;
 
   const store = getStore();
   if (store[name]) {
@@ -48,7 +40,7 @@ function createConfig<Slices extends Record<string, ConfigSlice<string, GenericC
   }
 
   const scriptId = SCRIPT_CONFIG_ID.replace('{name}', name);
-  const config = new ConfigClass(name, scriptId, slices);
+  const config = new Config(name, scriptId, slices);
 
   store[name] = config;
 
