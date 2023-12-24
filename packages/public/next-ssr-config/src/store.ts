@@ -6,3 +6,8 @@ type Store = Record<string, Config<Record<string, ConfigSlice<string, GenericCon
 const store: Store = {};
 
 export const getStore = (): Store => store;
+export const resetStore = (): void => {
+  Object.keys(store).forEach((key) => {
+    delete store[key];
+  });
+};
