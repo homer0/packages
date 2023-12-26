@@ -65,6 +65,21 @@ describe('Config', () => {
     expect(sliceConfig).toBe(dummySliceConfig);
   });
 
+  it('should overwrite an existing config and not throw', () => {
+    // Given
+    const slices = getSlices();
+    // When
+    const firstConfig = createConfig(slices);
+    const secondConfig = createConfig({
+      slices,
+      overwrite: true,
+    });
+    // Then
+    expect(firstConfig).toBeInstanceOf(Config);
+    expect(secondConfig).toBeInstanceOf(Config);
+    expect(firstConfig).not.toBe(secondConfig);
+  });
+
   it('should throw when another config was created with the same name', () => {
     // Given
     const slices = getSlices();

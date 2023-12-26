@@ -14,13 +14,20 @@ type ConfigOptions<Slices extends Record<string, ConfigSlice<string, GenericConf
    * The name of the config. If none is provider, the function will use a default name.
    */
   name?: string;
+  /**
+   * If true and there's already a config with the same name, it will be overwritten.
+   * This may be useful in development.
+   *
+   * @default false
+   */
+  overwrite?: boolean;
 };
 /**
  * Creates a config instance.
  *
  * @param options  The slices and/or customization options for the config.
  * @returns A new config instance.
- * @throws If a config with the same name already exists.
+ * @throws If a config with the same name already exists and `overwrite` is `false`.
  */
 function createConfig<Slices extends Record<string, ConfigSlice<string, GenericConfig>>>(
   options: Slices | ConfigOptions<Slices>,
@@ -32,10 +39,10 @@ function createConfig<Slices extends Record<string, ConfigSlice<string, GenericC
     useOptions = { slices: options as Slices };
   }
 
-  const { slices, name = DEFAULT_CONFIG_STORE } = useOptions;
+  const { slices, name = DEFAULT_CONFIG_STORE, overwrite = false } = useOptions;
 
   const store = getStore();
-  if (store[name]) {
+  if (store[name] && !overwrite) {
     throw new Error(`The config "${name}" already exists`);
   }
 
