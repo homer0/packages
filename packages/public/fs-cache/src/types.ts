@@ -73,6 +73,14 @@ export type FsCacheEntryOptions<T = string> = {
    * If is not specified, the service option will be used.
    */
   extension?: string;
+  /**
+   * When `true`, a `setTimeout` will be used to remove the entry from the cache after it
+   * expires. If not specified, expired entries will be removed during the next read, or
+   * when using the `purge` or `purgeFs` methods.
+   *
+   * @default true
+   */
+  scheduleRemoval?: boolean;
 };
 /**
  * The options to create a custom cache entry. By custom, it means that it has a

@@ -135,6 +135,7 @@ export class FsCache {
       keepInMemory = this.options.keepInMemory,
       extension = this.options.extension,
       skip = false,
+      scheduleRemoval = true,
     } = options;
 
     if (ttl <= 0) {
@@ -208,11 +209,14 @@ export class FsCache {
           value,
         };
       }
-      this.deletionTasks[key] = setTimeout(async () => {
-        await fs.unlink(filepath);
-        delete this.deletionTasks[key];
-        delete this.memory[key];
-      }, ttl);
+
+      if (scheduleRemoval) {
+        this.deletionTasks[key] = setTimeout(async () => {
+          await fs.unlink(filepath);
+          delete this.deletionTasks[key];
+          delete this.memory[key];
+        }, ttl);
+      }
 
       def.resolve(value);
       delete this.promises[key];
