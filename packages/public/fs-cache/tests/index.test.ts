@@ -38,7 +38,10 @@ describe('FsCache', () => {
   };
 
   class FakeFsError extends Error {
-    constructor(message: string, public code: string) {
+    constructor(
+      message: string,
+      public code: string,
+    ) {
       super(message);
     }
   }
@@ -358,6 +361,50 @@ describe('FsCache', () => {
         expect(fs.readFile).toHaveBeenCalledTimes(0);
         expect(fs.unlink).toHaveBeenCalledTimes(1);
         expect(fs.unlink).toHaveBeenCalledWith(expectedFilepath);
+      });
+
+      it('should cache a value but not schedule the deletion for it when it expires', async () => {
+        // Given
+        const value = 'Rosario & Pilar';
+        const initFn = jest.fn(() => Promise.resolve(value));
+        const filename = 'daughters-expires';
+        const [usePathUtils] = getPathUtils();
+        const sutOptions: FsCacheConstructorOptions = {
+          inject: {
+            pathUtils: usePathUtils,
+          },
+          path: '.cache',
+          extension: 'tmp',
+          keepInMemory: true,
+        };
+        const entryOptions: FsCacheEntryOptions = {
+          key: filename,
+          init: initFn,
+          scheduleRemoval: false,
+        };
+        // - First cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - First file check
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // - Second cache directory check
+        fs.access.mockResolvedValueOnce();
+        // - Second file check
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // - First file creation
+        fs.writeFile.mockResolvedValueOnce();
+        // - Second file creation
+        fs.writeFile.mockResolvedValueOnce();
+        // - File deletion
+        fs.unlink.mockResolvedValueOnce();
+        // When
+        const sut = new FsCache(sutOptions);
+        const resultOne = await sut.use(entryOptions);
+        jest.runAllTimers();
+        const resultTwo = await sut.use(entryOptions);
+        // Then
+        expect(resultOne).toBe(value);
+        expect(resultTwo).toBe(value);
+        expect(fs.unlink).toHaveBeenCalledTimes(0);
       });
 
       it("should manually expire an entry in case the timeout does't run", async () => {
