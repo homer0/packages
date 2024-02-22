@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 3.0.2 (2024-02-22)
+
+### Bug Fixes
+
+- **monorepo:** update all dependencies ([dfd8005](https://github.com/homer0/packages/commit/dfd80057bf5a5259d0324ca5eecf6e42a58db817))
+
 ## [3.0.1](https://github.com/homer0/packages/compare/@homer0/root-file@3.0.0...@homer0/root-file@3.0.1) (2023-12-23)
 
 ### Bug Fixes

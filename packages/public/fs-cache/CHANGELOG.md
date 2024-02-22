@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 3.1.0 (2024-02-22)
+
+### Bug Fixes
+
+- **monorepo:** update all dependencies ([dfd8005](https://github.com/homer0/packages/commit/dfd80057bf5a5259d0324ca5eecf6e42a58db817))
+
+### Features
+
+- **fs-cache:** add option to disable scheduled removal ([0220249](https://github.com/homer0/packages/commit/02202498c04228b6fca5a2727c0f2e5c33f08909))
+
 ## [3.0.1](https://github.com/homer0/packages/compare/@homer0/fs-cache@3.0.0...@homer0/fs-cache@3.0.1) (2023-12-23)
 
 ### Bug Fixes

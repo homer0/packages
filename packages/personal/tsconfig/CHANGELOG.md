@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.14 (2024-02-22)
+
+### Bug Fixes
+
+- **monorepo:** update all dependencies ([dfd8005](https://github.com/homer0/packages/commit/dfd80057bf5a5259d0324ca5eecf6e42a58db817))
+
 ## [1.0.13](https://github.com/homer0/packages/compare/@homer0/tsconfig@1.0.12...@homer0/tsconfig@1.0.13) (2023-12-23)
 
 ### Bug Fixes
