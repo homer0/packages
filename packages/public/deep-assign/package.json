@@ -1,7 +1,7 @@
 {
   "name": "@homer0/deep-assign",
   "description": "Deep merge (and copy) of objects and Arrays using native spread syntax",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",

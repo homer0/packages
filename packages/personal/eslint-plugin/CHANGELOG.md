@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.0.3](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@12.0.2...@homer0/eslint-plugin@12.0.3) (2024-03-19)
+
+### Bug Fixes
+
+- **eslint-plugin:** add 100 as ignored magic number ([c0f5054](https://github.com/homer0/packages/commit/c0f5054284e0b480466e8327e044b387632cb53a))
+
 ## 12.0.2 (2024-02-22)
 
 ### Bug Fixes
