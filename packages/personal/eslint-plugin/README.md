@@ -30,11 +30,23 @@ Just include the plugin and `extend` from the configuration you want to use:
 
 There are a few different configurations that can be used, dependending on the project and/or the scope:
 
+#### TypeScript
+
+A base configuration that uses `@typescript-eslint/parser` and `@typescript-eslint/eslint-plugin`. It extends `plugin:@typescript-eslint/recommended`, and it's prepared to work with a `.eslintrc.js` config file.
+
+Name: `plugin:homer0/typescript`
+
 #### Node
 
 This is a basic configuration for Node that extends from `plugin:node/recommended`.
 
 Name: `plugin:homer0/node`
+
+#### Node with TypeScript
+
+It's a merge of the `TypeScript` and `Node` configurations, with a few extra overrides specifics to Node.
+
+Name: `plugin:homer0/node-typescript`
 
 #### Browser
 
@@ -48,11 +60,101 @@ Jest is my favorite tool for testing, so all my projects (with test) use it. Thi
 
 Name: `plugin:homer0/jest`
 
+#### Jest with Node and TypeScript
+
+Instead of using the base configuration like the Jest configuration, this one uses `Node with TypeScript` as a base, since it requires a few changes in the root level.
+
+Name: `plugin:homer0/jest-node-typescript`
+
 #### JSDoc
 
 I'm a big fan of documenting EVERY class, method/function, property, etc; so this configuration helps me validate that all my comments are valid [JSDoc](https://jsdoc.app).
 
 Name: `plugin:homer0/jsdoc`
+
+#### React
+
+A configuration for React projects, based on the `react` and `react-hooks` plugins. It extends from the `browser` configuration as a base, then adds `plugin:react/recommended` and `plugin:react-hooks/recommended`, and a few extra rules based on my experience.
+
+#### Svelte
+
+Specific for Svelte (v3 (for now)) projects, uses `svelte` plugin, the `browser` configuration as a base, and extends `plugin:svelte/recommended`, with a few extra rules based on my experience.
+
+#### (Internal) NextBase
+
+A base configuration to use with Next.js projects with TypeScript. This is an internal configuration because it's meant to be used with the Next.js preset.
+
+Name: `plugin:homer0/next-base`
+
+### With Prettier
+
+Most of the configuartions have a `-with-prettier` version that includes the `prettier` plugin, turning off the rules that conflict with it.
+
+| Configuration          | Prettier version                     |
+| ---------------------- | ------------------------------------ |
+| `browser`              | `browser-with-prettier`              |
+| `jest`                 | `jest-with-prettier`                 |
+| `node`                 | `node-with-prettier`                 |
+| `node-typescript`      | `node-typescript-with-prettier`      |
+| `jest-node-typescript` | `jest-node-typescript-with-prettier` |
+| `react`                | `react-with-prettier`                |
+| `svelte`               | `svelte-with-prettier`               |
+
+## Presets
+
+Presets are a way to generate ESLint configurations that use the plugin by passing a few options.
+
+### Next.js
+
+Allows you to generate a configuration for a Next.js project with TypeScript:
+
+```js
+// .eslintrc.js in the root of the project
+const preset = require('@homer0/eslint-plugin/presets/next');
+
+module.exports = preset({
+  // The directory where the `tsconfig` is located.
+  rootDir: __dirname,
+  // A list of extra configurations to extend. They'll be added at the end of the list
+  // (after the one from next and the one from this plugin).
+  configs: [],
+  // The name of the `tsconfig`.
+  tsConfig: 'tsconfig.json',
+  // The source type for the `tsconfig`.
+  sourceType: 'module',
+  // The name of the Next.js config to extend.
+  nextConfig: 'next/core-web-vitals',
+  // The filter for JS files, like `next.config.js` that should be linted with `espree`.
+  jsFilter: ['*.js'],
+  // Whether or not the config is root.
+  root: true,
+  // Whether or not to use the prettier variant of this plugin base config.
+  prettier: true,
+});
+```
+
+### TypeScript
+
+Generates a base configuration for TypeScript projects:
+
+```js
+// .eslintrc.js in the root of the project
+const preset = require('@homer0/eslint-plugin/presets/typescript');
+
+module.exports = preset({
+  // The directory where the `tsconfig` is located.
+  rootDir: __dirname,
+  // A list of extra configurations to extend. They'll be added at the end of the list
+  // (after the one from next and the one from this plugin).
+  configs: [],
+  // The name of the `tsconfig`.
+  tsConfig: 'tsconfig.json',
+  // The source type for the `tsconfig`.
+  sourceType: 'module',
+  // Whether or not the config is root.
+  root: true,
+});
+```
 
 ## Rules
 
