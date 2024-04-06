@@ -24,5 +24,11 @@ module.exports = {
         'no-undef': 'off',
       },
     },
+    {
+      files: ['**/*.slice.ts', '**/*.slice.js'],
+      rules: {
+        'no-param-reassign': 'off',
+      },
+    },
   ],
 };

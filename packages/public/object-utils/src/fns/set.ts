@@ -1,5 +1,13 @@
 import { copy } from './copy';
 
+/**
+ * List of paths that are forbidden to use on the `set` function, as they could lead to
+ * security issues.
+ *
+ * @access protected
+ */
+const FORBIDDEN_PATHS = ['__proto__', 'prototype', 'constructor'];
+
 export type SetOptions = {
   /**
    * The object where the property will be set.
@@ -69,11 +77,23 @@ function set<T = Record<string, unknown>>(
   } = useOptions;
   const result = copy(target) as Record<string, unknown>;
   if (!usePath.includes(pathDelimiter)) {
+    if (!usePath || FORBIDDEN_PATHS.includes(usePath.toLowerCase())) {
+      return undefined;
+    }
+
     result[usePath] = useValue;
     return result as T;
   }
 
   const parts = usePath.split(pathDelimiter);
+  const isInvalid = parts.some(
+    (part) => !part || FORBIDDEN_PATHS.includes(part.toLowerCase()),
+  );
+
+  if (isInvalid) {
+    return undefined;
+  }
+
   const last = parts.pop();
   let currentElement = result;
   let currentPath = '';

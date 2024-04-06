@@ -27,7 +27,7 @@
     "@homer0/tsconfig": "workspace:*",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.4"
   },
   "engine-strict": true,
   "engines": {
