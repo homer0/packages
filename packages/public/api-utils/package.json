@@ -31,7 +31,7 @@
     "jest-fetch-mock": "^3.0.3",
     "ts-jest": "^29.1.2",
     "tsup": "^8.0.2",
-    "typescript": "^5.3.3",
+    "typescript": "^5.4.4",
     "urijs": "^1.19.11"
   },
   "engine-strict": true,
