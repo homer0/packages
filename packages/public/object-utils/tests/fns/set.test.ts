@@ -193,4 +193,22 @@ describe('set', () => {
       ),
     );
   });
+
+  it.each([
+    'constructor',
+    'subObj.constructor',
+    '__proto__',
+    'subObj.__proto__',
+    'prototype',
+    'subObj.prototype',
+  ])(`should return undefined when trying to set a forbidden path: %s`, (fpath) => {
+    // Given/When
+    const result = set({
+      target: {},
+      path: fpath,
+      value: 'value',
+    });
+    // Then
+    expect(result).toBeUndefined();
+  });
 });

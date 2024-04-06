@@ -32,7 +32,7 @@ describe('unflat', () => {
       };
     };
     // When
-    const result: ExpectedType = unflat<ExpectedType>({ target });
+    const result = unflat<ExpectedType>({ target });
     // Then
     expect(result).toEqual({
       total,
@@ -74,7 +74,7 @@ describe('unflat', () => {
       };
     };
     // When
-    const result: ExpectedType = unflat<ExpectedType>({
+    const result = unflat<ExpectedType>({
       target,
       pathDelimiter: separator,
     });
@@ -90,5 +90,28 @@ describe('unflat', () => {
         numbers,
       },
     });
+  });
+
+  it('should return undefined when trying to un-flatten a property with a forbidden path', () => {
+    // Given
+    const name = 'Pilar';
+    const nickname = 'Pili';
+    const age = 4;
+    const total = 2;
+    const protoProp = 'numbers';
+    const protoPropValue = ['one', 'two', 'three'];
+    const target = {
+      total,
+      'person.age': age,
+      'person.names.name': name,
+      'person.names.nickname': nickname,
+      [`__proto__.${protoProp}`]: protoPropValue,
+    };
+    // When
+    const result = unflat({ target });
+    // Then
+    expect(result).toBeUndefined();
+    // @ts-expect-error - We are testing a private property
+    expect(Object[protoProp]).not.toBe(protoPropValue);
   });
 });
