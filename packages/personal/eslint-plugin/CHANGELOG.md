@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.0.4](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@12.0.3...@homer0/eslint-plugin@12.0.4) (2024-04-06)
+
+### Bug Fixes
+
+- **eslint-plugin:** extend from transp for next config ([78d4fec](https://github.com/homer0/packages/commit/78d4fec519ffed68ead41ef0f56c623deda58d5b))
+- **eslint-plugin:** include slices override to the react config ([8957995](https://github.com/homer0/packages/commit/8957995988f51978284beae64d3abde3c108a449))
+- **monorepo:** update all dependencies ([89febc8](https://github.com/homer0/packages/commit/89febc8e7f8e2be2cbc0655f6452b10a22c86934))
+
 ## [12.0.3](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@12.0.2...@homer0/eslint-plugin@12.0.3) (2024-03-19)
 
 ### Bug Fixes
