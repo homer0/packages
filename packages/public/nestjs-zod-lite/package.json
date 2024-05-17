@@ -22,14 +22,14 @@
     "@homer0/tsconfig": "workspace:*",
     "@nestjs/common": "^10.3.8",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.12.8",
+    "@types/node": "^20.12.12",
     "eslint": "^8.57.0",
     "jest": "^29.7.0",
     "prettier": "^3.2.5",
     "ts-jest": "^29.1.2",
     "tsup": "^8.0.2",
     "typescript": "^5.4.5",
-    "zod": "^3.23.6"
+    "zod": "^3.23.8"
   },
   "peerDependencies": {
     "@nestjs/common": "^10.3.8",
