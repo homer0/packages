@@ -8,6 +8,9 @@
     "directory": "packages/nestjs-zod-lite"
   },
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
+  "contributors": [
+    "Evgeny Zakharov <to@risen.dev>"
+  ],
   "license": "UNLICENSED",
   "private": true,
   "main": "./dist/index.js",
