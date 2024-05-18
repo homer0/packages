@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.3](https://github.com/homer0/packages/compare/@homer0/fs-cache@3.1.2...@homer0/fs-cache@3.1.3) (2024-05-18)
+
+### Bug Fixes
+
+- **monorepo:** update all dependencies ([b5e4ca8](https://github.com/homer0/packages/commit/b5e4ca81420dce38ddaceaa577def66a8064df85))
+
 ## [3.1.2](https://github.com/homer0/packages/compare/@homer0/fs-cache@3.1.1...@homer0/fs-cache@3.1.2) (2024-04-06)
 
 ### Bug Fixes

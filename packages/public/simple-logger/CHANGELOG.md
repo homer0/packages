@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.5](https://github.com/homer0/packages/compare/@homer0/simple-logger@3.0.4...@homer0/simple-logger@3.0.5) (2024-05-18)
+
+### Bug Fixes
+
+- **monorepo:** update all dependencies ([b5e4ca8](https://github.com/homer0/packages/commit/b5e4ca81420dce38ddaceaa577def66a8064df85))
+
 ## [3.0.4](https://github.com/homer0/packages/compare/@homer0/simple-logger@3.0.3...@homer0/simple-logger@3.0.4) (2024-04-06)
 
 ### Bug Fixes
