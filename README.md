@@ -45,6 +45,10 @@ Extend a `Promise` by injecting custom properties using a `Proxy`. The custom pr
 
 An extended version of the [Jimple](https://www.npmjs.com/package/jimple) lib, with extra features.
 
+#### [✅ NestJS Zod Lite](./packages/public/nestjs-zod-lite)
+
+A smaller version of the [deprecated nestjs-zod](https://github.com/risen228/nestjs-zod) package to validate DTOs.
+
 #### [🧰 Object utils](./packages/public/object-utils)
 
 A small collection of utility methods to work with objects. It relies on [`extend`](https://www.npmjs.com/package/extend) for deep merge and copy.
