@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5](https://github.com/homer0/packages/compare/@homer0/ts-async-import@1.1.4...@homer0/ts-async-import@1.1.5) (2024-10-08)
+
+### Bug Fixes
+
+- **monorepo:** update all dependencies ([089b45d](https://github.com/homer0/packages/commit/089b45d3e63adfae5cefb3641a31c941d5613c92))
+
 ## [1.1.4](https://github.com/homer0/packages/compare/@homer0/ts-async-import@1.1.3...@homer0/ts-async-import@1.1.4) (2024-05-18)
 
 ### Bug Fixes
