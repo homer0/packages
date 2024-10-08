@@ -1,4 +1,7 @@
 {
   "extends": "@homer0/tsconfig/tsconfig.node.json",
-  "include": ["src"]
+  "compilerOptions": {
+    "allowJs": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.js"]
 }

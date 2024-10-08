@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-// eslint-disable-next-line global-require
+// eslint-disable-next-line global-require, @typescript-eslint/no-require-imports
 jest.mock('colors/safe', () => require('./mocks/colors'));
 jest.mock('@homer0/package-info');
 jest.unmock('../src');
