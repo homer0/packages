@@ -11,17 +11,17 @@
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/prettier-config": "workspace:*",
-    "@homer0/prettier-plugin-jsdoc": "^9.0.0",
-    "@commitlint/cli": "^19.3.0",
-    "@commitlint/config-conventional": "^19.2.2",
-    "@types/jest": "^29.5.12",
-    "@types/node": "^20.12.12",
-    "eslint": "^8.57.0",
-    "husky": "^9.0.11",
-    "leasot": "^13.3.0",
-    "lerna": "^8.1.3",
-    "lint-staged": "^15.2.2",
-    "prettier": "^3.2.5"
+    "@homer0/prettier-plugin-jsdoc": "^9.0.2",
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "@types/jest": "^29.5.13",
+    "@types/node": "^22.7.5",
+    "eslint": "^8.57.1",
+    "husky": "^9.1.6",
+    "leasot": "^14.4.0",
+    "lerna": "^8.1.8",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.3.3"
   },
   "engine-strict": true,
   "engines": {
