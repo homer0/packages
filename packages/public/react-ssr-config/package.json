@@ -1,7 +1,7 @@
 {
   "name": "@homer0/react-ssr-config",
   "description": "A way to have dynamic config sent from SSR and accessible in the client",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",
