@@ -18,20 +18,20 @@
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
-    "@nestjs/common": "^10.4.7",
+    "@nestjs/common": "^11.0.5",
     "@types/jest": "^29.5.14",
-    "@types/node": "^22.9.0",
+    "@types/node": "^22.10.10",
     "eslint": "^8.57.1",
     "jest": "^29.7.0",
-    "prettier": "^3.3.3",
+    "prettier": "^3.4.2",
     "ts-jest": "^29.2.5",
     "tsup": "^8.3.5",
-    "typescript": "^5.6.3",
-    "zod": "^3.23.8"
+    "typescript": "^5.7.3",
+    "zod": "^3.24.1"
   },
   "peerDependencies": {
-    "@nestjs/common": "^10.4.7",
-    "zod": "^3.23.8"
+    "@nestjs/common": "^10.4.7 || ^11.0.0",
+    "zod": "^3.24.1"
   },
   "engine-strict": true,
   "engines": {

@@ -12,20 +12,20 @@
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/prettier-config": "workspace:*",
     "@homer0/prettier-plugin-jsdoc": "^9.1.0",
-    "@commitlint/cli": "^19.5.0",
+    "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.5.0",
     "@types/jest": "^29.5.14",
-    "@types/node": "^22.9.0",
+    "@types/node": "^22.10.10",
     "eslint": "^8.57.1",
-    "husky": "^9.1.6",
+    "husky": "^9.1.7",
     "leasot": "^14.4.0",
     "lerna": "^8.1.9",
-    "lint-staged": "^15.2.10",
-    "prettier": "^3.3.3"
+    "lint-staged": "^15.4.2",
+    "prettier": "^3.4.2"
   },
   "engine-strict": true,
   "engines": {
-    "node": ">=18 <21"
+    "node": ">=20 <23"
   },
   "commitlint": {
     "extends": [
