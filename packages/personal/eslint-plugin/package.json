@@ -26,7 +26,7 @@
   },
   "engine-strict": true,
   "engines": {
-    "node": ">=18 <21"
+    "node": ">=18 <23"
   },
   "main": "index.js",
   "scripts": {
