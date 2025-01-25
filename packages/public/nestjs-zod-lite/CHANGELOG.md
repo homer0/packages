@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.4](https://github.com/homer0/packages/compare/@homer0/nestjs-zod-lite@1.0.3...@homer0/nestjs-zod-lite@1.0.4) (2025-01-25)
+
+### Bug Fixes
+
+- **monorepo:** update dependencies ([42fa7f3](https://github.com/homer0/packages/commit/42fa7f3df684bd0622b8c23d806e249785034b13))
+- **nestjs-zod-lite:** support nest v11 ([68c3b1c](https://github.com/homer0/packages/commit/68c3b1c08138d4e8f42279ae7dab12f05c30c9df))
+
 ## [1.0.3](https://github.com/homer0/packages/compare/@homer0/nestjs-zod-lite@1.0.2...@homer0/nestjs-zod-lite@1.0.3) (2024-11-09)
 
 ### Bug Fixes
