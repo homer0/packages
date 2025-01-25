@@ -18,7 +18,7 @@
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
-    "@nestjs/common": "^10.4.7",
+    "@nestjs/common": "^11.0.5",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.10",
     "eslint": "^8.57.1",
@@ -30,7 +30,7 @@
     "zod": "^3.24.1"
   },
   "peerDependencies": {
-    "@nestjs/common": "^10.4.7",
+    "@nestjs/common": "^10.4.7 || ^11.0.0",
     "zod": "^3.24.1"
   },
   "engine-strict": true,
