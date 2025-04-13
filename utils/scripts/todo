@@ -1,2 +1,2 @@
 #!/bin/bash -e
-leasot src/**/*.{js,jsx,ts,tsx} -x
+leasot 'packages/{personal,public}/*/src/**/*.{js,jsx,ts,tsx}' -x

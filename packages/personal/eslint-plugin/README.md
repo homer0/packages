@@ -8,7 +8,7 @@ My custom configurations for ESLint
 
 Let's start with... **I LOVE** [ESLint](https://eslint.org/) and I use it on every project.
 
-Together with ESLint, I use the [Airbnb's plugin](https://www.npmjs.com/package/eslint-config-airbnb-base), [`eslint-plugin-import`](https://www.npmjs.com/package/eslint-plugin-import) and [`eslint-plugin-node`](https://www.npmjs.com/package/eslint-plugin-import).
+Alognside ESLint, I use the [Airbnb's plugin](https://www.npmjs.com/package/eslint-config-airbnb-base), [`eslint-plugin-import`](https://www.npmjs.com/package/eslint-plugin-import) and [`eslint-plugin-node`](https://www.npmjs.com/package/eslint-plugin-import).
 
 Everything is great, but...I'm always overwriting the same rules, and every time one the packages mentioned above is released, I have to go and update [every single project](https://www.npmjs.com/~homer0).
 
@@ -210,6 +210,14 @@ I haven't use `call` or `apply` for years now, as I believe that with ES6 you ca
 
 Not all the time, but I use regular expressions quite a lot, and I have found cases in which this rule is unnecessarily triggered.
 
+### Errors
+
+#### [`no-await-in-loop`](https://eslint.org/docs/rules/no-await-in-loop)
+
+> `error` -> `off`
+
+This is related to the change for `no-restricted-syntax`; I use `for...of` loops to do async operations in series, and I don't want to be restricted by this rule.
+
 ### Node
 
 #### [`handle-callback-err`](https://eslint.org/docs/rules/handle-callback-err)
@@ -291,6 +299,12 @@ Readability
 > `error` -> `off`
 
 Yes, the reason for having this rule enabled is valid, but I don't believe that's a very common case.
+
+#### [`no-restricted-syntax`](https://eslint.org/docs/rules/no-restricted-syntax)
+
+> `['error', ...]` -> `['error', {...}]`
+
+The base rule disallows for `for...of`, `for...in`, `with`, and labels. I removed `for...of`, as I use it often for iterations where I need to do async operations in series. I prefer the simplicity of that syntax, over a reducer with a promise as an accumulator.
 
 #### [`no-underscore-dangle`](https://eslint.org/docs/rules/no-underscore-dangle)
 

@@ -9,6 +9,7 @@ module.exports = {
     'airbnb-base',
     ...[
       '../rules/best-practices.js',
+      '../rules/errors.js',
       '../rules/transpilation.js',
       '../rules/style.js',
       '../rules/react.js',

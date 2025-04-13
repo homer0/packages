@@ -3,7 +3,7 @@
     "outDir": "dist",
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "ES2020",
+    "target": "ES2022",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": false,
     "declaration": true,
