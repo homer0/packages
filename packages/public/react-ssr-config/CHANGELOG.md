@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.11](https://github.com/homer0/packages/compare/@homer0/react-ssr-config@1.0.10...@homer0/react-ssr-config@1.0.11) (2025-04-13)
+
+### Bug Fixes
+
+- **monorepo:** update dependencies ([3b99d37](https://github.com/homer0/packages/commit/3b99d370df44f0698a61f84547f0d31a72aa819f))
+
 ## [1.0.10](https://github.com/homer0/packages/compare/@homer0/react-ssr-config@1.0.9...@homer0/react-ssr-config@1.0.10) (2025-01-25)
 
 ### Bug Fixes

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.0.9](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@12.0.8...@homer0/eslint-plugin@12.0.9) (2025-04-13)
+
+### Bug Fixes
+
+- **eslint-plugin:** allow for...of loops ([8f10ab2](https://github.com/homer0/packages/commit/8f10ab21307a4f411404033739bdf2c255b8fc4d))
+- **eslint-plugin:** disable no-await-in-loop ([7aef3ef](https://github.com/homer0/packages/commit/7aef3ef0a1484c50f709ec4cfd9fbb70aed061be))
+- **monorepo:** update dependencies ([3b99d37](https://github.com/homer0/packages/commit/3b99d370df44f0698a61f84547f0d31a72aa819f))
+
 ## [12.0.8](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@12.0.7...@homer0/eslint-plugin@12.0.8) (2025-01-25)
 
 ### Bug Fixes

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/homer0/packages/compare/@homer0/tsconfig@1.0.19...@homer0/tsconfig@2.0.0) (2025-04-13)
+
+### Bug Fixes
+
+- **monorepo:** update dependencies ([3b99d37](https://github.com/homer0/packages/commit/3b99d370df44f0698a61f84547f0d31a72aa819f))
+- **tsconfig:** upgrade target to ES2022 ([1672ff0](https://github.com/homer0/packages/commit/1672ff08ab201e3eab6495067582ad7f328adf86))
+
+### BREAKING CHANGES
+
+- **tsconfig:** The target of all the configs was moved to ES2022
+
 ## [1.0.19](https://github.com/homer0/packages/compare/@homer0/tsconfig@1.0.18...@homer0/tsconfig@1.0.19) (2025-01-25)
 
 ### Bug Fixes
