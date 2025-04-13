@@ -292,6 +292,12 @@ Readability
 
 Yes, the reason for having this rule enabled is valid, but I don't believe that's a very common case.
 
+#### [`no-restricted-syntax`](https://eslint.org/docs/rules/no-restricted-syntax)
+
+> `['error', ...]` -> `['error', {...}]`
+
+The base rule disallows for `for...of`, `for...in`, `with`, and labels. I removed `for...of`, as I use it often for iterations where I need to do async operations in series. I prefer the simplicity of that syntax, over a reducer with a promise as an accumulator.
+
 #### [`no-underscore-dangle`](https://eslint.org/docs/rules/no-underscore-dangle)
 
 > ```
