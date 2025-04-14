@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.10](https://github.com/homer0/packages/compare/@homer0/root-file@3.0.9...@homer0/root-file@3.0.10) (2025-04-14)
+
+**Note:** Version bump only for package @homer0/root-file
+
 ## [3.0.9](https://github.com/homer0/packages/compare/@homer0/root-file@3.0.8...@homer0/root-file@3.0.9) (2025-04-13)
 
 ### Bug Fixes

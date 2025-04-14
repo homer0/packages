@@ -1,7 +1,7 @@
 {
   "name": "@homer0/path-utils",
   "description": "A utility service to manage paths on a project",
-  "version": "3.0.9",
+  "version": "3.0.10",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",

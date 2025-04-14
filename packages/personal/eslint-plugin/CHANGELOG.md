@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.0.10](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@12.0.9...@homer0/eslint-plugin@12.0.10) (2025-04-14)
+
+### Bug Fixes
+
+- **eslint-plugin:** remove forOf instead of forIn from exception ([d607703](https://github.com/homer0/packages/commit/d60770321e250e68907be7dfb33707ab06b50fac))
+
 ## [12.0.9](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@12.0.8...@homer0/eslint-plugin@12.0.9) (2025-04-13)
 
 ### Bug Fixes

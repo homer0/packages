@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.9](https://github.com/homer0/packages/compare/@homer0/ts-async-import@1.1.8...@homer0/ts-async-import@1.1.9) (2025-04-14)
+
+**Note:** Version bump only for package @homer0/ts-async-import
+
 ## [1.1.8](https://github.com/homer0/packages/compare/@homer0/ts-async-import@1.1.7...@homer0/ts-async-import@1.1.8) (2025-04-13)
 
 ### Bug Fixes

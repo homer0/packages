@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.6](https://github.com/homer0/packages/compare/@homer0/nestjs-zod-lite@1.0.5...@homer0/nestjs-zod-lite@1.0.6) (2025-04-14)
+
+**Note:** Version bump only for package @homer0/nestjs-zod-lite
+
 ## [1.0.5](https://github.com/homer0/packages/compare/@homer0/nestjs-zod-lite@1.0.4...@homer0/nestjs-zod-lite@1.0.5) (2025-04-13)
 
 ### Bug Fixes
