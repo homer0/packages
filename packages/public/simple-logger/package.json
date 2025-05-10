@@ -1,7 +1,7 @@
 {
   "name": "@homer0/simple-logger",
   "description": "A small service to log messages in the console",
-  "version": "3.0.10",
+  "version": "3.0.11",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",
