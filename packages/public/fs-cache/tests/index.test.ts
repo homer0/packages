@@ -1373,7 +1373,7 @@ describe('FsCache', () => {
         fs.readdir.mockResolvedValueOnce([
           `${filenameOne}.${sutOptions.extension}`,
           `${filenameTwo}.${sutOptions.extension}`,
-        ] as unknown as Dirent[]);
+        ] as unknown as Dirent<Buffer<ArrayBufferLike>>[]);
         // - First file, deletion check
         fs.access.mockResolvedValueOnce();
         // - First file, stats for removal check
@@ -1472,7 +1472,7 @@ describe('FsCache', () => {
         fs.readdir.mockResolvedValueOnce([
           `${filenameOne}.${sutOptions.extension}`,
           `${filenameTwo}.${sutOptions.extension}`,
-        ] as unknown as Dirent[]);
+        ] as unknown as Dirent<Buffer<ArrayBufferLike>>[]);
         // - First file, deletion check
         fs.access.mockResolvedValueOnce();
         // - First file, stats for removal check
@@ -1591,7 +1591,7 @@ describe('FsCache', () => {
         fs.readdir.mockResolvedValueOnce([
           `${filenameOne}.${sutOptions.extension}`,
           `${filenameTwo}.${sutOptions.extension}`,
-        ] as unknown as Dirent[]);
+        ] as unknown as Dirent<Buffer<ArrayBufferLike>>[]);
         // - First file, deletion check
         fs.access.mockResolvedValueOnce();
         // - First file, stats for removal check
@@ -1692,7 +1692,7 @@ describe('FsCache', () => {
         fs.readdir.mockResolvedValueOnce([
           `${filenameOne}.${extension}`,
           `${filenameTwo}.${extension}`,
-        ] as unknown as Dirent[]);
+        ] as unknown as Dirent<Buffer<ArrayBufferLike>>[]);
         // - First file, deletion check
         fs.access.mockResolvedValueOnce();
         // - First file, stats for removal check
@@ -2005,7 +2005,7 @@ describe('FsCache', () => {
         fs.readdir.mockResolvedValueOnce([
           `${filenameOne}.${sutOptions.extension}`,
           `${filenameTwo}.${sutOptions.extension}`,
-        ] as unknown as Dirent[]);
+        ] as unknown as Dirent<Buffer<ArrayBufferLike>>[]);
         // - First file, stats for removal check
         fs.stat.mockResolvedValueOnce({
           mtimeMs: now / 2,
@@ -2111,7 +2111,7 @@ describe('FsCache', () => {
         fs.readdir.mockResolvedValueOnce([
           `${filenameOne}.${sutOptions.extension}`,
           `${filenameTwo}.${sutOptions.extension}`,
-        ] as unknown as Dirent[]);
+        ] as unknown as Dirent<Buffer<ArrayBufferLike>>[]);
         // - First file, stats for removal check
         fs.stat.mockResolvedValueOnce({
           mtimeMs: now,
@@ -2208,7 +2208,7 @@ describe('FsCache', () => {
         fs.readdir.mockResolvedValueOnce([
           `${filenameOne}.${sutOptions.extension}`,
           `${filenameTwo}.${sutOptions.extension}`,
-        ] as unknown as Dirent[]);
+        ] as unknown as Dirent<Buffer<ArrayBufferLike>>[]);
         // - First file, stats for removal check
         fs.stat.mockResolvedValueOnce({
           mtimeMs: now / 2,
