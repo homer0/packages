@@ -110,11 +110,9 @@ export type PathParams<
  *   // { path: '/root' }
  *
  */
-export type PathWithParams<T extends string, TP = PathParams<T>> = Simplify<
-  {
-    path: T;
-  } & (HasAtLeastOneItem<TP> extends true ? { params: Readonly<TP> } : object)
->;
+export type PathWithParams<T extends string, TP = PathParams<T>> = {
+  path: T;
+} & (HasAtLeastOneItem<TP> extends true ? { params: Readonly<TP> } : object);
 /**
  * Extracts the path from a route path definition, whether it's a string or an object.
  */
