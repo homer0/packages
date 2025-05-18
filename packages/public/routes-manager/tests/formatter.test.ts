@@ -364,6 +364,29 @@ describe('createRoute', () => {
           'account.logout': { path: '/user/sign-out' },
         },
       ],
+      [
+        '4',
+        {
+          root: '/sub-route',
+          home: '/',
+          account: {
+            root: '/user',
+            login: {
+              path: '/login',
+              optionalQueryParams: ['redirectTo'],
+            },
+            logout: '/sign-out',
+          },
+        } as const,
+        {
+          home: { path: '/sub-route/' },
+          'account.login': {
+            path: '/sub-route/user/login',
+            optionalQueryParams: ['redirectTo'],
+          },
+          'account.logout': { path: '/sub-route/user/sign-out' },
+        },
+      ],
     ])(`should return a valid result for case #%s`, (_, group, expected) => {
       expect(formatRoutes(group)).toEqual(expected);
     });
