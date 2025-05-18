@@ -1,13 +1,13 @@
 # 🚏 Routes manager
 
-Create and manage a collection of routes for your app.
+Create and manage a collection of typed routes for your app.
 
 The main feature of this library is the typing, as it will auto complete the names and the parameters of the routes.
 
 ## 🍿 Usage
 
 - ⚙️ [Setup](#%EF%B8%8F-setup)
-- 🛤️ [Defining a route](#%EF%B8%8F-defining-a-route
+- 🛤️ [Defining a route](#%EF%B8%8F-defining-a-route)
 - ⚡️ [Using groups](#%EF%B8%8F-using-groups)
 - 🤘 [Development](#-development)
 
