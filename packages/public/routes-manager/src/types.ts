@@ -259,10 +259,11 @@ type RouteParamsObject<T extends RoutePath> = Simplify<
 >;
 
 /**
- * This is used to build the parameters list for the function that creates the routes: if
- * the {@link RouteParamsObject} has at least one key, the list will have the route name
- * and the params; but if it doesn't, the params will be optional (as the manager always
- * allows for unexpected query params).
+ * This utility type is used to build a dynamic signature for the method that creates the
+ * routes: the type returns an array of arguments which value may change depending on
+ * whether the route has params or not. If the {@link RouteParamsObject} has at least one
+ * key, the arguments' returned will be a dictionary with the params; but if it doesn't,
+ * the params will be optional (as the manager always allows for unexpected query params).
  */
 export type RoutePathParams<T extends RoutePath, P = RouteParamsObject<T>> =
   HasAtLeastOneKey<P> extends true
