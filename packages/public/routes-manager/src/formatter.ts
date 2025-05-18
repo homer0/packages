@@ -197,9 +197,6 @@ export const formatGroup = <
  * the parent route name), and the values are always objects, with the path and params.
  *
  * @param routes  The top level group of routes.
- * @todo This assumes that the routes are in the root (`/`); making that part a
- *       parameter would make the usage of this lib on only sub paths a little bit
- *       easier.
  */
 export const formatRoutes = <T extends RoutePathGroup>(
   routes: T,
