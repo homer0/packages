@@ -1,7 +1,7 @@
 {
   "name": "@homer0/routes-manager",
   "description": "Create and manage a collection of typed routes for your app",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",
@@ -19,8 +19,8 @@
     "jest": "^29.7.0",
     "ts-jest": "^29.3.4",
     "tsup": "^8.5.0",
-    "typescript": "^5.8.3",
-    "type-fest": "^4.41.0"
+    "type-fest": "^4.41.0",
+    "typescript": "^5.8.3"
   },
   "engine-strict": true,
   "engines": {
