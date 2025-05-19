@@ -41,6 +41,10 @@ A simple implementation of a pubsub service for handling events.
 
 Extend a `Promise` by injecting custom properties using a `Proxy`. The custom properties will be available on the promise chain no matter how many `then`s, `catch`s or `finally`s are added.
 
+#### [🗄 FS Cache](./packages/public/fs-cache)
+
+Small cache utility that uses the file system and supports TTL.
+
 #### [💉 jimple](./packages/public/jimple)
 
 An extended version of the [Jimple](https://www.npmjs.com/package/jimple) lib, with extra features.
@@ -69,6 +73,10 @@ A way to have dynamic config sent from SSR and accessible in the client.
 
 Import or require a file for the project root.
 
+#### [🚏 Routes manager](./packages/public/routes-manager)
+
+Create and manage a collection of typed routes for your app.
+
 #### [⚙️ Simple config](./packages/public/simple-config)
 
 A very simple configuration management for your projects. It takes care of loading, activating, switching and merging configuration files.
@@ -80,10 +88,6 @@ A small service to log messages in the console.
 #### [📚 Simple storage](./packages/public/simple-storage)
 
 A service that allows you to build functionalities that relay on browser storage (session/local), and simplifies the way you work it.
-
-#### [🗄 FS Cache](./packages/public/fs-cache)
-
-Small cache utility that uses the file system and supports TTL.
 
 #### [☢️ TS Async Import](./packages/public/ts-async-import)
 
