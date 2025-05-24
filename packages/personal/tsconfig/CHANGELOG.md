@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.0.2 (2025-05-24)
+
+### Bug Fixes
+
+- **tsconfig:** avoid using catalog on prod dependencies ([883b530](https://github.com/homer0/packages/commit/883b530b33ac23e285f990a68f8ecfdd22d13603))
+
 ## 2.0.1 (2025-05-24)
 
 ### Bug Fixes
