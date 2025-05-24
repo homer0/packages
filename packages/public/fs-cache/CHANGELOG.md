@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.11](https://github.com/homer0/packages/compare/@homer0/fs-cache@3.1.10...@homer0/fs-cache@3.1.11) (2025-05-24)
+
+**Note:** Version bump only for package @homer0/fs-cache
+
 ## 3.1.10 (2025-05-24)
 
 ### Bug Fixes

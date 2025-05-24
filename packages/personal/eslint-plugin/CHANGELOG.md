@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.0.13](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@12.0.12...@homer0/eslint-plugin@12.0.13) (2025-05-24)
+
+### Bug Fixes
+
+- **eslint-plugin:** avoid using catalog on prod dependencies ([4473823](https://github.com/homer0/packages/commit/44738231913e0edc852b4be5f70a2e25c999e0f3))
+
 ## 12.0.12 (2025-05-24)
 
 ### Bug Fixes
