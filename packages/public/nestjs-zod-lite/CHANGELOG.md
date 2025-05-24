@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.8 (2025-05-24)
+
+### Bug Fixes
+
+- **monorepo:** use pnpm catalog for shared dependencies ([970dff4](https://github.com/homer0/packages/commit/970dff4d4f9e8bc019ee55f8031d0fc34c6a2774))
+
 ## [1.0.7](https://github.com/homer0/packages/compare/@homer0/nestjs-zod-lite@1.0.6...@homer0/nestjs-zod-lite@1.0.7) (2025-05-10)
 
 ### Bug Fixes

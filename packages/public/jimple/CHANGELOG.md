@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 3.0.12 (2025-05-24)
+
+### Bug Fixes
+
+- **monorepo:** use pnpm catalog for shared dependencies ([970dff4](https://github.com/homer0/packages/commit/970dff4d4f9e8bc019ee55f8031d0fc34c6a2774))
+
 ## [3.0.11](https://github.com/homer0/packages/compare/@homer0/jimple@3.0.10...@homer0/jimple@3.0.11) (2025-05-10)
 
 **Note:** Version bump only for package @homer0/jimple

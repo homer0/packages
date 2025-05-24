@@ -1,7 +1,7 @@
 {
   "name": "@homer0/fs-cache",
   "description": "Small cache utility that uses the file system and supports TTL",
-  "version": "3.1.9",
+  "version": "3.1.10",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",
