@@ -1,3 +1,20 @@
 packages:
-  - 'packages/public/*'
-  - 'packages/personal/*'
+  - packages/public/*
+  - packages/personal/*
+catalog:
+  '@testing-library/react': ^16.3.0
+  '@types/jest': ^29.5.14
+  '@types/node': ^22.15.21
+  '@types/react': ^19.1.5
+  '@types/react-dom': ^19.1.5
+  eslint: ^8.57.1
+  jest: ^29.7.0
+  jest-environment-jsdom: ^29.7.0
+  react: ^19.1.0
+  react-dom: ^19.1.0
+  ts-jest: ^29.3.4
+  tsup: ^8.5.0
+  typescript: ^5.8.3
+onlyBuiltDependencies:
+  - esbuild
+  - nx

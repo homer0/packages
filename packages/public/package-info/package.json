@@ -30,11 +30,11 @@
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
-    "jest": "^29.7.0",
+    "jest": "catalog:",
     "package-json-type": "^1.0.3",
-    "ts-jest": "^29.3.2",
-    "tsup": "^8.4.0",
-    "typescript": "^5.8.3"
+    "ts-jest": "catalog:",
+    "tsup": "catalog:",
+    "typescript": "catalog:"
   },
   "engine-strict": true,
   "engines": {
