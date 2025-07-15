@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/homer0/packages/compare/@homer0/nestjs-zod-lite@1.0.10...@homer0/nestjs-zod-lite@2.0.0) (2025-07-15)
+
+### Bug Fixes
+
+- **nestjs-zod-lite:** migrate to zod v4 ([2228d2e](https://github.com/homer0/packages/commit/2228d2ea2670d7be89257b6c1c8edef1f0582d04))
+- **nestjs-zod-lite:** upgrade dependency for zod v4 ([b8d5a5b](https://github.com/homer0/packages/commit/b8d5a5b0f39874deab77370914dacb4aa6ad17e9))
+
+### BREAKING CHANGES
+
+- **nestjs-zod-lite:** This package switched to zod v4
+
 ## [1.0.10](https://github.com/homer0/packages/compare/@homer0/nestjs-zod-lite@1.0.9...@homer0/nestjs-zod-lite@1.0.10) (2025-05-24)
 
 **Note:** Version bump only for package @homer0/nestjs-zod-lite
