@@ -32,7 +32,7 @@ describe('ZodValidationPipe', () => {
       };
 
       expect(pipe.transform(valid, metadata)).toEqual(valid);
-      expect(() => pipe.transform(invalid, metadata)).toThrowError();
+      expect(() => pipe.transform(invalid, metadata)).toThrow();
     }
   });
 
@@ -55,7 +55,7 @@ describe('ZodValidationPipe', () => {
     };
 
     expect(pipe.transform(valid, metadata)).toEqual(valid);
-    expect(() => pipe.transform(invalid, metadata)).toThrowError(ZodValidationException);
+    expect(() => pipe.transform(invalid, metadata)).toThrow(ZodValidationException);
   });
 
   it("should return the value when there's no Schema / DTO", () => {
