@@ -19,7 +19,7 @@
     "jest": "catalog:",
     "ts-jest": "catalog:",
     "tsup": "catalog:",
-    "type-fest": "^4.41.0",
+    "type-fest": "^5.0.1",
     "typescript": "catalog:"
   },
   "engine-strict": true,

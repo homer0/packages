@@ -7,18 +7,18 @@ catalog:
   # See https://github.com/lerna/lerna/issues/4055
   # ===
   '@testing-library/react': ^16.3.0
-  '@types/jest': ^29.5.14
-  '@types/node': ^22.15.21
-  '@types/react': ^19.1.5
-  '@types/react-dom': ^19.1.5
+  '@types/jest': ^30.0.0
+  '@types/node': ^22.18.6
+  '@types/react': ^19.1.13
+  '@types/react-dom': ^19.1.9
   eslint: ^8.57.1
-  jest: ^29.7.0
-  jest-environment-jsdom: ^29.7.0
-  react: ^19.1.0
-  react-dom: ^19.1.0
-  ts-jest: ^29.3.4
+  jest: ^30.1.3
+  jest-environment-jsdom: ^30.1.2
+  react: ^19.1.1
+  react-dom: ^19.1.1
+  ts-jest: ^29.4.4
   tsup: ^8.5.0
-  typescript: ^5.8.3
+  typescript: ^5.9.2
 onlyBuiltDependencies:
   - esbuild
   - nx
