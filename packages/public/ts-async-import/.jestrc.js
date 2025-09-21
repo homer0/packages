@@ -7,7 +7,7 @@ module.exports = {
   preset: 'ts-jest',
   automock: true,
   collectCoverage: true,
-  testPathIgnorePatterns: ['/node_modules/'],
+  testPathIgnorePatterns: ['/node_modules/', 'fixtures'],
   unmockedModulePathPatterns: ['/node_modules/', 'fixtures'],
   coveragePathIgnorePatterns: ['/node_modules/', 'fixtures'],
   testEnvironment: 'node',
