@@ -6,8 +6,10 @@ module.exports = {
     ...nodeTypescript.env,
     jest: true,
   },
-  extends: [...nodeTypescript.extends, require.resolve('../rules/jest.js')],
+  extends: [...nodeTypescript.extends, require.resolve('../rules/testing.js')],
   globals: {
     spyOn: true,
+    module: true,
+    process: true,
   },
 };
