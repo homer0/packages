@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 3.0.0 (2025-09-21)
+
+### Bug Fixes
+
+- **monorepo:** update all dependencies ([230930d](https://github.com/homer0/packages/commit/230930dfdde66cdeb22ab73501d2d4c67106b44d))
+- **tsconfig:** make all types dependencies peer deps and optional ([8ec4677](https://github.com/homer0/packages/commit/8ec4677572d04b480ad380671a247972df73b819))
+
+### Features
+
+- **tsconfig:** add testing config for node ([2acb1f2](https://github.com/homer0/packages/commit/2acb1f2e38b71266b420885de3692585c1ac39e8))
+
+### BREAKING CHANGES
+
+- **tsconfig:** All tsconfig deps for libraries (jest, react, and react-dom)
+  are now optional peer deps.
+
 ## 2.0.2 (2025-05-24)
 
 ### Bug Fixes

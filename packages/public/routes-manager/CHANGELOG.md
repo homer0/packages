@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.0.0 (2025-09-21)
+
+### Bug Fixes
+
+- **monorepo:** drop Node 18 support ([d1a1de6](https://github.com/homer0/packages/commit/d1a1de6cec1fd378aa3d874a42f8579389eb3c02))
+- **monorepo:** update all dependencies ([230930d](https://github.com/homer0/packages/commit/230930dfdde66cdeb22ab73501d2d4c67106b44d))
+
+### BREAKING CHANGES
+
+- **monorepo:** Node 18 is not longer supported. Node 20 is the minimum required version now.
+
 ## [1.1.3](https://github.com/homer0/packages/compare/@homer0/routes-manager@1.1.2...@homer0/routes-manager@1.1.3) (2025-05-24)
 
 **Note:** Version bump only for package @homer0/routes-manager

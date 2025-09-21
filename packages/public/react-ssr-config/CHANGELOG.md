@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.0.0 (2025-09-21)
+
+### Bug Fixes
+
+- **monorepo:** drop Node 18 support ([d1a1de6](https://github.com/homer0/packages/commit/d1a1de6cec1fd378aa3d874a42f8579389eb3c02))
+
+### BREAKING CHANGES
+
+- **monorepo:** Node 18 is not longer supported. Node 20 is the minimum required version now.
+
 ## [1.0.16](https://github.com/homer0/packages/compare/@homer0/react-ssr-config@1.0.15...@homer0/react-ssr-config@1.0.16) (2025-05-24)
 
 **Note:** Version bump only for package @homer0/react-ssr-config

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 13.0.0 (2025-09-21)
+
+### Bug Fixes
+
+- **eslint-plugin:** rename rules file from jest to testing ([79cd977](https://github.com/homer0/packages/commit/79cd977b6ff18a6715dcbc7145cc96b51a2eab47))
+- **monorepo:** drop Node 18 support ([d1a1de6](https://github.com/homer0/packages/commit/d1a1de6cec1fd378aa3d874a42f8579389eb3c02))
+- **monorepo:** update all dependencies ([230930d](https://github.com/homer0/packages/commit/230930dfdde66cdeb22ab73501d2d4c67106b44d))
+
+### Features
+
+- **eslint-plugin:** add config for testing without jest ([cf53e3b](https://github.com/homer0/packages/commit/cf53e3b94b6c8248eb6bc62a859cc8cdccbaa9fc))
+
+### BREAKING CHANGES
+
+- **monorepo:** Node 18 is not longer supported. Node 20 is the minimum required version now.
+
 ## [12.0.13](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@12.0.12...@homer0/eslint-plugin@12.0.13) (2025-05-24)
 
 ### Bug Fixes
