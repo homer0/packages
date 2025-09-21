@@ -13,20 +13,20 @@
     "access": "public"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^8.32.1",
-    "@typescript-eslint/parser": "^8.32.1",
+    "@typescript-eslint/eslint-plugin": "^8.44.0",
+    "@typescript-eslint/parser": "^8.44.0",
     "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-jsdoc": "^50.6.17",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsdoc": "^60.0.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-sort-class-members": "^1.21.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   },
   "engine-strict": true,
   "engines": {
-    "node": ">=18 <23"
+    "node": ">=20 <23"
   },
   "main": "index.js",
   "scripts": {

@@ -19,12 +19,12 @@
     "jest": "catalog:",
     "ts-jest": "catalog:",
     "tsup": "catalog:",
-    "type-fest": "^4.41.0",
+    "type-fest": "^5.0.1",
     "typescript": "catalog:"
   },
   "engine-strict": true,
   "engines": {
-    "node": ">=18 <23"
+    "node": ">=20 <23"
   },
   "scripts": {
     "lint": "eslint .",

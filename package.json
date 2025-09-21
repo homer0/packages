@@ -14,14 +14,14 @@
     "@homer0/prettier-plugin-jsdoc": "^10.0.0",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
-    "@types/jest": "^29.5.14",
-    "@types/node": "^22.15.17",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^22.18.6",
     "eslint": "^8.57.1",
     "husky": "^9.1.7",
     "leasot": "^14.4.0",
-    "lerna": "^8.2.2",
-    "lint-staged": "^15.5.2",
-    "prettier": "^3.5.3"
+    "lerna": "^8.2.4",
+    "lint-staged": "^16.1.6",
+    "prettier": "^3.6.2"
   },
   "engine-strict": true,
   "engines": {

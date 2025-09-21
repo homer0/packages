@@ -18,14 +18,14 @@
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
-    "@nestjs/common": "^11.1.1",
+    "@nestjs/common": "^11.1.6",
     "@types/jest": "catalog:",
     "@types/node": "catalog:",
     "jest": "catalog:",
     "ts-jest": "catalog:",
     "tsup": "catalog:",
     "typescript": "catalog:",
-    "zod": "^4.0.5"
+    "zod": "^4.1.11"
   },
   "peerDependencies": {
     "@nestjs/common": "^10.4.7 || ^11.0.0",
@@ -33,7 +33,7 @@
   },
   "engine-strict": true,
   "engines": {
-    "node": ">=18 <23"
+    "node": ">=20 <23"
   },
   "scripts": {
     "lint": "eslint .",

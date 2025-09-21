@@ -2,6 +2,7 @@ const base = require('./configurations/base');
 const browser = require('./configurations/browser');
 const jest = require('./configurations/jest');
 const jestNodeTypeScript = require('./configurations/jest-node-typescript');
+const testingNodeTypeScript = require('./configurations/testing-node-typescript');
 const jsdoc = require('./configurations/jsdoc');
 const nextBase = require('./configurations/next-base');
 const node = require('./configurations/node');
@@ -16,6 +17,7 @@ const coreConfigs = Object.entries({
   browser,
   jest,
   'jest-node-typescript': jestNodeTypeScript,
+  'testing-node-typescript': testingNodeTypeScript,
   'next-base': nextBase,
   node,
   'node-typescript': nodeTypeScript,
