@@ -24,7 +24,7 @@
   },
   "engine-strict": true,
   "engines": {
-    "node": ">=18 <23"
+    "node": ">=20 <23"
   },
   "scripts": {
     "lint": "eslint .",
