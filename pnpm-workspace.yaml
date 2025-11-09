@@ -2,10 +2,6 @@ packages:
   - packages/public/*
   - packages/personal/*
 catalog:
-  # ===
-  # AVOID using catalog: on prod dependencies (for now), as Learn doesn't support it yet.
-  # See https://github.com/lerna/lerna/issues/4055
-  # ===
   '@testing-library/react': ^16.3.0
   '@types/jest': ^30.0.0
   '@types/node': ^22.18.6
@@ -22,3 +18,4 @@ catalog:
 onlyBuiltDependencies:
   - esbuild
   - nx
+  - unrs-resolver
