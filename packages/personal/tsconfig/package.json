@@ -12,7 +12,17 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "tsconfig.json",
+  "main": "tsconfig.base.json",
+  "type": "module",
+  "exports": {
+    ".": "./tsconfig.base.json",
+    "./tsconfig.browser.json": "./tsconfig.browser.json",
+    "./tsconfig.node.json": "./tsconfig.node.json",
+    "./tsconfig.react.json": "./tsconfig.react.json",
+    "./tsconfig.nest.json": "./tsconfig.nest.json",
+    "./tsconfig.jest-node.json": "./tsconfig.jest-node.json",
+    "./tsconfig.testing-node.json": "./tsconfig.testing-node.json"
+  },
   "peerDependencies": {
     "@types/jest": "^30.0.0",
     "@types/node": "^24.10.0",
