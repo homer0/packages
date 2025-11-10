@@ -37,6 +37,6 @@
   "types": "./src/index.d.ts",
   "scripts": {
     "lint": "eslint .",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js -c ./.jestrc.js"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js -c ./.jestrc.cjs"
   }
 }
