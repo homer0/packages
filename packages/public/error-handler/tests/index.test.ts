@@ -1,8 +1,8 @@
-jest.unmock('../src/index.js');
+jest.unmock('@src/index.js');
 
 import { Jimple } from '@homer0/jimple';
 import { SimpleLogger } from '@homer0/simple-logger';
-import { ErrorHandler, errorHandler, errorHandlerProvider } from '../src/index.js';
+import { ErrorHandler, errorHandler, errorHandlerProvider } from '@src/index.js';
 
 const originalProcessOn = process.on;
 const originalProcessRemoveListener = process.removeListener;
