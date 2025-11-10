@@ -1,6 +1,6 @@
-jest.unmock('../src');
+jest.unmock('../src/index.js');
 
-import { extendPromise } from '../src';
+import { extendPromise } from '../src/index.js';
 
 describe('extendPromise', () => {
   it('should throw an error when called with anything but a promise', () => {
