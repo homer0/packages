@@ -11,11 +11,15 @@ module.exports = {
   unmockedModulePathPatterns: ['/node_modules/', 'object-utils'],
   testEnvironment: 'jsdom',
   transform: {
-    '^.+\\.tsx?$': [
+    '^.+\\.[jt]sx?$': [
       'ts-jest',
       {
         tsconfig: path.join(__dirname, 'tests', 'tsconfig.json'),
       },
     ],
+  },
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+    '^(.*)\\.js$': '$1',
   },
 };
