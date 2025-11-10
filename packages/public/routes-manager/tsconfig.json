@@ -2,8 +2,7 @@
   "extends": "@homer0/tsconfig/tsconfig.node.json",
   "compilerOptions": {
     "outDir": "dist",
-    "removeComments": true,
-    "jsx": "react-jsx"
+    "removeComments": true
   },
   "include": ["src", "tsup.config.ts"]
 }
