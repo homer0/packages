@@ -1,4 +1,4 @@
-import { Route } from '@src/route';
+import { Route } from '@src/route.js';
 
 describe('Route', () => {
   describe('constructor', () => {

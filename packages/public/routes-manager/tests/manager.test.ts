@@ -1,6 +1,6 @@
 import type { IsEqual } from 'type-fest';
-import { Route } from '@src/route';
-import { RoutesManager, createRoutesManager } from '@src/manager';
+import { Route } from '@src/route.js';
+import { RoutesManager, createRoutesManager } from '@src/manager.js';
 
 describe('RoutsManager', () => {
   const dummyRoutes = {

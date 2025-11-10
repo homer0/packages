@@ -10,7 +10,7 @@ import {
   formatRouteDefinition,
   formatGroup,
   formatRoutes,
-} from '@src/formatter';
+} from '@src/formatter.js';
 
 describe('createRoute', () => {
   describe('isRouteStringDefinition', () => {
