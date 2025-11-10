@@ -1,10 +1,10 @@
-jest.unmock('../src/config');
-jest.unmock('../src/createConfigSlice');
+jest.unmock('../src/config.js');
+jest.unmock('../src/createConfigSlice.js');
 
-import { Config } from '../src/config';
-import { createConfigSlice } from '../src/createConfigSlice';
-import { isServer } from '../src/utils';
-import type { ConfigSlice } from '../src/types';
+import { Config } from '../src/config.js';
+import { createConfigSlice } from '../src/createConfigSlice.js';
+import { isServer } from '../src/utils.js';
+import type { ConfigSlice } from '../src/types.js';
 
 const isServerMock = isServer as jest.MockedFunction<typeof isServer>;
 

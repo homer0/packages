@@ -1,7 +1,7 @@
 /* @jest-environment node */
-jest.unmock('../src/utils');
+jest.unmock('../src/utils.js');
 
-import { isServer } from '../src/utils';
+import { isServer } from '../src/utils.js';
 
 describe('utils (node)', () => {
   describe('isServer', () => {

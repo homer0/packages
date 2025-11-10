@@ -1,8 +1,8 @@
 jest.unmock('../src/store');
 
-import { getStore, resetStore } from '../src/store';
-import type { Config } from '../src/config';
-import type { GenericConfig, ConfigSlice } from '../src/types';
+import { getStore, resetStore } from '../src/store.js';
+import type { Config } from '../src/config.js';
+import type { GenericConfig, ConfigSlice } from '../src/types.js';
 
 describe('store', () => {
   const dummyConfigName = 'dummy';

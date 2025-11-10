@@ -1,6 +1,6 @@
-jest.unmock('../src/createConfigSlice');
+jest.unmock('../src/createConfigSlice.js');
 
-import { createConfigSlice } from '../src/createConfigSlice';
+import { createConfigSlice } from '../src/createConfigSlice.js';
 
 describe('createConfigSlice', () => {
   const sliceName = 'dummy';
