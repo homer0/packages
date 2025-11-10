@@ -43,7 +43,7 @@
     "lint": "eslint .",
     "test": "jest -c ./.jestrc.cjs",
     "types:check": "tsc --noEmit && tsc --noEmit --project ./tests/tsconfig.json",
-    "build": "tsup src/index.ts",
+    "build": "tsup",
     "prepublishOnly": "pnpm run build"
   }
 }
