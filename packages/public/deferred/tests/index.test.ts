@@ -1,6 +1,6 @@
-jest.unmock('../src/index.js');
+jest.unmock('@src/index.js');
 
-import { deferred } from '../src/index.js';
+import { deferred } from '@src/index.js';
 
 describe('deferred', () => {
   it('should be able to resolve a deferred promise', async () => {
