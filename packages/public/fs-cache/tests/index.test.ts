@@ -1,6 +1,15 @@
-jest.mock('fs/promises');
-jest.unmock('@src/index.js');
+vi.mock('fs/promises');
+vi.unmock('@src/index.js');
 
+import {
+  describe,
+  it,
+  beforeEach,
+  afterEach,
+  expect,
+  type MockedObject,
+  type MockInstance,
+} from 'vitest';
 import { Jimple } from '@homer0/jimple';
 import * as originalFsPromises from 'fs/promises';
 import type { Stats, Dirent } from 'fs';
@@ -13,7 +22,7 @@ import {
 } from '@src/index.js';
 import type { FsCacheEntryOptions } from '@src/types.js';
 
-const fs = originalFsPromises as jest.Mocked<typeof originalFsPromises>;
+const fs = originalFsPromises as MockedObject<typeof originalFsPromises>;
 
 describe('FsCache', () => {
   const resetFs = () => {
@@ -26,8 +35,8 @@ describe('FsCache', () => {
     fs.readdir.mockReset();
   };
 
-  const getPathUtils = (): [PathUtils, jest.Mocked<PathUtils['join']>] => {
-    const joinFn = jest.fn((...paths: string[]) => paths.join('/'));
+  const getPathUtils = (): [PathUtils, MockInstance<PathUtils['join']>] => {
+    const joinFn = vi.fn((...paths: string[]) => paths.join('/'));
     class MyPathUtils extends PathUtils {
       override join(...paths: string[]): string {
         return joinFn(...paths);
@@ -101,17 +110,17 @@ describe('FsCache', () => {
     describe('use', () => {
       beforeEach(() => {
         resetFs();
-        jest.useFakeTimers();
+        vi.useFakeTimers();
       });
 
       afterEach(() => {
-        jest.runOnlyPendingTimers();
+        vi.runOnlyPendingTimers();
       });
 
       it('should skip the cache functionality', async () => {
         // Given
         const value = 'Batman';
-        const initFn = jest.fn(() => Promise.resolve(value));
+        const initFn = vi.fn(() => Promise.resolve(value));
         const options: FsCacheEntryOptions = {
           key: value,
           init: initFn,
@@ -129,7 +138,7 @@ describe('FsCache', () => {
       it('should resolve all requests with a single promise', async () => {
         // Given
         const value = 'Batman';
-        const initFn = jest.fn(() => Promise.resolve(value));
+        const initFn = vi.fn(() => Promise.resolve(value));
         const options: FsCacheEntryOptions = {
           key: value,
           init: initFn,
@@ -151,7 +160,7 @@ describe('FsCache', () => {
       it('should reject all requests when the init fails', async () => {
         // Given
         const message = 'Something went wrong!';
-        const initFn = jest.fn(() => Promise.reject(new Error(message)));
+        const initFn = vi.fn(() => Promise.reject(new Error(message)));
         const options: FsCacheEntryOptions = {
           key: 'something',
           init: initFn,
@@ -159,18 +168,18 @@ describe('FsCache', () => {
         };
         // When/Then
         const sut = new FsCache();
-        jest.useRealTimers();
+        vi.useRealTimers();
         await Promise.all([
           expect(sut.use(options)).rejects.toThrow(message),
           expect(sut.use(options)).rejects.toThrow(message),
         ]);
-        jest.useFakeTimers();
+        vi.useFakeTimers();
       });
 
       it('should cache a value in the fs', async () => {
         // Given
         const value = 'Rosario & Pilar';
-        const initFn = jest.fn(() => Promise.resolve(value));
+        const initFn = vi.fn(() => Promise.resolve(value));
         const filename = 'daughters-fs';
         const [usePathUtils, joinFn] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -215,7 +224,7 @@ describe('FsCache', () => {
       it('should cache a value in the fs and read it back', async () => {
         // Given
         const value = 'Rosario & Pilar';
-        const initFn = jest.fn(() => Promise.resolve(value));
+        const initFn = vi.fn(() => Promise.resolve(value));
         const filename = 'daughters-fs-read';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -270,7 +279,7 @@ describe('FsCache', () => {
       it('should cache a value in the fs and memory', async () => {
         // Given
         const value = 'Rosario & Pilar';
-        const initFn = jest.fn(() => Promise.resolve(value));
+        const initFn = vi.fn(() => Promise.resolve(value));
         const filename = 'daughters-fs-memory';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -311,7 +320,7 @@ describe('FsCache', () => {
       it('should cache a value and delete it when it expires', async () => {
         // Given
         const value = 'Rosario & Pilar';
-        const initFn = jest.fn(() => Promise.resolve(value));
+        const initFn = vi.fn(() => Promise.resolve(value));
         const filename = 'daughters-expires';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -345,7 +354,7 @@ describe('FsCache', () => {
         // When
         const sut = new FsCache(sutOptions);
         const resultOne = await sut.use(entryOptions);
-        jest.runAllTimers();
+        vi.runAllTimers();
         const resultTwo = await sut.use(entryOptions);
         // Then
         expect(resultOne).toBe(value);
@@ -366,7 +375,7 @@ describe('FsCache', () => {
       it('should cache a value but not schedule the deletion for it when it expires', async () => {
         // Given
         const value = 'Rosario & Pilar';
-        const initFn = jest.fn(() => Promise.resolve(value));
+        const initFn = vi.fn(() => Promise.resolve(value));
         const filename = 'daughters-expires';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -399,7 +408,7 @@ describe('FsCache', () => {
         // When
         const sut = new FsCache(sutOptions);
         const resultOne = await sut.use(entryOptions);
-        jest.runAllTimers();
+        vi.runAllTimers();
         const resultTwo = await sut.use(entryOptions);
         // Then
         expect(resultOne).toBe(value);
@@ -410,7 +419,7 @@ describe('FsCache', () => {
       it("should manually expire an entry in case the timeout does't run", async () => {
         // Given
         const value = 'Rosario & Pilar';
-        const initFn = jest.fn(() => Promise.resolve(value));
+        const initFn = vi.fn(() => Promise.resolve(value));
         const filename = 'daughters-expires';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -473,12 +482,12 @@ describe('FsCache', () => {
         fs.access.mockRejectedValueOnce(new Error(message));
         // When/Then
         const sut = new FsCache();
-        jest.useRealTimers();
+        vi.useRealTimers();
         await Promise.all([
           expect(sut.use(options)).rejects.toThrow(message),
           expect(sut.use(options)).rejects.toThrow(message),
         ]);
-        jest.useFakeTimers();
+        vi.useFakeTimers();
       });
 
       it('should throw an error if the TTL is greater than the service max TTL', async () => {
@@ -506,11 +515,11 @@ describe('FsCache', () => {
     describe('useJSON', () => {
       beforeEach(() => {
         resetFs();
-        jest.useFakeTimers();
+        vi.useFakeTimers();
       });
 
       afterEach(() => {
-        jest.runOnlyPendingTimers();
+        vi.runOnlyPendingTimers();
       });
 
       it('should cache a value in the fs', async () => {
@@ -518,7 +527,7 @@ describe('FsCache', () => {
         const value = {
           daughters: ['Rosario', 'Pilar'],
         };
-        const initFn = jest.fn(() => Promise.resolve(value));
+        const initFn = vi.fn(() => Promise.resolve(value));
         const filename = 'daughters-fs-json';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -561,7 +570,7 @@ describe('FsCache', () => {
           daughters: ['Rosario', 'Pilar'],
         };
         const valueJSON = JSON.stringify(value);
-        const initFn = jest.fn(() => Promise.resolve(value));
+        const initFn = vi.fn(() => Promise.resolve(value));
         const filename = 'daughters-fs-json-read';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -611,17 +620,17 @@ describe('FsCache', () => {
     describe('removeFromMemory', () => {
       beforeEach(() => {
         resetFs();
-        jest.useFakeTimers();
+        vi.useFakeTimers();
       });
 
       afterEach(() => {
-        jest.runOnlyPendingTimers();
+        vi.runOnlyPendingTimers();
       });
 
       it('should remove an entry from the memory and the fs', async () => {
         // Given
         const value = 'Rosario & Pilar';
-        const initFn = jest.fn(() => Promise.resolve(value));
+        const initFn = vi.fn(() => Promise.resolve(value));
         const filename = 'daughters-fs-remove';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -688,7 +697,7 @@ describe('FsCache', () => {
       it('should remove an entry from the memory but not the fs', async () => {
         // Given
         const value = 'Rosario & Pilar';
-        const initFn = jest.fn(() => Promise.resolve(value));
+        const initFn = vi.fn(() => Promise.resolve(value));
         const filename = 'daughters-fs-remove';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -744,17 +753,17 @@ describe('FsCache', () => {
     describe('removeFile', () => {
       beforeEach(() => {
         resetFs();
-        jest.useFakeTimers();
+        vi.useFakeTimers();
       });
 
       afterEach(() => {
-        jest.runOnlyPendingTimers();
+        vi.runOnlyPendingTimers();
       });
 
       it('should remove an entry from the fs and the memory', async () => {
         // Given
         const value = 'Rosario & Pilar';
-        const initFn = jest.fn(() => Promise.resolve(value));
+        const initFn = vi.fn(() => Promise.resolve(value));
         const filename = 'daughters-fs-remove';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -821,7 +830,7 @@ describe('FsCache', () => {
       it('should remove an entry from the memory but not the memory', async () => {
         // Given
         const value = 'Rosario & Pilar';
-        const initFn = jest.fn(() => Promise.resolve(value));
+        const initFn = vi.fn(() => Promise.resolve(value));
         const filename = 'daughters-fs-remove';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -881,7 +890,7 @@ describe('FsCache', () => {
       it('should provide file information before removing a file', async () => {
         // Given
         const value = 'Rosario & Pilar';
-        const initFn = jest.fn(() => Promise.resolve(value));
+        const initFn = vi.fn(() => Promise.resolve(value));
         const filename = 'daughters-fs-remove';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -896,7 +905,7 @@ describe('FsCache', () => {
           key: filename,
           init: initFn,
         };
-        const shouldRemove = jest.fn(() => true);
+        const shouldRemove = vi.fn(() => true);
         // - First cache directory check
         fs.access.mockResolvedValueOnce();
         // - First file check
@@ -943,7 +952,7 @@ describe('FsCache', () => {
       it('should prevent a file deletion', async () => {
         // Given
         const value = 'Rosario & Pilar';
-        const initFn = jest.fn(() => Promise.resolve(value));
+        const initFn = vi.fn(() => Promise.resolve(value));
         const filename = 'daughters-fs-remove';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -958,7 +967,7 @@ describe('FsCache', () => {
           key: filename,
           init: initFn,
         };
-        const shouldRemove = jest.fn(() => Promise.resolve(false));
+        const shouldRemove = vi.fn(() => Promise.resolve(false));
         // - First cache directory check
         fs.access.mockResolvedValueOnce();
         // - First file check
@@ -1003,17 +1012,17 @@ describe('FsCache', () => {
     describe('remove', () => {
       beforeEach(() => {
         resetFs();
-        jest.useFakeTimers();
+        vi.useFakeTimers();
       });
 
       afterEach(() => {
-        jest.runOnlyPendingTimers();
+        vi.runOnlyPendingTimers();
       });
 
       it('should remove an entry from the fs and the memory', async () => {
         // Given
         const value = 'Rosario & Pilar';
-        const initFn = jest.fn(() => Promise.resolve(value));
+        const initFn = vi.fn(() => Promise.resolve(value));
         const filename = 'daughters-fs-remove';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -1069,7 +1078,7 @@ describe('FsCache', () => {
       it('should remove an entry from the fs and the memory with custom extension', async () => {
         // Given
         const value = 'Rosario & Pilar';
-        const initFn = jest.fn(() => Promise.resolve(value));
+        const initFn = vi.fn(() => Promise.resolve(value));
         const filename = 'daughters-fs-remove';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -1127,20 +1136,20 @@ describe('FsCache', () => {
     describe('cleanMemory', () => {
       beforeEach(() => {
         resetFs();
-        jest.useFakeTimers();
+        vi.useFakeTimers();
       });
 
       afterEach(() => {
-        jest.runOnlyPendingTimers();
+        vi.runOnlyPendingTimers();
       });
 
       it('should remove all entries from the memory and the fs', async () => {
         // Given
         const valueOne = 'Rosario & Pilar';
-        const initFnOne = jest.fn(() => Promise.resolve(valueOne));
+        const initFnOne = vi.fn(() => Promise.resolve(valueOne));
         const filenameOne = 'daughters-fs-clean-one';
         const valueTwo = 'Pilar & Rosario';
-        const initFnTwo = jest.fn(() => Promise.resolve(valueTwo));
+        const initFnTwo = vi.fn(() => Promise.resolve(valueTwo));
         const filenameTwo = 'daughters-fs-clean-two';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -1242,10 +1251,10 @@ describe('FsCache', () => {
       it('should remove all entries from the memory but not the fs', async () => {
         // Given
         const valueOne = 'Rosario & Pilar';
-        const initFnOne = jest.fn(() => Promise.resolve(valueOne));
+        const initFnOne = vi.fn(() => Promise.resolve(valueOne));
         const filenameOne = 'daughters-fs-clean-one';
         const valueTwo = 'Pilar & Rosario';
-        const initFnTwo = jest.fn(() => Promise.resolve(valueTwo));
+        const initFnTwo = vi.fn(() => Promise.resolve(valueTwo));
         const filenameTwo = 'daughters-fs-clean-two';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -1325,20 +1334,20 @@ describe('FsCache', () => {
     describe('cleanFs', () => {
       beforeEach(() => {
         resetFs();
-        jest.useFakeTimers();
+        vi.useFakeTimers();
       });
 
       afterEach(() => {
-        jest.runOnlyPendingTimers();
+        vi.runOnlyPendingTimers();
       });
 
       it('should remove all entries from the fs and the memory', async () => {
         // Given
         const valueOne = 'Rosario & Pilar';
-        const initFnOne = jest.fn(() => Promise.resolve(valueOne));
+        const initFnOne = vi.fn(() => Promise.resolve(valueOne));
         const filenameOne = 'daughters-fs-clean-one';
         const valueTwo = 'Pilar & Rosario';
-        const initFnTwo = jest.fn(() => Promise.resolve(valueTwo));
+        const initFnTwo = vi.fn(() => Promise.resolve(valueTwo));
         const filenameTwo = 'daughters-fs-clean-two';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -1433,10 +1442,10 @@ describe('FsCache', () => {
       it('should remove all entries from the fs but not the memory', async () => {
         // Given
         const valueOne = 'Rosario & Pilar';
-        const initFnOne = jest.fn(() => Promise.resolve(valueOne));
+        const initFnOne = vi.fn(() => Promise.resolve(valueOne));
         const filenameOne = 'daughters-fs-clean-one';
         const valueTwo = 'Pilar & Rosario';
-        const initFnTwo = jest.fn(() => Promise.resolve(valueTwo));
+        const initFnTwo = vi.fn(() => Promise.resolve(valueTwo));
         const filenameTwo = 'daughters-fs-clean-two';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -1455,7 +1464,7 @@ describe('FsCache', () => {
           key: filenameTwo,
           init: initFnTwo,
         };
-        const shouldRemove = jest.fn(() => true);
+        const shouldRemove = vi.fn(() => true);
         // - First file, first cache directory check
         fs.access.mockResolvedValueOnce();
         // - First file, first check
@@ -1543,20 +1552,20 @@ describe('FsCache', () => {
     describe('clean', () => {
       beforeEach(() => {
         resetFs();
-        jest.useFakeTimers();
+        vi.useFakeTimers();
       });
 
       afterEach(() => {
-        jest.runOnlyPendingTimers();
+        vi.runOnlyPendingTimers();
       });
 
       it('should remove all entries from the fs and the memory', async () => {
         // Given
         const valueOne = 'Rosario & Pilar';
-        const initFnOne = jest.fn(() => Promise.resolve(valueOne));
+        const initFnOne = vi.fn(() => Promise.resolve(valueOne));
         const filenameOne = 'daughters-fs-clean-one';
         const valueTwo = 'Pilar & Rosario';
-        const initFnTwo = jest.fn(() => Promise.resolve(valueTwo));
+        const initFnTwo = vi.fn(() => Promise.resolve(valueTwo));
         const filenameTwo = 'daughters-fs-clean-two';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -1651,10 +1660,10 @@ describe('FsCache', () => {
       it('should remove all entries from the fs and the memory with custom ext', async () => {
         // Given
         const valueOne = 'Rosario & Pilar';
-        const initFnOne = jest.fn(() => Promise.resolve(valueOne));
+        const initFnOne = vi.fn(() => Promise.resolve(valueOne));
         const filenameOne = 'daughters-fs-clean-one';
         const valueTwo = 'Pilar & Rosario';
-        const initFnTwo = jest.fn(() => Promise.resolve(valueTwo));
+        const initFnTwo = vi.fn(() => Promise.resolve(valueTwo));
         const filenameTwo = 'daughters-fs-clean-two';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -1755,21 +1764,21 @@ describe('FsCache', () => {
     describe('purgeMemory', () => {
       beforeEach(() => {
         resetFs();
-        jest.useFakeTimers();
-        jest.setTimeout(10000);
+        vi.useFakeTimers();
+        vi.setConfig({ testTimeout: 10_000 });
       });
 
       afterEach(() => {
-        jest.runOnlyPendingTimers();
+        vi.runOnlyPendingTimers();
       });
 
       it('should remove expired entries from the memory and the fs', async () => {
         // Given
         const valueOne = 'Rosario & Pilar';
-        const initFnOne = jest.fn(() => Promise.resolve(valueOne));
+        const initFnOne = vi.fn(() => Promise.resolve(valueOne));
         const filenameOne = 'daughters-fs-clean-one';
         const valueTwo = 'Pilar & Rosario';
-        const initFnTwo = jest.fn(() => Promise.resolve(valueTwo));
+        const initFnTwo = vi.fn(() => Promise.resolve(valueTwo));
         const filenameTwo = 'daughters-fs-clean-two';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -1838,9 +1847,9 @@ describe('FsCache', () => {
         const sut = new FsCache(sutOptions);
         const resultOneFileOne = await sut.use(entryOptionsOne);
         const resultOneFileTwo = await sut.use(entryOptionsTwo);
-        jest
-          .spyOn(global.Date, 'now')
-          .mockReturnValueOnce(now + sutOptions.defaultTTL! * 2);
+        vi.spyOn(global.Date, 'now').mockReturnValueOnce(
+          now + sutOptions.defaultTTL! * 2,
+        );
         await sut.purgeMemory();
         const resultTwoFileOne = await sut.use(entryOptionsOne);
         const resultTwoFileTwo = await sut.use(entryOptionsTwo);
@@ -1876,10 +1885,10 @@ describe('FsCache', () => {
       it("shouldn't remove non expired entries", async () => {
         // Given
         const valueOne = 'Rosario & Pilar';
-        const initFnOne = jest.fn(() => Promise.resolve(valueOne));
+        const initFnOne = vi.fn(() => Promise.resolve(valueOne));
         const filenameOne = 'daughters-fs-clean-one';
         const valueTwo = 'Pilar & Rosario';
-        const initFnTwo = jest.fn(() => Promise.resolve(valueTwo));
+        const initFnTwo = vi.fn(() => Promise.resolve(valueTwo));
         const filenameTwo = 'daughters-fs-clean-two';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -1955,20 +1964,20 @@ describe('FsCache', () => {
     describe('purgeFs', () => {
       beforeEach(() => {
         resetFs();
-        jest.useFakeTimers();
+        vi.useFakeTimers();
       });
 
       afterEach(() => {
-        jest.runOnlyPendingTimers();
+        vi.runOnlyPendingTimers();
       });
 
       it('should remove expired entries from the memory and the fs', async () => {
         // Given
         const valueOne = 'Rosario & Pilar';
-        const initFnOne = jest.fn(() => Promise.resolve(valueOne));
+        const initFnOne = vi.fn(() => Promise.resolve(valueOne));
         const filenameOne = 'daughters-fs-clean-one';
         const valueTwo = 'Pilar & Rosario';
-        const initFnTwo = jest.fn(() => Promise.resolve(valueTwo));
+        const initFnTwo = vi.fn(() => Promise.resolve(valueTwo));
         const filenameTwo = 'daughters-fs-clean-two';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -2071,10 +2080,10 @@ describe('FsCache', () => {
       it("shouldn't remove non expired entries", async () => {
         // Given
         const valueOne = 'Rosario & Pilar';
-        const initFnOne = jest.fn(() => Promise.resolve(valueOne));
+        const initFnOne = vi.fn(() => Promise.resolve(valueOne));
         const filenameOne = 'daughters-fs-clean-one';
         const valueTwo = 'Pilar & Rosario';
-        const initFnTwo = jest.fn(() => Promise.resolve(valueTwo));
+        const initFnTwo = vi.fn(() => Promise.resolve(valueTwo));
         const filenameTwo = 'daughters-fs-clean-two';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -2158,20 +2167,20 @@ describe('FsCache', () => {
     describe('purge', () => {
       beforeEach(() => {
         resetFs();
-        jest.useFakeTimers();
+        vi.useFakeTimers();
       });
 
       afterEach(() => {
-        jest.runOnlyPendingTimers();
+        vi.runOnlyPendingTimers();
       });
 
       it('should remove all expired entries from the memory and the fs', async () => {
         // Given
         const valueOne = 'Rosario & Pilar';
-        const initFnOne = jest.fn(() => Promise.resolve(valueOne));
+        const initFnOne = vi.fn(() => Promise.resolve(valueOne));
         const filenameOne = 'daughters-fs-clean-one';
         const valueTwo = 'Pilar & Rosario';
-        const initFnTwo = jest.fn(() => Promise.resolve(valueTwo));
+        const initFnTwo = vi.fn(() => Promise.resolve(valueTwo));
         const filenameTwo = 'daughters-fs-clean-two';
         const [usePathUtils] = getPathUtils();
         const sutOptions: FsCacheConstructorOptions = {
@@ -2283,7 +2292,7 @@ describe('FsCache', () => {
   describe('provider', () => {
     it('should include a Jimple provider', () => {
       // Given
-      const setFn = jest.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override set(...args: Parameters<Jimple['set']>) {
           setFn(...args);
@@ -2302,8 +2311,8 @@ describe('FsCache', () => {
 
     it('should allow custom options on its provider', () => {
       // Given
-      const getFn = jest.fn();
-      const setFn = jest.fn();
+      const getFn = vi.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override get<T>(key: string): T {
           getFn(key);
