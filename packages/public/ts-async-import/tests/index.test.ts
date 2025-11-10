@@ -1,7 +1,7 @@
-jest.unmock('../src');
+jest.unmock('../src/index.js');
 
 import * as path from 'path';
-import { tsAsyncImport } from '../src';
+import { tsAsyncImport } from '../src/index.js';
 
 describe('tsAsyncImport', () => {
   const here = __dirname;
