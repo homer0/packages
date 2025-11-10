@@ -5,7 +5,7 @@ import {
   type Dict,
   type SimpleStorageConstructorOptions,
   type StorageWindow,
-} from '../src/index.js';
+} from '@src/index.js';
 
 type getStorageProxyMocks<T> = {
   get: jest.Mock<T | undefined, [name: string]>;
