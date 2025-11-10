@@ -9,9 +9,16 @@
   },
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
   "license": "UNLICENSED",
+  "type": "module",
   "main": "./dist/index.js",
-  "module": "./dist/esm/index.js",
   "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./src/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
