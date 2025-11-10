@@ -1,6 +1,6 @@
-jest.unmock('../src');
+jest.unmock('@src/index.js');
 
-import { EventsHub, eventsHub } from '../src';
+import { EventsHub, eventsHub } from '@src/index.js';
 
 describe('EventsHub', () => {
   describe('basic', () => {
