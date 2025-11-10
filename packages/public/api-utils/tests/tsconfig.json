@@ -1,7 +1,11 @@
 {
   "extends": "@homer0/tsconfig/tsconfig.jest-node.json",
   "compilerOptions": {
-    "allowJs": true
+    "allowJs": true,
+    "baseUrl": "./",
+    "paths": {
+      "@src/*": ["../src/*"]
+    }
   },
   "include": ["./"]
 }

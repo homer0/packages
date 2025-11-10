@@ -1,7 +1,7 @@
 jest.unmock('../src/endpointsGenerator');
 
-import { EndpointsGenerator, endpointsGenerator } from '../src/endpointsGenerator';
-import type { EndpointsDict } from '../src/types';
+import { EndpointsGenerator, endpointsGenerator } from '../src/endpointsGenerator.js';
+import type { EndpointsDict } from '../src/types.js';
 
 describe('EndpointsGenertor', () => {
   it('should be correctly initialized', () => {
