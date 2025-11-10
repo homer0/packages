@@ -1,10 +1,10 @@
-jest.unmock('../../src/fns/merge.js');
-jest.unmock('../../src/fns/copy.js');
-jest.unmock('../../src/fns/get.js');
-jest.unmock('../../src/fns/remove.js');
+jest.unmock('@src/fns/merge.js');
+jest.unmock('@src/fns/copy.js');
+jest.unmock('@src/fns/get.js');
+jest.unmock('@src/fns/remove.js');
 
-import { copy } from '../../src/fns/copy.js';
-import { remove } from '../../src/fns/remove.js';
+import { copy } from '@src/fns/copy.js';
+import { remove } from '@src/fns/remove.js';
 
 describe('remove', () => {
   it('should delete a property from an object using its name', () => {

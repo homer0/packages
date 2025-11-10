@@ -1,6 +1,6 @@
-jest.unmock('../../src/fns/merge.js');
+jest.unmock('@src/fns/merge.js');
 
-import { merge } from '../../src/fns/merge.js';
+import { merge } from '@src/fns/merge.js';
 
 describe('merge', () => {
   it('should merge two objects into a new one', () => {

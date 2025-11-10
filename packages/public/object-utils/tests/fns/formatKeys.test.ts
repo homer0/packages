@@ -1,6 +1,6 @@
-jest.unmock('../../src/fns/formatKeys.js');
+jest.unmock('@src/fns/formatKeys.js');
 
-import { formatKeys } from '../../src/fns/formatKeys.js';
+import { formatKeys } from '@src/fns/formatKeys.js';
 
 describe('formatKeys', () => {
   it('should make all keys first letters into upper case', () => {

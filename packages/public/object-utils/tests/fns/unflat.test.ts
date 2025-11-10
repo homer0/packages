@@ -1,9 +1,9 @@
-jest.unmock('../../src/fns/merge.js');
-jest.unmock('../../src/fns/copy.js');
-jest.unmock('../../src/fns/set.js');
-jest.unmock('../../src/fns/unflat.js');
+jest.unmock('@src/fns/merge.js');
+jest.unmock('@src/fns/copy.js');
+jest.unmock('@src/fns/set.js');
+jest.unmock('@src/fns/unflat.js');
 
-import { unflat } from '../../src/fns/unflat.js';
+import { unflat } from '@src/fns/unflat.js';
 
 describe('unflat', () => {
   it('should un-flatten a list of properties into a new object', () => {

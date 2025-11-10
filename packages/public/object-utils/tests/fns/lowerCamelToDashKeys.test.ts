@@ -1,7 +1,7 @@
-jest.unmock('../../src/fns/formatKeys.js');
-jest.unmock('../../src/fns/lowerCamelToDashKeys.js');
+jest.unmock('@src/fns/formatKeys.js');
+jest.unmock('@src/fns/lowerCamelToDashKeys.js');
 
-import { lowerCamelToDashKeys } from '../../src/fns/lowerCamelToDashKeys.js';
+import { lowerCamelToDashKeys } from '@src/fns/lowerCamelToDashKeys.js';
 
 describe('lowerCamelToDashKeys', () => {
   it('should transform all keys to dash case', () => {

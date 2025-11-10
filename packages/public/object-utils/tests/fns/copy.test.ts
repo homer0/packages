@@ -1,7 +1,7 @@
-jest.unmock('../../src/fns/merge.js');
-jest.unmock('../../src/fns/copy.js');
+jest.unmock('@src/fns/merge.js');
+jest.unmock('@src/fns/copy.js');
 
-import { copy } from '../../src/fns/copy.js';
+import { copy } from '@src/fns/copy.js';
 
 describe('copy', () => {
   it('should make a copy of an object', () => {
