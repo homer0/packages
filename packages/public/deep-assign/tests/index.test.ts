@@ -1,12 +1,12 @@
-jest.unmock('../src/deepAssign');
-jest.unmock('../src');
+jest.unmock('../src/deepAssign.js');
+jest.unmock('../src/index.js');
 
 import {
   deepAssign,
   deepAssignWithConcat,
   deepAssignWithOverwrite,
   deepAssignWithShallowMerge,
-} from '../src';
+} from '../src/index.js';
 
 describe('exports', () => {
   describe('deepAssign', () => {
