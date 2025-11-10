@@ -1,8 +1,8 @@
-jest.unmock('../../src/fns/merge');
-jest.unmock('../../src/fns/copy');
-jest.unmock('../../src/fns/flat');
+jest.unmock('../../src/fns/merge.js');
+jest.unmock('../../src/fns/copy.js');
+jest.unmock('../../src/fns/flat.js');
 
-import { flat } from '../../src/fns/flat';
+import { flat } from '../../src/fns/flat.js';
 
 describe('flat', () => {
   it('should flattern the properties of an object', () => {

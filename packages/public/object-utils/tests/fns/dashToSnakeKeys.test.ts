@@ -1,7 +1,7 @@
-jest.unmock('../../src/fns/formatKeys');
-jest.unmock('../../src/fns/dashToSnakeKeys');
+jest.unmock('../../src/fns/formatKeys.js');
+jest.unmock('../../src/fns/dashToSnakeKeys.js');
 
-import { dashToSnakeKeys } from '../../src/fns/dashToSnakeKeys';
+import { dashToSnakeKeys } from '../../src/fns/dashToSnakeKeys.js';
 
 describe('dashToSnakeKeys', () => {
   it('should transform all keys to snake case', () => {

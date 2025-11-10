@@ -1,9 +1,9 @@
-jest.unmock('../../src/fns/merge');
-jest.unmock('../../src/fns/copy');
-jest.unmock('../../src/fns/set');
+jest.unmock('../../src/fns/merge.js');
+jest.unmock('../../src/fns/copy.js');
+jest.unmock('../../src/fns/set.js');
 
-import { copy } from '../../src/fns/copy';
-import { set } from '../../src/fns/set';
+import { copy } from '../../src/fns/copy.js';
+import { set } from '../../src/fns/set.js';
 
 describe('set', () => {
   it('should set a property on an object using its name', () => {

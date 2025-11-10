@@ -1,6 +1,6 @@
-jest.unmock('../src');
+jest.unmock('../src/index.js');
 
-import * as index from '../src';
+import * as index from '../src/index.js';
 
 describe('index', () => {
   it('should export all the functions', () => {

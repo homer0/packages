@@ -1,6 +1,6 @@
-jest.unmock('../../src/fns/get');
+jest.unmock('../../src/fns/get.js');
 
-import { get } from '../../src/fns/get';
+import { get } from '../../src/fns/get.js';
 
 describe('get', () => {
   it('should read a property from an object using its name', () => {
