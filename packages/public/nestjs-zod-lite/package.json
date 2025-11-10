@@ -12,9 +12,23 @@
     "Evgeny Zakharov <to@risen.dev>"
   ],
   "license": "UNLICENSED",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
   "main": "./dist/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./src/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/",
+    "src/"
+  ],
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
