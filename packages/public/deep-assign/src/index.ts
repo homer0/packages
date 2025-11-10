@@ -1,4 +1,4 @@
-import { DeepAssign } from './deepAssign';
+import { DeepAssign } from './deepAssign.js';
 
 /**
  * Makes a deep merge of a list of objects and/or arrays.
