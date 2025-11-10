@@ -1,8 +1,8 @@
 /* eslint-disable dot-notation, no-process-env */
-jest.unmock('../src');
+jest.unmock('../src/index.js');
 
 import { Jimple } from '@homer0/jimple';
-import { EnvUtils, envUtilsProvider, envUtils } from '../src';
+import { EnvUtils, envUtilsProvider, envUtils } from '../src/index.js';
 
 const originalEnv = process.env;
 
