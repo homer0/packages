@@ -1,5 +1,5 @@
 jest.mock('fs/promises');
-jest.unmock('../src/index.js');
+jest.unmock('@src/index.js');
 
 import { Jimple } from '@homer0/jimple';
 import * as originalFsPromises from 'fs/promises';
@@ -10,8 +10,8 @@ import {
   fsCache,
   fsCacheProvider,
   type FsCacheConstructorOptions,
-} from '../src/index.js';
-import type { FsCacheEntryOptions } from '../src/types.js';
+} from '@src/index.js';
+import type { FsCacheEntryOptions } from '@src/types.js';
 
 const fs = originalFsPromises as jest.Mocked<typeof originalFsPromises>;
 
