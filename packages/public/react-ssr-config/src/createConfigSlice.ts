@@ -1,4 +1,4 @@
-import type { GenericConfig, ConfigSlice } from './types';
+import type { GenericConfig, ConfigSlice } from './types.js';
 /**
  * Create a config slice to be used in a config.
  *

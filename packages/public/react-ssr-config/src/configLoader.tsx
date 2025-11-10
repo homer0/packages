@@ -1,6 +1,6 @@
 import React from 'react';
-import type { Config } from './config';
-import type { ConfigSlice, GenericConfig } from './types';
+import type { Config } from './config.js';
+import type { ConfigSlice, GenericConfig } from './types.js';
 
 /**
  * The props for the component that renders the configuration as a script tag so they

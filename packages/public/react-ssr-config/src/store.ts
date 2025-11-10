@@ -1,5 +1,5 @@
-import { Config } from './config';
-import type { GenericConfig, ConfigSlice } from './types';
+import { Config } from './config.js';
+import type { GenericConfig, ConfigSlice } from './types.js';
 
 type Store = Record<string, Config<Record<string, ConfigSlice<string, GenericConfig>>>>;
 /**
