@@ -1,7 +1,7 @@
-jest.unmock('../src/createGetConfig.js');
+jest.unmock('@src/createGetConfig.js');
 
-import { createGetConfig, getConfig, resetGetConfig } from '../src/createGetConfig.js';
-import { getStore } from '../src/store.js';
+import { createGetConfig, getConfig, resetGetConfig } from '@src/createGetConfig.js';
+import { getStore } from '@src/store.js';
 
 const getStoreMock = getStore as jest.Mock;
 

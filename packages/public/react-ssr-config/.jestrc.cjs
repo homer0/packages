@@ -1,4 +1,6 @@
 const path = require('path');
+const { pathsToModuleNameMapper } = require('ts-jest');
+const { compilerOptions } = require('./tests/tsconfig');
 
 /**
  * @type {import('ts-jest').JestConfigWithTsJest}
@@ -18,8 +20,8 @@ module.exports = {
       },
     ],
   },
-  moduleNameMapper: {
-    '^(\\.{1,2}/.*)\\.js$': '$1',
-    '^(.*)\\.js$': '$1',
-  },
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
+    prefix: '<rootDir>/tests',
+    useESM: true,
+  }),
 };

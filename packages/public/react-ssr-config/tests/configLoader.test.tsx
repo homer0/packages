@@ -1,9 +1,9 @@
-jest.unmock('../src/configLoader.js');
+jest.unmock('@src/configLoader.js');
 
 import { render } from '@testing-library/react';
-import { ConfigLoader } from '../src/configLoader.js';
-import type { Config } from '../src/config.js';
-import type { ConfigSlice, GenericConfig } from '../src/types.js';
+import { ConfigLoader } from '@src/configLoader.js';
+import type { Config } from '@src/config.js';
+import type { ConfigSlice, GenericConfig } from '@src/types.js';
 
 describe('ConfigLoader', () => {
   const configValue = {
