@@ -30,7 +30,7 @@ const createPreset = ({
   },
   plugins: ['@homer0'],
   extends: configs.map((config) => `plugin:@homer0/${config}`),
-  ignorePatterns: ['.eslintrc.js', 'dist/'],
+  ignorePatterns: ['.eslintrc.js', '.eslintrc.cjs', 'dist/'],
 });
 
 module.exports = createPreset;
