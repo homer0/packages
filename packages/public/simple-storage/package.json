@@ -19,8 +19,19 @@
   "publishConfig": {
     "access": "public"
   },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./src/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
   "files": [
-    "dist/"
+    "dist/",
+    "src/"
   ],
   "devDependencies": {
     "@homer0/deep-assign": "workspace:*",
@@ -36,9 +47,6 @@
   "engines": {
     "node": ">=20 <23"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/index.d.ts",
   "scripts": {
     "lint": "eslint .",
     "test": "jest -c ./.jestrc.cjs",
