@@ -12,5 +12,9 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "index.json"
+  "type": "module",
+  "main": "index.json",
+  "exports": {
+    ".": "./index.json"
+  }
 }
