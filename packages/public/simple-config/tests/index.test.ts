@@ -1,4 +1,4 @@
-jest.unmock('../src');
+jest.unmock('../src/index.js');
 
 import * as path from 'path';
 import { Jimple } from '@homer0/jimple';
@@ -9,7 +9,7 @@ import {
   simpleConfig,
   simpleConfigProvider,
   type SimpleConfigOptions,
-} from '../src';
+} from '../src/index.js';
 
 describe('SimpleConfig', () => {
   describe('class', () => {
