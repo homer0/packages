@@ -1,8 +1,8 @@
-jest.unmock('../src/index.js');
+jest.unmock('@src/index.js');
 
 import * as path from 'path';
 import { Jimple } from '@homer0/jimple';
-import { PathUtils, pathUtilsProvider, pathUtils } from '../src/index.js';
+import { PathUtils, pathUtilsProvider, pathUtils } from '@src/index.js';
 
 const originalProcesssCwd = process.cwd;
 const originalRootFile = process.argv[1];
