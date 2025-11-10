@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 // eslint-disable-next-line global-require, @typescript-eslint/no-require-imports
-jest.mock('colors/safe', () => require('./mocks/colors'));
+jest.mock('colors/safe.js', () => require('@tests/mocks/colors'));
 jest.mock('@homer0/package-info');
-jest.unmock('../src');
+jest.unmock('@src/index.js');
 
-import colorsOriginal from 'colors/safe';
+import colorsOriginal from 'colors/safe.js';
 import { Jimple } from '@homer0/jimple';
 import { PathUtils } from '@homer0/path-utils';
 import { PackageInfo, packageInfo as originalPackageInfo } from '@homer0/package-info';
@@ -14,7 +14,7 @@ import {
   simpleLoggerProvider,
   appLoggerProvider,
   type SimpleLoggerMessage,
-} from '../src';
+} from '@src/index.js';
 
 const originalConsoleLog = console.log;
 
