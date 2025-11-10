@@ -1,6 +1,6 @@
-import { get } from './get';
-import { set } from './set';
-import { copy } from './copy';
+import { get } from './get.js';
+import { set } from './set.js';
+import { copy } from './copy.js';
 /**
  * Used in the {@link extract} function to specify a path for a property, or an "origin path"
  * and an "extraction path".

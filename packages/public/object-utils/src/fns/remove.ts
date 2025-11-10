@@ -1,5 +1,5 @@
-import { copy } from './copy';
-import { get } from './get';
+import { copy } from './copy.js';
+import { get } from './get.js';
 
 export type RemoveOptions = {
   /**

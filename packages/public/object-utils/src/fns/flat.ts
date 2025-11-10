@@ -1,5 +1,5 @@
-import { copy } from './copy';
-import { merge } from './merge';
+import { copy } from './copy.js';
+import { merge } from './merge.js';
 
 /**
  * Checks whether a key for an array or an Object should be flattened.
