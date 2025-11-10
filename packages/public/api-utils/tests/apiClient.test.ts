@@ -1,8 +1,8 @@
-jest.unmock('../src/apiClient');
-jest.unmock('../src/endpointsGenerator');
+jest.unmock('@src/apiClient');
+jest.unmock('@src/endpointsGenerator');
 
 import mockedFetch, { enableFetchMocks, FetchMock } from 'jest-fetch-mock';
-import { APIClient, apiClient, type APIClientBodyInit } from '../src/apiClient.js';
+import { APIClient, apiClient, type APIClientBodyInit } from '@src/apiClient.js';
 
 describe('APIClient', () => {
   const fetchMock = mockedFetch as unknown as FetchMock;
