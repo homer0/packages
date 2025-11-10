@@ -1,6 +1,6 @@
 import { BadRequestException, HttpStatus } from '@nestjs/common';
 import { z } from 'zod';
-import { ZodValidationException } from '@src/exception';
+import { ZodValidationException } from '@src/exception.js';
 
 describe('ZodValidationException', () => {
   it('should correctly create exception', () => {
