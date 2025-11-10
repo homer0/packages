@@ -1,11 +1,11 @@
-import { formatRoutes } from './formatter';
-import { Route } from './route';
+import { formatRoutes } from './formatter.js';
+import { Route } from './route.js';
 import type {
   RoutePathGroup,
   RoutePath,
   FormattedRoutePaths,
   RoutePathParams,
-} from './types';
+} from './types.js';
 
 /**
  * A dictionary of all the routes that are sent to the manager, but wrapped inside

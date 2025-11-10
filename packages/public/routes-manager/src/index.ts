@@ -1,3 +1,3 @@
-export type * from './types';
-export * from './route';
-export * from './manager';
+export type * from './types.js';
+export * from './route.js';
+export * from './manager.js';

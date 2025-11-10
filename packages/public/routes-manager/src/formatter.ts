@@ -10,7 +10,7 @@ import type {
   PrefixedPath,
   PrefixedName,
   FormattedRoutePathDefinition,
-} from './types';
+} from './types.js';
 
 /**
  * Type guard to validate if a target, that can be a route path defintion or a group of
