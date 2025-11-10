@@ -1,3 +1,3 @@
-export * from './apiClient';
-export * from './endpointsGenerator';
-export * from './types';
+export * from './apiClient.js';
+export * from './endpointsGenerator.js';
+export type * from './types.js';

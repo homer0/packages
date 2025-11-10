@@ -1,6 +1,10 @@
 import urijs from 'urijs';
 import { flat, copy } from '@homer0/object-utils';
-import type { EndpointDefinition, EndpointDefinitionProps, EndpointsDict } from './types';
+import type {
+  EndpointDefinition,
+  EndpointDefinitionProps,
+  EndpointsDict,
+} from './types.js';
 /**
  * The options for the service constructor.
  */

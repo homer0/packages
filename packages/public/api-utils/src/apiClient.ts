@@ -1,11 +1,14 @@
-import { EndpointsGenerator, type EndpointsGeneratorOptions } from './endpointsGenerator';
+import {
+  EndpointsGenerator,
+  type EndpointsGeneratorOptions,
+} from './endpointsGenerator.js';
 import type {
   EndpointDefinition,
   EndpointsDict,
   ErrorResponse,
   FetchClient,
   FetchOptions,
-} from './types';
+} from './types.js';
 /**
  * The options for the client constructor.
  */
