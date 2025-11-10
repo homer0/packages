@@ -7,6 +7,7 @@
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
   "license": "MIT",
   "private": true,
+  "packageManager": "pnpm@10.11.0",
   "dependencies": {},
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
