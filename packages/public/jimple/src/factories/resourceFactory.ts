@@ -1,4 +1,4 @@
-import type { GenericFn, Resource } from './factories.types';
+import type { GenericFn, Resource } from './factories.types.js';
 /**
  * Generates a function to create resources of an specified type. This function itself
  * doesn't have logic, but it's just in charge of creating the constraint for the resource
@@ -46,4 +46,4 @@ export const resourceFactory =
     ({
       [name]: true,
       [key]: fn,
-    } as Resource<Name, Key, Fn>);
+    }) as Resource<Name, Key, Fn>;

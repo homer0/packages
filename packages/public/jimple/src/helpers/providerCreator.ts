@@ -1,6 +1,6 @@
-import type { Jimple } from '../jimple';
-import { resourceCreatorFactory, type GenericCurriedFn } from '../factories';
-import type { ProviderRegisterFn } from './provider';
+import type { Jimple } from '../jimple/index.js';
+import { resourceCreatorFactory, type GenericCurriedFn } from '../factories/index.js';
+import type { ProviderRegisterFn } from './provider.js';
 /**
  * Generates a function to create "provider creators" for a specific type of container.
  *

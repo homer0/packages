@@ -1,4 +1,4 @@
-export * from './factories.types';
-export * from './resourceCreatorFactory';
-export * from './resourceFactory';
-export * from './resourcesCollectionFactory';
+export type * from './factories.types.js';
+export * from './resourceCreatorFactory.js';
+export * from './resourceFactory.js';
+export * from './resourcesCollectionFactory.js';

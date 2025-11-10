@@ -1,6 +1,6 @@
-import type { Jimple } from '../jimple';
-import { resourcesCollectionFactory } from '../factories';
-import type { ProviderRegisterFn, ProviderName } from './provider';
+import type { Jimple } from '../jimple/index.js';
+import { resourcesCollectionFactory } from '../factories/index.js';
+import type { ProviderRegisterFn, ProviderName } from './provider.js';
 /**
  * Generates a function to create a providers collection for a specific type of container.
  *

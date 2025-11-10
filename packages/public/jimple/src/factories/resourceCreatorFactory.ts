@@ -1,11 +1,11 @@
-import { resourceFactory } from './resourceFactory';
+import { resourceFactory } from './resourceFactory.js';
 import type {
   GenericFn,
   GenericCurriedFn,
   ResourceCreator,
   ResourceCreatorCurriedFn,
   ResourceCreatorHandler,
-} from './factories.types';
+} from './factories.types.js';
 /**
  * Generates a function to create resource creators of an specified type. This function
  * itself doesn't have logic, but it's just in charge of creating the constraint for the
