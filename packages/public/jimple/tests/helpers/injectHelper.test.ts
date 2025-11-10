@@ -1,5 +1,5 @@
-import { Jimple } from '../../src/jimple/index.js';
-import { InjectHelper, injectHelper } from '../../src/helpers/index.js';
+import { Jimple } from '@src/jimple/index.js';
+import { InjectHelper, injectHelper } from '@src/helpers/index.js';
 
 describe('InjectHelper', () => {
   describe('class', () => {

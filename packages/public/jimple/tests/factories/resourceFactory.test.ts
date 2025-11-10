@@ -1,4 +1,4 @@
-import { resourceFactory } from '../../src/factories/index.js';
+import { resourceFactory } from '@src/factories/index.js';
 
 describe('resourceFactory', () => {
   it('should create an resource', () => {

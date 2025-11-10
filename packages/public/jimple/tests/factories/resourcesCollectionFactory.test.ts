@@ -1,7 +1,4 @@
-import {
-  resourceFactory,
-  resourcesCollectionFactory,
-} from '../../src/factories/index.js';
+import { resourceFactory, resourcesCollectionFactory } from '@src/factories/index.js';
 
 describe('resourcesCollectionFactory', () => {
   it('should throw an error if an item uses the name of the resource as key', () => {
