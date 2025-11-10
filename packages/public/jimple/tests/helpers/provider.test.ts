@@ -1,5 +1,5 @@
-import { Jimple } from '../../src/jimple';
-import { provider, createProvider } from '../../src/helpers';
+import { Jimple } from '../../src/jimple/index.js';
+import { provider, createProvider } from '../../src/helpers/index.js';
 
 describe('provider', () => {
   it('should create a Jimple provider', () => {

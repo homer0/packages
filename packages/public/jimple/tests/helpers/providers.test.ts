@@ -1,5 +1,10 @@
-import { Jimple } from '../../src/jimple';
-import { provider, providerCreator, providers, createProviders } from '../../src/helpers';
+import { Jimple } from '../../src/jimple/index.js';
+import {
+  provider,
+  providerCreator,
+  providers,
+  createProviders,
+} from '../../src/helpers/index.js';
 
 describe('providers', () => {
   it('should create a collection of providers', () => {

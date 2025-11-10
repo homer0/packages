@@ -1,4 +1,4 @@
-import { Jimple, jimple } from '../../src/jimple';
+import { Jimple, jimple } from '../../src/jimple/index.js';
 
 describe('Jimple', () => {
   describe('try', () => {
