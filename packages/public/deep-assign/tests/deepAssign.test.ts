@@ -1,6 +1,6 @@
-jest.unmock('../src/deepAssign.js');
+jest.unmock('@src/deepAssign.js');
 
-import { DeepAssign } from '../src/deepAssign.js';
+import { DeepAssign } from '@src/deepAssign.js';
 
 describe('DeepAssign', () => {
   it('should throw an error when instantiated with an invalid `arrayMode` option', () => {
