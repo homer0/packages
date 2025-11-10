@@ -1,12 +1,12 @@
 jest.mock('fs');
 jest.mock('fs/promises');
-jest.unmock('../src/index.js');
+jest.unmock('@src/index.js');
 
 import { Jimple } from '@homer0/jimple';
 import * as originalFsSync from 'fs';
 import * as originalFsPromises from 'fs/promises';
 import { PathUtils } from '@homer0/path-utils';
-import { PackageInfo, packageInfo, packageInfoProvider } from '../src/index.js';
+import { PackageInfo, packageInfo, packageInfoProvider } from '@src/index.js';
 
 const mockFsSync = originalFsSync as jest.Mocked<typeof originalFsSync>;
 const mockFsPromises = originalFsPromises as jest.Mocked<typeof originalFsPromises>;
