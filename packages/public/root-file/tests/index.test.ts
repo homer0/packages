@@ -1,9 +1,9 @@
-jest.unmock('../src');
+jest.unmock('@src/index.js');
 
 import { Jimple } from '@homer0/jimple';
 import { PathUtils } from '@homer0/path-utils';
-import pkg from '../package.json' with { type: 'json' };
-import { RootFile, rootFile, rootFileProvider } from '../src/index.js';
+import pkg from '@root/package.json' with { type: 'json' };
+import { RootFile, rootFile, rootFileProvider } from '@src/index.js';
 
 describe('RootFile', () => {
   describe('class', () => {
