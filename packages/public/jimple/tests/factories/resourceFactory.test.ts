@@ -1,3 +1,4 @@
+import { vi, describe, expect, it } from 'vitest';
 import { resourceFactory } from '@src/factories/index.js';
 
 describe('resourceFactory', () => {
@@ -6,7 +7,7 @@ describe('resourceFactory', () => {
     type ResourceFn = (arg0: string) => string;
     const name = 'provider';
     const key = 'register';
-    const fn: ResourceFn = jest.fn((arg0) => arg0);
+    const fn = vi.fn<ResourceFn>((arg0) => arg0);
     const arg = 'hello world';
     type ExpectedType = {
       [name]: true;

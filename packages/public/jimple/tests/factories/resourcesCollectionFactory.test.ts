@@ -1,3 +1,4 @@
+import { vi, describe, expect, it } from 'vitest';
 import { resourceFactory, resourcesCollectionFactory } from '@src/factories/index.js';
 
 describe('resourcesCollectionFactory', () => {
@@ -6,7 +7,7 @@ describe('resourcesCollectionFactory', () => {
     type ResourceFn = (arg0: string) => string;
     const name = 'providers';
     const key = 'register';
-    const resourceFn: ResourceFn = jest.fn(() => 'Batman');
+    const resourceFn = vi.fn<ResourceFn>(() => 'Batman');
     const resFactory = resourceFactory<ResourceFn>();
     const res = resFactory('provider', key, resourceFn);
     const resCollection = resourcesCollectionFactory<'provider', ResourceFn>();
@@ -21,7 +22,7 @@ describe('resourcesCollectionFactory', () => {
     type ResourceFn = (arg0: string) => string;
     const name = 'providers';
     const key = 'register';
-    const resourceFn: ResourceFn = jest.fn(() => 'Batman');
+    const resourceFn = vi.fn<ResourceFn>(() => 'Batman');
     const resFactory = resourceFactory<ResourceFn>();
     const res = resFactory('provider', 'otherKey', resourceFn);
     const resCollection = resourcesCollectionFactory<'provider', ResourceFn>();
@@ -38,9 +39,9 @@ describe('resourcesCollectionFactory', () => {
     const name = 'providers';
     const key = 'register';
     const resFactory = resourceFactory<ResourceFn>();
-    const itemOneFn: ResourceFn = jest.fn(() => 'Rosario');
+    const itemOneFn = vi.fn<ResourceFn>(() => 'Rosario');
     const itemOne = resFactory('provider', key, itemOneFn);
-    const itemTwoFn: ResourceFn = jest.fn(() => 'Pilar');
+    const itemTwoFn = vi.fn<ResourceFn>(() => 'Pilar');
     const itemTwo = resFactory('provider', key, itemTwoFn);
     const items = { itemOne, itemTwo };
     const arg = 'hello world';
@@ -64,9 +65,9 @@ describe('resourcesCollectionFactory', () => {
     const name = 'providers';
     const key = 'register';
     const resFactory = resourceFactory<ResourceFn>();
-    const itemOneFn: ResourceFn = jest.fn(() => 'Rosario');
+    const itemOneFn = vi.fn<ResourceFn>(() => 'Rosario');
     const itemOne = resFactory('provider', key, itemOneFn);
-    const itemTwoFn: ResourceFn = jest.fn(() => 'Pilar');
+    const itemTwoFn = vi.fn<ResourceFn>(() => 'Pilar');
     const itemTwo = resFactory('provider', key, itemTwoFn);
     const items = { itemOne, itemTwo };
     const arg = 'hello world';

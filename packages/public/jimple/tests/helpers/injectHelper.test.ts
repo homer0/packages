@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { Jimple } from '@src/jimple/index.js';
 import { InjectHelper, injectHelper } from '@src/helpers/index.js';
 

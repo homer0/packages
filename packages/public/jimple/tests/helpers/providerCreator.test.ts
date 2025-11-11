@@ -1,3 +1,4 @@
+import { vi, describe, expect, it, type Mock } from 'vitest';
 import { Jimple } from '@src/jimple/index.js';
 import { providerCreator, createProviderCreator } from '@src/helpers/index.js';
 
@@ -5,8 +6,8 @@ describe('providerCreator', () => {
   it('should create a provider creator for Jimple', () => {
     // Given
     const finalResource = 'Batman';
-    const registerFn = jest.fn(() => finalResource);
-    const creatorFn = jest.fn(() => registerFn);
+    const registerFn = vi.fn(() => finalResource);
+    const creatorFn = vi.fn(() => registerFn);
     const container = new Jimple();
     // When
     const sut = providerCreator(creatorFn);
@@ -20,10 +21,10 @@ describe('providerCreator', () => {
     // Given
     const finalResource = 'Batman';
     const prefixArg = 'prefix:';
-    type RegisterFn = jest.Mock<string, []>;
+    type RegisterFn = Mock<() => string>;
     let registerFn: RegisterFn;
-    const creatorFn = jest.fn((arg0: string = '') => {
-      registerFn = jest.fn(() => `${arg0}${finalResource}`);
+    const creatorFn = vi.fn((arg0: string = '') => {
+      registerFn = vi.fn(() => `${arg0}${finalResource}`);
       return registerFn;
     });
     const container = new Jimple();

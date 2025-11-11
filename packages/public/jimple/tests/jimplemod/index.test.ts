@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { Jimple } from '@src/jimplemod/index.js';
 
 describe('Jimple', () => {
