@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         node: [ '20', '22' ]
-    name: Run jest and ESLint (Node ${{ matrix.node }})
+    name: Run tests and linter (Node ${{ matrix.node }})
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
