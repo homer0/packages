@@ -1,5 +1,4 @@
-jest.unmock('@src/endpointsGenerator');
-
+import { describe, it, expect } from 'vitest';
 import { EndpointsGenerator, endpointsGenerator } from '@src/endpointsGenerator.js';
 import type { EndpointsDict } from '@src/types.js';
 

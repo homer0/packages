@@ -1,18 +1,28 @@
-jest.unmock('@src/apiClient');
-jest.unmock('@src/endpointsGenerator');
-
-import mockedFetch, { enableFetchMocks, FetchMock } from 'jest-fetch-mock';
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { APIClient, apiClient, type APIClientBodyInit } from '@src/apiClient.js';
 
 describe('APIClient', () => {
-  const fetchMock = mockedFetch as unknown as FetchMock;
+  const originalFetch = global.fetch;
+  const fetchMock = vi.fn();
 
-  beforeAll(() => {
-    enableFetchMocks();
-  });
+  type MockedResponse = {
+    init: {
+      status: number;
+    };
+    body?: string;
+  };
+
+  const mockResponse = (res: MockedResponse): void => {
+    fetchMock.mockResolvedValueOnce(new Response(res.body, res.init));
+  };
 
   beforeEach(() => {
-    fetchMock.mockClear();
+    vi.clearAllMocks();
+    global.fetch = fetchMock as unknown as typeof fetch;
+  });
+
+  afterEach(() => {
+    global.fetch = originalFetch;
   });
 
   it('should be instantiated with a base URL, endpoints and a fetch client', () => {
@@ -91,14 +101,12 @@ describe('APIClient', () => {
     const requestResponseData = {
       message: 'hello-world',
     };
-    fetchMock.mockResponseOnce(() =>
-      Promise.resolve({
-        init: {
-          status: 200,
-        },
-        body: JSON.stringify(requestResponseData),
-      }),
-    );
+    mockResponse({
+      init: {
+        status: 200,
+      },
+      body: JSON.stringify(requestResponseData),
+    });
     // When
     const sut = new APIClient({
       url: '',
@@ -116,13 +124,11 @@ describe('APIClient', () => {
 
   it('should make a successful GET request without decoding the response', async () => {
     // Given
-    fetchMock.mockResponseOnce(() =>
-      Promise.resolve({
-        init: {
-          status: 200,
-        },
-      }),
-    );
+    mockResponse({
+      init: {
+        status: 200,
+      },
+    });
     // When
     const sut = new APIClient({
       url: '',
@@ -136,14 +142,12 @@ describe('APIClient', () => {
 
   it('should make a GET request and return an empty object if JSON.parse fails', async () => {
     // Given
-    fetchMock.mockResponseOnce(() =>
-      Promise.resolve({
-        init: {
-          status: 200,
-        },
-        body: 'invalid-json',
-      }),
-    );
+    mockResponse({
+      init: {
+        status: 200,
+      },
+      body: 'invalid-json',
+    });
     // When
     const sut = new APIClient({
       url: '',
@@ -164,14 +168,12 @@ describe('APIClient', () => {
     const requestResponseData = {
       message: 'hello-world',
     };
-    fetchMock.mockResponseOnce(() =>
-      Promise.resolve({
-        init: {
-          status: 200,
-        },
-        body: JSON.stringify(requestResponseData),
-      }),
-    );
+    mockResponse({
+      init: {
+        status: 200,
+      },
+      body: JSON.stringify(requestResponseData),
+    });
     // When
     const sut = new APIClient({
       url: '',
@@ -204,14 +206,12 @@ describe('APIClient', () => {
       message: 'hello-world',
     };
     const token = 'abc123';
-    fetchMock.mockResponseOnce(() =>
-      Promise.resolve({
-        init: {
-          status: 200,
-        },
-        body: JSON.stringify(requestResponseData),
-      }),
-    );
+    mockResponse({
+      init: {
+        status: 200,
+      },
+      body: JSON.stringify(requestResponseData),
+    });
     // When
     const sut = new APIClient({
       url: '',
@@ -243,14 +243,12 @@ describe('APIClient', () => {
       error: 'Something went terribly wrong!',
     };
     const errorStatus = 404;
-    fetchMock.mockResponseOnce(() =>
-      Promise.resolve({
-        init: {
-          status: errorStatus,
-        },
-        body: JSON.stringify(requestResponseData),
-      }),
-    );
+    mockResponse({
+      init: {
+        status: errorStatus,
+      },
+      body: JSON.stringify(requestResponseData),
+    });
     expect.assertions(2);
     // When
     const sut = new APIClient({
@@ -273,13 +271,11 @@ describe('APIClient', () => {
     // Given
     const requestURL = 'http://example.com';
     const errorStatus = 404;
-    fetchMock.mockResponseOnce(() =>
-      Promise.resolve({
-        init: {
-          status: errorStatus,
-        },
-      }),
-    );
+    mockResponse({
+      init: {
+        status: errorStatus,
+      },
+    });
     expect.assertions(2);
     // When
     const sut = new APIClient({
@@ -305,14 +301,12 @@ describe('APIClient', () => {
     const requestResponseData = {
       message: 'hello-world',
     };
-    fetchMock.mockResponseOnce(() =>
-      Promise.resolve({
-        init: {
-          status: 200,
-        },
-        body: JSON.stringify(requestResponseData),
-      }),
-    );
+    mockResponse({
+      init: {
+        status: 200,
+      },
+      body: JSON.stringify(requestResponseData),
+    });
     const headers = {
       'Content-Type': 'application/charito',
     };
@@ -340,14 +334,12 @@ describe('APIClient', () => {
     const requestResponseData = {
       message: 'hello-world',
     };
-    fetchMock.mockResponseOnce(() =>
-      Promise.resolve({
-        init: {
-          status: 200,
-        },
-        body: JSON.stringify(requestResponseData),
-      }),
-    );
+    mockResponse({
+      init: {
+        status: 200,
+      },
+      body: JSON.stringify(requestResponseData),
+    });
     // When
     const sut = new APIClient({
       url: '',
@@ -375,14 +367,12 @@ describe('APIClient', () => {
     const requestResponseData = {
       message: 'hello-world',
     };
-    fetchMock.mockResponseOnce(() =>
-      Promise.resolve({
-        init: {
-          status: 200,
-        },
-        body: JSON.stringify(requestResponseData),
-      }),
-    );
+    mockResponse({
+      init: {
+        status: 200,
+      },
+      body: JSON.stringify(requestResponseData),
+    });
     const headers = {
       'Content-Type': 'application/custom-form-data',
     };
@@ -414,14 +404,12 @@ describe('APIClient', () => {
     const requestResponseData = {
       message: 'hello-world',
     };
-    fetchMock.mockResponseOnce(() =>
-      Promise.resolve({
-        init: {
-          status: 200,
-        },
-        body: JSON.stringify(requestResponseData),
-      }),
-    );
+    mockResponse({
+      init: {
+        status: 200,
+      },
+      body: JSON.stringify(requestResponseData),
+    });
     // When
     const sut = new APIClient({
       url: '',
@@ -450,14 +438,12 @@ describe('APIClient', () => {
     const requestResponseData = {
       message: 'hello-world',
     };
-    fetchMock.mockResponseOnce(() =>
-      Promise.resolve({
-        init: {
-          status: 200,
-        },
-        body: JSON.stringify(requestResponseData),
-      }),
-    );
+    mockResponse({
+      init: {
+        status: 200,
+      },
+      body: JSON.stringify(requestResponseData),
+    });
     // When
     const sut = new APIClient({
       url: '',
@@ -483,14 +469,12 @@ describe('APIClient', () => {
     const requestResponseData = {
       message: 'hello-world',
     };
-    fetchMock.mockResponseOnce(() =>
-      Promise.resolve({
-        init: {
-          status: 200,
-        },
-        body: JSON.stringify(requestResponseData),
-      }),
-    );
+    mockResponse({
+      init: {
+        status: 200,
+      },
+      body: JSON.stringify(requestResponseData),
+    });
     // When
     const sut = new APIClient({
       url: '',
@@ -513,13 +497,11 @@ describe('APIClient', () => {
   it('should make a successful HEAD request using the shortcut method', async () => {
     // Given
     const requestURL = 'http://example.com';
-    fetchMock.mockResponseOnce(() =>
-      Promise.resolve({
-        init: {
-          status: 200,
-        },
-      }),
-    );
+    mockResponse({
+      init: {
+        status: 200,
+      },
+    });
     // When
     const sut = new APIClient({
       url: '',
