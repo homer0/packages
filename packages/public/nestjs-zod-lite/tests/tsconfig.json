@@ -1,5 +1,5 @@
 {
-  "extends": "@homer0/tsconfig/tsconfig.testing-node.json",
+  "extends": "@homer0/tsconfig/tsconfig.node-tests.json",
   "include": ["./", "../src/**/*"],
   "compilerOptions": {
     "baseUrl": "./",
