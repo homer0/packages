@@ -1,5 +1,5 @@
 {
-  "extends": "@homer0/tsconfig/tsconfig.jest-node.json",
+  "extends": "@homer0/tsconfig/tsconfig.testing-node.json",
   "compilerOptions": {
     "allowJs": true,
     "baseUrl": "./",

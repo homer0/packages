@@ -36,9 +36,13 @@
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
+    "@vitest/coverage-v8": "catalog:",
     "jest": "catalog:",
     "ts-jest": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "unplugin-swc": "catalog:",
+    "vitest": "catalog:",
+    "vite-tsconfig-paths": "catalog:"
   },
   "engine-strict": true,
   "engines": {
@@ -46,6 +50,6 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js -c ./.jestrc.cjs"
+    "test": "vitest run $@"
   }
 }

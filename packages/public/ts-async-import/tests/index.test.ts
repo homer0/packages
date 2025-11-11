@@ -1,5 +1,4 @@
-jest.unmock('@src/index.js');
-
+import { describe, expect, it } from 'vitest';
 import * as path from 'path';
 import { tsAsyncImport } from '@src/index.js';
 
