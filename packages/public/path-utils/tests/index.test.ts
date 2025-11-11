@@ -1,5 +1,4 @@
-jest.unmock('@src/index.js');
-
+import { vi, describe, expect, it, beforeEach } from 'vitest';
 import * as path from 'path';
 import { Jimple } from '@homer0/jimple';
 import { PathUtils, pathUtilsProvider, pathUtils } from '@src/index.js';
@@ -18,7 +17,7 @@ describe('PathUtils', () => {
     it('should be instantiated with the current directory (cwd) as home/base', () => {
       // Given
       const home = '/some-folder/';
-      process.cwd = jest.fn(() => home);
+      process.cwd = vi.fn(() => home);
       process.argv[1] = '';
       // When
       const sut = new PathUtils();
@@ -32,7 +31,7 @@ describe('PathUtils', () => {
     it('should have getters for the app and home locations', () => {
       // Given
       const home = `${path.sep}some-folder${path.sep}`;
-      process.cwd = jest.fn(() => home);
+      process.cwd = vi.fn(() => home);
       const expectedAppPath = path.join(home, path.dirname(process.argv[1]!));
       // When
       const sut = new PathUtils();
@@ -45,7 +44,7 @@ describe('PathUtils', () => {
       // Given
       const customHome = '/custom-folder/';
       const home = '/some-folder/';
-      process.cwd = jest.fn(() => home);
+      process.cwd = vi.fn(() => home);
       // When
       const sut = new PathUtils({ home: customHome });
       // Then
@@ -59,7 +58,7 @@ describe('PathUtils', () => {
       const home = '/some-folder/';
       const testPathOne = '/sub-dir-one/';
       const testPathTwo = '/sub-file.js';
-      process.cwd = jest.fn(() => home);
+      process.cwd = vi.fn(() => home);
       // When
       const sut = new PathUtils();
       const result = sut.join(testPathOne, testPathTwo);
@@ -72,7 +71,7 @@ describe('PathUtils', () => {
       const home = '/some-folder/';
       const locationName = 'customLocation';
       const locationPath = '/custom-location/';
-      process.cwd = jest.fn(() => home);
+      process.cwd = vi.fn(() => home);
       // When
       const sut = new PathUtils();
       sut.addLocation(locationName, locationPath);
@@ -86,7 +85,7 @@ describe('PathUtils', () => {
       const home = '/some-folder/';
       const locationName = 'customLocation';
       const locationPath = '/custom-location/';
-      process.cwd = jest.fn(() => home);
+      process.cwd = vi.fn(() => home);
       const expectedAppPath = path.join(home, path.dirname(process.argv[1]!));
       const expectedLocationPath = path.join(home, locationPath);
       // When
@@ -129,7 +128,7 @@ describe('PathUtils', () => {
 
     it('should include a Jimple provider', () => {
       // Given
-      const setFn = jest.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override set(...args: Parameters<Jimple['set']>) {
           setFn(...args);
@@ -148,7 +147,7 @@ describe('PathUtils', () => {
 
     it('should allow custom options on its service provider', () => {
       // Given
-      const setFn = jest.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override set(...args: Parameters<Jimple['set']>) {
           setFn(...args);
@@ -158,7 +157,7 @@ describe('PathUtils', () => {
       const container = new Container();
       const customHome = '/custom-folder/';
       const home = '/some-folder/';
-      process.cwd = jest.fn(() => home);
+      process.cwd = vi.fn(() => home);
       const options = {
         serviceName: 'myPaths',
         home: customHome,
