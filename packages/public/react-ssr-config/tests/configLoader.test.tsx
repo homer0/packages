@@ -1,5 +1,4 @@
-jest.unmock('@src/configLoader.js');
-
+import { vi, describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
 import { ConfigLoader } from '@src/configLoader.js';
 import type { Config } from '@src/config.js';
@@ -12,7 +11,7 @@ describe('ConfigLoader', () => {
   };
   const configScriptId = 'configScriptId';
   const setupConfig = () => {
-    const getConfig = jest.fn().mockReturnValueOnce(configValue);
+    const getConfig = vi.fn().mockReturnValueOnce(configValue);
     const config = {
       getConfig,
       scriptId: configScriptId,

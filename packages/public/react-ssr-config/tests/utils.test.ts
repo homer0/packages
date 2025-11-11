@@ -1,5 +1,4 @@
-jest.unmock('@src/utils.js');
-
+import { describe, it, expect } from 'vitest';
 import { isServer } from '@src/utils.js';
 
 describe('utils', () => {

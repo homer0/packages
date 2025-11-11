@@ -1,5 +1,4 @@
-jest.unmock('@src/store');
-
+import { describe, it, expect, beforeEach } from 'vitest';
 import { getStore, resetStore } from '@src/store.js';
 import type { Config } from '@src/config.js';
 import type { GenericConfig, ConfigSlice } from '@src/types.js';

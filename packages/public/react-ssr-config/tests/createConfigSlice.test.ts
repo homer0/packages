@@ -1,5 +1,4 @@
-jest.unmock('@src/createConfigSlice.js');
-
+import { describe, it, expect } from 'vitest';
 import { createConfigSlice } from '@src/createConfigSlice.js';
 
 describe('createConfigSlice', () => {
