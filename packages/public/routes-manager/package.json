@@ -23,11 +23,15 @@
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
     "@types/jest": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
     "jest": "catalog:",
     "ts-jest": "catalog:",
     "tsup": "catalog:",
     "type-fest": "^5.0.1",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "unplugin-swc": "catalog:",
+    "vitest": "catalog:",
+    "vite-tsconfig-paths": "catalog:"
   },
   "engine-strict": true,
   "engines": {
@@ -35,7 +39,7 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "test": "jest -c ./.jestrc.cjs",
+    "test": "vitest run $@",
     "types:check": "tsc --noEmit && tsc --noEmit --project ./tests/tsconfig.json",
     "build": "tsup",
     "prepublishOnly": "pnpm run build"

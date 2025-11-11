@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import type { IsEqual } from 'type-fest';
 import { Route } from '@src/route.js';
 import { RoutesManager, createRoutesManager } from '@src/manager.js';
