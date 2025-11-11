@@ -20,20 +20,15 @@
     "./tsconfig.node.json": "./tsconfig.node.json",
     "./tsconfig.react.json": "./tsconfig.react.json",
     "./tsconfig.nest.json": "./tsconfig.nest.json",
-    "./tsconfig.jest-node.json": "./tsconfig.jest-node.json",
     "./tsconfig.testing-node.json": "./tsconfig.testing-node.json"
   },
   "peerDependencies": {
-    "@types/jest": "^30.0.0",
     "@types/node": "^24.10.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "typescript": "^5.9.3"
   },
   "peerDependenciesMeta": {
-    "@types/jest": {
-      "optional": true
-    },
     "@types/react": {
       "optional": true
     },
