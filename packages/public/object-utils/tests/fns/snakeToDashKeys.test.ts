@@ -1,6 +1,4 @@
-jest.unmock('@src/fns/formatKeys.js');
-jest.unmock('@src/fns/snakeToDashKeys.js');
-
+import { describe, it, expect } from 'vitest';
 import { snakeToDashKeys } from '@src/fns/snakeToDashKeys.js';
 
 describe('snakeToDashKeys', () => {

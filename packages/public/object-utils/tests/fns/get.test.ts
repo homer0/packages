@@ -1,5 +1,4 @@
-jest.unmock('@src/fns/get.js');
-
+import { describe, it, expect } from 'vitest';
 import { get } from '@src/fns/get.js';
 
 describe('get', () => {

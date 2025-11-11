@@ -1,5 +1,4 @@
-jest.unmock('@src/fns/formatKeys.js');
-
+import { describe, it, expect } from 'vitest';
 import { formatKeys } from '@src/fns/formatKeys.js';
 
 describe('formatKeys', () => {

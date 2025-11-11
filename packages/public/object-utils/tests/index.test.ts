@@ -1,5 +1,4 @@
-jest.unmock('../src/index.js');
-
+import { describe, it, expect } from 'vitest';
 import * as index from '../src/index.js';
 
 describe('index', () => {

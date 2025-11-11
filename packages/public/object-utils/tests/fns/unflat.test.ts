@@ -1,8 +1,4 @@
-jest.unmock('@src/fns/merge.js');
-jest.unmock('@src/fns/copy.js');
-jest.unmock('@src/fns/set.js');
-jest.unmock('@src/fns/unflat.js');
-
+import { describe, it, expect } from 'vitest';
 import { unflat } from '@src/fns/unflat.js';
 
 describe('unflat', () => {
