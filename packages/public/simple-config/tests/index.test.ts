@@ -1,5 +1,4 @@
-jest.unmock('@src/index.js');
-
+import { vi, describe, it, expect } from 'vitest';
 import * as path from 'path';
 import { Jimple } from '@homer0/jimple';
 import { EnvUtils } from '@homer0/env-utils';
@@ -292,7 +291,7 @@ describe('SimpleConfig', () => {
           oldest: 'Rosario',
           youngest: 'Pilar',
         };
-        const importFn = jest.fn();
+        const importFn = vi.fn();
         class MyRootFile extends RootFile {
           override import<FileType = unknown>(filepath: string): Promise<FileType> {
             importFn(filepath);
@@ -352,7 +351,7 @@ describe('SimpleConfig', () => {
           oldest: 'Rosario',
           youngest: 'Pilar',
         };
-        const fileContents = jest.fn(() => fileConfig);
+        const fileContents = vi.fn(() => fileConfig);
         class MyRootFile extends RootFile {
           override import<FileType = unknown>(): Promise<FileType> {
             return Promise.resolve(fileContents as unknown as FileType);
@@ -382,7 +381,7 @@ describe('SimpleConfig', () => {
           oldest: 'Rosario',
           youngest: 'Pilar',
         };
-        const fileContents = jest.fn(() => Promise.resolve(fileConfig));
+        const fileContents = vi.fn(() => Promise.resolve(fileConfig));
         class MyRootFile extends RootFile {
           override import<FileType = unknown>(): Promise<FileType> {
             return Promise.resolve(fileContents as unknown as FileType);
@@ -424,7 +423,7 @@ describe('SimpleConfig', () => {
         };
         let importIndex = -1;
         const imports = [fileAConfig, fileBConfig];
-        const importFn = jest.fn();
+        const importFn = vi.fn();
         class MyRootFile extends RootFile {
           override import<FileType = unknown>(filepath: string): Promise<FileType> {
             importFn(filepath);
@@ -481,7 +480,7 @@ describe('SimpleConfig', () => {
             rootFile: myRootFile,
           },
         });
-        expect(() => sut.loadFromFile()).rejects.toThrow(
+        await expect(() => sut.loadFromFile()).rejects.toThrow(
           /could not load config from file/i,
         );
       });
@@ -501,7 +500,7 @@ describe('SimpleConfig', () => {
             rootFile: myRootFile,
           },
         });
-        expect(() => sut.loadFromFile()).rejects.toThrow(
+        await expect(() => sut.loadFromFile()).rejects.toThrow(
           /could not load config from file/i,
         );
       });
@@ -648,7 +647,7 @@ describe('SimpleConfig', () => {
           youngestNickname: 'Pilar',
         };
         const fileConfigName = 'nicknames';
-        const importFn = jest.fn();
+        const importFn = vi.fn();
         class MyRootFile extends RootFile {
           override import<FileType = unknown>(filepath: string): Promise<FileType> {
             importFn(filepath);
@@ -702,7 +701,7 @@ describe('SimpleConfig', () => {
           youngestNickname: 'Pilar',
         };
         const fileConfigName = 'nicknames';
-        const importFn = jest.fn();
+        const importFn = vi.fn();
         class MyRootFile extends RootFile {
           override import<FileType = unknown>(filepath: string): Promise<FileType> {
             importFn(filepath);
@@ -710,7 +709,7 @@ describe('SimpleConfig', () => {
           }
         }
         const myRootFile = new MyRootFile();
-        const getEnvVarFn = jest.fn();
+        const getEnvVarFn = vi.fn();
         class MyEnvUtils extends EnvUtils {
           override get(...args: Parameters<EnvUtils['get']>): string {
             getEnvVarFn(...args);
@@ -749,7 +748,7 @@ describe('SimpleConfig', () => {
 
       it("shouldn't do anything if the env var is empty", async () => {
         // Given
-        const getEnvVarFn = jest.fn();
+        const getEnvVarFn = vi.fn();
         class MyEnvUtils extends EnvUtils {
           override get(...args: Parameters<EnvUtils['get']>): string {
             getEnvVarFn(...args);
@@ -813,7 +812,7 @@ describe('SimpleConfig', () => {
           youngestNickname: 'Pilar',
         };
         const fileConfigName = 'nicknames';
-        const importFn = jest.fn();
+        const importFn = vi.fn();
         class MyRootFile extends RootFile {
           override import<FileType = unknown>(filepath: string): Promise<FileType> {
             importFn(filepath);
@@ -854,7 +853,9 @@ describe('SimpleConfig', () => {
       it('should throw an error when the feature is disabled', async () => {
         // Given/When/Then
         const sut = new SimpleConfig();
-        expect(() => sut.switch('something')).rejects.toThrow(/the feature is disabled/i);
+        await expect(() => sut.switch('something')).rejects.toThrow(
+          /the feature is disabled/i,
+        );
       });
 
       it('should allow switching when using the `force` parameter', async () => {
@@ -893,7 +894,7 @@ describe('SimpleConfig', () => {
   describe('provider', () => {
     it('should include a Jimple provider', () => {
       // Given
-      const setFn = jest.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override set(...args: Parameters<Jimple['set']>) {
           setFn(...args);
