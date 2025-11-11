@@ -22,10 +22,7 @@
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
-    "@types/jest": "catalog:",
     "@vitest/coverage-v8": "catalog:",
-    "jest": "catalog:",
-    "ts-jest": "catalog:",
     "tsup": "catalog:",
     "type-fest": "^5.0.1",
     "typescript": "catalog:",
