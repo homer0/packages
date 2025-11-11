@@ -41,8 +41,6 @@
     "@homer0/tsconfig": "workspace:*",
     "@vitest/coverage-v8": "catalog:",
     "@types/extend": "^3.0.4",
-    "jest": "catalog:",
-    "ts-jest": "catalog:",
     "tsup": "catalog:",
     "typescript": "catalog:",
     "unplugin-swc": "catalog:",
