@@ -1,5 +1,4 @@
-jest.unmock('@src/index.js');
-
+import { describe, expect, it } from 'vitest';
 import { deferred } from '@src/index.js';
 
 describe('deferred', () => {
