@@ -1,6 +1,7 @@
 {
-  "extends": "@homer0/tsconfig/tsconfig.jest-node.json",
+  "extends": "@homer0/tsconfig/tsconfig.testing-node.json",
   "compilerOptions": {
+    "types": ["node", "vitest/globals"],
     "allowJs": true,
     "baseUrl": "./",
     "paths": {

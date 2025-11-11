@@ -1,9 +1,17 @@
 /* eslint-disable no-console */
-// eslint-disable-next-line global-require, @typescript-eslint/no-require-imports
-jest.mock('colors/safe.js', () => require('@tests/mocks/colors'));
-jest.mock('@homer0/package-info');
-jest.unmock('@src/index.js');
+vi.mock('colors/safe.js', async (original) => {
+  try {
+    // eslint-disable-next-line node/no-unsupported-features/es-syntax
+    const mock = await import('./mocks/colors.mock.js');
+    return mock;
+  } catch (error) {
+    console.log({ error });
+  }
+  return original;
+});
+vi.mock('@homer0/package-info');
 
+import { describe, expect, it, beforeEach, type MockedObject, type Mock } from 'vitest';
 import colorsOriginal from 'colors/safe.js';
 import { Jimple } from '@homer0/jimple';
 import { PathUtils } from '@homer0/path-utils';
@@ -18,12 +26,11 @@ import {
 
 const originalConsoleLog = console.log;
 
-const colors = colorsOriginal as jest.Mocked<typeof colorsOriginal> & {
-  clear: () => void;
+const colors = colorsOriginal as MockedObject<typeof colorsOriginal> & {
+  clear: Mock;
 };
 
-type PackageInfoFn = typeof originalPackageInfo;
-const packageInfo = originalPackageInfo as jest.Mock<ReturnType<PackageInfoFn>>;
+const packageInfo = originalPackageInfo as Mock<typeof originalPackageInfo>;
 
 describe('SimpleLogger', () => {
   describe('class', () => {
@@ -53,8 +60,8 @@ describe('SimpleLogger', () => {
     it('should log a message', () => {
       // Given
       const message = 'hello world';
-      const logFn = jest.fn();
-      jest.spyOn(console, 'log').mockImplementation(logFn);
+      const logFn = vi.fn();
+      vi.spyOn(console, 'log').mockImplementation(logFn);
       // When
       const sut = new SimpleLogger();
       sut.log(message);
@@ -67,8 +74,8 @@ describe('SimpleLogger', () => {
       // Given
       const prefix = 'my-app';
       const message = 'hello world';
-      const logFn = jest.fn();
-      jest.spyOn(console, 'log').mockImplementation(logFn);
+      const logFn = vi.fn();
+      vi.spyOn(console, 'log').mockImplementation(logFn);
       // When
       const sut = new SimpleLogger({ prefix });
       sut.log(message);
@@ -81,8 +88,8 @@ describe('SimpleLogger', () => {
       // Given
       const now = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
       const message = 'hello world';
-      const logFn = jest.fn();
-      jest.spyOn(console, 'log').mockImplementation(logFn);
+      const logFn = vi.fn();
+      vi.spyOn(console, 'log').mockImplementation(logFn);
       // When
       const sut = new SimpleLogger({ showTime: true });
       sut.log(message);
@@ -95,8 +102,8 @@ describe('SimpleLogger', () => {
       // Given
       const message = 'hello world';
       const color = 'red';
-      const logFn = jest.fn();
-      jest.spyOn(console, 'log').mockImplementation(logFn);
+      const logFn = vi.fn();
+      vi.spyOn(console, 'log').mockImplementation(logFn);
       // // When
       const sut = new SimpleLogger();
       sut.log(message, color);
@@ -110,8 +117,8 @@ describe('SimpleLogger', () => {
     it('should log a list of messages', () => {
       // Given
       const messages = ['hello world', 'goodbye world'];
-      const log = jest.fn();
-      jest.spyOn(console, 'log').mockImplementation(log);
+      const log = vi.fn();
+      vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
       sut.log(messages);
@@ -126,8 +133,8 @@ describe('SimpleLogger', () => {
       // Given
       const messages = ['hello world', 'goodbye world'];
       const color = 'blue';
-      const log = jest.fn();
-      jest.spyOn(console, 'log').mockImplementation(log);
+      const log = vi.fn();
+      vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
       sut.log(messages, color);
@@ -146,8 +153,8 @@ describe('SimpleLogger', () => {
         ['hello world', 'green'],
         ['goodbye world', 'yellow'],
       ];
-      const log = jest.fn();
-      jest.spyOn(console, 'log').mockImplementation(log);
+      const log = vi.fn();
+      vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
       sut.log(messages);
@@ -164,8 +171,8 @@ describe('SimpleLogger', () => {
       // Given
       const message = 'Something is not working';
       const color = 'yellow';
-      const log = jest.fn();
-      jest.spyOn(console, 'log').mockImplementation(log);
+      const log = vi.fn();
+      vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
       sut.warn(message);
@@ -180,8 +187,8 @@ describe('SimpleLogger', () => {
       // Given
       const message = 'Everything works!';
       const color = 'green';
-      const log = jest.fn();
-      jest.spyOn(console, 'log').mockImplementation(log);
+      const log = vi.fn();
+      vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
       sut.success(message);
@@ -196,8 +203,8 @@ describe('SimpleLogger', () => {
       // Given
       const message = 'Be aware of the Batman';
       const color = 'grey';
-      const log = jest.fn();
-      jest.spyOn(console, 'log').mockImplementation(log);
+      const log = vi.fn();
+      vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
       sut.info(message);
@@ -212,8 +219,8 @@ describe('SimpleLogger', () => {
       // Given
       const message = 'Something went terribly wrong';
       const color = 'red';
-      const log = jest.fn();
-      jest.spyOn(console, 'log').mockImplementation(log);
+      const log = vi.fn();
+      vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
       sut.error(message);
@@ -229,8 +236,8 @@ describe('SimpleLogger', () => {
       const message = 'Something went terribly wrong';
       const exception = 'ORDER 66';
       const color = 'red';
-      const log = jest.fn();
-      jest.spyOn(console, 'log').mockImplementation(log);
+      const log = vi.fn();
+      vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
       sut.error(message, exception);
@@ -250,8 +257,8 @@ describe('SimpleLogger', () => {
       stack.splice(0, 1);
       const errorColor = 'red';
       const stackColor = 'grey';
-      const log = jest.fn();
-      jest.spyOn(console, 'log').mockImplementation(log);
+      const log = vi.fn();
+      vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
       sut.error(message, exception);
@@ -273,8 +280,8 @@ describe('SimpleLogger', () => {
       stack.splice(0, 1);
       const errorColor = 'red';
       const stackColor = 'grey';
-      const log = jest.fn();
-      jest.spyOn(console, 'log').mockImplementation(log);
+      const log = vi.fn();
+      vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
       sut.error(exception);
@@ -300,7 +307,7 @@ describe('SimpleLogger', () => {
   describe('provider', () => {
     it('should include a Jimple provider', () => {
       // Given
-      const setFn = jest.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override set(...args: Parameters<Jimple['set']>) {
           setFn(...args);
@@ -321,7 +328,7 @@ describe('SimpleLogger', () => {
 
     it('should allow custom options on its provider', () => {
       // Given
-      const setFn = jest.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override set(...args: Parameters<Jimple['set']>) {
           setFn(...args);
@@ -347,8 +354,8 @@ describe('SimpleLogger', () => {
   describe('appLogger provider', () => {
     it('should register the service with the app name as prefix', () => {
       // Given
-      const getFn = jest.fn();
-      const setFn = jest.fn();
+      const getFn = vi.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override get<T>(key: string): T {
           getFn(key);
@@ -368,7 +375,7 @@ describe('SimpleLogger', () => {
       const pkgJson = {
         name: 'my-app',
       };
-      jest.spyOn(usePackageInfo, 'getSync').mockReturnValueOnce(pkgJson);
+      vi.spyOn(usePackageInfo, 'getSync').mockReturnValueOnce(pkgJson);
       const container = new Container({
         pathUtils: usePathUtils,
         packageInfo: usePackageInfo,
@@ -389,8 +396,8 @@ describe('SimpleLogger', () => {
 
     it('should use appLoggerPrefix instead of the package name', () => {
       // Given
-      const getFn = jest.fn();
-      const setFn = jest.fn();
+      const getFn = vi.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override get<T>(key: string): T {
           getFn(key);
@@ -411,7 +418,7 @@ describe('SimpleLogger', () => {
         name: 'my-app',
         appLoggerPrefix: 'my-cli-app',
       };
-      jest.spyOn(usePackageInfo, 'getSync').mockReturnValueOnce(pkgJson);
+      vi.spyOn(usePackageInfo, 'getSync').mockReturnValueOnce(pkgJson);
       const container = new Container({
         pathUtils: usePathUtils,
         packageInfo: usePackageInfo,
@@ -432,8 +439,8 @@ describe('SimpleLogger', () => {
 
     it('should create the services to inject if they are not available', () => {
       // Given
-      const getFn = jest.fn();
-      const setFn = jest.fn();
+      const getFn = vi.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override get<T>(key: string): T {
           getFn(key);
@@ -448,7 +455,7 @@ describe('SimpleLogger', () => {
       const pkgJson = {
         name: 'my-app',
       };
-      jest.spyOn(usePackageInfo, 'getSync').mockReturnValueOnce(pkgJson);
+      vi.spyOn(usePackageInfo, 'getSync').mockReturnValueOnce(pkgJson);
       packageInfo.mockReturnValueOnce(usePackageInfo);
       const container = new Container();
       // When
@@ -465,8 +472,8 @@ describe('SimpleLogger', () => {
 
     it('should register the service with custom options', () => {
       // Given
-      const getFn = jest.fn();
-      const setFn = jest.fn();
+      const getFn = vi.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override get<T>(key: string): T {
           getFn(key);
@@ -486,7 +493,7 @@ describe('SimpleLogger', () => {
       const pkgJson = {
         name: 'my-app',
       };
-      jest.spyOn(usePackageInfo, 'getSync').mockReturnValueOnce(pkgJson);
+      vi.spyOn(usePackageInfo, 'getSync').mockReturnValueOnce(pkgJson);
       const container = new Container({
         myPathUtils: usePathUtils,
         myPackageInfo: usePackageInfo,
