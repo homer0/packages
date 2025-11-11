@@ -17,10 +17,10 @@
   "exports": {
     ".": "./tsconfig.base.json",
     "./tsconfig.browser.json": "./tsconfig.browser.json",
+    "./tsconfig.node-tests.json": "./tsconfig.node-tests.json",
     "./tsconfig.node.json": "./tsconfig.node.json",
     "./tsconfig.react.json": "./tsconfig.react.json",
-    "./tsconfig.nest.json": "./tsconfig.nest.json",
-    "./tsconfig.testing-node.json": "./tsconfig.testing-node.json"
+    "./tsconfig.nest.json": "./tsconfig.nest.json"
   },
   "peerDependencies": {
     "@types/node": "^24.10.0",
