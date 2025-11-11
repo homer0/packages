@@ -2,7 +2,7 @@
   "extends": "@homer0/tsconfig/tsconfig.testing-node.json",
   "compilerOptions": {
     "types": ["node", "vitest/globals"],
-    "jsx": "react",
+    "jsx": "react-jsx",
     "baseUrl": "./",
     "paths": {
       "@src/*": ["../src/*"]
