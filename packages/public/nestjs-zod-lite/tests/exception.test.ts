@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { BadRequestException, HttpStatus } from '@nestjs/common';
 import { z } from 'zod';
 import { ZodValidationException } from '@src/exception.js';
