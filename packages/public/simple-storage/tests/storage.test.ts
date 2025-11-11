@@ -1,3 +1,4 @@
+import { vi, describe, it, expect, afterEach, type Mock } from 'vitest';
 import { deepAssignWithShallowMerge } from '@homer0/deep-assign';
 import {
   simpleStorage,
@@ -8,9 +9,9 @@ import {
 } from '@src/index.js';
 
 type getStorageProxyMocks<T> = {
-  get: jest.Mock<T | undefined, [name: string]>;
-  set: jest.Mock<void, [name: string, value: T]>;
-  remove: jest.Mock<void, [name: string]>;
+  get: Mock<(name: string) => T | undefined>;
+  set: Mock<(name: string, value: T) => void>;
+  remove: Mock<(name: string) => void>;
 };
 
 type getStorageProxyReturns<T> = [getStorageProxyMocks<T>, Record<string, T>];
@@ -23,11 +24,11 @@ describe('SimpleStorage', () => {
   ): getStorageProxyReturns<T> => {
     const data = { ...initialData };
     const mocks: getStorageProxyMocks<T> = {
-      get: jest.fn((name) => data[name]),
-      set: jest.fn((name, value) => {
+      get: vi.fn((name) => data[name]),
+      set: vi.fn((name, value) => {
         data[name] = value;
       }),
-      remove: jest.fn((name) => {
+      remove: vi.fn((name) => {
         delete data[name];
       }),
     };
@@ -88,7 +89,7 @@ describe('SimpleStorage', () => {
       const initialData = {
         initial: 'data',
       };
-      const getInitialDataFn = jest.fn(() => initialData);
+      const getInitialDataFn = vi.fn(() => initialData);
       const newOptions: SimpleStorageConstructorOptions<typeof initialData> = {
         initialize: false,
         storage: {
@@ -152,7 +153,7 @@ describe('SimpleStorage', () => {
               priority: ['session', 'local'],
             },
             logger: {
-              warn: jest.fn(),
+              warn: vi.fn(),
             },
           }),
       ).toThrow(/none of the specified storage types are available/i);
@@ -211,7 +212,7 @@ describe('SimpleStorage', () => {
         // Given
         const [, storage] = getStorageProxy();
         const logger = {
-          warn: jest.fn(),
+          warn: vi.fn(),
         };
         const fakeWindow = {} as StorageWindow;
         const options: SimpleStorageConstructorOptions = {
@@ -236,7 +237,7 @@ describe('SimpleStorage', () => {
         // Given
         const [, storage] = getStorageProxy();
         const logger = {
-          warning: jest.fn(),
+          warning: vi.fn(),
         };
         const fakeWindow = {} as StorageWindow;
         const options: SimpleStorageConstructorOptions = {
@@ -262,7 +263,7 @@ describe('SimpleStorage', () => {
         const [, storage] = getStorageProxy();
         const fakeWindow = {
           console: {
-            warn: jest.fn(),
+            warn: vi.fn(),
           },
         } as unknown as StorageWindow;
         const options: SimpleStorageConstructorOptions = {
@@ -291,7 +292,7 @@ describe('SimpleStorage', () => {
         const initialData = {
           names: ['Rosario', 'Pilar'],
         };
-        const getInitialData = jest.fn(() => initialData);
+        const getInitialData = vi.fn(() => initialData);
         const [storageMocks, storage] = getStorageProxy({
           [storageKey]: savedData,
         });
@@ -493,7 +494,7 @@ describe('SimpleStorage', () => {
         const initialData = {
           initial: 'data',
         };
-        const getInitialData = jest.fn(() => initialData);
+        const getInitialData = vi.fn(() => initialData);
         const options: SimpleStorageConstructorOptions = {
           entries: {
             enabled: true,
@@ -619,7 +620,7 @@ describe('SimpleStorage', () => {
         const currentTime = Date.now();
         const expiration = 3600;
         const future = currentTime + expiration * 1000 * 2;
-        const now = jest.fn();
+        const now = vi.fn();
         now.mockImplementationOnce(() => currentTime);
         now.mockImplementationOnce(() => currentTime);
         now.mockImplementationOnce(() => future);
@@ -734,7 +735,7 @@ describe('SimpleStorage', () => {
         const currentTime = 0;
         // @ts-expect-error - we're mocking the Date object
         global.Date = {
-          now: jest.fn(() => currentTime),
+          now: vi.fn(() => currentTime),
         };
         const storageKey = 'myStorage';
         const entryKey = 'user';
@@ -779,7 +780,7 @@ describe('SimpleStorage', () => {
         const currentTime = 0;
         // @ts-expect-error - we're mocking the Date object
         global.Date = {
-          now: jest.fn(() => currentTime),
+          now: vi.fn(() => currentTime),
         };
         const storageKey = 'myStorage';
         const entryKey = 'user';
@@ -822,7 +823,7 @@ describe('SimpleStorage', () => {
         const currentTime = 0;
         // @ts-expect-error - we're mocking the Date object
         global.Date = {
-          now: jest.fn(() => currentTime),
+          now: vi.fn(() => currentTime),
         };
         const storageKey = 'myStorage';
         const entryKey = 'user';
@@ -861,7 +862,7 @@ describe('SimpleStorage', () => {
         const currentTime = 0;
         // @ts-expect-error - we're mocking the Date object
         global.Date = {
-          now: jest.fn(() => currentTime),
+          now: vi.fn(() => currentTime),
         };
         const storageKey = 'myStorage';
         const entryKey = 'user';
@@ -907,7 +908,7 @@ describe('SimpleStorage', () => {
         const currentTime = 0;
         // @ts-expect-error - we're mocking the Date object
         global.Date = {
-          now: jest.fn(() => currentTime),
+          now: vi.fn(() => currentTime),
         };
         const storageKey = 'myStorage';
         const entryKey = 'user';
@@ -954,7 +955,7 @@ describe('SimpleStorage', () => {
         const currentTime = 0;
         // @ts-expect-error - we're mocking the Date object
         global.Date = {
-          now: jest.fn(() => currentTime),
+          now: vi.fn(() => currentTime),
         };
         const storageKey = 'myStorage';
         const entryKey = 'user';
@@ -1079,7 +1080,7 @@ describe('SimpleStorage', () => {
         )!;
         const [, storage] = getStorageProxy();
         const logger = {
-          warn: jest.fn(),
+          warn: vi.fn(),
         };
         const fakeWindow = {
           [`${storageName}Storage`]: storage,
@@ -1110,7 +1111,7 @@ describe('SimpleStorage', () => {
         const initialData = {
           names: ['Rosario', 'Pilar'],
         };
-        const getInitialData = jest.fn(() => initialData);
+        const getInitialData = vi.fn(() => initialData);
         const [storageMocks, storage] = getStorageProxy({
           [storageKey]: JSON.stringify(savedData),
         });
