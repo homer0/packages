@@ -1,6 +1,4 @@
-jest.unmock('@src/deepAssign.js');
-jest.unmock('@src/index.js');
-
+import { describe, expect, it } from 'vitest';
 import {
   deepAssign,
   deepAssignWithConcat,
