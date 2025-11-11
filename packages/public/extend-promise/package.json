@@ -37,8 +37,6 @@
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
     "@vitest/coverage-v8": "catalog:",
-    "jest": "catalog:",
-    "ts-jest": "catalog:",
     "tsup": "catalog:",
     "typescript": "catalog:",
     "unplugin-swc": "catalog:",
