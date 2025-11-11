@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '20', '22' ]
+        node: [ '20.19', '22.12' ]
     name: Run tests and linter (Node ${{ matrix.node }})
     steps:
       - uses: actions/checkout@v3
