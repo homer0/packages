@@ -38,7 +38,7 @@
     "@homer0/object-utils": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
     "@vitest/coverage-v8": "catalog:",
-    "@types/urijs": "^1.19.25",
+    "@types/urijs": "^1.19.26",
     "tsup": "catalog:",
     "typescript": "catalog:",
     "unplugin-swc": "catalog:",

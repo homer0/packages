@@ -24,7 +24,7 @@
     "@homer0/tsconfig": "workspace:*",
     "@vitest/coverage-v8": "catalog:",
     "tsup": "catalog:",
-    "type-fest": "^5.0.1",
+    "type-fest": "^5.2.0",
     "typescript": "catalog:",
     "unplugin-swc": "catalog:",
     "vitest": "catalog:",

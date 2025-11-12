@@ -32,7 +32,7 @@
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
-    "@nestjs/common": "^11.1.6",
+    "@nestjs/common": "^11.1.8",
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "tsup": "catalog:",
@@ -40,7 +40,7 @@
     "unplugin-swc": "catalog:",
     "vitest": "catalog:",
     "vite-tsconfig-paths": "catalog:",
-    "zod": "^4.1.11"
+    "zod": "^4.1.12"
   },
   "peerDependencies": {
     "@nestjs/common": "^10.4.7 || ^11.0.0",
