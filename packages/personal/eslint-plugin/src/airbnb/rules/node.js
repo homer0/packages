@@ -1,4 +1,5 @@
 import nodePlugin from 'eslint-plugin-n';
+import globals from 'globals';
 
 export default {
   languageOptions: {

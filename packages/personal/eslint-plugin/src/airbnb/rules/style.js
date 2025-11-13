@@ -1,3 +1,5 @@
+/* eslint-disable no-magic-numbers */
+
 export default {
   rules: {
     // require camel case names
