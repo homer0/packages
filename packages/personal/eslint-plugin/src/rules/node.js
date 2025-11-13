@@ -16,6 +16,6 @@ export default {
     'n/no-process-env': 'error',
     'n/no-unpublished-require': 'off',
     'n/shebang': 'off',
-    'import/no-extraneous-dependencies': 'off',
+    'import-x/no-extraneous-dependencies': 'off',
   },
 };

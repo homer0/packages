@@ -1,10 +1,10 @@
 export default {
   rules: {
-    'import/no-unresolved': 'off',
-    'import/no-absolute-path': 'off',
-    'import/first': 'off',
-    'import/extensions': 'off',
-    'import/no-extraneous-dependencies': 'off',
+    'import-x/no-unresolved': 'off',
+    'import-x/no-absolute-path': 'off',
+    'import-x/first': 'off',
+    'import-x/extensions': 'off',
+    'import-x/no-extraneous-dependencies': 'off',
     'node/no-missing-require': 'off',
     'node/no-missing-import': 'off',
     'no-magic-numbers': 'off',

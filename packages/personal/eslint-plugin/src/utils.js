@@ -31,5 +31,5 @@ export const ignoreByEnvVar = () => {
     return [];
   }
 
-  return includeIgnoreFile(varValue);
+  return [includeIgnoreFile(varValue)];
 };

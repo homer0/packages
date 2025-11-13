@@ -3,7 +3,7 @@ export default {
     sourceType: 'module',
   },
   rules: {
-    'import/extensions': [
+    'import-x/extensions': [
       'error',
       'ignorePackages',
       {
@@ -12,5 +12,6 @@ export default {
         jsx: 'never',
       },
     ],
+    'import-x/no-unresolved': ['error', { commonjs: false, caseSensitive: true }],
   },
 };
