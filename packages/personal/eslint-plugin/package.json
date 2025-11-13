@@ -12,23 +12,40 @@
   "publishConfig": {
     "access": "public"
   },
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^8.46.4",
-    "@typescript-eslint/parser": "^8.46.4",
-    "eslint": "^8.57.1",
-    "eslint-config-airbnb-base": "^15.0.0",
+    "@eslint/compat": "^1.4.1",
+    "@eslint/js": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-import-x": "^4.16.1",
     "eslint-plugin-jsdoc": "^61.1.12",
-    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-n": "^17.23.1",
+    "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-sort-class-members": "^1.21.0",
+    "confusing-browser-globals": "^1.0.11",
+    "globals": "^16.5.0",
+    "typescript-eslint": "^8.46.4"
+  },
+  "devDependencies": {
+    "eslint": "catalog:",
     "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "eslint": "^9.0.0",
+    "typescript": "^5.0.0"
   },
   "engine-strict": true,
   "engines": {
     "node": ">=20 <23"
   },
-  "main": "index.js",
   "scripts": {
     "lint": "eslint ."
   }
