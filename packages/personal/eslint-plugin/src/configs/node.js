@@ -1,12 +1,12 @@
 import nodePlugin from 'eslint-plugin-n';
 import globals from 'globals';
+import { ignoreByEnvVar } from '../utils.js';
 import { baseRulesConfigs, baseLanguageOptionsConfig } from './base.js';
-import transpilation from '../rules/transpilation.js';
 
 export default [
+  ...ignoreByEnvVar(),
   nodePlugin.configs['flat/recommended-script'],
   ...baseRulesConfigs,
-  transpilation,
   {
     ...baseLanguageOptionsConfig,
     languageOptions: {

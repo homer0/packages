@@ -1,8 +1,10 @@
 import globals from 'globals';
-import { baseRulesConfigs, baseLanguageOptionsConfig } from './base.js';
+import { ignoreByEnvVar } from '../utils.js';
 import transpilation from '../rules/transpilation.js';
+import { baseRulesConfigs, baseLanguageOptionsConfig } from './base.js';
 
 export default [
+  ...ignoreByEnvVar(),
   ...baseRulesConfigs,
   transpilation,
   {

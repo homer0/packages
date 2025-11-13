@@ -1,3 +1,4 @@
+import { includeIgnoreFile } from '@eslint/compat';
 import prettierPlugin from 'eslint-plugin-prettier';
 import { rules as prettierConfigRules } from 'eslint-config-prettier';
 
@@ -20,3 +21,15 @@ const prettierConfig = [
 ];
 
 export const addPrettier = (eslintConfig) => [...eslintConfig, ...prettierConfig];
+
+const IGNORE_BY_ENV_VAR_NAME = 'ESLINT_IGNORE_PATH';
+
+export const ignoreByEnvVar = () => {
+  // eslint-disable-next-line n/no-process-env
+  const varValue = process.env[IGNORE_BY_ENV_VAR_NAME];
+  if (!varValue) {
+    return [];
+  }
+
+  return includeIgnoreFile(varValue);
+};
