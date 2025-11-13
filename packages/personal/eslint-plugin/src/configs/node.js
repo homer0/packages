@@ -5,7 +5,7 @@ import { baseRulesConfigs, baseLanguageOptionsConfig } from './base.js';
 
 export default [
   ...ignoreByEnvVar(),
-  nodePlugin.configs['flat/recommended-script'],
+  nodePlugin.configs['flat/recommended-module'],
   ...baseRulesConfigs,
   {
     ...baseLanguageOptionsConfig,
