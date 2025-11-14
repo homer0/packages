@@ -1,5 +1,3 @@
-import type { Simplify } from 'type-fest';
-
 // ============================================================
 // Core
 // ============================================================
@@ -79,6 +77,13 @@ type HasAtLeastOneItem<T> = T extends readonly unknown[]
     ? false
     : true
   : false;
+/**
+ * Useful to flatten the type output to improve type hints shown in editors. And also to
+ * transform an interface into a type to aide with assignability.
+ *
+ * This is copied from the `type-fest` package.
+ */
+type Simplify<T> = { [KeyType in keyof T]: T[KeyType] } & {};
 /**
  * A version of the `Simplify` utility (from `type-fest`) that makes the object readonly.
  */
