@@ -15,6 +15,7 @@ export default {
     'n/no-mixed-requires': 'error',
     'n/no-process-env': 'error',
     'n/no-unpublished-require': 'off',
+    'n/no-unpublished-import': 'off',
     'n/shebang': 'off',
     'import-x/no-extraneous-dependencies': 'off',
   },
