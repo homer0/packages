@@ -1,14 +1,14 @@
 export default {
   rules: {
-    'import-x/extensions': 'off',
-    'import-x/prefer-default-export': 'off',
-    'import-x/no-unresolved': 'off',
     'lines-between-class-members': 'off',
     'sort-class-members/sort-class-members': 'off',
     'no-useless-constructor': 'off',
     'no-unused-vars': 'off',
     'no-empty-function': 'off',
     'dot-notation': 'off',
+    'import-x/extensions': 'off',
+    'import-x/prefer-default-export': 'off',
+    'import-x/no-unresolved': 'off',
     '@typescript-eslint/dot-notation': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/no-empty-function': 'off',
