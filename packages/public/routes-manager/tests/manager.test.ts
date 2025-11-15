@@ -1,7 +1,25 @@
 import { describe, expect, it } from 'vitest';
-import type { IsEqual } from 'type-fest';
 import { Route } from '@src/route.js';
 import { RoutesManager, createRoutesManager } from '@src/manager.js';
+
+/**
+ * These types are copied from `type-fest` to avoid adding it as a dependency just
+ * for `isEqual`.
+ */
+export type IsEqual<A, B> = [A, B] extends [infer AA, infer BB]
+  ? [AA] extends [never]
+    ? [BB] extends [never]
+      ? true
+      : false
+    : [BB] extends [never]
+      ? false
+      : _IsEqual<AA, BB>
+  : false;
+
+type _IsEqual<A, B> =
+  (<G>() => G extends (A & G) | G ? 1 : 2) extends <G>() => G extends (B & G) | G ? 1 : 2
+    ? true
+    : false;
 
 describe('RoutsManager', () => {
   const dummyRoutes = {
