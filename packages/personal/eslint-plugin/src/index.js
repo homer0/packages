@@ -1,5 +1,8 @@
 import fs from 'node:fs';
 import node from './configs/node.js';
+import nodeTypescript from './configs/node-typescript.js';
+import nodeTypescriptTests from './configs/node-typescript-tests.js';
+import typescript from './configs/typescript.js';
 import browser from './configs/browser.js';
 import esm from './configs/esm.js';
 import { addPrettier } from './utils.js';
@@ -11,6 +14,8 @@ const pkg = JSON.parse(
 const coreConfigs = Object.entries({
   browser,
   node,
+  'node-typescript': nodeTypescript,
+  'node-typescript-tests': nodeTypescriptTests,
 }).reduce(
   (acc, [name, config]) => ({
     ...acc,
@@ -28,5 +33,6 @@ export default {
   configs: {
     ...coreConfigs,
     esm,
+    typescript,
   },
 };
