@@ -1,5 +1,5 @@
 import type { Linter } from 'eslint';
-import { nodeRulesConfig as base } from '../airbnb/index.js';
+import { nodeRulesConfig as base } from './node.js';
 
 export const nodeTsRulesConfig: Linter.Config = {
   ...base,
