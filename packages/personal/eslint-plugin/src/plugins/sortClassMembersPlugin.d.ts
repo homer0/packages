@@ -1,8 +1,7 @@
 declare module 'eslint-plugin-sort-class-members' {
-  import { Linter } from 'eslint';
-  type PluginType = NonNullable<Linter.Config['plugins']>[string];
+  import type { LinterPlugin } from '../commons/index.js';
 
-  const sortClassMembersPluginConfig: PluginType;
+  const sortClassMembersPluginConfig: LinterPlugin;
 
   export default sortClassMembersPluginConfig;
 }

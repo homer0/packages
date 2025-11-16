@@ -1,13 +1,12 @@
 import importPlugin from 'eslint-plugin-import-x';
 import type { Linter } from 'eslint';
-
-type PluginType = NonNullable<Linter.Config['plugins']>[string];
+import type { LinterPlugin } from '../../commons/index.js';
 
 const extensions = ['.js', '.mjs', '.jsx'];
 
 export const importXPluginConfig: Linter.Config = {
   plugins: {
-    'import-x': importPlugin as unknown as PluginType,
+    'import-x': importPlugin as unknown as LinterPlugin,
   },
   settings: {
     'import-x/resolver': {
