@@ -58,6 +58,7 @@
   "scripts": {
     "lint": "eslint .",
     "types:check": "tsc --noEmit",
+    "dev": "tsup --watch",
     "build": "tsup",
     "prepublishOnly": "pnpm run build"
   }
