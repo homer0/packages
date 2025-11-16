@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file,no-restricted-syntax */
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
 import { ArgumentMetadata } from '@nestjs/common';
