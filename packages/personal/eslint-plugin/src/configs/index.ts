@@ -5,3 +5,4 @@ export * from './node-ts.js';
 export * from './node.js';
 export * from './tests.js';
 export * from './ts.js';
+export * from './jsdoc.js';

@@ -8,6 +8,7 @@ import {
   nodeConfig,
   testsConfig,
   tsConfig,
+  jsdocConfig,
 } from './configs/index.js';
 
 import { addPrettierConfigs } from './utils/index.js';
@@ -31,5 +32,6 @@ export default {
     esm: esmConfig,
     tests: testsConfig,
     ts: tsConfig,
+    jsdoc: jsdocConfig,
   },
 };
