@@ -14,7 +14,6 @@ import {
   importXPluginConfig,
   nPluginConfig,
   sortClassMembersPluginConfig,
-  jsdocPluginConfig,
 } from '../plugins/index.js';
 
 export const baseRulesConfigs: Linter.Config[] = [
@@ -33,7 +32,6 @@ export const basePluginsConfigs: Linter.Config[] = [
   importXPluginConfig,
   nPluginConfig,
   sortClassMembersPluginConfig,
-  jsdocPluginConfig,
 ];
 
 export const baseLanguageOptionsConfig: Linter.Config = {
