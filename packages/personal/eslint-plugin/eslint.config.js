@@ -1,10 +1,9 @@
 import { defineConfig } from 'eslint/config';
-import plugin from './src/index.js';
+import { createTsConfig } from './dist/presets/index.js';
 
 export default defineConfig([
-  {
-    files: ['**/*.js'],
-    extends: [plugin.configs['node-with-prettier'], plugin.configs.esm],
-    rules: {},
-  },
+  createTsConfig({
+    importUrl: import.meta.url,
+    configs: ['node-ts-with-prettier'],
+  }),
 ]);
