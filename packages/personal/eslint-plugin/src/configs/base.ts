@@ -1,3 +1,4 @@
+import nodePlugin from 'eslint-plugin-n';
 import type { Linter } from 'eslint';
 import {
   bestPracticesRulesConfig,
@@ -17,6 +18,7 @@ import {
 } from '../plugins/index.js';
 
 export const baseRulesConfigs: Linter.Config[] = [
+  nodePlugin.configs['flat/recommended-module'],
   bestPracticesRulesConfig,
   errorsRulesConfig,
   nodeRulesConfig,

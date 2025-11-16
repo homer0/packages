@@ -1,4 +1,3 @@
-import nodePlugin from 'eslint-plugin-n';
 import globals from 'globals';
 import type { Linter } from 'eslint';
 import { loadIgnorePathByEnvVar } from '../utils/index.js';
@@ -11,7 +10,6 @@ import {
 export const nodeConfig: Linter.Config[] = [
   ...loadIgnorePathByEnvVar(),
   ...basePluginsConfigs,
-  nodePlugin.configs['flat/recommended-module'],
   ...baseRulesConfigs,
   {
     ...baseLanguageOptionsConfig,
