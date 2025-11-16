@@ -13,11 +13,12 @@
     "access": "public"
   },
   "type": "module",
-  "main": "./src/index.js",
+  "main": "./dist/index.js",
   "types": "./src/index.ts",
   "exports": {
     ".": {
-      "import": "./src/index.js"
+      "import": "./dist/index.js",
+      "types": "./src/index.ts"
     },
     "./package.json": "./package.json"
   },
@@ -35,7 +36,10 @@
     "typescript-eslint": "^8.46.4"
   },
   "devDependencies": {
+    "@homer0/tsconfig": "workspace:*",
+    "@types/confusing-browser-globals": "^1.0.3",
     "eslint": "catalog:",
+    "tsup": "catalog:",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
@@ -47,6 +51,9 @@
     "node": ">=20 <23"
   },
   "scripts": {
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "types:check": "tsc --noEmit",
+    "build": "tsup",
+    "prepublishOnly": "pnpm run build"
   }
 }
