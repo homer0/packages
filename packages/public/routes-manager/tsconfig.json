@@ -1,8 +1,9 @@
 {
   "extends": "@homer0/tsconfig/tsconfig.node.json",
   "compilerOptions": {
+    "allowJs": true,
     "outDir": "dist",
     "removeComments": true
   },
-  "include": ["src", "tsup.config.ts", "vitest.config.ts"]
+  "include": ["src", "tsup.config.ts", "vitest.config.ts", "eslint.config.js"]
 }
