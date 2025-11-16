@@ -35,6 +35,7 @@
     "@nestjs/common": "^11.1.8",
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",
+    "eslint": "catalog:",
     "tsup": "catalog:",
     "typescript": "catalog:",
     "unplugin-swc": "catalog:",
