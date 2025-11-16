@@ -4,6 +4,7 @@ import { nodeRulesConfig as base } from '../airbnb/index.js';
 
 export const nodeRulesConfig: Linter.Config = {
   ...base,
+  name: '@homer0: node',
   languageOptions: {
     globals: {
       ...globals.es2023,

@@ -3,6 +3,7 @@ import { bestPracticesRulesConfig as base } from '../airbnb/index.js';
 
 export const bestPracticesRulesConfig: Linter.Config = {
   ...base,
+  name: '@homer0: best-practices',
   rules: {
     ...base.rules,
     complexity: ['warn'],

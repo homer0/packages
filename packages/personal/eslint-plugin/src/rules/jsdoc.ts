@@ -1,6 +1,7 @@
 import type { Linter } from 'eslint';
 
 export const jsdocRulesConfig: Linter.Config = {
+  name: '@homer0: jsdoc',
   rules: {
     'jsdoc/check-access': 'error',
     'jsdoc/check-alignment': 'error',

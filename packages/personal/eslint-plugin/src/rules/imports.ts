@@ -9,6 +9,7 @@ const extraDevFiles = ['eslint.config', 'vite.config', 'vitest.config', 'tsup.co
 
 export const importsRulesConfig: Linter.Config = {
   ...base,
+  name: '@homer0: imports',
   rules: {
     ...base.rules,
     'import-x/no-extraneous-dependencies': [

@@ -1,6 +1,7 @@
 import type { Linter } from 'eslint';
 
 export const testsRulesConfig: Linter.Config = {
+  name: '@homer0: tests',
   rules: {
     'import-x/no-unresolved': 'off',
     'import-x/no-absolute-path': 'off',

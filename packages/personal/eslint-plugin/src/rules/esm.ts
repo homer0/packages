@@ -1,6 +1,7 @@
 import type { Linter } from 'eslint';
 
 export const esmRulesConfig: Linter.Config = {
+  name: '@homer0: esm',
   languageOptions: {
     sourceType: 'module',
   },

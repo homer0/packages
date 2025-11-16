@@ -1,6 +1,7 @@
 import type { Linter } from 'eslint';
 
 export const tsRulesConfig: Linter.Config = {
+  name: '@homer0: ts',
   rules: {
     'sort-class-members/sort-class-members': 'off',
     'import-x/extensions': 'off',

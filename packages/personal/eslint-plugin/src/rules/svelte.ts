@@ -1,6 +1,7 @@
 import type { Linter } from 'eslint';
 
 export const svelteRulesConfig: Linter.Config = {
+  name: '@homer0: svelte',
   rules: {
     'no-multiple-empty-lines': ['error', { max: 2, maxBOF: 2, maxEOF: 1 }],
     'import-x/prefer-default-export': 'off',

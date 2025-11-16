@@ -3,6 +3,7 @@ import { styleRulesConfig as base } from '../airbnb/index.js';
 
 export const styleRulesConfig: Linter.Config = {
   ...base,
+  name: '@homer0: style',
   rules: {
     ...base.rules,
     'no-plusplus': 'off',

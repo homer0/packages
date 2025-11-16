@@ -1,6 +1,7 @@
 import type { Linter } from 'eslint';
 
 export const transpilationRulesConfig: Linter.Config = {
+  name: '@homer0: transpilation',
   languageOptions: {
     globals: {
       global: true,
