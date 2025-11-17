@@ -6,6 +6,9 @@ export default defineConfig([
     importUrl: import.meta.url,
     ignores: ['tests/**'],
     configs: ['browser-with-prettier', 'ts'],
+    extraneousDependencies: {
+      bundledDependencies: ['@homer0/deep-assign'],
+    },
   }),
   createTsConfig({
     importUrl: import.meta.url,
