@@ -42,6 +42,7 @@
   },
   "scripts": {
     "lint": "eslint .",
+    "lint:file": "eslint $@",
     "test": "vitest run $@",
     "types:check": "tsc --noEmit && tsc --noEmit --project ./tests/tsconfig.json",
     "build": "tsup",
