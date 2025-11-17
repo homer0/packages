@@ -1,3 +1,4 @@
+/* eslint-disable n/no-unsupported-features/node-builtins -- Both fetch and Response are available in Node v20 */
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { APIClient, apiClient, type APIClientBodyInit } from '@src/apiClient.js';
 

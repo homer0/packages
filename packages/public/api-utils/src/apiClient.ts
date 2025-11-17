@@ -232,7 +232,6 @@ export class APIClient {
   protected getHeaders(overwrites: Record<string, unknown> = {}): Record<string, string> {
     const headers = { ...this.defaultHeaders };
     if (this.authorizationToken) {
-      // eslint-disable-next-line dot-notation
       headers['Authorization'] = `Bearer ${this.authorizationToken}`;
     }
 

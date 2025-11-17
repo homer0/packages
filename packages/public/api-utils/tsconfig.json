@@ -1,4 +1,4 @@
 {
   "extends": "@homer0/tsconfig/tsconfig.node.json",
-  "include": ["src/**/*.ts", "tsup.config.ts", "vitest.config.ts"]
+  "include": ["src/**/*.ts", "tsup.config.ts", "vitest.config.ts", "eslint.config.js"]
 }
