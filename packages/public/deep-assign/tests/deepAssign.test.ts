@@ -515,7 +515,6 @@ describe('DeepAssign', () => {
     const sut = new DeepAssign();
     const result = sut.assign<ExpectedType>(targetA, targetB);
     targetA.d.push('taE');
-    // eslint-disable-next-line dot-notation
     targetA.d[0]['tE'] = 'taE';
     targetA.d[3].push('taG');
     targetA.d[3][0].taI = 'taI';
