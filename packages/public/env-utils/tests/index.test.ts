@@ -1,4 +1,4 @@
-/* eslint-disable dot-notation, no-process-env */
+/* eslint-disable n/no-process-env */
 import { vi, describe, expect, it, beforeEach } from 'vitest';
 import { Jimple } from '@homer0/jimple';
 import { EnvUtils, envUtilsProvider, envUtils } from '@src/index.js';
