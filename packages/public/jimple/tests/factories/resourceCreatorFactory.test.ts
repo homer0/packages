@@ -33,7 +33,6 @@ describe('resourceCreatorFactory', () => {
     expect('apply' in sut).toBe(true);
     expect(sut[key]).toBe(resourceFn);
     expect(sut.apply).toEqual(expect.any(Function));
-    // eslint-disable-next-line dot-notation
     expect(sut['invalid']).toBe(undefined);
     expect(creatorFn).toHaveBeenCalledTimes(1);
   });
