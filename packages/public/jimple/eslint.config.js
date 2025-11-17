@@ -6,6 +6,9 @@ export default defineConfig([
     importUrl: import.meta.url,
     ignores: ['tests/**'],
     configs: ['node-ts-with-prettier'],
+    extraneousDependencies: {
+      bundledDependencies: ['jimple'],
+    },
   }),
   createTsConfig({
     importUrl: import.meta.url,
