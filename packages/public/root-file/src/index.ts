@@ -51,7 +51,6 @@ export class RootFile {
    * @template FileType  The type of the required file.
    */
   import<FileType = unknown>(filepath: string): Promise<FileType> {
-    // eslint-disable-next-line
     return import(this.pathUtils.join(filepath)) as Promise<FileType>;
   }
 }
