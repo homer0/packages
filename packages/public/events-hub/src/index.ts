@@ -178,8 +178,8 @@ export class EventsHub {
    *
    * @param event     An event name or a list of them.
    * @param listener  The listener function.
-   * @returns If `event` was a `string`, it will return whether or not the listener was
-   *          found and removed; but if `event`
+   * @returns If `event` was a `string`, it will return whether or not the listener
+   *          was found and removed; but if `event`
    *          was an `Array`, it will return a list of boolean values.
    * @template ListenerFn  The type of the listener function.
    * @example
