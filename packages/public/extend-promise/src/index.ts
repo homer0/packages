@@ -82,9 +82,7 @@ class PromiseExtender<T extends Promise<unknown>, P extends Record<string, unkno
 
         if (name in target) {
           const possibleFn = target[targetKey] as unknown as Record<string, unknown>;
-          // eslint-disable-next-line dot-notation
           if (typeof possibleFn['bind'] === 'function') {
-            // eslint-disable-next-line dot-notation
             return possibleFn['bind'](target);
           }
         }
