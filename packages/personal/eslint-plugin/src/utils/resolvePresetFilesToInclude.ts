@@ -2,7 +2,7 @@ const ALL_INSIDE_PREFIX = 'all-inside:';
 
 // We don't use the const in the type so it's easier to read for the implementation.
 
-export type PresetFilesToIncludeEntry = 'all' | 'all-inside:${string}' | ({} & string);
+export type PresetFilesToIncludeEntry = 'all' | `all-inside:${string}` | ({} & string);
 export type PresetFilesToInclude =
   | PresetFilesToIncludeEntry
   | PresetFilesToIncludeEntry[];
