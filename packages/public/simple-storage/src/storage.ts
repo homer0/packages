@@ -262,7 +262,6 @@ export class SimpleStorage<T extends Dict, E = unknown> {
     custom: SimpleStorageConstructorOptions<T>,
   ): SimpleStorageOptions<T> {
     const { window: windowCustom, memoryStorage } = custom;
-    // eslint-disable-next-line no-param-reassign
     delete custom.window;
     const options = deepAssignWithOverwrite<SimpleStorageOptions<T>>(defaults, custom);
     if (windowCustom) {
