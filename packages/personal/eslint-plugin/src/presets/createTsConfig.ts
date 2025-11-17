@@ -6,6 +6,8 @@ import type { LinterConfigWithExtends } from '../commons/index.js';
 import {
   resolvePresetFilesToInclude,
   type PresetFilesToInclude,
+  configureExtraneousDependencies,
+  type ConfigureExtraneousDependenciesOptions,
 } from '../utils/index.js';
 import plugin from '../index.js';
 
@@ -21,6 +23,7 @@ export type CreateTsConfigOptions = {
   tsConfigPath?: string;
   esm?: boolean;
   sourceType?: 'module' | 'script';
+  extraneousDependencies?: ConfigureExtraneousDependenciesOptions;
 };
 
 export const createTsConfig = ({
@@ -32,6 +35,7 @@ export const createTsConfig = ({
   configs = [],
   esm = true,
   sourceType = 'module',
+  extraneousDependencies,
 }: CreateTsConfigOptions): LinterConfigWithExtends => {
   const configsToApply = configs.map<Linter.Config[]>(
     (configName) => plugin.configs[configName],
@@ -46,6 +50,13 @@ export const createTsConfig = ({
 
   if (esm && !configs.includes('esm')) {
     configsToApply.push(plugin.configs.esm);
+  }
+
+  if (extraneousDependencies) {
+    const extraneousConfig = configureExtraneousDependencies(extraneousDependencies);
+    if (extraneousConfig) {
+      configsToApply.push([extraneousConfig]);
+    }
   }
 
   const tsConfigFullPath = resolve(dirname(fileURLToPath(importUrl)), tsConfigPath);

@@ -1,7 +1,7 @@
 import globals from 'globals';
 import type { Linter } from 'eslint';
 
-export const noExtraneousDependeciesRuleSettings = {
+export const noExtraneousDependenciesRuleSettings = {
   devDependencies: [
     'test/**', // tape, common npm pattern
     'tests/**', // also common npm pattern
@@ -78,7 +78,10 @@ export const importsRulesConfig: Linter.Config = {
     // Forbid the use of extraneous packages
     // https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-extraneous-dependencies.md
     // paths are treated both as absolute paths, and relative to process.cwd()
-    'import-x/no-extraneous-dependencies': ['error', noExtraneousDependeciesRuleSettings],
+    'import-x/no-extraneous-dependencies': [
+      'error',
+      noExtraneousDependenciesRuleSettings,
+    ],
 
     // Forbid mutable exports
     // https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-mutable-exports.md
