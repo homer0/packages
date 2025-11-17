@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 vi.mock('colors/safe.js', async (original) => {
   try {
-    // eslint-disable-next-line node/no-unsupported-features/es-syntax
     const mock = await import('./mocks/colors.mock.js');
     return mock;
   } catch (error) {

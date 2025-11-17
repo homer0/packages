@@ -276,7 +276,6 @@ export const appLoggerProvider = providerCreator(
           }),
         );
         const pkg = usePkgInfo.getSync();
-        // eslint-disable-next-line dot-notation
         const prefix = pkg['appLoggerPrefix'] || pkg.name!;
         return new SimpleLogger({ prefix, ...rest });
       });
