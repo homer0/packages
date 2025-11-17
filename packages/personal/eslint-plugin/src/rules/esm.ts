@@ -6,6 +6,12 @@ export const esmRulesConfig: Linter.Config = {
     sourceType: 'module',
   },
   rules: {
+    /**
+     * This is changed to never validate the extensions for TypeScript files, since the TS
+     * compiler already handles that.
+     *
+     * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/extensions.md
+     */
     'import-x/extensions': [
       'error',
       'ignorePackages',
@@ -18,6 +24,11 @@ export const esmRulesConfig: Linter.Config = {
         tsx: 'never',
       },
     ],
+    /**
+     * Just changed `commonjs` to `false` to avoid false positives when using ESM imports.
+     *
+     * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-unresolved.md
+     */
     'import-x/no-unresolved': ['error', { commonjs: false, caseSensitive: true }],
   },
 };

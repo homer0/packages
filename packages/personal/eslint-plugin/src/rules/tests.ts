@@ -3,14 +3,47 @@ import type { Linter } from 'eslint';
 export const testsRulesConfig: Linter.Config = {
   name: '@homer0: tests',
   rules: {
+    /**
+     * This will either be handled by TypeScript or by the runtime (Jest, Vitest, etc).
+     *
+     * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-missing-import.md
+     */
     'import-x/no-unresolved': 'off',
-    'import-x/no-absolute-path': 'off',
+    /**
+     * In test files, it's normal to have mocks' setup at the top of the file.
+     *
+     * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/first.md
+     */
     'import-x/first': 'off',
-    'import-x/extensions': 'off',
+    /**
+     * No need to validate dependencies on test files.
+     *
+     * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-extraneous-dependencies.md
+     */
     'import-x/no-extraneous-dependencies': 'off',
+    /**
+     * This will either be handled by TypeScript or by the runtime (Jest, Vitest, etc).
+     *
+     * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-missing-import.md
+     */
     'n/no-missing-require': 'off',
+    /**
+     * This will either be handled by TypeScript or by the runtime (Jest, Vitest, etc).
+     *
+     * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-missing-import.md
+     */
     'n/no-missing-import': 'off',
+    /**
+     * In test files, magic numbers are totally acceptable.
+     *
+     * @see https://eslint.org/docs/latest/rules/no-magic-numbers
+     */
     'no-magic-numbers': 'off',
+    /**
+     * If you are testing an abstracted class, you might need more than one class.
+     *
+     * @see https://eslint.org/docs/latest/rules/max-classes-per-file
+     */
     'max-classes-per-file': 'off',
   },
 };

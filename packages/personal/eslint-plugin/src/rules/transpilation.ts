@@ -8,8 +8,12 @@ export const transpilationRulesConfig: Linter.Config = {
     },
   },
   rules: {
+    /**
+     * In transpilation scenarios, it's common to have paths that the linter cannot
+     * resolve, especially when using module aliasing or custom resolution strategies.
+     *
+     * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-unresolved.md
+     */
     'import-x/no-unresolved': 'off',
-    'import-x/no-extraneous-dependencies': 'off',
-    'import-x/prefer-default-export': 'off',
   },
 };
