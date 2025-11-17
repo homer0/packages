@@ -8,5 +8,4 @@ export default defineConfig((options) => ({
   format: ['esm'],
   bundle: false,
   splitting: false,
-  external: ['react'],
 }));

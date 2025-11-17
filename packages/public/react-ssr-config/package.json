@@ -36,6 +36,9 @@
     "vitest": "catalog:",
     "vite-tsconfig-paths": "catalog:"
   },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
   "engine-strict": true,
   "engines": {
     "node": ">=20 <23"
