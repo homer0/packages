@@ -9,7 +9,6 @@ export * from './node.js';
 export * from './react.js';
 export * from './strict.js';
 export * from './style.js';
-export * from './svelte.js';
 export * from './tests.js';
 export * from './transpilation.js';
 export * from './ts.js';
