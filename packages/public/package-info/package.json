@@ -42,6 +42,7 @@
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
     "@vitest/coverage-v8": "catalog:",
+    "eslint": "catalog:",
     "package-json-type": "^1.0.3",
     "tsup": "catalog:",
     "typescript": "catalog:",

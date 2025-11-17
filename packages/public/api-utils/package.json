@@ -39,6 +39,7 @@
     "@homer0/tsconfig": "workspace:*",
     "@vitest/coverage-v8": "catalog:",
     "@types/urijs": "^1.19.26",
+    "eslint": "catalog:",
     "tsup": "catalog:",
     "typescript": "catalog:",
     "unplugin-swc": "catalog:",
