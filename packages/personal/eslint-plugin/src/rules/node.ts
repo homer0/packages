@@ -1,8 +1,8 @@
 import globals from 'globals';
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 import { nodeRulesConfig as base } from '../airbnb/index.js';
 
-export const nodeRulesConfig: Linter.Config = {
+export const nodeRulesConfig: Config = {
   ...base,
   name: '@homer0: node',
   languageOptions: {

@@ -1,6 +1,6 @@
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 
-export const esmRulesConfig: Linter.Config = {
+export const esmRulesConfig: Config = {
   name: '@homer0: esm',
   languageOptions: {
     sourceType: 'module',

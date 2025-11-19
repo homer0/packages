@@ -1,5 +1,5 @@
 import nodePlugin from 'eslint-plugin-n';
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 import {
   bestPracticesRulesConfig,
   errorsRulesConfig,
@@ -16,7 +16,7 @@ import {
   sortClassMembersPluginConfig,
 } from '../plugins/index.js';
 
-export const baseRulesConfigs: Linter.Config[] = [
+export const baseRulesConfigs: Config[] = [
   nodePlugin.configs['flat/recommended-module'],
   bestPracticesRulesConfig,
   errorsRulesConfig,
@@ -28,13 +28,13 @@ export const baseRulesConfigs: Linter.Config[] = [
   strictRulesConfig,
 ];
 
-export const basePluginsConfigs: Linter.Config[] = [
+export const basePluginsConfigs: Config[] = [
   importXPluginConfig,
   nPluginConfig,
   sortClassMembersPluginConfig,
 ];
 
-export const baseLanguageOptionsConfig: Linter.Config = {
+export const baseLanguageOptionsConfig: Config = {
   rules: {},
   languageOptions: {
     sourceType: 'module',

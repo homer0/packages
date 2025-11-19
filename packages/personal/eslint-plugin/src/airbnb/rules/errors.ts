@@ -1,6 +1,6 @@
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 
-export const errorsRulesConfig: Linter.Config = {
+export const errorsRulesConfig: Config = {
   rules: {
     // Enforce "for" loop update clause moving the counter in the right direction
     // https://eslint.org/docs/rules/for-direction

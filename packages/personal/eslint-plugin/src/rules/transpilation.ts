@@ -1,6 +1,6 @@
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 
-export const transpilationRulesConfig: Linter.Config = {
+export const transpilationRulesConfig: Config = {
   name: '@homer0: transpilation',
   languageOptions: {
     globals: {

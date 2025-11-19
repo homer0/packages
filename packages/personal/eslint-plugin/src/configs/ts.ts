@@ -1,11 +1,11 @@
 import tseslint from 'typescript-eslint';
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 import { tsRulesConfig } from '../rules/index.js';
 
 const tsExtensions = ['.ts', '.tsx', '.d.ts', '.cts', '.mts'];
 const allExtensions = ['.js', '.jsx', '.json', '.node', ...tsExtensions];
 
-export const tsConfig: Linter.Config[] = [
+export const tsConfig: Config[] = [
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.d.ts', '**/*.cts', '**/*.mts'],
     languageOptions: {
@@ -16,7 +16,7 @@ export const tsConfig: Linter.Config[] = [
     },
     rules: {},
   },
-  tseslint.configs.recommended as Linter.Config,
+  tseslint.configs.recommended as Config,
   tsRulesConfig,
   {
     settings: {

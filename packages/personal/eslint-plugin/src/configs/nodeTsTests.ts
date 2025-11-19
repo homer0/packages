@@ -1,10 +1,6 @@
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 import { nodeConfig } from './node.js';
 import { tsConfig } from './ts.js';
 import { testsConfig } from './tests.js';
 
-export const nodeTsTestsConfig: Linter.Config[] = [
-  ...nodeConfig,
-  ...tsConfig,
-  ...testsConfig,
-];
+export const nodeTsTestsConfig: Config[] = [...nodeConfig, ...tsConfig, ...testsConfig];

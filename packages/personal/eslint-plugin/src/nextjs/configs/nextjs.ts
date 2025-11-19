@@ -1,7 +1,7 @@
 import globals from 'globals';
 import nextVitals from 'eslint-config-next/core-web-vitals';
 import nextTs from 'eslint-config-next/typescript';
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 import { loadIgnorePathByEnvVar } from '../../utils/index.js';
 import { reactStyleRulesConfig } from '../../react/rules/index.js';
 import {
@@ -11,7 +11,7 @@ import {
 } from '../../configs/index.js';
 import { nextjsIgnoresRulesConfig } from '../rules/index.js';
 
-export const nextjsConfig: Linter.Config[] = [
+export const nextjsConfig: Config[] = [
   ...loadIgnorePathByEnvVar(),
   ...basePluginsConfigs,
   ...baseRulesConfigs,

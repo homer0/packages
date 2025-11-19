@@ -1,4 +1,4 @@
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 import {
   bestPracticesRulesConfig as base,
   noParamReassignSettings,
@@ -16,7 +16,7 @@ export const noParamReassignRuleUtils = {
   },
 };
 
-export const bestPracticesRulesConfig: Linter.Config = {
+export const bestPracticesRulesConfig: Config = {
   ...base,
   name: '@homer0: best-practices',
   rules: {

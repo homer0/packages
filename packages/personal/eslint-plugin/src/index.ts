@@ -1,4 +1,3 @@
-import type { LinterPlugin } from './commons/index.js';
 import {
   browserConfig,
   esmConfig,
@@ -11,7 +10,7 @@ import {
 } from './configs/index.js';
 import { PACKAGE_META, addPrettierConfigs } from './utils/index.js';
 
-const eslintPlugin: LinterPlugin = {
+export default {
   meta: PACKAGE_META,
   configs: {
     ...addPrettierConfigs({
@@ -26,5 +25,3 @@ const eslintPlugin: LinterPlugin = {
     jsdoc: jsdocConfig,
   },
 };
-
-export default eslintPlugin;

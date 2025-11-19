@@ -1,7 +1,7 @@
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 import { nodeRulesConfig as base } from './node.js';
 
-export const nodeTsRulesConfig: Linter.Config = {
+export const nodeTsRulesConfig: Config = {
   ...base,
   name: '@homer0: node-ts',
   rules: {

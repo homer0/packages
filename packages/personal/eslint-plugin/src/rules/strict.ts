@@ -1,7 +1,7 @@
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 import { strictRulesConfig as base } from '../airbnb/index.js';
 
-export const strictRulesConfig: Linter.Config = {
+export const strictRulesConfig: Config = {
   ...base,
   name: '@homer0: strict',
 };

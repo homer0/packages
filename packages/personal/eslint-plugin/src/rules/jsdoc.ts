@@ -1,6 +1,6 @@
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 
-export const jsdocRulesConfig: Linter.Config = {
+export const jsdocRulesConfig: Config = {
   name: '@homer0: jsdoc',
   rules: {
     /**

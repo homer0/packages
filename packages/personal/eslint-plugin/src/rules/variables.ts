@@ -1,7 +1,7 @@
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 import { variablesRulesConfig as base } from '../airbnb/index.js';
 
-export const variablesRulesConfig: Linter.Config = {
+export const variablesRulesConfig: Config = {
   ...base,
   name: '@homer0: variables',
 };

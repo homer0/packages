@@ -1,6 +1,6 @@
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 
-export const testsRulesConfig: Linter.Config = {
+export const testsRulesConfig: Config = {
   name: '@homer0: tests',
   rules: {
     /**

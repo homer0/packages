@@ -1,6 +1,6 @@
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 
-export const reactStyleRulesConfig: Linter.Config = {
+export const reactStyleRulesConfig: Config = {
   name: '@homer0/react: style',
   rules: {
     /**

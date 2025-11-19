@@ -1,7 +1,7 @@
 import jsdocPlugin from 'eslint-plugin-jsdoc';
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 
-export const jsdocPluginConfig: Linter.Config = {
+export const jsdocPluginConfig: Config = {
   plugins: {
     jsdoc: jsdocPlugin,
   },

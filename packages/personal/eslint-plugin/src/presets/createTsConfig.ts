@@ -1,6 +1,6 @@
 import { dirname, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import type { LinterConfigWithExtends } from '../commons/index.js';
 import {
@@ -37,7 +37,7 @@ export const createTsConfig = ({
   sourceType = 'module',
   extraneousDependencies,
 }: CreateTsConfigOptions): LinterConfigWithExtends => {
-  const configsToApply = configs.map<Linter.Config[]>(
+  const configsToApply = configs.map<Config[]>(
     (configName) => plugin.configs[configName],
   );
   const filesToInclude = resolvePresetFilesToInclude({ files });

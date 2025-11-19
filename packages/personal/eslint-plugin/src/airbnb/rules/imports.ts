@@ -1,5 +1,5 @@
 import globals from 'globals';
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 
 export const noExtraneousDependenciesRuleSettings = {
   devDependencies: [
@@ -29,7 +29,7 @@ export const noExtraneousDependenciesRuleSettings = {
   optionalDependencies: false,
 };
 
-export const importsRulesConfig: Linter.Config = {
+export const importsRulesConfig: Config = {
   languageOptions: {
     globals: {
       ...globals.es2015,

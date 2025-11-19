@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers */
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 
-export const styleRulesConfig: Linter.Config = {
+export const styleRulesConfig: Config = {
   rules: {
     // require camel case names
     camelcase: ['error', { properties: 'never', ignoreDestructuring: false }],

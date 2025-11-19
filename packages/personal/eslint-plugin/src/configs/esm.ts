@@ -1,4 +1,4 @@
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 import { esmRulesConfig } from '../rules/index.js';
 
-export const esmConfig: Linter.Config[] = [esmRulesConfig];
+export const esmConfig: Config[] = [esmRulesConfig];

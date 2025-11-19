@@ -1,4 +1,4 @@
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 import { noExtraneousDependenciesRuleUtils } from '../rules/index.js';
 
 type ExtraneousDependenciesSettings = {
@@ -20,7 +20,7 @@ export type ConfigureExtraneousDependenciesOptions = {
 export const configureExtraneousDependencies = ({
   devFiles = [],
   bundledDependencies = [],
-}: ConfigureExtraneousDependenciesOptions = {}): Linter.Config | undefined => {
+}: ConfigureExtraneousDependenciesOptions = {}): Config | undefined => {
   if (devFiles.length === 0 && bundledDependencies.length === 0) {
     return undefined;
   }

@@ -1,5 +1,5 @@
 import globals from 'globals';
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 import { loadIgnorePathByEnvVar } from '../utils/index.js';
 import {
   baseRulesConfigs,
@@ -7,7 +7,7 @@ import {
   baseLanguageOptionsConfig,
 } from './base.js';
 
-export const nodeConfig: Linter.Config[] = [
+export const nodeConfig: Config[] = [
   ...loadIgnorePathByEnvVar(),
   ...basePluginsConfigs,
   ...baseRulesConfigs,

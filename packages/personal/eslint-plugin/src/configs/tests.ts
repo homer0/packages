@@ -1,4 +1,4 @@
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 import { testsRulesConfig } from '../rules/index.js';
 
-export const testsConfig: Linter.Config[] = [testsRulesConfig];
+export const testsConfig: Config[] = [testsRulesConfig];

@@ -1,10 +1,10 @@
 import importPlugin from 'eslint-plugin-import-x';
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 import type { LinterPlugin } from '../../commons/index.js';
 
 const extensions = ['.js', '.mjs', '.jsx'];
 
-export const importXPluginConfig: Linter.Config = {
+export const importXPluginConfig: Config = {
   plugins: {
     'import-x': importPlugin as unknown as LinterPlugin,
   },

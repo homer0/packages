@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 
 export const noParamReassignSettings = {
   props: true,
@@ -18,7 +18,7 @@ export const noParamReassignSettings = {
   ],
 };
 
-export const bestPracticesRulesConfig: Linter.Config = {
+export const bestPracticesRulesConfig: Config = {
   rules: {
     // enforces getter/setter pairs in objects
     // https://eslint.org/docs/rules/accessor-pairs

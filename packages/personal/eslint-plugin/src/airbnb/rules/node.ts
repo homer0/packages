@@ -1,7 +1,7 @@
 import globals from 'globals';
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 
-export const nodeRulesConfig: Linter.Config = {
+export const nodeRulesConfig: Config = {
   languageOptions: {
     globals: {
       ...globals.es2015,

@@ -1,8 +1,8 @@
 import prettierPlugin from 'eslint-plugin-prettier';
 import { rules as prettierConfigRules } from 'eslint-config-prettier';
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 
-export const prettierPluginConfigs: Linter.Config[] = [
+export const prettierPluginConfigs: Config[] = [
   {
     name: 'prettier/plugin/config',
     plugins: {

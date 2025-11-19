@@ -1,4 +1,4 @@
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 import {
   importsRulesConfig as base,
   noExtraneousDependenciesRuleSettings,
@@ -18,7 +18,7 @@ export const noExtraneousDependenciesRuleUtils = {
   },
 };
 
-export const importsRulesConfig: Linter.Config = {
+export const importsRulesConfig: Config = {
   ...base,
   name: '@homer0: imports',
   rules: {

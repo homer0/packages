@@ -1,7 +1,7 @@
 import confusingBrowserGlobals from 'confusing-browser-globals';
-import type { Linter } from 'eslint';
+import type { Config } from 'eslint/config';
 
-export const variablesRulesConfig: Linter.Config = {
+export const variablesRulesConfig: Config = {
   rules: {
     // enforce or disallow variable initializations at definition
     // https://eslint.org/docs/rules/init-declarations
