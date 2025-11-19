@@ -24,6 +24,10 @@
       "import": "./dist/presets/index.js",
       "types": "./src/presets/index.ts"
     },
+    "./nextjs": {
+      "import": "./dist/nextjs/index.js",
+      "types": "./src/nextjs/index.ts"
+    },
     "./package.json": "./package.json"
   },
   "dependencies": {
