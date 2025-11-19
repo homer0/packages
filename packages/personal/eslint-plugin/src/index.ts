@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 
+import type { LinterPlugin } from './commons/index.js';
 import {
   browserConfig,
   esmConfig,
@@ -17,7 +18,7 @@ const pkg = JSON.parse(
   fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8'),
 );
 
-export default {
+const eslintPlugin: LinterPlugin = {
   meta: {
     name: pkg.name,
     version: pkg.version,
@@ -35,3 +36,5 @@ export default {
     jsdoc: jsdocConfig,
   },
 };
+
+export default eslintPlugin;
