@@ -1,5 +1,20 @@
 import type { Linter } from 'eslint';
-import { bestPracticesRulesConfig as base } from '../airbnb/index.js';
+import {
+  bestPracticesRulesConfig as base,
+  noParamReassignSettings,
+} from '../airbnb/index.js';
+
+export const noParamReassignRuleUtils = {
+  settings: {
+    ...noParamReassignSettings,
+    ignorePropertyModificationsFor: [
+      ...noParamReassignSettings.ignorePropertyModificationsFor,
+      'state', // rtk reducers
+      'ref', // explicit updates by reference
+      'sacc', // sub-reducers accummulator
+    ],
+  },
+};
 
 export const bestPracticesRulesConfig: Linter.Config = {
   ...base,
@@ -46,6 +61,12 @@ export const bestPracticesRulesConfig: Linter.Config = {
         detectObjects: false,
       },
     ],
+    /**
+     * Just added a few extra allowed modifications.
+     *
+     * @see https://eslint.org/docs/latest/rules/no-param-reassign
+     */
+    'no-param-reassign': ['error', noParamReassignRuleUtils.settings],
     /**
      * `airbnb(off)` -> `error`.
      *
