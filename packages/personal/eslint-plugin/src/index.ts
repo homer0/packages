@@ -9,7 +9,6 @@ import {
   tsConfig,
   jsdocConfig,
 } from './configs/index.js';
-
 import { PACKAGE_META, addPrettierConfigs } from './utils/index.js';
 
 const eslintPlugin: LinterPlugin = {

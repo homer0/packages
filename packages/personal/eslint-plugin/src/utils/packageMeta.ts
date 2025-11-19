@@ -5,7 +5,7 @@ const pkg = JSON.parse(
   fs.readFileSync(new URL('../../package.json', import.meta.url), 'utf8'),
 ) as { name: string; version: string };
 
-export const PACKAGE_META: LinterPlugin['meta'] = {
+export const PACKAGE_META = {
   name: pkg.name,
   version: pkg.version,
-};
+} as const satisfies LinterPlugin['meta'];
