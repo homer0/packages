@@ -6,7 +6,6 @@ export * from './imports.js';
 export * from './jsdoc.js';
 export * from './node-ts.js';
 export * from './node.js';
-export * from './react.js';
 export * from './strict.js';
 export * from './style.js';
 export * from './tests.js';
