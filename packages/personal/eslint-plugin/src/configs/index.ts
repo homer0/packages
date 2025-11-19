@@ -1,3 +1,4 @@
+export * from './base.js';
 export * from './browser.js';
 export * from './esm.js';
 export * from './nodeTsTests.js';
