@@ -20,7 +20,7 @@
     "eslint": "catalog:",
     "husky": "^9.1.7",
     "leasot": "^14.4.0",
-    "lerna": "^9.0.0",
+    "lerna": "^9.0.1",
     "lint-staged": "^16.2.6",
     "prettier": "^3.6.2"
   },
