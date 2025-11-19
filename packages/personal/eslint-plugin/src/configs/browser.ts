@@ -1,7 +1,7 @@
 import globals from 'globals';
 import type { Config } from 'eslint/config';
 import { loadIgnorePathByEnvVar } from '../utils/index.js';
-import { transpilationRulesConfig } from '../rules/index.js';
+import { bundlingRulesConfig } from '../rules/index.js';
 import {
   baseRulesConfigs,
   basePluginsConfigs,
@@ -12,7 +12,7 @@ export const browserConfig: Config[] = [
   ...loadIgnorePathByEnvVar(),
   ...basePluginsConfigs,
   ...baseRulesConfigs,
-  transpilationRulesConfig,
+  bundlingRulesConfig,
   {
     ...baseLanguageOptionsConfig,
     languageOptions: {

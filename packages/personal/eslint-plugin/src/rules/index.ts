@@ -9,6 +9,6 @@ export * from './node.js';
 export * from './strict.js';
 export * from './style.js';
 export * from './tests.js';
-export * from './transpilation.js';
+export * from './bundling.js';
 export * from './ts.js';
 export * from './variables.js';
