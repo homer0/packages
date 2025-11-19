@@ -1,5 +1,3 @@
-import fs from 'node:fs';
-
 import type { LinterPlugin } from './commons/index.js';
 import {
   browserConfig,
@@ -12,17 +10,10 @@ import {
   jsdocConfig,
 } from './configs/index.js';
 
-import { addPrettierConfigs } from './utils/index.js';
-
-const pkg = JSON.parse(
-  fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8'),
-);
+import { PACKAGE_META, addPrettierConfigs } from './utils/index.js';
 
 const eslintPlugin: LinterPlugin = {
-  meta: {
-    name: pkg.name,
-    version: pkg.version,
-  },
+  meta: PACKAGE_META,
   configs: {
     ...addPrettierConfigs({
       browser: browserConfig,
