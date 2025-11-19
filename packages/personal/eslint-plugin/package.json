@@ -44,12 +44,19 @@
     "@homer0/tsconfig": "workspace:*",
     "@types/confusing-browser-globals": "^1.0.3",
     "eslint": "catalog:",
+    "eslint-config-next": "^16.0.3",
     "tsup": "catalog:",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "eslint": "^9.0.0",
+    "eslint-config-next": "^16.0.0",
     "typescript": "^5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "eslint-config-next": {
+      "optional": true
+    }
   },
   "engine-strict": true,
   "engines": {
