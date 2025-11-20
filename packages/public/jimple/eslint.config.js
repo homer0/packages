@@ -1,8 +1,8 @@
 import { defineConfig } from 'eslint/config';
-import { createTsConfig } from '@homer0/eslint-plugin/presets';
+import { createConfig } from '@homer0/eslint-plugin/create';
 
 export default defineConfig([
-  createTsConfig({
+  createConfig({
     importUrl: import.meta.url,
     ignores: ['tests/**'],
     configs: ['node-ts-with-prettier'],
@@ -10,7 +10,7 @@ export default defineConfig([
       bundledDependencies: ['jimple'],
     },
   }),
-  createTsConfig({
+  createConfig({
     importUrl: import.meta.url,
     files: 'all-inside:./tests',
     configs: ['node-ts-tests-with-prettier'],

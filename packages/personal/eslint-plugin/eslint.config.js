@@ -1,8 +1,8 @@
 import { defineConfig } from 'eslint/config';
-import { createTsConfig } from './dist/presets/index.js';
+import { createConfig } from './dist/create/index.js';
 
 export default defineConfig([
-  createTsConfig({
+  createConfig({
     /**
      * The reason for this is that we are importing the plugin from `dist`, which triggers type
      * checking, which we don't want. The only alternative is to remove this file from the
