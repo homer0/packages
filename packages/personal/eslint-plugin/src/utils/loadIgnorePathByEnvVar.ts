@@ -10,5 +10,7 @@ export const loadIgnorePathByEnvVar = (): Config[] => {
     return [];
   }
 
-  return [includeIgnoreFile(envVarValue)];
+  return [
+    includeIgnoreFile(envVarValue, '@homer0/eslint-plugin: ignore path from env var'),
+  ];
 };
