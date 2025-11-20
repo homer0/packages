@@ -138,7 +138,7 @@ export const createDynamicConfig = <Configs extends Record<string, Config[]>>(
     tsConfigName = 'tsconfig.json',
     tsConfigPath = './',
     addTsParser = true,
-    loadIgnoreFile: loadIgnoreFileOption,
+    loadIgnoreFile: loadIgnoreFileOption = '.gitignore',
   } = options;
 
   const configsToApply = selectedConfigs.map<Config[]>((configName) => {
