@@ -8,6 +8,11 @@ import {
   configureExtraneousDependencies,
   type ConfigureExtraneousDependenciesOptions,
 } from './configureExtraneousDependencies.js';
+import {
+  loadIgnoreFile,
+  type LoadIgnoreFileOptions,
+  type IgnoreFileSearchLimit,
+} from './loadIgnoreFile.js';
 
 export type CreateDynamicConfigExtendsOptions =
   | Config[][]
@@ -15,6 +20,11 @@ export type CreateDynamicConfigExtendsOptions =
       before?: Config[][];
       after?: Config[][];
     };
+
+export type CreateDynamicConfigLoadIgnoreFileOptions =
+  | boolean
+  | IgnoreFileSearchLimit
+  | Omit<LoadIgnoreFileOptions, 'rootDir'>;
 
 export type CreateDynamicConfigSharedOptions = {
   importUrl: string;
@@ -29,6 +39,7 @@ export type CreateDynamicConfigSharedOptions = {
   tsConfigName?: string;
   tsConfigPath?: string;
   addTsParser?: boolean;
+  loadIgnoreFile?: CreateDynamicConfigLoadIgnoreFileOptions;
 };
 
 export type CreateDynamicConfigOptions<Configs extends Record<string, Config[]>> = {
@@ -36,6 +47,77 @@ export type CreateDynamicConfigOptions<Configs extends Record<string, Config[]>>
   availableConfigs: Configs;
   selectedConfigs: (keyof Configs)[];
 } & CreateDynamicConfigSharedOptions;
+
+const addExtendsConfigs = (
+  configsToApply: Config[][],
+  extendsOption?: CreateDynamicConfigExtendsOptions,
+): void => {
+  if (!extendsOption) {
+    return;
+  }
+
+  if (Array.isArray(extendsOption)) {
+    configsToApply.push(...extendsOption);
+    return;
+  }
+
+  if (extendsOption.before) {
+    configsToApply.unshift(...extendsOption.before);
+  }
+
+  if (extendsOption.after) {
+    configsToApply.push(...extendsOption.after);
+  }
+};
+
+const addExtraneousDependenciesConfig = (
+  configsToApply: Config[][],
+  extraneousDependencies?: ConfigureExtraneousDependenciesOptions,
+): void => {
+  if (!extraneousDependencies) {
+    return;
+  }
+
+  const extraneousConfig = configureExtraneousDependencies(extraneousDependencies);
+  if (!extraneousConfig) {
+    return;
+  }
+
+  configsToApply.push([extraneousConfig]);
+};
+
+const addIgnoreFileConfig = (
+  configsToApply: Config[][],
+  rootDir: string,
+  loadIgnoreFileOption?: CreateDynamicConfigLoadIgnoreFileOptions,
+): void => {
+  if (!loadIgnoreFileOption) {
+    return;
+  }
+
+  let useLoadIgnoreFileOptions: LoadIgnoreFileOptions;
+  if (loadIgnoreFileOption === true) {
+    useLoadIgnoreFileOptions = {
+      rootDir,
+      limit: '.gitignore',
+      includeGitignore: true,
+    };
+  } else if (typeof loadIgnoreFileOption === 'object') {
+    useLoadIgnoreFileOptions = {
+      rootDir,
+      ...loadIgnoreFileOption,
+    };
+  } else {
+    useLoadIgnoreFileOptions = {
+      rootDir,
+      limit: loadIgnoreFileOption,
+      includeGitignore: true,
+    };
+  }
+
+  const ignoreFileConfigs = loadIgnoreFile(useLoadIgnoreFileOptions);
+  configsToApply.push(ignoreFileConfigs);
+};
 
 export const createDynamicConfig = <Configs extends Record<string, Config[]>>(
   options: CreateDynamicConfigOptions<Configs>,
@@ -56,6 +138,7 @@ export const createDynamicConfig = <Configs extends Record<string, Config[]>>(
     tsConfigName = 'tsconfig.json',
     tsConfigPath = './',
     addTsParser = true,
+    loadIgnoreFile: loadIgnoreFileOption,
   } = options;
 
   const configsToApply = selectedConfigs.map<Config[]>((configName) => {
@@ -66,15 +149,15 @@ export const createDynamicConfig = <Configs extends Record<string, Config[]>>(
 
     return configs;
   });
+
+  const rootDir = resolve(dirname(fileURLToPath(importUrl)), '.');
+
   const filesToInclude = resolveFilesList({ files });
   const filesToIgnore = Array.isArray(ignores) ? ignores : [ignores];
 
-  if (extraneousDependencies) {
-    const extraneousConfig = configureExtraneousDependencies(extraneousDependencies);
-    if (extraneousConfig) {
-      configsToApply.push([extraneousConfig]);
-    }
-  }
+  addExtraneousDependenciesConfig(configsToApply, extraneousDependencies);
+  addExtendsConfigs(configsToApply, extendsOption);
+  addIgnoreFileConfig(configsToApply, rootDir, loadIgnoreFileOption);
 
   const settingsToUse: Record<string, unknown> = {
     ...settings,
@@ -82,7 +165,7 @@ export const createDynamicConfig = <Configs extends Record<string, Config[]>>(
 
   let languageOptions: Config['languageOptions'];
   if (addTsParser) {
-    const tsConfigFullPath = resolve(dirname(fileURLToPath(importUrl)), tsConfigPath);
+    const tsConfigFullPath = resolve(rootDir, tsConfigPath);
 
     languageOptions = {
       parserOptions: {
@@ -95,19 +178,6 @@ export const createDynamicConfig = <Configs extends Record<string, Config[]>>(
     settingsToUse['import-x/resolver-next'] = createTypeScriptImportResolver({
       project: join(tsConfigFullPath, tsConfigName),
     });
-  }
-
-  if (extendsOption) {
-    if (Array.isArray(extendsOption)) {
-      configsToApply.push(...extendsOption);
-    } else {
-      if (extendsOption.before) {
-        configsToApply.unshift(...extendsOption.before);
-      }
-      if (extendsOption.after) {
-        configsToApply.push(...extendsOption.after);
-      }
-    }
   }
 
   const rulesToUse: NonNullable<Config['rules']> = {
