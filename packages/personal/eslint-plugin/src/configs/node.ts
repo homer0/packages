@@ -1,6 +1,5 @@
 import globals from 'globals';
 import type { Config } from 'eslint/config';
-import { loadIgnorePathByEnvVar } from '../utils/index.js';
 import {
   baseRulesConfigs,
   basePluginsConfigs,
@@ -8,7 +7,6 @@ import {
 } from './base.js';
 
 export const nodeConfig: Config[] = [
-  ...loadIgnorePathByEnvVar(),
   ...basePluginsConfigs,
   ...baseRulesConfigs,
   {
