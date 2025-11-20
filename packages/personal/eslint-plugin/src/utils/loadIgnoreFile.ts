@@ -83,15 +83,21 @@ export type LoadIgnoreFileOptions = {
   rootDir: string;
   limit: IgnoreFileSearchLimit;
   includeGitignore: boolean;
+  ignoreFileName?: string;
 };
 
 export const loadIgnoreFile = (options: LoadIgnoreFileOptions): Config[] => {
-  const { rootDir, limit, includeGitignore } = options;
+  const {
+    rootDir,
+    limit,
+    includeGitignore,
+    ignoreFileName = PATTERNS.eslintignore,
+  } = options;
 
   const { foundPaths, gitignorePath } = lookInDirectory({
     dir: rootDir,
     limit,
-    targetFileName: PATTERNS.eslintignore,
+    targetFileName: ignoreFileName,
   });
 
   const allLines: string[] = [];
