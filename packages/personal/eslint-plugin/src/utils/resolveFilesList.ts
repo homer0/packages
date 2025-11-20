@@ -2,21 +2,17 @@ const ALL_INSIDE_PREFIX = 'all-inside:';
 
 // We don't use the const in the type so it's easier to read for the implementation.
 
-export type PresetFilesToIncludeEntry = 'all' | `all-inside:${string}` | ({} & string);
-export type PresetFilesToInclude =
-  | PresetFilesToIncludeEntry
-  | PresetFilesToIncludeEntry[];
+export type FilesListEntry = 'all' | 'all-inside:' | ({} & string);
+export type FilesList = FilesListEntry | FilesListEntry[];
 
 const ALL_EXTENSIONS = ['js', 'cjs', 'mjs', 'ts', 'cts', 'mts', 'tsx', 'd.ts'];
 
-export type ResolvedPresetFilesToIncludeOptions = {
-  files: PresetFilesToInclude;
+export type ResolveFilesListOptions = {
+  files: FilesList;
   extensions?: string[];
 };
 
-export const resolvePresetFilesToInclude = (
-  options: ResolvedPresetFilesToIncludeOptions,
-): string[] => {
+export const resolveFilesList = (options: ResolveFilesListOptions): string[] => {
   const { files, extensions = ALL_EXTENSIONS } = options;
 
   const list = Array.isArray(files) ? files : [files];
@@ -27,7 +23,7 @@ export const resolvePresetFilesToInclude = (
     }
 
     if (entry.startsWith(ALL_INSIDE_PREFIX)) {
-      const entryPath = entry.slice(ALL_INSIDE_PREFIX.length).replace(/\/+$/, '');
+      const entryPath = entry.slice(ALL_INSIDE_PREFIX.length).replace(/\/+$/, '') || '.';
       return `${entryPath}/**/*.${extensionsPattern}`;
     }
 

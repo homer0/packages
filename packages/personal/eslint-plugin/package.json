@@ -20,17 +20,17 @@
       "import": "./dist/index.js",
       "types": "./src/index.ts"
     },
-    "./presets": {
-      "import": "./dist/presets/index.js",
-      "types": "./src/presets/index.ts"
+    "./create": {
+      "import": "./dist/create/index.js",
+      "types": "./src/create/index.ts"
     },
     "./nextjs": {
       "import": "./dist/nextjs/index.js",
       "types": "./src/nextjs/index.ts"
     },
-    "./nextjs/presets": {
-      "import": "./dist/nextjs/presets/index.js",
-      "types": "./src/nextjs/presets/index.ts"
+    "./nextjs/create": {
+      "import": "./dist/nextjs/create/index.js",
+      "types": "./src/nextjs/create/index.ts"
     },
     "./package.json": "./package.json"
   },
