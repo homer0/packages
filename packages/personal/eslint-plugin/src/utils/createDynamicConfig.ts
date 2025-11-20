@@ -8,11 +8,7 @@ import {
   configureExtraneousDependencies,
   type ConfigureExtraneousDependenciesOptions,
 } from './configureExtraneousDependencies.js';
-import {
-  loadIgnoreFile,
-  type LoadIgnoreFileOptions,
-  type IgnoreFileSearchLimit,
-} from './loadIgnoreFile.js';
+import { loadIgnoreFile, type LoadIgnoreFileOptions } from './loadIgnoreFile.js';
 
 export type CreateDynamicConfigExtendsOptions =
   | Config[][]
@@ -23,8 +19,8 @@ export type CreateDynamicConfigExtendsOptions =
 
 export type CreateDynamicConfigLoadIgnoreFileOptions =
   | boolean
-  | IgnoreFileSearchLimit
-  | Omit<LoadIgnoreFileOptions, 'rootDir'>;
+  | number
+  | Partial<Omit<LoadIgnoreFileOptions, 'rootDir'>>;
 
 export type CreateDynamicConfigSharedOptions = {
   importUrl: string;
@@ -105,6 +101,8 @@ const addIgnoreFileConfig = (
   } else if (typeof loadIgnoreFileOption === 'object') {
     useLoadIgnoreFileOptions = {
       rootDir,
+      limit: '.gitignore',
+      includeGitignore: true,
       ...loadIgnoreFileOption,
     };
   } else {
@@ -138,7 +136,7 @@ export const createDynamicConfig = <Configs extends Record<string, Config[]>>(
     tsConfigName = 'tsconfig.json',
     tsConfigPath = './',
     addTsParser = true,
-    loadIgnoreFile: loadIgnoreFileOption = '.gitignore',
+    loadIgnoreFile: loadIgnoreFileOption = true,
   } = options;
 
   const configsToApply = selectedConfigs.map<Config[]>((configName) => {
