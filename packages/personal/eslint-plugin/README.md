@@ -1,13 +1,13 @@
-# eslint-plugin-homer0
+# @homer0/eslint-plugin
 
 My custom configurations for ESLint
 
 ## Installation
 
 ```bash
-pnpm add eslint-plugin-homer0 --save-dev
+pnpm add @homer0/eslint-plugin --save-dev
 # or
-npm install eslint-plugin-homer0 --save-dev
+npm install @homer0/eslint-plugin --save-dev
 ```
 
 ## Requirements
