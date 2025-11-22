@@ -1,7 +1,6 @@
-/* @jest-environment node */
-jest.unmock('../src/utils');
-
-import { isServer } from '../src/utils';
+/* @vitest-environment node */
+import { describe, it, expect } from 'vitest';
+import { isServer } from '@src/utils.js';
 
 describe('utils (node)', () => {
   describe('isServer', () => {

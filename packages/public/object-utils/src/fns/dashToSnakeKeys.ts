@@ -1,4 +1,4 @@
-import { formatKeys, type FormatKeysExtensionOptions } from './formatKeys';
+import { formatKeys, type FormatKeysExtensionOptions } from './formatKeys.js';
 
 /**
  * A shorthand method for {@link formatKeys} that transforms the keys from `dash-case`

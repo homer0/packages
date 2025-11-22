@@ -1,4 +1,5 @@
-import { resourceCreatorFactory } from '../../src/factories';
+import { vi, describe, expect, it } from 'vitest';
+import { resourceCreatorFactory } from '@src/factories/index.js';
 
 describe('resourceCreatorFactory', () => {
   it('should create a resource creator', () => {
@@ -6,8 +7,8 @@ describe('resourceCreatorFactory', () => {
     type ResourceFn = (arg0: string) => string;
     const name = 'providerCreator';
     const key = 'register';
-    const resourceFn: ResourceFn = jest.fn(() => 'Batman');
-    const creatorFn = jest.fn(() => resourceFn);
+    const resourceFn: ResourceFn = vi.fn(() => 'Batman');
+    const creatorFn = vi.fn(() => resourceFn);
     // When
     const sut = resourceCreatorFactory<ResourceFn>()(name, key, creatorFn);
     // Then
@@ -21,8 +22,8 @@ describe('resourceCreatorFactory', () => {
     type ResourceFn = (arg0: string) => string;
     const name = 'providerCreator';
     const key = 'register';
-    const resourceFn: ResourceFn = jest.fn(() => 'Pilar');
-    const creatorFn = jest.fn(() => resourceFn);
+    const resourceFn: ResourceFn = vi.fn(() => 'Pilar');
+    const creatorFn = vi.fn(() => resourceFn);
     // When
     const sut = resourceCreatorFactory<ResourceFn>()(name, key, creatorFn);
     // Then
@@ -32,7 +33,6 @@ describe('resourceCreatorFactory', () => {
     expect('apply' in sut).toBe(true);
     expect(sut[key]).toBe(resourceFn);
     expect(sut.apply).toEqual(expect.any(Function));
-    // eslint-disable-next-line dot-notation
     expect(sut['invalid']).toBe(undefined);
     expect(creatorFn).toHaveBeenCalledTimes(1);
   });
@@ -45,8 +45,8 @@ describe('resourceCreatorFactory', () => {
     const finalResource = 'Batman';
     const prefixArgOne = 'prefix:';
     const prefixArgTwo = 'other:';
-    const creatorFn = jest.fn((arg0: string = '') =>
-      jest.fn(() => `${arg0}${finalResource}`),
+    const creatorFn = vi.fn((arg0: string = '') =>
+      vi.fn(() => `${arg0}${finalResource}`),
     );
     // When
     const sut = resourceCreatorFactory<ResourceFn>()(name, key, creatorFn);
@@ -62,8 +62,8 @@ describe('resourceCreatorFactory', () => {
     type ResourceFn = (arg0: string) => string;
     const name = 'providerCreator';
     const key = 'register';
-    const resourceFn: ResourceFn = jest.fn(() => 'Rosario');
-    const creatorFn = jest.fn(() => resourceFn);
+    const resourceFn: ResourceFn = vi.fn(() => 'Rosario');
+    const creatorFn = vi.fn(() => resourceFn);
     const arg = 'hello world';
     // When
     const sut = resourceCreatorFactory<ResourceFn>()(name, key, creatorFn);

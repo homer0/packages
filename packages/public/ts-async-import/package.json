@@ -19,24 +19,38 @@
   "publishConfig": {
     "access": "public"
   },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./src/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
   "files": [
+    "dist/",
     "src/"
   ],
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
-    "jest": "catalog:",
-    "ts-jest": "catalog:",
-    "typescript": "catalog:"
+    "@vitest/coverage-v8": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "unplugin-swc": "catalog:",
+    "vitest": "catalog:",
+    "vite-tsconfig-paths": "catalog:"
   },
   "engine-strict": true,
   "engines": {
     "node": ">=20 <23"
   },
-  "main": "./src/index.js",
-  "types": "./src/index.d.ts",
   "scripts": {
     "lint": "eslint .",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js -c ./.jestrc.js"
+    "lint:file": "eslint $@",
+    "test": "vitest run $@",
+    "types:check": "tsc --noEmit && tsc --noEmit --project ./tests/tsconfig.json"
   }
 }

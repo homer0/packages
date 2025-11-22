@@ -1,0 +1,7 @@
+{
+  "extends": "@homer0/tsconfig/tsconfig.node.json",
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "incremental": true
+  }
+}

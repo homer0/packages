@@ -1,6 +1,5 @@
-jest.unmock('../src/deepAssign');
-
-import { DeepAssign } from '../src/deepAssign';
+import { describe, expect, it } from 'vitest';
+import { DeepAssign } from '@src/deepAssign.js';
 
 describe('DeepAssign', () => {
   it('should throw an error when instantiated with an invalid `arrayMode` option', () => {
@@ -516,7 +515,6 @@ describe('DeepAssign', () => {
     const sut = new DeepAssign();
     const result = sut.assign<ExpectedType>(targetA, targetB);
     targetA.d.push('taE');
-    // eslint-disable-next-line dot-notation
     targetA.d[0]['tE'] = 'taE';
     targetA.d[3].push('taG');
     targetA.d[3][0].taI = 'taI';

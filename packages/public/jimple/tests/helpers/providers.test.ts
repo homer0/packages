@@ -1,14 +1,20 @@
-import { Jimple } from '../../src/jimple';
-import { provider, providerCreator, providers, createProviders } from '../../src/helpers';
+import { vi, describe, expect, it } from 'vitest';
+import { Jimple } from '@src/jimple/index.js';
+import {
+  provider,
+  providerCreator,
+  providers,
+  createProviders,
+} from '@src/helpers/index.js';
 
 describe('providers', () => {
   it('should create a collection of providers', () => {
     // Given
     const container = new Jimple();
-    const itemOneRegister = jest.fn();
+    const itemOneRegister = vi.fn();
     const itemOne = provider(itemOneRegister);
-    const itemTwoRegister = jest.fn();
-    const itemTwoCreator = jest.fn(() => itemTwoRegister);
+    const itemTwoRegister = vi.fn();
+    const itemTwoCreator = vi.fn(() => itemTwoRegister);
     const itemTwo = providerCreator(itemTwoCreator);
     const items = { itemOne, itemTwo };
     // When

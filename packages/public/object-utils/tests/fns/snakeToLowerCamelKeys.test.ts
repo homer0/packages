@@ -1,7 +1,5 @@
-jest.unmock('../../src/fns/formatKeys');
-jest.unmock('../../src/fns/snakeToLowerCamelKeys');
-
-import { snakeToLowerCamelKeys } from '../../src/fns/snakeToLowerCamelKeys';
+import { describe, it, expect } from 'vitest';
+import { snakeToLowerCamelKeys } from '@src/fns/snakeToLowerCamelKeys.js';
 
 describe('snakeToLowerCamelKeys', () => {
   it('should transform all keys to lower camel case', () => {

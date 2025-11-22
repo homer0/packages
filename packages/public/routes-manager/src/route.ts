@@ -1,4 +1,4 @@
-import type { RoutePath, RoutePathParams } from './types';
+import type { RoutePath, RoutePathParams } from './types.js';
 /**
  * A utility class that wraps a route definition in order to provider helper methods for
  * formatting.

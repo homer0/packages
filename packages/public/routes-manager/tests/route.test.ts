@@ -1,4 +1,5 @@
-import { Route } from '@src/route';
+import { describe, expect, it } from 'vitest';
+import { Route } from '@src/route.js';
 
 describe('Route', () => {
   describe('constructor', () => {

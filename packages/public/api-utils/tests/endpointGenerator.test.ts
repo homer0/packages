@@ -1,7 +1,6 @@
-jest.unmock('../src/endpointsGenerator');
-
-import { EndpointsGenerator, endpointsGenerator } from '../src/endpointsGenerator';
-import type { EndpointsDict } from '../src/types';
+import { describe, it, expect } from 'vitest';
+import { EndpointsGenerator, endpointsGenerator } from '@src/endpointsGenerator.js';
+import type { EndpointsDict } from '@src/types.js';
 
 describe('EndpointsGenertor', () => {
   it('should be correctly initialized', () => {

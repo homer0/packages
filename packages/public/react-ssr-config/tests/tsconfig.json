@@ -1,7 +1,12 @@
 {
-  "extends": "@homer0/tsconfig/tsconfig.jest-node.json",
+  "extends": "@homer0/tsconfig/tsconfig.node-tests.json",
   "compilerOptions": {
-    "jsx": "react-jsx"
+    "types": ["node", "vitest/globals"],
+    "jsx": "react-jsx",
+    "baseUrl": "./",
+    "paths": {
+      "@src/*": ["../src/*"]
+    }
   },
   "include": ["./"]
 }

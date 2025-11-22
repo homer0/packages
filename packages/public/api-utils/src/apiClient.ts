@@ -1,11 +1,14 @@
-import { EndpointsGenerator, type EndpointsGeneratorOptions } from './endpointsGenerator';
+import {
+  EndpointsGenerator,
+  type EndpointsGeneratorOptions,
+} from './endpointsGenerator.js';
 import type {
   EndpointDefinition,
   EndpointsDict,
   ErrorResponse,
   FetchClient,
   FetchOptions,
-} from './types';
+} from './types.js';
 /**
  * The options for the client constructor.
  */
@@ -229,7 +232,6 @@ export class APIClient {
   protected getHeaders(overwrites: Record<string, unknown> = {}): Record<string, string> {
     const headers = { ...this.defaultHeaders };
     if (this.authorizationToken) {
-      // eslint-disable-next-line dot-notation
       headers['Authorization'] = `Bearer ${this.authorizationToken}`;
     }
 

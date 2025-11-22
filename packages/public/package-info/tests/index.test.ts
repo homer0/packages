@@ -1,15 +1,15 @@
-jest.mock('fs');
-jest.mock('fs/promises');
-jest.unmock('../src');
+vi.mock('fs');
+vi.mock('fs/promises');
 
+import { describe, it, beforeEach, expect, type MockedObject } from 'vitest';
 import { Jimple } from '@homer0/jimple';
 import * as originalFsSync from 'fs';
 import * as originalFsPromises from 'fs/promises';
 import { PathUtils } from '@homer0/path-utils';
-import { PackageInfo, packageInfo, packageInfoProvider } from '../src';
+import { PackageInfo, packageInfo, packageInfoProvider } from '@src/index.js';
 
-const mockFsSync = originalFsSync as jest.Mocked<typeof originalFsSync>;
-const mockFsPromises = originalFsPromises as jest.Mocked<typeof originalFsPromises>;
+const mockFsSync = originalFsSync as MockedObject<typeof originalFsSync>;
+const mockFsPromises = originalFsPromises as MockedObject<typeof originalFsPromises>;
 
 describe('PackageInfo', () => {
   describe('class', () => {
@@ -51,7 +51,7 @@ describe('PackageInfo', () => {
         },
       };
       mockFsPromises.readFile.mockResolvedValue(JSON.stringify(pkgJson));
-      const joinFn = jest.fn();
+      const joinFn = vi.fn();
       class MyPathUtils extends PathUtils {
         override join(
           ...args: Parameters<PathUtils['join']>
@@ -124,7 +124,7 @@ describe('PackageInfo', () => {
   describe('provider', () => {
     it('should include a Jimple provider', () => {
       // Given
-      const setFn = jest.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override set(...args: Parameters<Jimple['set']>) {
           setFn(...args);
@@ -145,8 +145,8 @@ describe('PackageInfo', () => {
 
     it('should allow custom options on its provider', () => {
       // Given
-      const getFn = jest.fn();
-      const setFn = jest.fn();
+      const getFn = vi.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override get<T>(key: string): T {
           getFn(key);
@@ -177,8 +177,8 @@ describe('PackageInfo', () => {
 
     it('should allow custom services on its provider', () => {
       // Given
-      const getFn = jest.fn();
-      const setFn = jest.fn();
+      const getFn = vi.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override get<T>(key: string): T {
           getFn(key);
@@ -189,7 +189,7 @@ describe('PackageInfo', () => {
           super.set(...args);
         }
       }
-      const joinFn = jest.fn();
+      const joinFn = vi.fn();
       class MyPathUtils extends PathUtils {
         override join(
           ...args: Parameters<PathUtils['join']>

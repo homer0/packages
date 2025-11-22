@@ -1,11 +1,10 @@
 {
-  "extends": "@homer0/tsconfig/tsconfig.jest-node.json",
+  "extends": "@homer0/tsconfig/tsconfig.node-tests.json",
   "include": ["./", "../src/**/*"],
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@src/*": ["../src/*"],
-      "@tests/*": ["./*"]
+      "@src/*": ["../src/*"]
     }
   }
 }

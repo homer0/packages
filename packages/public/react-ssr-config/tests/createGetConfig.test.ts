@@ -1,13 +1,14 @@
-jest.unmock('../src/createGetConfig');
+vi.mock('@src/store.js');
 
-import { createGetConfig, getConfig, resetGetConfig } from '../src/createGetConfig';
-import { getStore } from '../src/store';
+import { describe, it, expect, beforeEach, type Mock } from 'vitest';
+import { createGetConfig, getConfig, resetGetConfig } from '@src/createGetConfig.js';
+import { getStore } from '@src/store.js';
 
-const getStoreMock = getStore as jest.Mock;
+const getStoreMock = getStore as Mock;
 
 describe('createGetConfig', () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
     resetGetConfig();
   });
 
@@ -24,7 +25,7 @@ describe('createGetConfig', () => {
     // Given
     const configName = 'my-config';
     const config = {
-      getConfig: jest.fn(),
+      getConfig: vi.fn(),
     };
     getStoreMock.mockReturnValueOnce({
       [configName]: config,
@@ -38,7 +39,7 @@ describe('createGetConfig', () => {
   it('should return the getConfig method from the config with the default name', () => {
     // Given
     const config = {
-      getConfig: jest.fn(),
+      getConfig: vi.fn(),
     };
     getStoreMock.mockReturnValueOnce({
       main: config,
@@ -54,7 +55,7 @@ describe('createGetConfig', () => {
       // Given
       const returnValue = 'Rosario';
       const config = {
-        getConfig: jest.fn(() => returnValue),
+        getConfig: vi.fn(() => returnValue),
       };
       getStoreMock.mockReturnValueOnce({
         main: config,
@@ -69,7 +70,7 @@ describe('createGetConfig', () => {
       // Given
       const returnValue = 'Pilar';
       const config = {
-        getConfig: jest.fn(() => returnValue),
+        getConfig: vi.fn(() => returnValue),
       };
       getStoreMock.mockReturnValueOnce({
         main: config,

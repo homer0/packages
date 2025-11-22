@@ -1,4 +1,4 @@
-import { merge } from './merge';
+import { merge } from './merge.js';
 
 /**
  * Creates a deep copy of a given object.

@@ -77,7 +77,11 @@ export class DeepAssign {
    * @param target  The object to validate.
    */
   protected isPlainObject(target: unknown): boolean {
-    return target !== null && Object.getPrototypeOf(target).constructor.name === 'Object';
+    return (
+      target !== globalThis &&
+      target !== null &&
+      Object.getPrototypeOf(target).constructor.name === 'Object'
+    );
   }
   /**
    * Checks if an object can be used on a merge: only arrays and plain objects are

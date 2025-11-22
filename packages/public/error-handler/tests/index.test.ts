@@ -1,8 +1,7 @@
-jest.unmock('../src');
-
+import { vi, describe, expect, it, afterEach } from 'vitest';
 import { Jimple } from '@homer0/jimple';
 import { SimpleLogger } from '@homer0/simple-logger';
-import { ErrorHandler, errorHandler, errorHandlerProvider } from '../src';
+import { ErrorHandler, errorHandler, errorHandlerProvider } from '@src/index.js';
 
 const originalProcessOn = process.on;
 const originalProcessRemoveListener = process.removeListener;
@@ -35,7 +34,7 @@ describe('ErrorHandler', () => {
 
     it('should add the listeners for uncaught and rejected exceptions', () => {
       // Given
-      const onMock = jest.fn();
+      const onMock = vi.fn();
       process.on = onMock;
       // When
       const sut = new ErrorHandler();
@@ -56,9 +55,9 @@ describe('ErrorHandler', () => {
 
     it('should add and remove the listeners for uncaught and rejected exceptions', () => {
       // Given
-      const onMock = jest.fn();
+      const onMock = vi.fn();
       process.on = onMock;
-      const removeListenerMock = jest.fn();
+      const removeListenerMock = vi.fn();
       process.removeListener = removeListenerMock;
       // When
       const sut = new ErrorHandler();
@@ -81,10 +80,10 @@ describe('ErrorHandler', () => {
 
     it('should log an uncaught exception as it is if the logger already shows time', () => {
       // Given
-      const exitMock = jest.fn();
+      const exitMock = vi.fn();
       // @ts-expect-error - Because we are overwriting the default process.
       process.exit = exitMock;
-      const logMock = jest.fn();
+      const logMock = vi.fn();
       class AppLogger extends SimpleLogger {
         override error(...args: Parameters<SimpleLogger['error']>) {
           logMock(...args);
@@ -108,10 +107,10 @@ describe('ErrorHandler', () => {
 
     it('should log an uncaught exception with the time if the logger has it disabled', () => {
       // Given
-      const exitMock = jest.fn();
+      const exitMock = vi.fn();
       // @ts-expect-error - Because we are overwriting the default process.
       process.exit = exitMock;
-      const logMock = jest.fn();
+      const logMock = vi.fn();
       class AppLogger extends SimpleLogger {
         override error(...args: Parameters<SimpleLogger['error']>) {
           logMock(...args);
@@ -138,10 +137,10 @@ describe('ErrorHandler', () => {
 
     it("shouldn't exit the process when handling an error", () => {
       // Given
-      const exitMock = jest.fn();
+      const exitMock = vi.fn();
       // @ts-expect-error - Because we are overwriting the default process.
       process.exit = exitMock;
-      const logMock = jest.fn();
+      const logMock = vi.fn();
       class AppLogger extends SimpleLogger {
         override error(...args: Parameters<SimpleLogger['error']>) {
           logMock(...args);
@@ -174,7 +173,7 @@ describe('ErrorHandler', () => {
   describe('provider', () => {
     it('should include a Jimple provider', () => {
       // Given
-      const setFn = jest.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override set(...args: Parameters<Jimple['set']>) {
           setFn(...args);
@@ -195,8 +194,8 @@ describe('ErrorHandler', () => {
 
     it('should allow custom options on its provider', () => {
       // Given
-      const getFn = jest.fn();
-      const setFn = jest.fn();
+      const getFn = vi.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override get<T>(key: string): T {
           getFn(key);
@@ -227,8 +226,8 @@ describe('ErrorHandler', () => {
 
     it('should allow custom services on its provider', () => {
       // Given
-      const getFn = jest.fn();
-      const setFn = jest.fn();
+      const getFn = vi.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override get<T>(key: string): T {
           getFn(key);
@@ -264,8 +263,8 @@ describe('ErrorHandler', () => {
 
     it('should use the app logger if available', () => {
       // Given
-      const getFn = jest.fn();
-      const setFn = jest.fn();
+      const getFn = vi.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override get<T>(key: string): T {
           getFn(key);

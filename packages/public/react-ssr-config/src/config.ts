@@ -1,5 +1,5 @@
-import { isServer } from './utils';
-import type { ConfigSlice, ConfigSettings, GenericConfig } from './types';
+import { isServer } from './utils.js';
+import type { ConfigSlice, ConfigSettings, GenericConfig } from './types.js';
 /**
  * This works as a service that handles the config both on the server and the client.
  * When initialized in the server, it will save the config in the instance and make sure it's

@@ -1,4 +1,4 @@
-import { set } from './set';
+import { set } from './set.js';
 
 export type UnflatOptions = {
   /**

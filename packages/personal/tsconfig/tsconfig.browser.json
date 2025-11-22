@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "lib": ["ES2022", "dom", "dom.iterable"]
+    "lib": ["es2023", "dom", "dom.iterable"]
   }
 }

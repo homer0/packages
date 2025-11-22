@@ -7,7 +7,7 @@ import type {
   Storage,
   SimpleStorageConstructorOptions,
   SimpleStorageOptions,
-} from './types';
+} from './types.js';
 /**
  * A service that allows you to build functionalities that relay on browser storage
  * (session/local), and simplifies the way you work it.
@@ -55,7 +55,7 @@ export class SimpleStorage<T extends Dict, E = unknown> {
           saveWhenDeletingExpired: true,
         },
         memoryStorage: {},
-        getInitialData: () => ({} as T),
+        getInitialData: () => ({}) as T,
       },
       options,
     );
@@ -129,8 +129,8 @@ export class SimpleStorage<T extends Dict, E = unknown> {
    *
    * @param data  The new data, or a {@link Promise} that resolves into the new data.
    * @param save  Whether or not the service should save the data into the storage.
-   * @returns If `data` is an object, it will return the same object; but if `data` is
-   *          a {@link Promise}, it will return the _"promise chain"_.
+   * @returns If `data` is an object, it will return the same object; but if `data`
+   *          is a {@link Promise}, it will return the _"promise chain"_.
    */
   setData(data: T, save?: boolean): T;
   setData(data: Promise<T>, save?: boolean): Promise<T>;

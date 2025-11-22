@@ -1,4 +1,4 @@
-import { Jimple as JimpleMod } from '../jimplemod';
+import { Jimple as JimpleMod } from '../jimplemod/index.js';
 
 export class Jimple extends JimpleMod {
   /**

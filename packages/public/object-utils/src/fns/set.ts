@@ -1,4 +1,4 @@
-import { copy } from './copy';
+import { copy } from './copy.js';
 
 /**
  * List of paths that are forbidden to use on the `set` function, as they could lead to

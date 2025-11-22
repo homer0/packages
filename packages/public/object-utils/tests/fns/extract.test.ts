@@ -1,11 +1,6 @@
-jest.unmock('../../src/fns/merge');
-jest.unmock('../../src/fns/copy');
-jest.unmock('../../src/fns/get');
-jest.unmock('../../src/fns/set');
-jest.unmock('../../src/fns/extract');
-
-import { copy } from '../../src/fns/copy';
-import { extract } from '../../src/fns/extract';
+import { describe, it, expect } from 'vitest';
+import { copy } from '@src/fns/copy.js';
+import { extract } from '@src/fns/extract.js';
 
 describe('extract', () => {
   it('should extract a list of properties from an object', () => {

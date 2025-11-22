@@ -19,8 +19,19 @@
   "publishConfig": {
     "access": "public"
   },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./src/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
   "files": [
-    "dist/"
+    "dist/",
+    "src/"
   ],
   "dependencies": {
     "extend": "^3.0.2"
@@ -28,24 +39,25 @@
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
+    "@vitest/coverage-v8": "catalog:",
     "@types/extend": "^3.0.4",
-    "jest": "catalog:",
-    "ts-jest": "catalog:",
+    "eslint": "catalog:",
     "tsup": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "unplugin-swc": "catalog:",
+    "vitest": "catalog:",
+    "vite-tsconfig-paths": "catalog:"
   },
   "engine-strict": true,
   "engines": {
     "node": ">=20 <23"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/index.d.ts",
   "scripts": {
     "lint": "eslint .",
-    "test": "jest -c ./.jestrc.js",
+    "lint:file": "eslint $@",
+    "test": "vitest run $@",
     "types:check": "tsc --noEmit && tsc --noEmit --project ./tests/tsconfig.json",
-    "build": "tsup src/index.ts",
+    "build": "tsup",
     "prepublishOnly": "pnpm run build"
   }
 }

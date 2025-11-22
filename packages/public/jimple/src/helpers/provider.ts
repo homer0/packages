@@ -1,5 +1,5 @@
-import type { Jimple } from '../jimple';
-import { resourceFactory } from '../factories';
+import type { Jimple } from '../jimple/index.js';
+import { resourceFactory } from '../factories/index.js';
 
 export type ProviderName = 'provider';
 export type ProviderKey = 'register';

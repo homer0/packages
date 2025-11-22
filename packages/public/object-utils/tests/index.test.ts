@@ -1,6 +1,5 @@
-jest.unmock('../src');
-
-import * as index from '../src';
+import { describe, it, expect } from 'vitest';
+import * as index from '../src/index.js';
 
 describe('index', () => {
   it('should export all the functions', () => {

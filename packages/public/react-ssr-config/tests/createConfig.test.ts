@@ -1,16 +1,14 @@
-jest.unmock('../src/config');
-jest.unmock('../src/createConfig');
-jest.unmock('../src/createConfigSlice');
-jest.unmock('../src/store');
+vi.mock('@src/utils.js');
 
-import { Config } from '../src/config';
-import { createConfig } from '../src/createConfig';
-import { createConfigSlice } from '../src/createConfigSlice';
-import { resetStore } from '../src/store';
-import { isServer } from '../src/utils';
-import type { ConfigSlice } from '../src/types';
+import { describe, it, expect, beforeEach, type Mock } from 'vitest';
+import { Config } from '@src/config.js';
+import { createConfig } from '@src/createConfig.js';
+import { createConfigSlice } from '@src/createConfigSlice.js';
+import { resetStore } from '@src/store.js';
+import { isServer } from '@src/utils.js';
+import type { ConfigSlice } from '@src/types.js';
 
-const isServerMock = isServer as jest.MockedFunction<typeof isServer>;
+const isServerMock = isServer as Mock<typeof isServer>;
 
 describe('Config', () => {
   const configName = 'my-config';
@@ -26,7 +24,7 @@ describe('Config', () => {
   });
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
     dummySlice = createConfigSlice(dummySliceName, () => dummySliceConfig);
     isServerMock.mockReturnValue(true);
     resetStore();

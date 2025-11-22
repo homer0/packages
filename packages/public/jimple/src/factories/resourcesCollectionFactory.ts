@@ -1,5 +1,5 @@
-import { resourceFactory } from './resourceFactory';
-import type { GenericFn, Resource } from './factories.types';
+import { resourceFactory } from './resourceFactory.js';
+import type { GenericFn, Resource } from './factories.types.js';
 /**
  * Generates a function to configure a collection of resources of an specified type. This
  * function itself doesn't have logic, but it's just in charge of creating the constraint

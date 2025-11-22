@@ -1,7 +1,7 @@
-import { DEFAULT_CONFIG_STORE, SCRIPT_CONFIG_ID } from './consts';
-import { Config } from './config';
-import { getStore } from './store';
-import type { GenericConfig, ConfigSlice } from './types';
+import { DEFAULT_CONFIG_STORE, SCRIPT_CONFIG_ID } from './consts.js';
+import { Config } from './config.js';
+import { getStore } from './store.js';
+import type { GenericConfig, ConfigSlice } from './types.js';
 /**
  * The options to create a config.
  */

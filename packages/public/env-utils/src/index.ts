@@ -1,4 +1,4 @@
-/* eslint-disable no-process-env */
+/* eslint-disable n/no-process-env */
 import { providerCreator } from '@homer0/jimple';
 
 /**

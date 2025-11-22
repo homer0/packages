@@ -1,5 +1,5 @@
-export * from './types';
-export * from './createConfig';
-export * from './createConfigSlice';
-export { createGetConfig, getConfig } from './createGetConfig';
-export * from './configLoader';
+export type * from './types.js';
+export * from './createConfig.js';
+export * from './createConfigSlice.js';
+export { createGetConfig, getConfig } from './createGetConfig.js';
+export * from './configLoader.js';

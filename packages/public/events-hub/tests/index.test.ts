@@ -1,6 +1,5 @@
-jest.unmock('../src');
-
-import { EventsHub, eventsHub } from '../src';
+import { vi, describe, it, expect } from 'vitest';
+import { EventsHub, eventsHub } from '@src/index.js';
 
 describe('EventsHub', () => {
   describe('basic', () => {
@@ -9,7 +8,7 @@ describe('EventsHub', () => {
       const eventName = 'THE EVENT';
       const argOne = 'one';
       const argTwo = 'two';
-      const subscriber = jest.fn();
+      const subscriber = vi.fn();
       // When
       const sut = new EventsHub();
       const unsubscribe = sut.on(eventName, subscriber);
@@ -23,8 +22,8 @@ describe('EventsHub', () => {
     it('should allow multiple new subscribers for events', () => {
       // Given
       const eventName = 'THE EVENT';
-      const subscriberOne = jest.fn();
-      const subscriberTwo = jest.fn();
+      const subscriberOne = vi.fn();
+      const subscriberTwo = vi.fn();
       // When
       const sut = new EventsHub();
       const unsubscribeOne = sut.on(eventName, subscriberOne);
@@ -42,7 +41,7 @@ describe('EventsHub', () => {
       const eventOneName = 'FIRST EVENT';
       const eventTwoName = 'SECOND EVENT';
       const eventNames = [eventOneName, eventTwoName];
-      const subscriber = jest.fn();
+      const subscriber = vi.fn();
       // When
       const sut = new EventsHub();
       const unsubscribe = sut.on(eventNames, subscriber);
@@ -55,7 +54,7 @@ describe('EventsHub', () => {
     it("shouldn't allow the same subscriber multiple times for the same event", () => {
       // Given
       const eventName = 'THE EVENT';
-      const subscriber = jest.fn();
+      const subscriber = vi.fn();
       // When
       const sut = new EventsHub();
       const unsubscribeOne = sut.on(eventName, subscriber);
@@ -70,7 +69,7 @@ describe('EventsHub', () => {
     it("shouldn't call the subscribers once the unsubscribe function was called", () => {
       // Given
       const eventName = 'THE EVENT';
-      const subscriber = jest.fn();
+      const subscriber = vi.fn();
       // When
       const sut = new EventsHub();
       const unsubscribe = sut.on(eventName, subscriber);
@@ -84,7 +83,7 @@ describe('EventsHub', () => {
     it('should allow a subscriber that once executed get unsubscribed (`once`)', () => {
       // Given
       const eventName = 'THE EVENT';
-      const subscriber = jest.fn();
+      const subscriber = vi.fn();
       // When
       const sut = new EventsHub();
       sut.once(eventName, subscriber);
@@ -99,7 +98,7 @@ describe('EventsHub', () => {
       const eventOneName = 'FIRST EVENT';
       const eventTwoName = 'SECOND EVENT';
       const eventNames = [eventOneName, eventTwoName];
-      const subscriber = jest.fn();
+      const subscriber = vi.fn();
       // When
       const sut = new EventsHub();
       sut.once(eventOneName, subscriber);
@@ -115,7 +114,7 @@ describe('EventsHub', () => {
       const eventOneName = 'FIRST EVENT';
       const eventTwoName = 'SECOND EVENT';
       const eventNames = [eventOneName, eventTwoName];
-      const subscriber = jest.fn();
+      const subscriber = vi.fn();
       // When
       const sut = new EventsHub();
       sut.once(eventNames, subscriber);
@@ -130,7 +129,7 @@ describe('EventsHub', () => {
       const eventOneName = 'FIRST EVENT';
       const eventTwoName = 'SECOND EVENT';
       const eventNames = [eventOneName, eventTwoName];
-      const subscriber = jest.fn();
+      const subscriber = vi.fn();
       // When
       const sut = new EventsHub();
       sut.once(eventNames, subscriber);
@@ -145,7 +144,7 @@ describe('EventsHub', () => {
       const eventOneName = 'FIRST EVENT';
       const eventTwoName = 'SECOND EVENT';
       const eventNames = [eventOneName, eventTwoName];
-      const subscriber = jest.fn();
+      const subscriber = vi.fn();
       // When
       const sut = new EventsHub();
       sut.once(eventNames, subscriber);
@@ -168,8 +167,8 @@ describe('EventsHub', () => {
     it('should allow a subscriber to unsubscribe before beign triggered (`once`)', () => {
       // Given
       const eventName = 'THE EVENT';
-      const subscriberOne = jest.fn();
-      const subscriberTwo = jest.fn();
+      const subscriberOne = vi.fn();
+      const subscriberTwo = vi.fn();
       let unsubscribeOne = null;
       // When
       const sut = new EventsHub();
@@ -197,7 +196,7 @@ describe('EventsHub', () => {
       const eventName = 'THE EVENT';
       const targetInitialValue = 0;
       const target = targetInitialValue;
-      const subscriber = jest.fn((toReduce) => Promise.resolve(toReduce + 1));
+      const subscriber = vi.fn((toReduce: number) => Promise.resolve(toReduce + 1));
       // When
       const sut = new EventsHub();
       const unsubscribe = sut.on(eventName, subscriber);
@@ -215,7 +214,7 @@ describe('EventsHub', () => {
       const targetInitialValue = ['one', 'two'];
       const target = targetInitialValue.slice();
       const newValue = 'three';
-      const subscriber = jest.fn((toReduce) => {
+      const subscriber = vi.fn((toReduce: string[]) => {
         toReduce.push(newValue);
         return Promise.resolve(toReduce);
       });
@@ -236,7 +235,7 @@ describe('EventsHub', () => {
       const targetInitialValue = { one: 1, two: 2 };
       const target = { ...targetInitialValue };
       const newValue = { three: 3 };
-      const subscriber = jest.fn((toReduce) =>
+      const subscriber = vi.fn((toReduce: Record<string, number>) =>
         Promise.resolve({ ...toReduce, ...newValue }),
       );
       // When
@@ -255,7 +254,7 @@ describe('EventsHub', () => {
       const eventName = 'THE EVENT';
       const targetInitialValue = 0;
       const target = targetInitialValue;
-      const subscriber = jest.fn((toReduce) => Promise.resolve(toReduce + 1));
+      const subscriber = vi.fn((toReduce: number) => Promise.resolve(toReduce + 1));
       // When
       const sut = new EventsHub();
       const unsubscribe = sut.once(eventName, subscriber);
@@ -275,7 +274,7 @@ describe('EventsHub', () => {
       const eventNames = [eventOneName, eventTwoName];
       const targetInitialValue = 0;
       const target = targetInitialValue;
-      const subscriber = jest.fn((toReduce) => Promise.resolve(toReduce + 1));
+      const subscriber = vi.fn((toReduce: number) => Promise.resolve(toReduce + 1));
       // When
       const sut = new EventsHub();
       const unsubscribe = sut.on(eventNames, subscriber);
@@ -296,7 +295,7 @@ describe('EventsHub', () => {
       const target = targetInitialValue.slice();
       let counter = -1;
       const newValues = ['three', 'four'];
-      const subscriber = jest.fn((toReduce) => {
+      const subscriber = vi.fn((toReduce: Array<string | undefined>) => {
         counter++;
         toReduce.push(newValues[counter]);
         return Promise.resolve(toReduce);
@@ -321,7 +320,7 @@ describe('EventsHub', () => {
       const target = { ...targetInitialValue };
       let counter = -1;
       const newValues = [{ three: 3 }, { four: 4 }];
-      const subscriber = jest.fn((toReduce) => {
+      const subscriber = vi.fn((toReduce: Record<string, number>) => {
         counter++;
         return Promise.resolve({ ...toReduce, ...newValues[counter] });
       });
@@ -343,7 +342,7 @@ describe('EventsHub', () => {
       const eventNames = [eventOneName, eventTwoName];
       const targetInitialValue = 0;
       const target = targetInitialValue;
-      const subscriber = jest.fn((toReduce) => Promise.resolve(toReduce + 1));
+      const subscriber = vi.fn((toReduce: number) => Promise.resolve(toReduce + 1));
       // When
       const sut = new EventsHub();
       const unsubscribe = sut.once(eventNames, subscriber);
@@ -374,7 +373,7 @@ describe('EventsHub', () => {
       const target = targetInitialValue;
       const argOne = 1;
       const argTwo = 2;
-      const subscriber = jest.fn((toReduce, one, two) =>
+      const subscriber = vi.fn((toReduce: number, one: number, two: number) =>
         Promise.resolve(toReduce + one + two),
       );
       // When
@@ -396,7 +395,7 @@ describe('EventsHub', () => {
       const eventName = 'THE EVENT';
       const targetInitialValue = 0;
       const target = targetInitialValue;
-      const subscriber = jest.fn((toReduce) => toReduce + 1);
+      const subscriber = vi.fn((toReduce: number) => toReduce + 1);
       // When
       const sut = new EventsHub();
       const unsubscribe = sut.on(eventName, subscriber);
@@ -414,7 +413,7 @@ describe('EventsHub', () => {
       const targetInitialValue = ['one', 'two'];
       const target = targetInitialValue.slice();
       const newValue = 'three';
-      const subscriber = jest.fn((toReduce) => {
+      const subscriber = vi.fn((toReduce: string[]) => {
         toReduce.push(newValue);
         return toReduce;
       });
@@ -435,7 +434,10 @@ describe('EventsHub', () => {
       const targetInitialValue = { one: 1, two: 2 };
       const target = { ...targetInitialValue };
       const newValue = { three: 3 };
-      const subscriber = jest.fn((toReduce) => ({ ...toReduce, ...newValue }));
+      const subscriber = vi.fn((toReduce: Record<string, number>) => ({
+        ...toReduce,
+        ...newValue,
+      }));
       // When
       const sut = new EventsHub();
       const unsubscribe = sut.on(eventName, subscriber);
@@ -452,7 +454,7 @@ describe('EventsHub', () => {
       const eventName = 'THE EVENT';
       const targetInitialValue = 0;
       const target = targetInitialValue;
-      const subscriber = jest.fn((toReduce) => toReduce + 1);
+      const subscriber = vi.fn((toReduce: number) => toReduce + 1);
       // When
       const sut = new EventsHub();
       const unsubscribe = sut.once(eventName, subscriber);
@@ -472,7 +474,7 @@ describe('EventsHub', () => {
       const eventNames = [eventOneName, eventTwoName];
       const targetInitialValue = 0;
       const target = targetInitialValue;
-      const subscriber = jest.fn((toReduce) => toReduce + 1);
+      const subscriber = vi.fn((toReduce: number) => toReduce + 1);
       // When
       const sut = new EventsHub();
       const unsubscribe = sut.on(eventNames, subscriber);
@@ -493,7 +495,7 @@ describe('EventsHub', () => {
       const target = targetInitialValue.slice();
       let counter = -1;
       const newValues = ['three', 'four'];
-      const subscriber = jest.fn((toReduce) => {
+      const subscriber = vi.fn((toReduce: Array<string | undefined>) => {
         counter++;
         toReduce.push(newValues[counter]);
         return toReduce;
@@ -518,7 +520,7 @@ describe('EventsHub', () => {
       const target = { ...targetInitialValue };
       let counter = -1;
       const newValues = [{ three: 3 }, { four: 4 }];
-      const subscriber = jest.fn((toReduce) => {
+      const subscriber = vi.fn((toReduce: Record<string, number>) => {
         counter++;
         return { ...toReduce, ...newValues[counter] };
       });
@@ -540,7 +542,7 @@ describe('EventsHub', () => {
       const eventNames = [eventOneName, eventTwoName];
       const targetInitialValue = 0;
       const target = targetInitialValue;
-      const subscriber = jest.fn((toReduce) => toReduce + 1);
+      const subscriber = vi.fn((toReduce: number) => toReduce + 1);
       // When
       const sut = new EventsHub();
       const unsubscribe = sut.once(eventNames, subscriber);
@@ -570,7 +572,9 @@ describe('EventsHub', () => {
       const target = targetInitialValue;
       const argOne = 1;
       const argTwo = 2;
-      const subscriber = jest.fn((toReduce, one, two) => toReduce + one + two);
+      const subscriber = vi.fn(
+        (toReduce: number, one: number, two: number) => toReduce + one + two,
+      );
       // When
       const sut = new EventsHub();
       const unsubscribe = sut.on(eventName, subscriber);

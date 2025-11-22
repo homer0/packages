@@ -12,7 +12,7 @@ import type {
   FsCacheCleanMemoryOptions,
   FsCacheShouldRemoveFileInfo,
   FsCacheCleanOptions,
-} from './types';
+} from './types.js';
 /**
  * The dictionary of dependencies that need to be injected in {@link FsCache}.
  */

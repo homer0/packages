@@ -1,6 +1,5 @@
-jest.unmock('../src');
-
-import { extendPromise } from '../src';
+import { vi, describe, expect, it } from 'vitest';
+import { extendPromise } from '@src/index.js';
 
 describe('extendPromise', () => {
   it('should throw an error when called with anything but a promise', () => {
@@ -53,7 +52,7 @@ describe('extendPromise', () => {
     // Given
     const promise = Promise.resolve();
     const properties = {
-      toString: jest.fn(),
+      toString: vi.fn(),
     };
     let sut = null;
     let result = null;

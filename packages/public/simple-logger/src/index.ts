@@ -1,4 +1,4 @@
-import colors from 'colors/safe';
+import colors from 'colors/safe.js';
 import { pathUtils, type PathUtils } from '@homer0/path-utils';
 import { packageInfo, type PackageInfo } from '@homer0/package-info';
 import { providerCreator, injectHelper } from '@homer0/jimple';
@@ -261,10 +261,10 @@ export type AppLoggerProviderOptions = Omit<SimpleLoggerProviderOptions, 'prefix
  */
 export const appLoggerProvider = providerCreator(
   ({
-      serviceName = 'appLogger',
-      services = {},
-      ...rest
-    }: AppLoggerProviderOptions = {}) =>
+    serviceName = 'appLogger',
+    services = {},
+    ...rest
+  }: AppLoggerProviderOptions = {}) =>
     (container) => {
       container.set(serviceName, () => {
         const deps = injectHelper<AppLoggerProviderInjectOptions>();
@@ -276,7 +276,6 @@ export const appLoggerProvider = providerCreator(
           }),
         );
         const pkg = usePkgInfo.getSync();
-        // eslint-disable-next-line dot-notation
         const prefix = pkg['appLoggerPrefix'] || pkg.name!;
         return new SimpleLogger({ prefix, ...rest });
       });

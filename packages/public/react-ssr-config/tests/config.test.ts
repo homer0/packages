@@ -1,12 +1,12 @@
-jest.unmock('../src/config');
-jest.unmock('../src/createConfigSlice');
+vi.mock('@src/utils.js');
 
-import { Config } from '../src/config';
-import { createConfigSlice } from '../src/createConfigSlice';
-import { isServer } from '../src/utils';
-import type { ConfigSlice } from '../src/types';
+import { describe, it, expect, beforeEach, type Mock } from 'vitest';
+import { Config } from '@src/config.js';
+import { createConfigSlice } from '@src/createConfigSlice.js';
+import { isServer } from '@src/utils.js';
+import type { ConfigSlice } from '@src/types.js';
 
-const isServerMock = isServer as jest.MockedFunction<typeof isServer>;
+const isServerMock = isServer as Mock<typeof isServer>;
 
 describe('Config', () => {
   const configName = 'main';
@@ -36,7 +36,7 @@ describe('Config', () => {
   };
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
     dummySlice = createConfigSlice(dummySliceName, () => dummySliceConfig);
   });
 
@@ -74,7 +74,7 @@ describe('Config', () => {
 
   it("should throw on the client when the script config can't be parsed", () => {
     // Given
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     isServerMock.mockReturnValue(false);
     addClientConfigScript('invalid config', true);
     // When/Then

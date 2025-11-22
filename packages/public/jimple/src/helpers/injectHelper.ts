@@ -1,4 +1,4 @@
-import type { Jimple } from '../jimple';
+import type { Jimple } from '../jimple/index.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- They are dynamically extended.
 type GenericDict = Record<any, any>;

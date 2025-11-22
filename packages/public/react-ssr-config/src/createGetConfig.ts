@@ -1,7 +1,7 @@
-import { getStore } from './store';
-import { DEFAULT_CONFIG_STORE } from './consts';
-import type { Config } from './config';
-import type { GenericConfig, ConfigSlice } from './types';
+import { getStore } from './store.js';
+import { DEFAULT_CONFIG_STORE } from './consts.js';
+import type { Config } from './config.js';
+import type { GenericConfig, ConfigSlice } from './types.js';
 /**
  * Utility type to create a "config instance type" based on a dictionary of settings.
  * It will assume that the settings are the return type of the config slices.

@@ -1,9 +1,8 @@
-jest.unmock('../src');
-
+import { vi, describe, it, expect } from 'vitest';
 import { Jimple } from '@homer0/jimple';
 import { PathUtils } from '@homer0/path-utils';
-import pkg from '../package.json';
-import { RootFile, rootFile, rootFileProvider } from '../src';
+import pkg from '@root/package.json' with { type: 'json' };
+import { RootFile, rootFile, rootFileProvider } from '@src/index.js';
 
 describe('RootFile', () => {
   describe('class', () => {
@@ -53,7 +52,7 @@ describe('RootFile', () => {
   describe('provider', () => {
     it('should include a Jimple provider', () => {
       // Given
-      const setFn = jest.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override set(...args: Parameters<Jimple['set']>) {
           setFn(...args);
@@ -72,8 +71,8 @@ describe('RootFile', () => {
 
     it('should allow custom options on its provider', () => {
       // Given
-      const getFn = jest.fn();
-      const setFn = jest.fn();
+      const getFn = vi.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override get<T>(key: string): T {
           getFn(key);
@@ -104,8 +103,8 @@ describe('RootFile', () => {
 
     it('should allow custom services on its provider', () => {
       // Given
-      const getFn = jest.fn();
-      const setFn = jest.fn();
+      const getFn = vi.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override get<T>(key: string): T {
           getFn(key);
@@ -116,7 +115,7 @@ describe('RootFile', () => {
           super.set(...args);
         }
       }
-      const joinFn = jest.fn();
+      const joinFn = vi.fn();
       class MyPathUtils extends PathUtils {
         override join(
           ...args: Parameters<PathUtils['join']>

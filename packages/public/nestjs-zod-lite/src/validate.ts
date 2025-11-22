@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ZodType } from 'zod';
-import { isZodDto, type ZodDto } from './dto';
-import { createZodValidationException, type ZodExceptionCreator } from './exception';
+import { isZodDto, type ZodDto } from './dto.js';
+import { createZodValidationException, type ZodExceptionCreator } from './exception.js';
 
 export function validate<TOutput = any, TInput = TOutput>(
   value: unknown,

@@ -1,8 +1,7 @@
-/* eslint-disable dot-notation, no-process-env */
-jest.unmock('../src');
-
+/* eslint-disable n/no-process-env */
+import { vi, describe, expect, it, beforeEach } from 'vitest';
 import { Jimple } from '@homer0/jimple';
-import { EnvUtils, envUtilsProvider, envUtils } from '../src';
+import { EnvUtils, envUtilsProvider, envUtils } from '@src/index.js';
 
 const originalEnv = process.env;
 
@@ -124,7 +123,7 @@ describe('EnvUtils', () => {
 
     it('should include a Jimple provider', () => {
       // Given
-      const setFn = jest.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override set(...args: Parameters<Jimple['set']>) {
           setFn(...args);
@@ -143,7 +142,7 @@ describe('EnvUtils', () => {
 
     it('should allow custom options on its service provider', () => {
       // Given
-      const setFn = jest.fn();
+      const setFn = vi.fn();
       class Container extends Jimple {
         override set(...args: Parameters<Jimple['set']>) {
           setFn(...args);

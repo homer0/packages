@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import {
   isRouteStringDefinition,
   isRouteDetailDefinition,
@@ -10,7 +11,7 @@ import {
   formatRouteDefinition,
   formatGroup,
   formatRoutes,
-} from '@src/formatter';
+} from '@src/formatter.js';
 
 describe('createRoute', () => {
   describe('isRouteStringDefinition', () => {
