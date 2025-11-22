@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/homer0/packages/compare/@homer0/api-utils@4.0.0...@homer0/api-utils@5.0.0) (2025-11-22)
+
+### Bug Fixes
+
+- **api-utils:** add .js extension to all imports ([06995f0](https://github.com/homer0/packages/commit/06995f0b48f259e0973cf465426d7641860c41f2))
+- **api-utils:** define module exports for the package and set the type to module ([d2aecc2](https://github.com/homer0/packages/commit/d2aecc20f3129f0fc5d6cfdc5b3b09f89b3720ec))
+- **monorepo:** restore bundling of the packages that had it ([dd7f9f7](https://github.com/homer0/packages/commit/dd7f9f7f002c46d7262f3fd67d16f2191b9de9e0))
+- **monorepo:** update all dependencies ([ca9b9e7](https://github.com/homer0/packages/commit/ca9b9e7f5030805415150e918ff80c214e90bd29))
+
+### BREAKING CHANGES
+
+- **api-utils:** This package is now esm only
+
 # 4.0.0 (2025-09-21)
 
 ### Bug Fixes

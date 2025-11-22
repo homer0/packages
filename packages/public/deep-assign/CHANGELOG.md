@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/homer0/packages/compare/@homer0/deep-assign@4.0.0...@homer0/deep-assign@5.0.0) (2025-11-22)
+
+### Bug Fixes
+
+- **deep-assign:** add .js extension to all imports ([7caf2ca](https://github.com/homer0/packages/commit/7caf2ca6aaf4fc853470bb9653e58b31da0ecaa1))
+- **deep-assign:** avoid checking for globalThis ([823ee88](https://github.com/homer0/packages/commit/823ee888b2d953b3bd4b5051a01d7f4807ff19de))
+- **deep-assign:** define module exports for the package and set the type to module ([8f4c46a](https://github.com/homer0/packages/commit/8f4c46a6824c4d5745bb10eb724ff9dfc31b869d))
+- **monorepo:** restore bundling of the packages that had it ([dd7f9f7](https://github.com/homer0/packages/commit/dd7f9f7f002c46d7262f3fd67d16f2191b9de9e0))
+
+### BREAKING CHANGES
+
+- **deep-assign:** This package is now esm only
+
 # 4.0.0 (2025-09-21)
 
 ### Bug Fixes

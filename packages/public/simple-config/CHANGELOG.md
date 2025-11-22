@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/homer0/packages/compare/@homer0/simple-config@4.0.0...@homer0/simple-config@5.0.0) (2025-11-22)
+
+### Bug Fixes
+
+- **monorepo:** restore bundling of the packages that had it ([dd7f9f7](https://github.com/homer0/packages/commit/dd7f9f7f002c46d7262f3fd67d16f2191b9de9e0))
+- **simple-config:** define module exports for the package and set the type to module ([d38770a](https://github.com/homer0/packages/commit/d38770af7b1913a54468d5d02fb68a1673cfb459))
+
+### BREAKING CHANGES
+
+- **simple-config:** This package is now esm only
+
 # 4.0.0 (2025-09-21)
 
 ### Bug Fixes

@@ -3,6 +3,64 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.0.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@13.0.0...@homer0/eslint-plugin@14.0.0) (2025-11-22)
+
+### Bug Fixes
+
+- **eslint-plugin:** add exports for the presets path ([f052f99](https://github.com/homer0/packages/commit/f052f99a6b5c9ffd8f7b0f12ba1a370343a52ff7))
+- **eslint-plugin:** add extra exceptions for no-param-reassign ([33fbf5c](https://github.com/homer0/packages/commit/33fbf5c73619880deeaf87b1c3a04042551a5236))
+- **eslint-plugin:** add name to the ignore by env var config ([5c3b920](https://github.com/homer0/packages/commit/5c3b920faf82f39139a3365edb424b15abc93daa))
+- **eslint-plugin:** add names to all the rules configs ([3ca604f](https://github.com/homer0/packages/commit/3ca604f1d981c405971135a237384082c3e1e2b6))
+- **eslint-plugin:** add overrides for extraneous deps on config files ([88213f5](https://github.com/homer0/packages/commit/88213f5958b108fc00c2ef4120b2e83eed68f42a))
+- **eslint-plugin:** add ts rules to the nextjs config ([2f6651e](https://github.com/homer0/packages/commit/2f6651e74361303ecddfd2254e8101e1cff5a425))
+- **eslint-plugin:** allow for partial options on the ignore file options ([fab3c90](https://github.com/homer0/packages/commit/fab3c90d81be6f2790b3912bb63700268a0ff3f0))
+- **eslint-plugin:** allow the name of the ignore file to be customizable ([07eaf1d](https://github.com/homer0/packages/commit/07eaf1d47703c6ebc8b8d3136d0b6c640a9b3dfd))
+- **eslint-plugin:** change presets to creators and use a shared fn on them ([7fe5f65](https://github.com/homer0/packages/commit/7fe5f652148afc5e50aedcc63034d0f2e17fe0bd))
+- **eslint-plugin:** define files in the package.json ([850ffe9](https://github.com/homer0/packages/commit/850ffe9c2ea7bec9c392642a46e6a4b4368e5a63))
+- **eslint-plugin:** disable esm validation of extensions for ts ([5a4b72a](https://github.com/homer0/packages/commit/5a4b72a28168d92439e1b9684e9bf789fb6521f4))
+- **eslint-plugin:** disable no-unpublished-import ([ebce0ff](https://github.com/homer0/packages/commit/ebce0ff030b882a8adf76693132b5baefcceabc5))
+- **eslint-plugin:** document the rewrite ([9186e21](https://github.com/homer0/packages/commit/9186e210add189125070578d749cea4b3672cf4a))
+- **eslint-plugin:** document the rules decisions and remove some deprecated ones ([a0c026d](https://github.com/homer0/packages/commit/a0c026d78185107136c0138dab22f8e93d6415bd))
+- **eslint-plugin:** enable ignore files by default in the config creator ([059b729](https://github.com/homer0/packages/commit/059b729bb11d67d5597b2031384d8e9294781c92))
+- **eslint-plugin:** exclude .cjs config ([25bc5be](https://github.com/homer0/packages/commit/25bc5be555b02a558f355f83792fb27d8cbc6291))
+- **eslint-plugin:** improve the fn to add prettier, both logic and types ([42c379b](https://github.com/homer0/packages/commit/42c379b3c4973eec7b4c9517d482889d8dff1bb8))
+- **eslint-plugin:** include the n config before any overrides ([88850f9](https://github.com/homer0/packages/commit/88850f940474cca071a85ea346b5efab7c3949c7))
+- **eslint-plugin:** install resolver for ts ([df62ce1](https://github.com/homer0/packages/commit/df62ce10a845e410291996a86cbb2545215d951d))
+- **eslint-plugin:** make the min required version 20.19 ([d648bbe](https://github.com/homer0/packages/commit/d648bbecb0e1435afbd74f803040914708678802))
+- **eslint-plugin:** move the code to ts ([266bcb1](https://github.com/homer0/packages/commit/266bcb185b1aeb057c1bb8d38b0595f583a681cb))
+- **eslint-plugin:** properly type entry union ([0a28d09](https://github.com/homer0/packages/commit/0a28d09e23fea2e8c557235cc12e0558c9760075))
+- **eslint-plugin:** remove react rules from the main dir ([6bad4ce](https://github.com/homer0/packages/commit/6bad4cef922f42fc7b76d5978d9b92666f3bb885))
+- **eslint-plugin:** remove svelte rules ([61049df](https://github.com/homer0/packages/commit/61049df573dc576626605e7677f8275f7ce1551e))
+- **eslint-plugin:** remove the jsdoc plugin from the base ([6ea82ff](https://github.com/homer0/packages/commit/6ea82ff69c0a35058af033525c5ad0e13feb8f59))
+- **eslint-plugin:** remove utility to load ignore paths by env var ([89f5206](https://github.com/homer0/packages/commit/89f520672f936de19538597abe68a893f341e5f5))
+- **eslint-plugin:** rename testing rules ([0e8938c](https://github.com/homer0/packages/commit/0e8938cc359aac0fbeb522671e45a10418c8650d))
+- **eslint-plugin:** transpilation -> bundling ([651be6e](https://github.com/homer0/packages/commit/651be6ea8765a09a732d0f1295b5ad1fc0001580))
+- **eslint-plugin:** use a ts-expect-error on the import to avoid issues in the implementations ([14b15a1](https://github.com/homer0/packages/commit/14b15a11a5b6cb6cd7765afe3da237eff3725e92))
+- **eslint-plugin:** use Config type instead of Linter.Config ([1ad0117](https://github.com/homer0/packages/commit/1ad0117175483214e05f7d20319447b6ced0fd36))
+- **eslint-plugin:** use eslint-plugin-import-x ([6435605](https://github.com/homer0/packages/commit/6435605a304b8b705830a2acd0aeeaecd4d5271f))
+- **eslint-plugin:** use my node rules for node-ts ([45f0074](https://github.com/homer0/packages/commit/45f007459bb692a376c5defa4c3dffc82fa18a02))
+- **eslint-plugin:** use recommended-module for node config ([1268702](https://github.com/homer0/packages/commit/12687026f1d4cd265476296acad2d68a7b8c8fe4))
+- **eslint-plugin:** use satisfies for meta to avoid undefined ([497952a](https://github.com/homer0/packages/commit/497952a8b7638665809b7b06e17f2cc547e09886))
+- **monorepo:** update all dependencies ([06b9893](https://github.com/homer0/packages/commit/06b98933257c18dd488f65d78e80b9d67c2294c0))
+- **monorepo:** update all dependencies ([e828b6b](https://github.com/homer0/packages/commit/e828b6b4cc367b56fe3e8257f7366be43d431584))
+- **monorepo:** update all dependencies ([ca9b9e7](https://github.com/homer0/packages/commit/ca9b9e7f5030805415150e918ff80c214e90bd29))
+
+### Features
+
+- **eslint-plugin:** add config for the ignore file to the configs creator ([f60d344](https://github.com/homer0/packages/commit/f60d344807d77f709f4947a86808cf0b09e71f3e))
+- **eslint-plugin:** add configs for node, ts, note+ts, and testing ([fedace2](https://github.com/homer0/packages/commit/fedace21d93ea3314d73fab6fd002e5f16e2e143))
+- **eslint-plugin:** add jsdoc config ([22f96e2](https://github.com/homer0/packages/commit/22f96e2285654190945f1429da9653cb94766d12))
+- **eslint-plugin:** add nextjs config ([dbbda06](https://github.com/homer0/packages/commit/dbbda069d2047ab7cbf7504a0ab96ae357c7c34f))
+- **eslint-plugin:** allow configuring the extraneous dependencies ([2b0b016](https://github.com/homer0/packages/commit/2b0b016d0fe5cbb8f1a212d57aafda92bc5deac3))
+- **eslint-plugin:** create nextjs preset ([a73b97b](https://github.com/homer0/packages/commit/a73b97bf5c763fd8ff4e949b8e00af5cb10c14c9))
+- **eslint-plugin:** create ts preset ([da8f29e](https://github.com/homer0/packages/commit/da8f29ed2d3eb6f03ac9a141a5670c3fa9e87ad9))
+
+### BREAKING CHANGES
+
+- **eslint-plugin:** If for some reason, you are not me, and you are using this
+  plugin... sorry, I just rewrote it and it's 120% breaking.
+- **eslint-plugin:** The package now requires node >= 20.19
+
 # 13.0.0 (2025-09-21)
 
 ### Bug Fixes

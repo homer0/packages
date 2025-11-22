@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/homer0/packages/compare/@homer0/jimple@4.0.0...@homer0/jimple@5.0.0) (2025-11-22)
+
+### Bug Fixes
+
+- **jimple:** add .js extension to all imports ([eab2ef1](https://github.com/homer0/packages/commit/eab2ef14aa2ca39b3a1b3f7b11074de0b0baea18))
+- **jimple:** define module exports for the package and set the type to module ([9981309](https://github.com/homer0/packages/commit/9981309ade87e1f1b4489a8f36a6cac9d9b07ce0))
+- **monorepo:** restore bundling of the packages that had it ([dd7f9f7](https://github.com/homer0/packages/commit/dd7f9f7f002c46d7262f3fd67d16f2191b9de9e0))
+
+### BREAKING CHANGES
+
+- **jimple:** This package is now esm only
+
 # 4.0.0 (2025-09-21)
 
 ### Bug Fixes

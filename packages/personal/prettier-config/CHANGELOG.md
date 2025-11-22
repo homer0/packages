@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.0.0 (2025-11-22)
+
+### Bug Fixes
+
+- **prettier-config:** define module exports for the package and set the type to module ([65a914f](https://github.com/homer0/packages/commit/65a914f94a89d0853555b0636d2b3c025573431d))
+
+### BREAKING CHANGES
+
+- **prettier-config:** This package is now esm only
+
 ## 1.1.3 (2023-07-16)
 
 ### Bug Fixes

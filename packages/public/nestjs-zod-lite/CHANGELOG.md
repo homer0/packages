@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/homer0/packages/compare/@homer0/nestjs-zod-lite@3.0.0...@homer0/nestjs-zod-lite@4.0.0) (2025-11-22)
+
+### Bug Fixes
+
+- **monorepo:** update all dependencies ([06b9893](https://github.com/homer0/packages/commit/06b98933257c18dd488f65d78e80b9d67c2294c0))
+- **monorepo:** update all dependencies ([ca9b9e7](https://github.com/homer0/packages/commit/ca9b9e7f5030805415150e918ff80c214e90bd29))
+- **nestjs-zod-lite:** add .js extension to all imports ([b9fea94](https://github.com/homer0/packages/commit/b9fea94c7db8b2a9d9ac3aa4c57da0b99c1506a9))
+- **nestjs-zod-lite:** define module exports for the package and set the type to module ([d9784f2](https://github.com/homer0/packages/commit/d9784f23f8d88a1eff3e231d20d1402062c3dd1a))
+- **nestjs-zod-lite:** lower the range of the peer deps ([3826e9f](https://github.com/homer0/packages/commit/3826e9f864f068531544a03e9e784dc5ad62da6d))
+
+### BREAKING CHANGES
+
+- **nestjs-zod-lite:** This package is now esm only
+
 # [3.0.0](https://github.com/homer0/packages/compare/@homer0/nestjs-zod-lite@2.0.0...@homer0/nestjs-zod-lite@3.0.0) (2025-09-21)
 
 ### Bug Fixes

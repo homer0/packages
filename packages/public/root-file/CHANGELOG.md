@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/homer0/packages/compare/@homer0/root-file@4.0.0...@homer0/root-file@5.0.0) (2025-11-22)
+
+### Bug Fixes
+
+- **monorepo:** restore bundling of the packages that had it ([dd7f9f7](https://github.com/homer0/packages/commit/dd7f9f7f002c46d7262f3fd67d16f2191b9de9e0))
+- **root-file:** define module exports for the package and set the type to module ([1a86fa3](https://github.com/homer0/packages/commit/1a86fa32a67e6f13b24527c71956e7a4dd3d9634))
+
+### BREAKING CHANGES
+
+- **root-file:** This package is now esm only
+
 # 4.0.0 (2025-09-21)
 
 ### Bug Fixes

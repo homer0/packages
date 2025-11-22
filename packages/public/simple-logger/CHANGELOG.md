@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/homer0/packages/compare/@homer0/simple-logger@4.0.0...@homer0/simple-logger@5.0.0) (2025-11-22)
+
+### Bug Fixes
+
+- **monorepo:** restore bundling of the packages that had it ([dd7f9f7](https://github.com/homer0/packages/commit/dd7f9f7f002c46d7262f3fd67d16f2191b9de9e0))
+- **simple-logger:** add .js extension to all imports ([6980c23](https://github.com/homer0/packages/commit/6980c2323ea4e41efa2b885ec6c48fb821744f7c))
+- **simple-logger:** define module exports for the package and set the type to module ([441a4fe](https://github.com/homer0/packages/commit/441a4feff96a0bc83035942a88d967f06e396a67))
+
+### BREAKING CHANGES
+
+- **simple-logger:** This package is now esm only
+
 # 4.0.0 (2025-09-21)
 
 ### Bug Fixes

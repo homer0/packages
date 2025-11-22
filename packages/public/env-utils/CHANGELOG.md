@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/homer0/packages/compare/@homer0/env-utils@4.0.0...@homer0/env-utils@5.0.0) (2025-11-22)
+
+### Bug Fixes
+
+- **env-utils:** define module exports for the package and set the type to module ([1ccfbc4](https://github.com/homer0/packages/commit/1ccfbc4e52093b36b2338e0f05d4bfe423d0d4b6))
+- **monorepo:** restore bundling of the packages that had it ([dd7f9f7](https://github.com/homer0/packages/commit/dd7f9f7f002c46d7262f3fd67d16f2191b9de9e0))
+
+### BREAKING CHANGES
+
+- **env-utils:** This package is now esm only
+
 # 4.0.0 (2025-09-21)
 
 ### Bug Fixes

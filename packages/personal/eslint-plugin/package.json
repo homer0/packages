@@ -1,7 +1,7 @@
 {
   "name": "@homer0/eslint-plugin",
   "description": "My custom configurations for ESLint.",
-  "version": "13.0.0",
+  "version": "14.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",
@@ -41,6 +41,7 @@
   "dependencies": {
     "@eslint/compat": "^2.0.0",
     "@eslint/js": "^9.39.1",
+    "confusing-browser-globals": "^1.0.11",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import-x": "^4.16.1",
@@ -48,7 +49,6 @@
     "eslint-plugin-n": "^17.23.1",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-sort-class-members": "^1.21.0",
-    "confusing-browser-globals": "^1.0.11",
     "globals": "^16.5.0",
     "typescript-eslint": "^8.47.0"
   },

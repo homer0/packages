@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/homer0/packages/compare/@homer0/react-ssr-config@2.0.0...@homer0/react-ssr-config@3.0.0) (2025-11-22)
+
+### Bug Fixes
+
+- **react-ssr-config:** add .js extension to all imports ([487bf89](https://github.com/homer0/packages/commit/487bf8902d04fd8db8e69827fb9e509ccb08d63a))
+- **react-ssr-config:** define module exports for the package and set type to module ([c60a5f8](https://github.com/homer0/packages/commit/c60a5f845548c1da8ee35d31e6adbf219fc9231e))
+- **react-ssr-config:** make react a peer dep ([18b43f3](https://github.com/homer0/packages/commit/18b43f3784e0deab55057e95da8432019ffe09e1))
+
+### BREAKING CHANGES
+
+- **react-ssr-config:** This package is now esm only
+
 # 2.0.0 (2025-09-21)
 
 ### Bug Fixes

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/homer0/packages/compare/@homer0/routes-manager@2.0.0...@homer0/routes-manager@3.0.0) (2025-11-22)
+
+### Bug Fixes
+
+- **monorepo:** update all dependencies ([ca9b9e7](https://github.com/homer0/packages/commit/ca9b9e7f5030805415150e918ff80c214e90bd29))
+- **routes-manager:** add .js extension to all imports ([43f76ce](https://github.com/homer0/packages/commit/43f76ce0b33e0d8fdfc8f0e13c48789ff0bf1ce2))
+- **routes-manager:** define module exports for the package and set the type to module ([d9e9fa3](https://github.com/homer0/packages/commit/d9e9fa3cb757282fa5d603dc7142141a1208f961))
+- **routes-manager:** remove type-fest ([630ff76](https://github.com/homer0/packages/commit/630ff768e1e16afb40a3febdc857905af73ff65d))
+
+### BREAKING CHANGES
+
+- **routes-manager:** This package is now esm only
+
 # 2.0.0 (2025-09-21)
 
 ### Bug Fixes

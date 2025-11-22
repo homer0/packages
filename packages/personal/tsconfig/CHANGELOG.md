@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/homer0/packages/compare/@homer0/tsconfig@3.0.0...@homer0/tsconfig@4.0.0) (2025-11-22)
+
+### Bug Fixes
+
+- **tsconfig:** add allowJS:true to the base config ([ef4e92a](https://github.com/homer0/packages/commit/ef4e92a68285586dbc7a43e2ee18b90c44979af4))
+- **tsconfig:** define module exports for the package and set type to module ([2a1a5ae](https://github.com/homer0/packages/commit/2a1a5ae8693fafd0b763c8c3725b1c733cc46127))
+- **tsconfig:** lower the range of the peer deps ([84ad16d](https://github.com/homer0/packages/commit/84ad16d64021f10df86054989e6b2d35309225b1))
+- **tsconfig:** remove jest config ([5590736](https://github.com/homer0/packages/commit/55907368cae24f53d7abecb3b74fcea26c6e3969))
+- **tsconfig:** rename testing-node to node-tests ([d37fec1](https://github.com/homer0/packages/commit/d37fec19643ce739b2706866790f8793bcbbb095))
+- **tsconfig:** update dependencies ([b99380c](https://github.com/homer0/packages/commit/b99380ce1aa7872b4cfbf8a8542ff4d070179613))
+- **tsconfig:** update the configs for ESM and ES2023 ([b0fa531](https://github.com/homer0/packages/commit/b0fa5317b423d230a447aa70c4e580a5deed881b))
+
+### Features
+
+- **tsconfig:** add config for nest ([d2efca5](https://github.com/homer0/packages/commit/d2efca5641a3806bb1a2f8149f3efc6c6107a3bf))
+
+### BREAKING CHANGES
+
+- **tsconfig:** The `tsconfig.testing-node.json` is now called
+  `tsconfig.node-tests.json`
+- **tsconfig:** `tsconfig.jest-node.json` was removed in favor of
+  `tsconfig.testing-node.json`
+- **tsconfig:** This package is now esm only
+- **tsconfig:** The configurations are now using `node20` for `module` and
+  `node16` for `moduleResolution`.
+
 # 3.0.0 (2025-09-21)
 
 ### Bug Fixes

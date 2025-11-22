@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/homer0/packages/compare/@homer0/ts-async-import@2.0.0...@homer0/ts-async-import@3.0.0) (2025-11-22)
+
+### Bug Fixes
+
+- **ts-async-import:** define module exports for the package and set the type to module ([cdea032](https://github.com/homer0/packages/commit/cdea032c21909c21e13bbf87601ec57e6cb0fd53))
+- **ts-async-import:** use esm syntax ([db4d15a](https://github.com/homer0/packages/commit/db4d15ad4b0cc696103e394da9538e25cd5cb267))
+
+### BREAKING CHANGES
+
+- **ts-async-import:** This package is now esm only
+
 # 2.0.0 (2025-09-21)
 
 ### Bug Fixes

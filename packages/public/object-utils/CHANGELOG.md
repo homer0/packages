@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/homer0/packages/compare/@homer0/object-utils@4.0.0...@homer0/object-utils@5.0.0) (2025-11-22)
+
+### Bug Fixes
+
+- **monorepo:** restore bundling of the packages that had it ([dd7f9f7](https://github.com/homer0/packages/commit/dd7f9f7f002c46d7262f3fd67d16f2191b9de9e0))
+- **object-utils:** add .js extension to all imports ([bf41e89](https://github.com/homer0/packages/commit/bf41e89b45676e6329641d7c8c098cf70b8fbe87))
+- **object-utils:** define module exports for the package and set the type to module ([86c1613](https://github.com/homer0/packages/commit/86c161325df82ed49f8bb53fd1f796b482833be5))
+
+### BREAKING CHANGES
+
+- **object-utils:** This package is now esm only
+
 # 4.0.0 (2025-09-21)
 
 ### Bug Fixes
