@@ -10,15 +10,15 @@ catalog:
   eslint: ^9.39.1
   react: ^19.2.0
   react-dom: ^19.2.0
-  tsup: ^8.5.0
+  tsup: ^8.5.1
   typescript: ^5.9.3
 
   # Vite and Vitest
   '@vitejs/plugin-react': ^5.1.1
-  '@vitest/coverage-v8': ^4.0.10
-  vite: ^7.2.2
+  '@vitest/coverage-v8': ^4.0.13
+  vite: ^7.2.4
   vite-tsconfig-paths: ^5.1.4
-  vitest: ^4.0.10
+  vitest: ^4.0.13
   unplugin-swc: ^1.5.8
   jsdom: ^27.2.0
 onlyBuiltDependencies:

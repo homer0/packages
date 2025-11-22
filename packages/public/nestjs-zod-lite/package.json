@@ -32,7 +32,7 @@
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
-    "@nestjs/common": "^11.1.8",
+    "@nestjs/common": "^11.1.9",
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
