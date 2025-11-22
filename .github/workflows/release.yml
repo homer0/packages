@@ -36,10 +36,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Authenticate with Registry
         run: |
-          echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
-          echo "@homer0:registry=https://registry.npmjs.org/" >> .npmrc
-          git add .npmrc
-          git commit -m "chore(monorepo): add npm auth token for release"
+          npm set @homer0:registry=https://registry.npmjs.org/
+          npm set "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}"
       - name: Make releases
         run: |
           npm config set access public
