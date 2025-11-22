@@ -1,7 +1,7 @@
 {
   "name": "@homer0/ts-async-import",
   "description": "Small utility to dynamically import ESM modules in CJS with TS",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",

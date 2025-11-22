@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [14.0.1](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@14.0.0...@homer0/eslint-plugin@14.0.1) (2025-11-22)
+
+### Bug Fixes
+
+- **eslint-plugin:** add types for browser globals as a prod dep ([914cf27](https://github.com/homer0/packages/commit/914cf27a818dc5bf538b5394f00eae9f34f09217))
+
 # [14.0.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@13.0.0...@homer0/eslint-plugin@14.0.0) (2025-11-22)
 
 ### Bug Fixes

@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.1](https://github.com/homer0/packages/compare/@homer0/deferred@5.0.0...@homer0/deferred@5.0.1) (2025-11-22)
+
+**Note:** Version bump only for package @homer0/deferred
+
 # [5.0.0](https://github.com/homer0/packages/compare/@homer0/deferred@4.0.0...@homer0/deferred@5.0.0) (2025-11-22)
 
 ### Bug Fixes
