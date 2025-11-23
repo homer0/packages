@@ -57,16 +57,31 @@
     "@homer0/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "eslint-config-next": "^16.0.3",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
     "tsup": "catalog:",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "eslint": "^9.0.0",
     "eslint-config-next": "^16.0.0",
+    "eslint-plugin-jsx-a11y": "^6.0.0",
+    "eslint-plugin-react": "^7.0.0",
+    "eslint-plugin-react-hooks": "^7.0.0",
     "typescript": "^5.0.0"
   },
   "peerDependenciesMeta": {
     "eslint-config-next": {
+      "optional": true
+    },
+    "eslint-plugin-jsx-a11y": {
+      "optional": true
+    },
+    "eslint-plugin-react": {
+      "optional": true
+    },
+    "eslint-plugin-react-hooks": {
       "optional": true
     }
   },
