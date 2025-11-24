@@ -36,6 +36,9 @@ export const createReactConfig = ({
     if (tests) {
       selectedConfigs.push('tests');
     }
+    if (ts) {
+      selectedConfigs.push('ts');
+    }
   } else if (tests) {
     selectedConfigs.push(prettier ? 'node-ts-tests-with-prettier' : 'node-ts');
   } else if (prettier) {
