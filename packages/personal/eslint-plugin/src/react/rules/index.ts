@@ -1,1 +1,2 @@
-export * from './react.js';
+export * from './setup.js';
+export * from './style.js';

@@ -7,14 +7,15 @@ import {
   reactPluginConfig,
   reactHooksPluginRecommendedConfig,
 } from '../plugins/index.js';
-import { reactStyleRulesConfig } from '../rules/index.js';
+import { reactStyleRulesConfig, reactSetupRulesConfig } from '../rules/index.js';
 
 export const reactConfig: Config[] = [
   reactPluginConfig,
   reactHooksPluginConfig,
   jsxA11yPluginConfig,
   jsxA11yPluginRecommendedConfig,
-  reactStyleRulesConfig,
   reactPluginRecommendedConfig,
   reactHooksPluginRecommendedConfig,
+  reactSetupRulesConfig,
+  reactStyleRulesConfig,
 ];
