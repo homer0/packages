@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.1.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@14.0.1...@homer0/eslint-plugin@14.1.0) (2025-11-24)
+
+### Bug Fixes
+
+- **eslint-plugin:** add peer dependencies for react ([e671b48](https://github.com/homer0/packages/commit/e671b48f65d38cbbd974c77f555e1ad712095b3e))
+- **eslint-plugin:** disable react-in-jsx-scope for the react config ([28cfd3c](https://github.com/homer0/packages/commit/28cfd3c36feb803051f47b2efc934d61e1927a9a))
+- **eslint-plugin:** extract the rules from the recommended configs for react ([2d94c58](https://github.com/homer0/packages/commit/2d94c58d9d45072fa59d63521e40bca6ef7b80ab))
+- **eslint-plugin:** push tests config for browser base and rename base to baseConfig ([64d7791](https://github.com/homer0/packages/commit/64d779188306adeb0c344c8436168e68a6252f8d))
+- **eslint-plugin:** split react rules and add them at the end of the configs ([25ca559](https://github.com/homer0/packages/commit/25ca559521f672fe5ec46ed400daf94b19b0d4b0))
+
+### Features
+
+- **eslint-plugin:** add creator for the react config ([e1fb393](https://github.com/homer0/packages/commit/e1fb39382dae014a98ab5c38277affa99be43b42))
+- **eslint-plugin:** add react config ([194c386](https://github.com/homer0/packages/commit/194c38644f850723aee79ebce7b2556d1eba3a6c))
+
 ## [14.0.1](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@14.0.0...@homer0/eslint-plugin@14.0.1) (2025-11-22)
 
 ### Bug Fixes
