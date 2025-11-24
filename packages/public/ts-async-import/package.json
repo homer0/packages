@@ -20,12 +20,12 @@
     "access": "public"
   },
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./src/index.ts"
+      "import": "./src/index.js",
+      "types": "./src/index.d.ts"
     },
     "./package.json": "./package.json"
   },
