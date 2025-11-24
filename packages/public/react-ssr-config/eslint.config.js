@@ -1,16 +1,15 @@
 import { defineConfig } from 'eslint/config';
-import { createConfig } from '@homer0/eslint-plugin/create';
+import { createReactConfig } from '@homer0/eslint-plugin/react/create';
 
 export default defineConfig([
-  createConfig({
+  createReactConfig({
     importUrl: import.meta.url,
     ignores: ['tests/**'],
-    configs: ['node-ts-with-prettier'],
   }),
-  createConfig({
+  createReactConfig({
     importUrl: import.meta.url,
     files: 'all-inside:./tests',
-    configs: ['node-ts-tests-with-prettier'],
     tsConfigPath: './tests',
+    tests: true,
   }),
 ]);

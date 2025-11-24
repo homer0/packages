@@ -103,7 +103,7 @@ export default defineConfig([
   files: ['src/**/*.ts'],
   extends: [
     eslintPlugin.configs['nextjs-with-prettier'],
-  ]
+  ],
 ]);
 ```
 
@@ -119,7 +119,57 @@ import { createNextjsConfig } from '@homer0/eslint-plugin/nextjs/create';
 export default defineConfig([
   createNextjsConfig({
     importUrl: import.meta.url, // to configure TS paths resolution
-    prettier: false,
+    // These are the options and their default values:
+    prettier: true,
+  }),
+]);
+```
+
+### React
+
+If you are working with just [React](https://reactjs.org) (no Next), there's also a custom export and config creator for it, and it also requires some plugins to be installed:
+
+```bash
+pnpm add eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y --save-dev
+# or
+npm install eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y --save-dev
+```
+
+But different from the Next.js config, this is not a base config, so you'd have to use it on top of another config, like `node-ts` or `browser`.
+
+```js
+// eslint.config.js
+import { defineConfig } from 'eslint/config';
+import plugin from '@homer0/eslint-plugin';
+import reactPlugin from '@homer0/eslint-plugin/react';
+
+export default defineConfig([
+  files: ['src/**/*.ts'],
+  extends: [
+    eslintPlugin.configs['node-with-prettier'],
+    reactPlugin.configs.react,
+    eslintPlugin.configs.esm.
+  ],
+]);
+```
+
+Or, you can use the config creator:
+
+```js
+// eslint.config.js
+import { defineConfig } from 'eslint/config';
+import { createReactConfig } from '@homer0/eslint-plugin/react/create';
+
+export default defineConfig([
+  createReactConfig({
+    importUrl: import.meta.url, // to configure TS paths resolution
+    baseConfig: 'node', // 'node' | 'browser', default is 'node'
+    // These are the options and their default values:
+    esm: true,
+    jsdoc: false,
+    prettier: true,
+    tests: false,
+    ts: true,
   }),
 ]);
 ```
