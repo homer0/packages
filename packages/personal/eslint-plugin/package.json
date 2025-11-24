@@ -32,6 +32,14 @@
       "import": "./dist/nextjs/create/index.js",
       "types": "./src/nextjs/create/index.ts"
     },
+    "./react": {
+      "import": "./dist/react/index.js",
+      "types": "./src/react/index.ts"
+    },
+    "./react/create": {
+      "import": "./dist/react/create/index.js",
+      "types": "./src/react/create/index.ts"
+    },
     "./package.json": "./package.json"
   },
   "files": [
