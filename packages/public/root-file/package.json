@@ -1,7 +1,7 @@
 {
   "name": "@homer0/root-file",
   "description": "Import or require a file for the project root",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",

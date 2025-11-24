@@ -1,7 +1,7 @@
 {
   "name": "@homer0/routes-manager",
   "description": "Create and manage a collection of typed routes for your app",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/homer0/packages.git",

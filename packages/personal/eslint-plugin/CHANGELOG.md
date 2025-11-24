@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [14.1.1](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@14.1.0...@homer0/eslint-plugin@14.1.1) (2025-11-24)
+
+### Bug Fixes
+
+- **eslint-plugin:** add ts when creating a browser config for react ([ad40694](https://github.com/homer0/packages/commit/ad40694afc1a1158b4c28f78485bc0de6c70e963))
+
 # [14.1.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@14.0.1...@homer0/eslint-plugin@14.1.0) (2025-11-24)
 
 ### Bug Fixes
