@@ -16,4 +16,8 @@ export const jsxA11yPluginConfig: Config = {
   rules: {},
 };
 
-export const jsxA11yPluginRecommendedConfig = jsxA11yPlugin.flatConfigs.recommended;
+export const jsxA11yPluginRecommendedConfig: Config = {
+  name: 'jsx-a11y/recommended',
+  languageOptions: jsxA11yPlugin.flatConfigs.recommended.languageOptions,
+  rules: jsxA11yPlugin.flatConfigs.recommended.rules,
+};

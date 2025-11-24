@@ -9,5 +9,7 @@ export const reactHooksPluginConfig: Config = {
   rules: {},
 };
 
-export const reactHooksPluginRecommendedConfig =
-  reactHooksPlugin.configs.flat.recommended;
+export const reactHooksPluginRecommendedConfig: Config = {
+  name: 'react-hooks/recommended',
+  rules: reactHooksPlugin.configs.flat.recommended.rules,
+};

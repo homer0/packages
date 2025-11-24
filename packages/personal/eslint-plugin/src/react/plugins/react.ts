@@ -12,6 +12,10 @@ export const reactPluginConfig: Config = {
   },
 };
 
-export const reactPluginRecommendedConfig = reactPlugin.configs.flat[
-  'recommended'
-] as Config;
+export const reactPluginRecommendedConfig: Config = {
+  name: 'react/recommended',
+  languageOptions: {
+    parserOptions: reactPlugin.configs.recommended.parserOptions,
+  },
+  rules: reactPlugin.configs.recommended.rules,
+};
