@@ -1,4 +1,5 @@
 export * from './bestPractices.js';
+export * from './browser.js';
 export * from './errors.js';
 export * from './es6.js';
 export * from './esm.js';
