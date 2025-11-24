@@ -7,21 +7,21 @@ import basePlugin from '../../index.js';
 import plugin from '../index.js';
 
 export type CreateReactConfigOptions = CreateDynamicConfigSharedOptions & {
-  base?: 'node' | 'browser';
-  tests?: boolean;
+  baseConfig?: 'node' | 'browser';
   esm?: boolean;
-  prettier?: boolean;
-  ts?: boolean;
   jsdoc?: boolean;
+  prettier?: boolean;
+  tests?: boolean;
+  ts?: boolean;
 };
 
 export const createReactConfig = ({
-  base = 'node',
+  baseConfig = 'node',
   esm = true,
-  prettier = true,
-  ts = true,
-  tests = false,
   jsdoc = false,
+  prettier = true,
+  tests = false,
+  ts = true,
   ...options
 }: CreateReactConfigOptions): LinterConfigWithExtends => {
   const availableConfigs = {
@@ -31,8 +31,11 @@ export const createReactConfig = ({
 
   const selectedConfigs: (keyof typeof availableConfigs)[] = [];
 
-  if (base === 'browser') {
+  if (baseConfig === 'browser') {
     selectedConfigs.push(prettier ? 'browser-with-prettier' : 'browser');
+    if (tests) {
+      selectedConfigs.push('tests');
+    }
   } else if (tests) {
     selectedConfigs.push(prettier ? 'node-ts-tests-with-prettier' : 'node-ts');
   } else if (prettier) {
