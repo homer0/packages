@@ -36,14 +36,14 @@
   "dependencies": {
     "@homer0/deferred": "workspace:*",
     "@homer0/jimple": "workspace:*",
-    "@homer0/path-utils": "workspace:*"
+    "@homer0/path-utils": "workspace:*",
+    "package-json-type": "^1.0.3"
   },
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
-    "package-json-type": "^1.0.3",
     "tsup": "catalog:",
     "typescript": "catalog:",
     "unplugin-swc": "catalog:",
