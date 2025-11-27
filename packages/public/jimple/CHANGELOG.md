@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.4](https://github.com/homer0/packages/compare/@homer0/jimple@5.0.3...@homer0/jimple@5.0.4) (2025-11-27)
+
+### Bug Fixes
+
+- **jimple:** point types to the src on the types prop ([dd4a822](https://github.com/homer0/packages/commit/dd4a822c0cfff1ac151b73549fd9720692d408e7))
+
 ## [5.0.3](https://github.com/homer0/packages/compare/@homer0/jimple@5.0.2...@homer0/jimple@5.0.3) (2025-11-24)
 
 **Note:** Version bump only for package @homer0/jimple

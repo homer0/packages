@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.4](https://github.com/homer0/packages/compare/@homer0/simple-config@5.0.3...@homer0/simple-config@5.0.4) (2025-11-27)
+
+### Bug Fixes
+
+- **simple-config:** point types to the src on the types prop ([20b8764](https://github.com/homer0/packages/commit/20b8764e1d2ba9ab68370c136c5276afa9b31e57))
+
 ## [5.0.3](https://github.com/homer0/packages/compare/@homer0/simple-config@5.0.2...@homer0/simple-config@5.0.3) (2025-11-24)
 
 **Note:** Version bump only for package @homer0/simple-config

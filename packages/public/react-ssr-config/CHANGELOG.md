@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.4](https://github.com/homer0/packages/compare/@homer0/react-ssr-config@3.0.3...@homer0/react-ssr-config@3.0.4) (2025-11-27)
+
+**Note:** Version bump only for package @homer0/react-ssr-config
+
 ## [3.0.3](https://github.com/homer0/packages/compare/@homer0/react-ssr-config@3.0.2...@homer0/react-ssr-config@3.0.3) (2025-11-24)
 
 **Note:** Version bump only for package @homer0/react-ssr-config

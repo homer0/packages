@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.4](https://github.com/homer0/packages/compare/@homer0/nestjs-zod-lite@4.0.3...@homer0/nestjs-zod-lite@4.0.4) (2025-11-27)
+
+### Bug Fixes
+
+- **nestjs-zod-lite:** point types to the src on the types prop ([95b4d49](https://github.com/homer0/packages/commit/95b4d49d27b2807ff699d4f2e44c23a9e9894415))
+
 ## [4.0.3](https://github.com/homer0/packages/compare/@homer0/nestjs-zod-lite@4.0.2...@homer0/nestjs-zod-lite@4.0.3) (2025-11-24)
 
 **Note:** Version bump only for package @homer0/nestjs-zod-lite

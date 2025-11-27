@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 4.0.1 (2025-11-27)
+
+### Bug Fixes
+
+- **tsconfig:** use relative path on tsconfig for nest ([fbf7e31](https://github.com/homer0/packages/commit/fbf7e317930278e99e96a027eb4463d59a726cef))
+
 # [4.0.0](https://github.com/homer0/packages/compare/@homer0/tsconfig@3.0.0...@homer0/tsconfig@4.0.0) (2025-11-22)
 
 ### Bug Fixes

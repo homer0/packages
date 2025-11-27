@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.4](https://github.com/homer0/packages/compare/@homer0/fs-cache@5.0.3...@homer0/fs-cache@5.0.4) (2025-11-27)
+
+### Bug Fixes
+
+- **fs-cache:** point types to the src on the types prop ([44f19f4](https://github.com/homer0/packages/commit/44f19f42ca03cbdf0a9bc140a0833d6dc6e75074))
+
 ## [5.0.3](https://github.com/homer0/packages/compare/@homer0/fs-cache@5.0.2...@homer0/fs-cache@5.0.3) (2025-11-24)
 
 **Note:** Version bump only for package @homer0/fs-cache

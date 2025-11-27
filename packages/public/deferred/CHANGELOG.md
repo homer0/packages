@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.4](https://github.com/homer0/packages/compare/@homer0/deferred@5.0.3...@homer0/deferred@5.0.4) (2025-11-27)
+
+### Bug Fixes
+
+- **deferred:** point types to the src on the types prop ([61dcf31](https://github.com/homer0/packages/commit/61dcf31e68cdf9bbf4267030f2ad2c8ce0333362))
+
 ## [5.0.3](https://github.com/homer0/packages/compare/@homer0/deferred@5.0.2...@homer0/deferred@5.0.3) (2025-11-24)
 
 **Note:** Version bump only for package @homer0/deferred

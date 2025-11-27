@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.4](https://github.com/homer0/packages/compare/@homer0/package-info@5.0.3...@homer0/package-info@5.0.4) (2025-11-27)
+
+### Bug Fixes
+
+- **package-info:** make the type a prod dep ([512e441](https://github.com/homer0/packages/commit/512e441b3e90f8c7144dc2bb28891d0f637785f5))
+- **package-info:** point types to the src on the types prop ([ded81f9](https://github.com/homer0/packages/commit/ded81f90b44eaaafc1fc982d247f1d400a9d2d8c))
+
 ## [5.0.3](https://github.com/homer0/packages/compare/@homer0/package-info@5.0.2...@homer0/package-info@5.0.3) (2025-11-24)
 
 **Note:** Version bump only for package @homer0/package-info

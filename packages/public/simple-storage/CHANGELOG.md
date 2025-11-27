@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.4](https://github.com/homer0/packages/compare/@homer0/simple-storage@5.0.3...@homer0/simple-storage@5.0.4) (2025-11-27)
+
+### Bug Fixes
+
+- **simple-storage:** point types to the src on the types prop ([7c2705c](https://github.com/homer0/packages/commit/7c2705cab126c513de91567e100c416fadd9f1d9))
+
 ## [5.0.3](https://github.com/homer0/packages/compare/@homer0/simple-storage@5.0.2...@homer0/simple-storage@5.0.3) (2025-11-24)
 
 **Note:** Version bump only for package @homer0/simple-storage

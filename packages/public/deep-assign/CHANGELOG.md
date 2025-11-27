@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.4](https://github.com/homer0/packages/compare/@homer0/deep-assign@5.0.3...@homer0/deep-assign@5.0.4) (2025-11-27)
+
+### Bug Fixes
+
+- **deep-assign:** point types to the src on the types prop ([277692f](https://github.com/homer0/packages/commit/277692ff733f856f6c61007b7795d3aaaa78cf2a))
+
 ## [5.0.3](https://github.com/homer0/packages/compare/@homer0/deep-assign@5.0.2...@homer0/deep-assign@5.0.3) (2025-11-24)
 
 **Note:** Version bump only for package @homer0/deep-assign

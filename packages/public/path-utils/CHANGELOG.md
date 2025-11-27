@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.4](https://github.com/homer0/packages/compare/@homer0/path-utils@5.0.3...@homer0/path-utils@5.0.4) (2025-11-27)
+
+### Bug Fixes
+
+- **path-utils:** point types to the src on the types prop ([d5da760](https://github.com/homer0/packages/commit/d5da76090e80add3bbd4f94515dff8921f3b042f))
+
 ## [5.0.3](https://github.com/homer0/packages/compare/@homer0/path-utils@5.0.2...@homer0/path-utils@5.0.3) (2025-11-24)
 
 **Note:** Version bump only for package @homer0/path-utils
