@@ -1,6 +1,7 @@
 {
-  "extends": "@homer0/tsconfig/tsconfig.node.json",
+  "extends": "./tsconfig.node.json",
   "compilerOptions": {
+    "removeComments": true,
     "emitDecoratorMetadata": true,
     "incremental": true
   }

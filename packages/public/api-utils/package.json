@@ -25,13 +25,12 @@
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "types": "./src/index.ts"
+      "types": "./dist/index.d.ts"
     },
     "./package.json": "./package.json"
   },
   "files": [
-    "dist/",
-    "src/"
+    "dist/"
   ],
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
