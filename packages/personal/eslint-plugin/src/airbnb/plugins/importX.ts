@@ -5,6 +5,7 @@ import type { LinterPlugin } from '../../commons/index.js';
 const extensions = ['.js', '.mjs', '.jsx'];
 
 export const importXPluginConfig: Config = {
+  name: 'plugin:import-x',
   plugins: {
     'import-x': importPlugin as unknown as LinterPlugin,
   },

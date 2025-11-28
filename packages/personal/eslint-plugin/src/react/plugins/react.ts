@@ -2,6 +2,7 @@ import reactPlugin from 'eslint-plugin-react';
 import type { Config } from 'eslint/config';
 
 export const reactPluginConfig: Config = {
+  name: 'plugin:react',
   plugins: {
     react: reactPlugin,
   },
@@ -13,7 +14,7 @@ export const reactPluginConfig: Config = {
 };
 
 export const reactPluginRecommendedConfig: Config = {
-  name: 'react/recommended',
+  name: 'plugin:react/recommended',
   languageOptions: {
     parserOptions: reactPlugin.configs.recommended.parserOptions,
   },
