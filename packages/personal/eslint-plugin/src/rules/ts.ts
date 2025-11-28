@@ -23,6 +23,18 @@ export const tsRulesConfig: Config = {
      */
     'import-x/no-unresolved': 'off',
     /**
+     * The TS compiler will handle the module syntax.
+     *
+     * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-unsupported-features/es-syntax.md
+     */
+    'n/no-unsupported-features/es-syntax': ['error', { ignores: ['modules'] }],
+    /**
+     * The TS compiler will handle missing imports.
+     *
+     * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-missing-import.md
+     */
+    'n/no-missing-import': 'off',
+    /**
      * Enforce dot notation whenever possible.
      *
      * @see https://typescript-eslint.io/rules/dot-notation
