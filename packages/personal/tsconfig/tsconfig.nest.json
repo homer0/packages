@@ -3,6 +3,7 @@
   "compilerOptions": {
     "removeComments": true,
     "emitDecoratorMetadata": true,
-    "incremental": true
+    "incremental": true,
+    "declaration": false
   }
 }
