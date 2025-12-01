@@ -5,7 +5,15 @@ import {
 } from '../airbnb/index.js';
 
 const extensions = '{js,cjs,mjs,ts,cts,mts}';
-const extraDevFiles = ['eslint.config', 'vite.config', 'vitest.config', 'tsup.config'];
+const extraDevDirs = ['.storybook'];
+const extraDevFiles = [
+  '.prettierrc',
+  'eslint.config',
+  'tsup.config',
+  'vite.config',
+  'vitest.config',
+  '*.{stories,mocks,test,spec}',
+];
 
 export const noExtraneousDependenciesRuleUtils = {
   extensions,
@@ -13,6 +21,7 @@ export const noExtraneousDependenciesRuleUtils = {
     ...noExtraneousDependenciesRuleSettings,
     devDependencies: [
       ...noExtraneousDependenciesRuleSettings.devDependencies,
+      ...extraDevDirs.map((dir) => `**/${dir}`),
       ...extraDevFiles.map((file) => `**/${file}.${extensions}`),
     ],
   },
