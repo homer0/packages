@@ -22,18 +22,6 @@ export const testsRulesConfig: Config = {
      */
     'import-x/no-extraneous-dependencies': 'off',
     /**
-     * This will either be handled by TypeScript or by the runtime (Jest, Vitest, etc).
-     *
-     * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-missing-import.md
-     */
-    'n/no-missing-require': 'off',
-    /**
-     * This will either be handled by TypeScript or by the runtime (Jest, Vitest, etc).
-     *
-     * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-missing-import.md
-     */
-    'n/no-missing-import': 'off',
-    /**
      * In test files, magic numbers are totally acceptable.
      *
      * @see https://eslint.org/docs/latest/rules/no-magic-numbers
