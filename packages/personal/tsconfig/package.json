@@ -20,6 +20,7 @@
     "./tsconfig.node-tests.json": "./tsconfig.node-tests.json",
     "./tsconfig.node.json": "./tsconfig.node.json",
     "./tsconfig.react.json": "./tsconfig.react.json",
+    "./tsconfig.react-bundled.json": "./tsconfig.react-bundled.json",
     "./tsconfig.nest.json": "./tsconfig.nest.json",
     "./tsconfig.nextjs.json": "./tsconfig.nextjs.json"
   },

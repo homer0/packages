@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.react.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler"
+  }
+}
