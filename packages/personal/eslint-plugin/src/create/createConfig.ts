@@ -15,12 +15,12 @@ export type CreateConfigOptions = CreateDynamicConfigSharedOptions & {
 
 export const createConfig = ({
   configs = [],
-  esm = true,
+  esm = false,
   ...options
 }: CreateConfigOptions): LinterConfigWithExtends => {
   const selectedConfigs = configs.slice();
   if (esm && !selectedConfigs.includes('esm')) {
-    selectedConfigs.unshift('esm');
+    selectedConfigs.push('esm');
   }
 
   return createDynamicConfig({

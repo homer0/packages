@@ -17,7 +17,7 @@ export type CreateReactConfigOptions = CreateDynamicConfigSharedOptions & {
 
 export const createReactConfig = ({
   baseConfig = 'node',
-  esm = true,
+  esm = false,
   jsdoc = false,
   prettier = true,
   tests = false,
@@ -54,7 +54,7 @@ export const createReactConfig = ({
   }
 
   if (esm) {
-    selectedConfigs.unshift('esm');
+    selectedConfigs.push('esm');
   }
 
   return createDynamicConfig({
