@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [14.2.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@14.1.2...@homer0/eslint-plugin@14.2.0) (2025-12-02)
+
+### Bug Fixes
+
+- **eslint-plugin:** add esm as the first config ([4947f90](https://github.com/homer0/packages/commit/4947f90f41bb139402c6253e647ba7ce05c888c2))
+- **eslint-plugin:** disable n rules for import in favor of import-x ([630b1e7](https://github.com/homer0/packages/commit/630b1e7e8ee812943330ab8922d88adc4c24f233))
+- **eslint-plugin:** esm default is now false ([00be4f6](https://github.com/homer0/packages/commit/00be4f69fe46ba731440fdab2fa123536dd78d27))
+- **eslint-plugin:** include storybook, prettier, and tests as dev files ([d7c2901](https://github.com/homer0/packages/commit/d7c29014400c408d106fe7a8740be3f41138aac1))
+- **eslint-plugin:** move missing import rules to ts rules config ([2dba98c](https://github.com/homer0/packages/commit/2dba98c5f29af0ebac0cbdac35b3d2f6623818ef))
+- **eslint-plugin:** remove unnecessary rule set for bundling ([7a04600](https://github.com/homer0/packages/commit/7a0460038324b34a52f2267bddefbd53459296cf))
+- **eslint-plugin:** remove unnecessary rule set for ts and esm ([3aa21a1](https://github.com/homer0/packages/commit/3aa21a15acc962d99c2caa8e81cee7afd0a76f87))
+- **eslint-plugin:** set names to all the plugins configs ([045f871](https://github.com/homer0/packages/commit/045f87144fec212e1e2826918d7b4b2b68ed09b4))
+- **eslint-plugin:** use .eslintignores as the default pattern ([70d5f19](https://github.com/homer0/packages/commit/70d5f19f050458c641033d82523d27c343aa9ca8))
+- **monorepo:** update dependencies ([d6b8081](https://github.com/homer0/packages/commit/d6b8081d72b2773faa9909cc55b16ef1db57232d))
+
+### Features
+
+- **eslint-plugin:** add creator feature for no-unresolved ([86d0d72](https://github.com/homer0/packages/commit/86d0d7221bad79f8decc2b9c3fac1bc61b243f39))
+
 ## [14.1.2](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@14.1.1...@homer0/eslint-plugin@14.1.2) (2025-11-27)
 
 ### Bug Fixes

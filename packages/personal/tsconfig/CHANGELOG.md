@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/homer0/packages/compare/@homer0/tsconfig@4.0.1...@homer0/tsconfig@4.1.0) (2025-12-02)
+
+### Bug Fixes
+
+- **tsconfig:** disable declarations for nest and tests ([67b01c9](https://github.com/homer0/packages/commit/67b01c9fb05044075e0ee9c22a671cf75d7d9de1))
+
+### Features
+
+- **tsconfig:** add nextjs config ([dc673e4](https://github.com/homer0/packages/commit/dc673e4688b63137b03cc7746e25ed71b8b75646))
+- **tsconfig:** add react bundled config ([4ac2a7f](https://github.com/homer0/packages/commit/4ac2a7f01daa03ad7072a7d34347d034b72d9cf1))
+
 ## 4.0.1 (2025-11-27)
 
 ### Bug Fixes
