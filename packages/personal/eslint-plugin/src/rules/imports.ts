@@ -22,7 +22,7 @@ export const noExtraneousDependenciesRuleUtils = {
     ...noExtraneousDependenciesRuleSettings,
     devDependencies: [
       ...noExtraneousDependenciesRuleSettings.devDependencies,
-      ...extraDevDirs.map((dir) => `**/${dir}`),
+      ...extraDevDirs.map((dir) => `**/${dir}/**`),
       ...extraDevFiles.map((file) => `**/${file}.${extensions}`),
     ],
   },
