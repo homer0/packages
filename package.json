@@ -8,6 +8,7 @@
   "license": "MIT",
   "private": true,
   "packageManager": "pnpm@10.11.0",
+  "type": "module",
   "dependencies": {},
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
