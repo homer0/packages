@@ -20,7 +20,7 @@ export const createConfig = ({
 }: CreateConfigOptions): LinterConfigWithExtends => {
   const selectedConfigs = configs.slice();
   if (esm && !selectedConfigs.includes('esm')) {
-    selectedConfigs.push('esm');
+    selectedConfigs.unshift('esm');
   }
 
   return createDynamicConfig({

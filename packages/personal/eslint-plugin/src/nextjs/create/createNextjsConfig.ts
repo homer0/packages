@@ -23,7 +23,7 @@ export const createNextjsConfig = ({
   };
 
   const baseConfig = prettier ? 'nextjs-with-prettier' : 'nextjs';
-  const selectedConfigs: (keyof typeof availableConfigs)[] = [baseConfig, 'esm'];
+  const selectedConfigs: (keyof typeof availableConfigs)[] = ['esm', baseConfig];
 
   return createDynamicConfig({
     name: 'nextjs-config',

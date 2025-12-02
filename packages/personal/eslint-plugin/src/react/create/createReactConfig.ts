@@ -54,7 +54,7 @@ export const createReactConfig = ({
   }
 
   if (esm) {
-    selectedConfigs.push('esm');
+    selectedConfigs.unshift('esm');
   }
 
   return createDynamicConfig({
