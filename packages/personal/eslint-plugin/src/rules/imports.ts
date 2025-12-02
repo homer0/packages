@@ -2,6 +2,7 @@ import type { Config } from 'eslint/config';
 import {
   importsRulesConfig as base,
   noExtraneousDependenciesRuleSettings,
+  noUnresolvedRuleSettings,
 } from '../airbnb/index.js';
 
 const extensions = '{js,cjs,mjs,ts,cts,mts}';
@@ -27,6 +28,12 @@ export const noExtraneousDependenciesRuleUtils = {
   },
 };
 
+export const noUnresolvedRuleUtils = {
+  settings: {
+    ...noUnresolvedRuleSettings,
+  },
+};
+
 export const importsRulesConfig: Config = {
   ...base,
   name: '@homer0: imports',
@@ -47,5 +54,12 @@ export const importsRulesConfig: Config = {
       'error',
       noExtraneousDependenciesRuleUtils.settings,
     ],
+    /**
+     * Even tho I'm not changing the default settings from the base config, I prefer an
+     * explicit declaration here, as this rule may be overridden by creators.
+     *
+     * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-unresolved.md
+     */
+    'import-x/no-unresolved': ['error', noUnresolvedRuleSettings],
   },
 };
