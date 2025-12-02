@@ -5,7 +5,7 @@ import {
   noUnresolvedRuleSettings,
 } from '../airbnb/index.js';
 
-const extensions = '{js,cjs,mjs,ts,cts,mts}';
+const extensions = '{js,jsx,cjs,mjs,ts,tsx,cts,mts}';
 const extraDevDirs = ['.storybook'];
 const extraDevFiles = [
   '.prettierrc',
