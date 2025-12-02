@@ -9,6 +9,7 @@ import {
   type ConfigureExtraneousDependenciesOptions,
 } from './configureExtraneousDependencies.js';
 import { loadIgnoreFile, type LoadIgnoreFileOptions } from './loadIgnoreFile.js';
+import { configureNoUnresolved } from './configureNoUnresolved.js';
 
 export type CreateDynamicConfigExtendsOptions =
   | Config[][]
@@ -28,6 +29,7 @@ export type CreateDynamicConfigSharedOptions = {
   ignores?: string | string[];
   sourceType?: 'module' | 'script';
   extraneousDependencies?: ConfigureExtraneousDependenciesOptions;
+  ignoreUnresolved?: string[];
   extends?: CreateDynamicConfigExtendsOptions;
   plugins?: Record<string, LinterPlugin>;
   rules?: NonNullable<Config['rules']>;
@@ -117,6 +119,22 @@ const addIgnoreFileConfig = (
   configsToApply.push(ignoreFileConfigs);
 };
 
+const addNoUnresolvedConfig = (
+  configsToApply: Config[][],
+  ignoreUnresolved?: string[],
+): void => {
+  if (!ignoreUnresolved || ignoreUnresolved.length === 0) {
+    return;
+  }
+
+  const noUnresolvedConfig = configureNoUnresolved({ ignore: ignoreUnresolved });
+  if (!noUnresolvedConfig) {
+    return;
+  }
+
+  configsToApply.push([noUnresolvedConfig]);
+};
+
 export const createDynamicConfig = <Configs extends Record<string, Config[]>>(
   options: CreateDynamicConfigOptions<Configs>,
 ): LinterConfigWithExtends => {
@@ -137,6 +155,7 @@ export const createDynamicConfig = <Configs extends Record<string, Config[]>>(
     tsConfigPath = './',
     addTsParser = true,
     loadIgnoreFile: loadIgnoreFileOption = true,
+    ignoreUnresolved = [],
   } = options;
 
   const configsToApply = selectedConfigs.map<Config[]>((configName) => {
@@ -156,6 +175,7 @@ export const createDynamicConfig = <Configs extends Record<string, Config[]>>(
   addExtraneousDependenciesConfig(configsToApply, extraneousDependencies);
   addExtendsConfigs(configsToApply, extendsOption);
   addIgnoreFileConfig(configsToApply, rootDir, loadIgnoreFileOption);
+  addNoUnresolvedConfig(configsToApply, ignoreUnresolved);
 
   const settingsToUse: Record<string, unknown> = {
     ...settings,
