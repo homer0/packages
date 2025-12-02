@@ -5,6 +5,6 @@ export default defineConfig([
   createConfig({
     importUrl: import.meta.url,
     ignores: ['packages/**'],
-    configs: ['node-ts-with-prettier'],
+    configs: ['node-ts-with-prettier', 'jsdoc'],
   }),
 ]);
