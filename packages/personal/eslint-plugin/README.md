@@ -212,7 +212,9 @@ With the new flat config, `.eslintignore` files are not supported anymore, and y
 
 Built into the config creators is a feature that automatically loads `.eslintignore` and/or `.gitignore` patterns into your config, so you don't have to worry about it.
 
-By default, the feature will crawl upwards from your config file location until it finds a `.gitignore` file and load all the patterns from all the `.eslintignore` it finds along the way, and the ones from the `.gitignore` file.
+By default, the feature will crawl upwards from your config file location until it finds a `.gitignore` file and load all the patterns from all the `.eslintignores` it finds along the way, and the ones from the `.gitignore` file.
+
+> **Note:** It uses `.eslintignores` (with an `s` at the end) as the default ignore file name, to avoid the "deprecated" warning from ESLint when it finds a `.eslintignore` file.
 
 The option is `loadIgnoreFile`, and it can be:
 
@@ -229,7 +231,7 @@ And if you use an object, here are the available options:
 | ------------------ | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `limit`            | `false \| number \| '.gitignore'` | Defines the behavior for how many levels upwards it should look for ignore files. If `false`, it will only look in the directory of the config file. If `'.gitignore'`, it will look until it finds a `.gitignore` file. Otherwise, it will look up to the specified number of levels. Default is `'.gitignore'`. |
 | `includeGitignore` | `boolean`                         | Whether to include patterns from the `.gitignore` file when (and if) found. Default is `true`.                                                                                                                                                                                                                    |
-| `ignoreFileName`   | `string`                          | **Optional**. If you want to use a different ignore file name instead of `.eslintignore`, you can specify it here.                                                                                                                                                                                                |
+| `ignoreFileName`   | `string`                          | **Optional**. If you want to use a different ignore file name instead of `.eslintignores`, you can specify it here.                                                                                                                                                                                               |
 
 ## Rules
 
