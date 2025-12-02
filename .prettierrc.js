@@ -1,6 +1,8 @@
-const base = require('@homer0/prettier-config');
+import base from '@homer0/prettier-config' with { type: 'json' };
 
-module.exports = {
+const config = {
   ...base,
   plugins: ['@homer0/prettier-plugin-jsdoc'],
 };
+
+export default config;

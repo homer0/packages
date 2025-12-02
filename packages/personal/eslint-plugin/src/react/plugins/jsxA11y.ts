@@ -10,6 +10,7 @@ const jsxA11yPlugin = jsxA11yPluginRaw as unknown as LinterPlugin & {
 };
 
 export const jsxA11yPluginConfig: Config = {
+  name: 'plugin:jsx-a11y',
   plugins: {
     'jsx-a11y': jsxA11yPlugin,
   },
@@ -17,7 +18,7 @@ export const jsxA11yPluginConfig: Config = {
 };
 
 export const jsxA11yPluginRecommendedConfig: Config = {
-  name: 'jsx-a11y/recommended',
+  name: 'plugin:jsx-a11y/recommended',
   languageOptions: jsxA11yPlugin.flatConfigs.recommended.languageOptions,
   rules: jsxA11yPlugin.flatConfigs.recommended.rules,
 };

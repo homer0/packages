@@ -5,7 +5,7 @@ import type { Config } from 'eslint/config';
 
 const PATTERNS = {
   gitignore: '.gitignore',
-  eslintignore: '.eslintignore',
+  eslintignore: '.eslintignores',
 } as const;
 
 type Patterns = typeof PATTERNS;

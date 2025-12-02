@@ -19,9 +19,9 @@ export const tsRulesConfig: Config = {
     /**
      * The TS compiler will handle the module syntax.
      *
-     * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-unresolved.md
+     * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-unsupported-features/es-syntax.md
      */
-    'import-x/no-unresolved': 'off',
+    'n/no-unsupported-features/es-syntax': ['error', { ignores: ['modules'] }],
     /**
      * Enforce dot notation whenever possible.
      *

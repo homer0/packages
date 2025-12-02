@@ -1,6 +1,6 @@
 import globals from 'globals';
 import type { Config } from 'eslint/config';
-import { bundlingRulesConfig, browserRulesConfig } from '../rules/index.js';
+import { browserRulesConfig } from '../rules/index.js';
 import {
   baseRulesConfigs,
   basePluginsConfigs,
@@ -10,7 +10,6 @@ import {
 export const browserConfig: Config[] = [
   ...basePluginsConfigs,
   ...baseRulesConfigs,
-  bundlingRulesConfig,
   browserRulesConfig,
   {
     ...baseLanguageOptionsConfig,

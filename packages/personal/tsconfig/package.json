@@ -20,7 +20,9 @@
     "./tsconfig.node-tests.json": "./tsconfig.node-tests.json",
     "./tsconfig.node.json": "./tsconfig.node.json",
     "./tsconfig.react.json": "./tsconfig.react.json",
-    "./tsconfig.nest.json": "./tsconfig.nest.json"
+    "./tsconfig.react-bundled.json": "./tsconfig.react-bundled.json",
+    "./tsconfig.nest.json": "./tsconfig.nest.json",
+    "./tsconfig.nextjs.json": "./tsconfig.nextjs.json"
   },
   "peerDependencies": {
     "@types/node": "^20.0.0 || ^22.0.0 || ^24.0.0",

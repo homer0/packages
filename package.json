@@ -8,6 +8,7 @@
   "license": "MIT",
   "private": true,
   "packageManager": "pnpm@10.11.0",
+  "type": "module",
   "dependencies": {},
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
@@ -20,9 +21,9 @@
     "eslint": "catalog:",
     "husky": "^9.1.7",
     "leasot": "^14.4.0",
-    "lerna": "^9.0.1",
-    "lint-staged": "^16.2.6",
-    "prettier": "^3.6.2"
+    "lerna": "^9.0.3",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.7.3"
   },
   "engine-strict": true,
   "engines": {

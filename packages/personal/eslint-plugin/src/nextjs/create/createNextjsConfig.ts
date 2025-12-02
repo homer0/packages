@@ -3,7 +3,6 @@ import {
   createDynamicConfig,
   type CreateDynamicConfigSharedOptions,
 } from '../../utils/index.js';
-import { esmConfig } from '../../configs/index.js';
 import plugin from '../index.js';
 
 export type CreateNextjsConfigOptions = Omit<
@@ -19,11 +18,10 @@ export const createNextjsConfig = ({
 }: CreateNextjsConfigOptions): LinterConfigWithExtends => {
   const availableConfigs = {
     ...plugin.configs,
-    esm: esmConfig,
   };
 
   const baseConfig = prettier ? 'nextjs-with-prettier' : 'nextjs';
-  const selectedConfigs: (keyof typeof availableConfigs)[] = [baseConfig, 'esm'];
+  const selectedConfigs: (keyof typeof availableConfigs)[] = [baseConfig];
 
   return createDynamicConfig({
     name: 'nextjs-config',

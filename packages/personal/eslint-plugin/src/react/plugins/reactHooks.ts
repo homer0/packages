@@ -3,6 +3,7 @@ import type { Config } from 'eslint/config';
 import type { LinterPlugin } from '../../commons/index.js';
 
 export const reactHooksPluginConfig: Config = {
+  name: 'plugin:react-hooks',
   plugins: {
     'react-hooks': reactHooksPlugin as LinterPlugin,
   },
@@ -10,6 +11,6 @@ export const reactHooksPluginConfig: Config = {
 };
 
 export const reactHooksPluginRecommendedConfig: Config = {
-  name: 'react-hooks/recommended',
+  name: 'plugin:react-hooks/recommended',
   rules: reactHooksPlugin.configs.flat.recommended.rules,
 };

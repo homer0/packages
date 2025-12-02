@@ -67,16 +67,16 @@ Now, there are three main types of configurations:
 
 Environment and combined configurations include a _[Prettier](https://prettier.io) version_ with the suffix `-with-prettier`. They add the Prettier's config that takes care of disabling all the ESLint rules that may conflict with Prettier's formatting.
 
-| Name            | Type        | Description                                                                                                                                                                                                      | Prettier version |
-| --------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| `browser`       | environment | For browser-based projects; it's like the one for node, but with the browser globals and without the `eslint-plugin-n`                                                                                           | ✅               |
-| `node`          | environment | For Node.js and the tooling outside browser-based projects. It uses the [`eslint-plugin-n`](https://www.npmjs.com/package/eslint-plugin-n)'s recommended config                                                  | ✅               |
-| `node-ts`       | combined    | For Node.js projects using TypeScript; it extends the `node` config and adds TypeScript support                                                                                                                  | ✅               |
-| `node-ts-tests` | combined    | Extends `node-ts` and disables a few rules for acceptable scenarios in testing environments (like `no-magic-numbers`)                                                                                            | ✅               |
-| `tests`         | feature     | It disables a few rules for acceptable scenarios in testing environments (like `no-magic-numbers`)                                                                                                               | ❌               |
-| `esm`           | feature     | For projects using ESM modules; it sets the `sourceType` to `module` and customizes a few rules accordingly (mostly around the [`eslint-plugin-import-x`](https://www.npmjs.com/package/eslint-plugin-import-x)) | ❌               |
-| `ts`            | feature     | For TypeScript projects; it adds TypeScript support on top of any other config                                                                                                                                   | ❌               |
-| `jsdoc`         | feature     | For projects using JSDoc comments; it adds rules from the [`eslint-plugin-jsdoc`](https://www.npmjs.com/package/eslint-plugin-jsdoc)                                                                             | ❌               |
+| Name            | Type        | Description                                                                                                                                                                                                                                                                                                                                     | Prettier version |
+| --------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| `browser`       | environment | For browser-based projects; it's like the one for node, but with the browser globals and without the `eslint-plugin-n`.                                                                                                                                                                                                                         | ✅               |
+| `node`          | environment | For Node.js and the tooling outside browser-based projects. It uses the [`eslint-plugin-n`](https://www.npmjs.com/package/eslint-plugin-n)'s recommended config.                                                                                                                                                                                | ✅               |
+| `node-ts`       | combined    | For Node.js projects using TypeScript; it extends the `node` config and adds TypeScript support.                                                                                                                                                                                                                                                | ✅               |
+| `node-ts-tests` | combined    | Extends `node-ts` and disables a few rules for acceptable scenarios in testing environments (like `no-magic-numbers`).                                                                                                                                                                                                                          | ✅               |
+| `tests`         | feature     | It disables a few rules for acceptable scenarios in testing environments (like `no-magic-numbers`).                                                                                                                                                                                                                                             | ❌               |
+| `esm`           | feature     | For projects using ESM modules; it sets the `sourceType` to `module` and customizes a few rules accordingly (mostly around the [`eslint-plugin-import-x`](https://www.npmjs.com/package/eslint-plugin-import-x)). **Important:** Don't use this config with a TypeScript based config, just leave the extensions validation to the TS compiler. | ❌               |
+| `ts`            | feature     | For TypeScript projects; it adds TypeScript support on top of any other config.                                                                                                                                                                                                                                                                 | ❌               |
+| `jsdoc`         | feature     | For projects using JSDoc comments; it adds rules from the [`eslint-plugin-jsdoc`](https://www.npmjs.com/package/eslint-plugin-jsdoc).                                                                                                                                                                                                           | ❌               |
 
 ## Frameworks and libraries
 
@@ -206,13 +206,19 @@ So, with the config creators, you can use the `extraneousDependencies` option to
 - `devFiles`: An array of glob patterns for files that are considered development files that are allowed to import `devDependencies`. By default, it includes a big list, from the airbnb config, of all major JS/TS tools config files (like `webpack.config.js`, `jest.config.ts`, etc).
 - `bundledDependencies`: A list of packages paths that are bundled in your project's build process. For example, if you are bundling `urijs` in your build, you can add it here, and the rule will allow importing it without listing it in your `dependencies`.
 
+### `ignoreUnresolved`: Ignore unresolved imports
+
+With the migration to ESM, and the use of custom path mappings in TypeScript, it's common to have some imports that ESLint can't resolve properly, even if they work fine at runtime or when compiled with TypeScript. To avoid having to manually override the `import-x/no-unresolved`, or turn it off completely, you can use the `ignoreUnresolved` option in the config creators, and it will automatically add those exceptions for you, while keeping the rule with the base configuration.
+
 ### Ignore files
 
 With the new flat config, `.eslintignore` files are not supported anymore, and you now need a [workaround](https://eslint.org/docs/latest/use/configure/ignore#including-gitignore-files) to load the patterns from those files into your config.
 
 Built into the config creators is a feature that automatically loads `.eslintignore` and/or `.gitignore` patterns into your config, so you don't have to worry about it.
 
-By default, the feature will crawl upwards from your config file location until it finds a `.gitignore` file and load all the patterns from all the `.eslintignore` it finds along the way, and the ones from the `.gitignore` file.
+By default, the feature will crawl upwards from your config file location until it finds a `.gitignore` file and load all the patterns from all the `.eslintignores` it finds along the way, and the ones from the `.gitignore` file.
+
+> **Note:** It uses `.eslintignores` (with an `s` at the end) as the default ignore file name, to avoid the "deprecated" warning from ESLint when it finds a `.eslintignore` file.
 
 The option is `loadIgnoreFile`, and it can be:
 
@@ -229,7 +235,7 @@ And if you use an object, here are the available options:
 | ------------------ | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `limit`            | `false \| number \| '.gitignore'` | Defines the behavior for how many levels upwards it should look for ignore files. If `false`, it will only look in the directory of the config file. If `'.gitignore'`, it will look until it finds a `.gitignore` file. Otherwise, it will look up to the specified number of levels. Default is `'.gitignore'`. |
 | `includeGitignore` | `boolean`                         | Whether to include patterns from the `.gitignore` file when (and if) found. Default is `true`.                                                                                                                                                                                                                    |
-| `ignoreFileName`   | `string`                          | **Optional**. If you want to use a different ignore file name instead of `.eslintignore`, you can specify it here.                                                                                                                                                                                                |
+| `ignoreFileName`   | `string`                          | **Optional**. If you want to use a different ignore file name instead of `.eslintignores`, you can specify it here.                                                                                                                                                                                               |
 
 ## Rules
 

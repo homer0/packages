@@ -29,6 +29,11 @@ export const noExtraneousDependenciesRuleSettings = {
   optionalDependencies: false,
 };
 
+export const noUnresolvedRuleSettings = {
+  commonjs: true,
+  caseSensitive: true,
+};
+
 export const importsRulesConfig: Config = {
   languageOptions: {
     globals: {
@@ -44,7 +49,7 @@ export const importsRulesConfig: Config = {
 
     // ensure imports point to files/modules that can be resolved
     // https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-unresolved.md
-    'import-x/no-unresolved': ['error', { commonjs: true, caseSensitive: true }],
+    'import-x/no-unresolved': ['error', noUnresolvedRuleSettings],
 
     // ensure named imports coupled with named exports
     // https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/named.md#when-not-to-use-it

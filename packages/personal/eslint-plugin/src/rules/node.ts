@@ -67,5 +67,17 @@ export const nodeRulesConfig: Config = {
      * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/hashbang.md
      */
     'n/hashbang': 'off',
+    /**
+     * The `import-x` plugin will handle missing imports.
+     *
+     * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-missing-import.md
+     */
+    'n/no-missing-import': 'off',
+    /**
+     * The `import-x` plugin will handle missing imports.
+     *
+     * @see https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-missing-import.md
+     */
+    'n/no-missing-require': 'off',
   },
 };

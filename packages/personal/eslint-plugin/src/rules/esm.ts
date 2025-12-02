@@ -24,11 +24,5 @@ export const esmRulesConfig: Config = {
         tsx: 'never',
       },
     ],
-    /**
-     * Just changed `commonjs` to `false` to avoid false positives when using ESM imports.
-     *
-     * @see https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/no-unresolved.md
-     */
-    'import-x/no-unresolved': ['error', { commonjs: false, caseSensitive: true }],
   },
 };
