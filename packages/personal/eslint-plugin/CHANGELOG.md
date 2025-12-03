@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [14.2.1](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@14.2.0...@homer0/eslint-plugin@14.2.1) (2025-12-03)
+
+### Bug Fixes
+
+- **eslint-plugin:** add .jsx and .tsx to the extensions list ([3ab1b41](https://github.com/homer0/packages/commit/3ab1b416cf5467618f5e3f8018865e8e22507a4a))
+- **eslint-plugin:** include all files in dev dirs ([edd1d25](https://github.com/homer0/packages/commit/edd1d2591898bc42fc133b700f05e51a748843cf))
+
 # [14.2.0](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@14.1.2...@homer0/eslint-plugin@14.2.0) (2025-12-02)
 
 ### Bug Fixes

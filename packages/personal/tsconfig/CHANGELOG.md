@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.1](https://github.com/homer0/packages/compare/@homer0/tsconfig@4.1.0...@homer0/tsconfig@4.1.1) (2025-12-03)
+
+### Bug Fixes
+
+- **tsconfig:** use react-jsx for react config ([fe9f187](https://github.com/homer0/packages/commit/fe9f18749a87663c9f9632ebddc05845be3dedd9))
+
 # [4.1.0](https://github.com/homer0/packages/compare/@homer0/tsconfig@4.0.1...@homer0/tsconfig@4.1.0) (2025-12-02)
 
 ### Bug Fixes
