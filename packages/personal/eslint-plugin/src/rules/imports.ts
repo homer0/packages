@@ -5,7 +5,7 @@ import {
   noUnresolvedRuleSettings,
 } from '../airbnb/index.js';
 
-const extensions = '{js,cjs,mjs,ts,cts,mts}';
+const extensions = '{js,jsx,cjs,mjs,ts,tsx,cts,mts}';
 const extraDevDirs = ['.storybook'];
 const extraDevFiles = [
   '.prettierrc',
@@ -22,7 +22,7 @@ export const noExtraneousDependenciesRuleUtils = {
     ...noExtraneousDependenciesRuleSettings,
     devDependencies: [
       ...noExtraneousDependenciesRuleSettings.devDependencies,
-      ...extraDevDirs.map((dir) => `**/${dir}`),
+      ...extraDevDirs.map((dir) => `**/${dir}/**`),
       ...extraDevFiles.map((file) => `**/${file}.${extensions}`),
     ],
   },
