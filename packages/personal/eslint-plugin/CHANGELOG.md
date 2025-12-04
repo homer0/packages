@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [14.2.2](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@14.2.1...@homer0/eslint-plugin@14.2.2) (2025-12-04)
+
+### Bug Fixes
+
+- **eslint-plugin:** add default languageOptions when ts is not enabled ([f6b2baf](https://github.com/homer0/packages/commit/f6b2bafde46f86f8e0b83e792d742593a515d578))
+- **monorepo:** remove engines upper limit ([b78e4a7](https://github.com/homer0/packages/commit/b78e4a70b9e298d2cc415970cbb08164164cea3e))
+
 ## [14.2.1](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@14.2.0...@homer0/eslint-plugin@14.2.1) (2025-12-03)
 
 ### Bug Fixes

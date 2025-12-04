@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.7](https://github.com/homer0/packages/compare/@homer0/api-utils@5.0.6...@homer0/api-utils@5.0.7) (2025-12-04)
+
+### Bug Fixes
+
+- **monorepo:** remove engines upper limit ([b78e4a7](https://github.com/homer0/packages/commit/b78e4a70b9e298d2cc415970cbb08164164cea3e))
+
 ## [5.0.6](https://github.com/homer0/packages/compare/@homer0/api-utils@5.0.5...@homer0/api-utils@5.0.6) (2025-12-03)
 
 **Note:** Version bump only for package @homer0/api-utils
