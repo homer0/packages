@@ -38,6 +38,7 @@ export type CreateDynamicConfigSharedOptions = {
   tsConfigPath?: string;
   addTsParser?: boolean;
   loadIgnoreFile?: CreateDynamicConfigLoadIgnoreFileOptions;
+  languageOptions?: NonNullable<Config['languageOptions']>;
 };
 
 export type CreateDynamicConfigOptions<Configs extends Record<string, Config[]>> = {
@@ -156,6 +157,7 @@ export const createDynamicConfig = <Configs extends Record<string, Config[]>>(
     addTsParser = true,
     loadIgnoreFile: loadIgnoreFileOption = true,
     ignoreUnresolved = [],
+    languageOptions,
   } = options;
 
   const configsToApply = selectedConfigs.map<Config[]>((configName) => {
@@ -181,11 +183,11 @@ export const createDynamicConfig = <Configs extends Record<string, Config[]>>(
     ...settings,
   };
 
-  let languageOptions: Config['languageOptions'];
+  let languageOptionsToUse: Config['languageOptions'];
   if (addTsParser) {
     const tsConfigFullPath = resolve(rootDir, tsConfigPath);
 
-    languageOptions = {
+    languageOptionsToUse = {
       parserOptions: {
         sourceType,
         project: [tsConfigName],
@@ -196,6 +198,13 @@ export const createDynamicConfig = <Configs extends Record<string, Config[]>>(
     settingsToUse['import-x/resolver-next'] = createTypeScriptImportResolver({
       project: join(tsConfigFullPath, tsConfigName),
     });
+  } else {
+    languageOptionsToUse = languageOptions || {
+      parserOptions: {
+        ecmaVersion: 2023, // Node 20
+        sourceType,
+      },
+    };
   }
 
   const rulesToUse: NonNullable<Config['rules']> = {
@@ -210,6 +219,6 @@ export const createDynamicConfig = <Configs extends Record<string, Config[]>>(
     plugins,
     rules: rulesToUse,
     settings: settingsToUse,
-    languageOptions,
+    languageOptions: languageOptionsToUse,
   };
 };
