@@ -54,10 +54,10 @@ importers:
   .:
     devDependencies:
       '@commitlint/cli':
-        specifier: ^20.1.0
+        specifier: ^20.2.0
         version: 20.2.0(@types/node@24.10.4)(typescript@5.9.3)
       '@commitlint/config-conventional':
-        specifier: ^20.0.0
+        specifier: ^20.2.0
         version: 20.2.0
       '@homer0/eslint-plugin':
         specifier: workspace:*
@@ -66,8 +66,8 @@ importers:
         specifier: workspace:*
         version: link:packages/personal/prettier-config
       '@homer0/prettier-plugin-jsdoc':
-        specifier: ^10.0.0
-        version: 10.0.1(prettier@3.7.4)
+        specifier: ^11.0.1
+        version: 11.0.1(prettier@3.7.4)
       '@types/jest':
         specifier: ^30.0.0
         version: 30.0.0
@@ -90,7 +90,7 @@ importers:
         specifier: ^16.2.7
         version: 16.2.7
       prettier:
-        specifier: ^3.7.3
+        specifier: ^3.7.4
         version: 3.7.4
 
   packages/personal/eslint-plugin:
@@ -1342,9 +1342,9 @@ packages:
       '@exodus/crypto':
         optional: true
 
-  '@homer0/prettier-plugin-jsdoc@10.0.1':
-    resolution: {integrity: sha512-MVPw2teFfLStvg51GU2f6EEwXJcMywFXWPPf/XoT9Z7DqKKOF2vzuOUnDHlycs7/tcy58xCK3y6IcBdVBmm9+w==}
-    engines: {node: '>=18.17'}
+  '@homer0/prettier-plugin-jsdoc@11.0.1':
+    resolution: {integrity: sha512-NpN8oJrNkZvEDlmXu9zzKYG6h96RybSbEYGIFYZZJs2EwL2CTaAn0Rd4rmXnKvQGS0f9i8l4UN2SNQAIhuCSzw==}
+    engines: {node: '>=20'}
     peerDependencies:
       prettier: ^3.5.3
 
@@ -6441,7 +6441,7 @@ snapshots:
 
   '@exodus/bytes@1.7.0': {}
 
-  '@homer0/prettier-plugin-jsdoc@10.0.1(prettier@3.7.4)':
+  '@homer0/prettier-plugin-jsdoc@11.0.1(prettier@3.7.4)':
     dependencies:
       comment-parser: 1.4.1
       prettier: 3.7.4
