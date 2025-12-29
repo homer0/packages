@@ -2,25 +2,25 @@ packages:
   - packages/public/*
   - packages/personal/*
 catalog:
-  '@testing-library/react': ^16.3.0
+  '@testing-library/react': ^16.3.1
   '@types/jest': ^30.0.0
   '@types/node': ^24.10.1
   '@types/react': ^19.2.7
   '@types/react-dom': ^19.2.3
-  eslint: ^9.39.1
-  react: ^19.2.0
-  react-dom: ^19.2.0
+  eslint: ^9.39.2
+  react: ^19.2.3
+  react-dom: ^19.2.3
   tsup: ^8.5.1
   typescript: ^5.9.3
 
   # Vite and Vitest
-  '@vitejs/plugin-react': ^5.1.1
-  '@vitest/coverage-v8': ^4.0.14
-  vite: ^7.2.6
-  vite-tsconfig-paths: ^5.1.4
-  vitest: ^4.0.14
+  '@vitejs/plugin-react': ^5.1.2
+  '@vitest/coverage-v8': ^4.0.16
+  vite: ^7.3.0
+  vite-tsconfig-paths: ^6.0.3
+  vitest: ^4.0.16
   unplugin-swc: ^1.5.9
-  jsdom: ^27.2.0
+  jsdom: ^27.4.0
 onlyBuiltDependencies:
   - '@swc/core'
   - esbuild
