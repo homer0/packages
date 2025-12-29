@@ -16,6 +16,8 @@ export const noParamReassignRuleUtils = {
   },
 };
 
+const maxComplexity = 30;
+
 export const bestPracticesRulesConfig: Config = {
   ...base,
   name: '@homer0: best-practices',
@@ -28,7 +30,7 @@ export const bestPracticesRulesConfig: Config = {
      *
      * @see https://eslint.org/docs/latest/rules/complexity
      */
-    complexity: ['warn'],
+    complexity: ['warn', maxComplexity],
     /**
      * `airbnb(error)` -> `off`.
      *
