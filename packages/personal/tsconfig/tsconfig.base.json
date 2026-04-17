@@ -28,7 +28,6 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "sourceMap": true,
-    "baseUrl": "./",
     "incremental": false,
     "skipLibCheck": true
   },
