@@ -3,7 +3,6 @@
   "compilerOptions": {
     "types": ["node", "vitest/globals"],
     "jsx": "react-jsx",
-    "baseUrl": "./",
     "paths": {
       "@src/*": ["../src/*"]
     }

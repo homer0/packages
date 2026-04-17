@@ -1,8 +1,6 @@
 {
   "extends": "@homer0/tsconfig/tsconfig.node-tests.json",
   "compilerOptions": {
-    "allowJs": true,
-    "baseUrl": "./",
     "paths": {
       "@src/*": ["../src/*"]
     }

@@ -3,7 +3,6 @@
   "include": ["./"],
   "compilerOptions": {
     "types": ["node", "vitest/globals"],
-    "baseUrl": "./",
     "paths": {
       "@src/*": ["../src/*"]
     }
