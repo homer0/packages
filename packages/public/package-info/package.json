@@ -37,7 +37,7 @@
     "@homer0/deferred": "workspace:*",
     "@homer0/jimple": "workspace:*",
     "@homer0/path-utils": "workspace:*",
-    "package-json-type": "^1.0.3"
+    "package-json-type": "^1.1.2"
   },
   "devDependencies": {
     "@homer0/eslint-plugin": "workspace:*",
@@ -47,7 +47,6 @@
     "tsup": "catalog:",
     "typescript": "catalog:",
     "unplugin-swc": "catalog:",
-    "vite-tsconfig-paths": "catalog:",
     "vitest": "catalog:"
   },
   "engine-strict": true,

@@ -2,8 +2,8 @@
   "extends": "@homer0/tsconfig/tsconfig.node-tests.json",
   "include": ["./"],
   "compilerOptions": {
+    "rootDir": "..",
     "types": ["node", "vitest/globals"],
-    "baseUrl": "./",
     "paths": {
       "@src/*": ["../src/*"]
     }

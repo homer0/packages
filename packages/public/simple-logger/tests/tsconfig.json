@@ -1,9 +1,8 @@
 {
   "extends": "@homer0/tsconfig/tsconfig.node-tests.json",
   "compilerOptions": {
+    "rootDir": "..",
     "types": ["node", "vitest/globals"],
-    "allowJs": true,
-    "baseUrl": "./",
     "paths": {
       "@src/*": ["../src/*"],
       "@tests/*": ["./*"]

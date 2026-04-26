@@ -2,7 +2,7 @@
   "extends": "@homer0/tsconfig/tsconfig.node-tests.json",
   "include": ["./"],
   "compilerOptions": {
-    "baseUrl": "./",
+    "rootDir": "..",
     "paths": {
       "@root/*": ["../*"],
       "@src/*": ["../src/*"]

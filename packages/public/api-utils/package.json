@@ -43,7 +43,6 @@
     "typescript": "catalog:",
     "unplugin-swc": "catalog:",
     "urijs": "^1.19.11",
-    "vite-tsconfig-paths": "catalog:",
     "vitest": "catalog:"
   },
   "engine-strict": true,
