@@ -42,9 +42,6 @@ catalogs:
     unplugin-swc:
       specifier: ^1.5.9
       version: 1.5.9
-    vite-tsconfig-paths:
-      specifier: ^6.1.1
-      version: 6.1.1
     vitest:
       specifier: ^4.1.5
       version: 4.1.5
@@ -209,9 +206,6 @@ importers:
       urijs:
         specifier: ^1.19.11
         version: 1.19.11
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -239,9 +233,6 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -269,9 +260,6 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -303,9 +291,6 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -340,9 +325,6 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -370,9 +352,6 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -400,9 +379,6 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -440,9 +416,6 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -473,9 +446,6 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -509,14 +479,11 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       zod:
-        specifier: ^4.2.1
+        specifier: ^4.3.6
         version: 4.3.6
 
   packages/public/object-utils:
@@ -549,9 +516,6 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -592,9 +556,6 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -626,9 +587,6 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -674,9 +632,6 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -711,9 +666,6 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -741,9 +693,6 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -787,9 +736,6 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -830,9 +776,6 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -866,9 +809,6 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -893,9 +833,6 @@ importers:
       unplugin-swc:
         specifier: 'catalog:'
         version: 1.5.9(@swc/core@1.15.30)(rollup@4.60.2)
-      vite-tsconfig-paths:
-        specifier: 'catalog:'
-        version: 6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       vitest:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(jsdom@29.0.2)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
@@ -5672,16 +5609,6 @@ packages:
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
 
-  tsconfck@3.1.6:
-    resolution: {integrity: sha512-ks6Vjr/jEw0P1gmOVwutM3B7fWxoWBL2KRDb1JfqGVawBmO5UsvmWOQFGHBPl5yxYz4eERr19E6L7NMv+Fej4w==}
-    engines: {node: ^18 || >=20}
-    hasBin: true
-    peerDependencies:
-      typescript: ^5.0.0
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-
   tsconfig-paths@3.15.0:
     resolution: {integrity: sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==}
 
@@ -5842,11 +5769,6 @@ packages:
   validate-npm-package-name@6.0.2:
     resolution: {integrity: sha512-IUoow1YUtvoBBC06dXs8bR8B9vuA3aJfmQNKMoaPG/OFsPmoQvw8xh+6Ye25Gx9DQhoEom3Pcu9MKHerm/NpUQ==}
     engines: {node: ^18.17.0 || >=20.5.0}
-
-  vite-tsconfig-paths@6.1.1:
-    resolution: {integrity: sha512-2cihq7zliibCCZ8P9cKJrQBkfgdvcFkOOc3Y02o3GWUDLgqjWsZudaoiuOwO/gzTzy17cS5F7ZPo4bsnS4DGkg==}
-    peerDependencies:
-      vite: '*'
 
   vite@8.0.10:
     resolution: {integrity: sha512-rZuUu9j6J5uotLDs+cAA4O5H4K1SfPliUlQwqa6YEwSrWDZzP4rhm00oJR5snMewjxF5V/K3D4kctsUTsIU9Mw==}
@@ -11250,10 +11172,6 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  tsconfck@3.1.6(typescript@6.0.3):
-    optionalDependencies:
-      typescript: 6.0.3
-
   tsconfig-paths@3.15.0:
     dependencies:
       '@types/json5': 0.0.29
@@ -11456,16 +11374,6 @@ snapshots:
       spdx-expression-parse: 3.0.1
 
   validate-npm-package-name@6.0.2: {}
-
-  vite-tsconfig-paths@6.1.1(typescript@6.0.3)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3)):
-    dependencies:
-      debug: 4.4.3
-      globrex: 0.1.2
-      tsconfck: 3.1.6(typescript@6.0.3)
-      vite: 8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3)
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
 
   vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3):
     dependencies:

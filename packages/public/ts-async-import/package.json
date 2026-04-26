@@ -40,7 +40,6 @@
     "eslint": "catalog:",
     "typescript": "catalog:",
     "unplugin-swc": "catalog:",
-    "vite-tsconfig-paths": "catalog:",
     "vitest": "catalog:"
   },
   "engine-strict": true,
