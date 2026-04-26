@@ -5,6 +5,10 @@ export default defineConfig((options) => ({
   entry: ['src/index.ts'],
   sourcemap: true,
   clean: true,
-  dts: true,
+  dts: {
+    compilerOptions: {
+      ignoreDeprecations: '6.0',
+    },
+  },
   format: ['esm'],
 }));
