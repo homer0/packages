@@ -25,3 +25,7 @@ onlyBuiltDependencies:
   - esbuild
   - nx
   - unrs-resolver
+overrides:
+  "brace-expansion@^5.0.0": "^5.0.5"
+  "yaml@^2.0.0": "^2.8.3"
+  "follow-redirects@^1.0.0": "^1.16.0"
