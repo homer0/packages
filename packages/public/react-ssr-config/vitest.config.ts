@@ -2,12 +2,10 @@ import { resolve } from 'node:path';
 import react from '@vitejs/plugin-react';
 import { defineConfig, type Plugin } from 'vitest/config';
 import swc from 'unplugin-swc';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   plugins: [
     react(),
-    tsconfigPaths(),
     swc.vite({
       jsc: {
         parser: { syntax: 'typescript', tsx: true },
@@ -20,6 +18,10 @@ export default defineConfig({
       module: { type: 'es6' },
     }) as Plugin,
   ],
+  oxc: false,
+  resolve: {
+    tsconfigPaths: true,
+  },
   test: {
     environment: 'jsdom',
     include: ['tests/**/*.{test,spec}.{ts,tsx,js,jsx}'],
