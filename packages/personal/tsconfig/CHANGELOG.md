@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 5.0.0 (2026-04-26)
+
+### Bug Fixes
+
+- **monorepo:** update dependencies ([f40179e](https://github.com/homer0/packages/commit/f40179e20208c61a144967b69457365c88936887))
+- **tsconfig:** remove baseUrl ([da9d6bd](https://github.com/homer0/packages/commit/da9d6bd6c563bbb4f90459607f4abb6ea6c3d69a))
+
+### BREAKING CHANGES
+
+- **tsconfig:** baseUrl is not longer defined as './' in the configs
+
 ## [4.1.1](https://github.com/homer0/packages/compare/@homer0/tsconfig@4.1.0...@homer0/tsconfig@4.1.1) (2025-12-03)
 
 ### Bug Fixes

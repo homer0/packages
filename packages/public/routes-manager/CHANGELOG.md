@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.9](https://github.com/homer0/packages/compare/@homer0/routes-manager@3.0.8...@homer0/routes-manager@3.0.9) (2026-04-26)
+
+### Bug Fixes
+
+- **monorepo:** update dependencies ([486b183](https://github.com/homer0/packages/commit/486b1833023d00db00ab79fc878150f10fc9055a))
+
 ## [3.0.8](https://github.com/homer0/packages/compare/@homer0/routes-manager@3.0.7...@homer0/routes-manager@3.0.8) (2025-12-29)
 
 **Note:** Version bump only for package @homer0/routes-manager
