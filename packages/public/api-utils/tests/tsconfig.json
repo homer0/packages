@@ -1,6 +1,7 @@
 {
   "extends": "@homer0/tsconfig/tsconfig.node-tests.json",
   "compilerOptions": {
+    "rootDir": "..",
     "paths": {
       "@src/*": ["../src/*"]
     }
