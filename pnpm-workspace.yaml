@@ -1,6 +1,11 @@
 packages:
   - packages/public/*
   - packages/personal/*
+
+minimumReleaseAge: 7200 # 5 days
+minimumReleaseAgeExclude:
+  - '@homer0/*'
+
 catalog:
   '@testing-library/react': ^16.3.2
   '@types/jest': ^30.0.0
@@ -20,12 +25,18 @@ catalog:
   vitest: ^4.1.5
   unplugin-swc: ^1.5.9
   jsdom: ^29.0.2
-onlyBuiltDependencies:
-  - '@swc/core'
-  - esbuild
-  - nx
-  - unrs-resolver
+
 overrides:
   "brace-expansion@^5.0.0": "^5.0.5"
   "yaml@^2.0.0": "^2.8.3"
   "follow-redirects@^1.0.0": "^1.16.0"
+
+allowBuilds:
+  # For downloading the correct binary for the platform.
+  '@swc/core': true
+  # For vite. Its postinstall selects the platform-specific esbuild binary.
+  esbuild: true
+  # For lerna. It does some nx checks for their cloud thing.
+  nx: false
+  # For ESLint. Configures path resolvers bindings using napi.
+  unrs-resolver: true
