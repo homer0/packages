@@ -1,0 +1,5 @@
+extensions:
+  updateNodeDeps:
+    versionLimits:
+      eslint: '^9.0.0'
+      typescript: '^6.0.0'
