@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '20.19', '22.12', '24' ]
+        node: [ '22', '24', '26' ]
     name: Run tests and linter (Node ${{ matrix.node }})
     steps:
       - uses: actions/checkout@v6
@@ -21,7 +21,7 @@ jobs:
       - run: pnpm run lint:all
       - run: pnpm test -- --coverage
       - name: Coveralls for public/object-utils
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -30,7 +30,7 @@ jobs:
           path-to-lcov: ./packages/public/object-utils/coverage/lcov.info
           base-path: ./packages/public/object-utils
       - name: Coveralls for public/deep-assign
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -39,7 +39,7 @@ jobs:
           path-to-lcov: ./packages/public/deep-assign/coverage/lcov.info
           base-path: ./packages/public/deep-assign
       - name: Coveralls for public/extend-promise
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -48,7 +48,7 @@ jobs:
           path-to-lcov: ./packages/public/extend-promise/coverage/lcov.info
           base-path: ./packages/public/extend-promise
       - name: Coveralls for public/jimple
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -57,7 +57,7 @@ jobs:
           path-to-lcov: ./packages/public/jimple/coverage/lcov.info
           base-path: ./packages/public/jimple
       - name: Coveralls for public/deferred
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -66,7 +66,7 @@ jobs:
           path-to-lcov: ./packages/public/deferred/coverage/lcov.info
           base-path: ./packages/public/deferred
       - name: Coveralls for public/events-hub
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -75,7 +75,7 @@ jobs:
           path-to-lcov: ./packages/public/events-hub/coverage/lcov.info
           base-path: ./packages/public/events-hub
       - name: Coveralls for public/api-utils
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -84,7 +84,7 @@ jobs:
           path-to-lcov: ./packages/public/api-utils/coverage/lcov.info
           base-path: ./packages/public/api-utils
       - name: Coveralls for public/path-utils
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -93,7 +93,7 @@ jobs:
           path-to-lcov: ./packages/public/path-utils/coverage/lcov.info
           base-path: ./packages/public/path-utils
       - name: Coveralls for public/env-utils
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -102,7 +102,7 @@ jobs:
           path-to-lcov: ./packages/public/env-utils/coverage/lcov.info
           base-path: ./packages/public/env-utils
       - name: Coveralls for public/package-info
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -111,7 +111,7 @@ jobs:
           path-to-lcov: ./packages/public/package-info/coverage/lcov.info
           base-path: ./packages/public/package-info
       - name: Coveralls for public/root-file
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -120,7 +120,7 @@ jobs:
           path-to-lcov: ./packages/public/root-file/coverage/lcov.info
           base-path: ./packages/public/root-file
       - name: Coveralls for public/simple-logger
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -129,7 +129,7 @@ jobs:
           path-to-lcov: ./packages/public/simple-logger/coverage/lcov.info
           base-path: ./packages/public/simple-logger
       - name: Coveralls for public/error-handler
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -138,7 +138,7 @@ jobs:
           path-to-lcov: ./packages/public/error-handler/coverage/lcov.info
           base-path: ./packages/public/error-handler
       - name: Coveralls for public/simple-config
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -147,7 +147,7 @@ jobs:
           path-to-lcov: ./packages/public/simple-config/coverage/lcov.info
           base-path: ./packages/public/simple-config
       - name: Coveralls for public/simple-storage
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -156,7 +156,7 @@ jobs:
           path-to-lcov: ./packages/public/simple-storage/coverage/lcov.info
           base-path: ./packages/public/simple-storage
       - name: Coveralls for public/fs-cache
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -165,7 +165,7 @@ jobs:
           path-to-lcov: ./packages/public/fs-cache/coverage/lcov.info
           base-path: ./packages/public/fs-cache
       - name: Coveralls for public/ts-async-import
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -174,7 +174,7 @@ jobs:
           path-to-lcov: ./packages/public/ts-async-import/coverage/lcov.info
           base-path: ./packages/public/ts-async-import
       - name: Coveralls for public/react-ssr-config
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -183,7 +183,7 @@ jobs:
           path-to-lcov: ./packages/public/react-ssr-config/coverage/lcov.info
           base-path: ./packages/public/react-ssr-config
       - name: Coveralls for public/nestjs-zod-lite
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -192,7 +192,7 @@ jobs:
           path-to-lcov: ./packages/public/nestjs-zod-lite/coverage/lcov.info
           base-path: ./packages/public/nestjs-zod-lite
       - name: Coveralls for public/nestjs-zod-lite
-        if: ${{ matrix.node == '20' }}
+        if: ${{ matrix.node == '22' }}
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
