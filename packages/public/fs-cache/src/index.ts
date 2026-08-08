@@ -537,10 +537,13 @@ export class FsCache {
       };
 
       const shouldRemoveResult = shouldRemove(param);
-      const should =
-        typeof shouldRemoveResult === 'boolean'
-          ? shouldRemoveResult
-          : await shouldRemoveResult;
+      let should: boolean;
+      if (typeof shouldRemoveResult === 'boolean') {
+        should = shouldRemoveResult;
+      } else {
+        should = await shouldRemoveResult;
+      }
+
       if (should) {
         await fs.unlink(filepath);
       }
