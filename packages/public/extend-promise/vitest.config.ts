@@ -8,6 +8,7 @@ export default defineConfig({
       module: { type: 'es6' },
     }) as Plugin,
   ],
+  oxc: false,
   resolve: {
     tsconfigPaths: true,
   },
