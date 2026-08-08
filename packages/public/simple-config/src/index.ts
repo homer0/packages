@@ -339,6 +339,8 @@ export class SimpleConfig {
         path: setting,
         value: newValue,
       }),
+      '',
+      mergeObjects,
     );
   }
   /**

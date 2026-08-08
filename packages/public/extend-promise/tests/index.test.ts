@@ -48,6 +48,19 @@ describe('extendPromise', () => {
     expect(valueAfterCatch).toBe(properties.custom);
   });
 
+  it('should use custom properties even if they overwrite a promise value', async () => {
+    // Given
+    const promise = Object.assign(Promise.resolve(), { custom: false });
+    const properties = {
+      custom: true,
+    };
+    // When
+    const sut = extendPromise(promise, properties);
+    // Then
+    expect(sut.custom).toBe(properties.custom);
+    await sut;
+  });
+
   it('should use a native method even if a property tries to overwrite it', async () => {
     // Given
     const promise = Promise.resolve();

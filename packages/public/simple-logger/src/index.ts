@@ -6,8 +6,7 @@ import { providerCreator, injectHelper } from '@homer0/jimple';
  * The colors supported by the service.
  */
 export type SimpleLoggerColor =
-  | Exclude<keyof typeof colors, 'enabled' | 'enable' | 'disable' | 'setTheme'>
-  | 'raw';
+  Exclude<keyof typeof colors, 'enabled' | 'enable' | 'disable' | 'setTheme'> | 'raw';
 /**
  * It can be a simple text message, or a message and a color.
  */

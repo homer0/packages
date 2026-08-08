@@ -627,6 +627,18 @@ describe('FsCache', () => {
         vi.runOnlyPendingTimers();
       });
 
+      it('should do nothing when removing an entry that does not exist', async () => {
+        // Given
+        const key = 'missing';
+        fs.access.mockRejectedValueOnce(new FakeFsError('not found', 'ENOENT'));
+        // When
+        const sut = new FsCache();
+        await sut.removeFromMemory(key);
+        // Then
+        expect(fs.stat).toHaveBeenCalledTimes(0);
+        expect(fs.unlink).toHaveBeenCalledTimes(0);
+      });
+
       it('should remove an entry from the memory and the fs', async () => {
         // Given
         const value = 'Rosario & Pilar';
@@ -1005,6 +1017,23 @@ describe('FsCache', () => {
             expired: true,
           }),
         );
+        expect(fs.unlink).toHaveBeenCalledTimes(0);
+      });
+
+      it('should prevent a file deletion with a synchronous callback', async () => {
+        // Given
+        const key = 'entry';
+        fs.access.mockResolvedValueOnce();
+        fs.stat.mockResolvedValueOnce({
+          mtimeMs: Date.now(),
+        } as Stats);
+        // When
+        const sut = new FsCache();
+        await sut.removeFromFs(key, {
+          includeMemory: false,
+          shouldRemove: () => false,
+        });
+        // Then
         expect(fs.unlink).toHaveBeenCalledTimes(0);
       });
     });

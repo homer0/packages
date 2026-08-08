@@ -115,11 +115,11 @@ There are two scripts you can use to lint files:
 To run the tests of all the packages that have you just need to run `npm test`, but if you want to run the tests for a single package, you can use the following command:
 
 ```
-pnpm test -- --scope [package-name-with-scope]
+pnpm test --scope [package-name-with-scope]
 ```
 
-And if you need to send extra arguments to that package tests, you'll have to use two double dashes to separate them:
+And if you need to send extra arguments to that package tests, use two double dashes to separate them:
 
 ```
-pnpm test -- --scope [package-name-with-scope] -- -- [...args]
+pnpm test --scope [package-name-with-scope] -- -- [...args]
 ```

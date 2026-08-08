@@ -17,6 +17,12 @@ export default defineConfig({
       },
       module: { type: 'es6' },
     }) as Plugin,
+    // SWC handles JSX transforms, so Oxc must remain disabled.
+    {
+      name: 'disable-oxc',
+      enforce: 'post',
+      config: () => ({ oxc: false }),
+    } as Plugin,
   ],
   oxc: false,
   resolve: {

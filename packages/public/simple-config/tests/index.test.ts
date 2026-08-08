@@ -277,6 +277,33 @@ describe('SimpleConfig', () => {
         });
       });
 
+      it('should set a setting without merging objects', () => {
+        // Given
+        const defaultConfig = {
+          ages: {
+            oldest: 6,
+          },
+        };
+        // When
+        const sut = new SimpleConfig({
+          defaultConfig,
+        });
+        sut.set(
+          'ages',
+          {
+            youngest: 2,
+          },
+          false,
+        );
+        const config = sut.getConfig();
+        // Then
+        expect(config).toEqual({
+          ages: {
+            youngest: 2,
+          },
+        });
+      });
+
       it('should throw an error when the key is a str but no value is send', () => {
         // Given/When/Then
         const sut = new SimpleConfig();
