@@ -15,9 +15,9 @@ type RoutesDict<
   Definitions extends RoutePathGroup,
   Routes = FormattedRoutePaths<Definitions>,
 > = {
-  [K in keyof Routes as Routes[K] extends RoutePath
-    ? K
-    : never]: Routes[K] extends RoutePath ? Route<Routes[K]> : never;
+  [
+    K in keyof Routes as Routes[K] extends RoutePath ? K : never
+  ]: Routes[K] extends RoutePath ? Route<Routes[K]> : never;
 };
 /**
  * Extracts the parameters from a route definition inside a {@link Route} instance.

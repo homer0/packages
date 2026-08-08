@@ -19,9 +19,7 @@ export type CreateDynamicConfigExtendsOptions =
     };
 
 export type CreateDynamicConfigLoadIgnoreFileOptions =
-  | boolean
-  | number
-  | Partial<Omit<LoadIgnoreFileOptions, 'rootDir'>>;
+  boolean | number | Partial<Omit<LoadIgnoreFileOptions, 'rootDir'>>;
 
 export type CreateDynamicConfigSharedOptions = {
   importUrl: string;
