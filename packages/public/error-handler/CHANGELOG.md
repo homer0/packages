@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/homer0/packages/compare/%40homer0%2Ferror-handler%405.0.9...%40homer0%2Ferror-handler%406.0.0) (2026-08-08)
+
+### Bug Fixes
+
+- **monorepo:** drop Node 20 support ([7af36cc](https://github.com/homer0/packages/commit/7af36ccb221296b48cc1249d8c04c08347ba6377))
+
+### BREAKING CHANGES
+
+- **monorepo:** Node 20 is not longer supported. Node 22 is the minimum required version now.
+
 ## [5.0.9](https://github.com/homer0/packages/compare/@homer0/error-handler@5.0.8...@homer0/error-handler@5.0.9) (2026-04-26)
 
 ### Bug Fixes

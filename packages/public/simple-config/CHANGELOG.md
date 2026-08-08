@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/homer0/packages/compare/%40homer0%2Fsimple-config%405.0.9...%40homer0%2Fsimple-config%406.0.0) (2026-08-08)
+
+### Bug Fixes
+
+- **monorepo:** drop Node 20 support ([7af36cc](https://github.com/homer0/packages/commit/7af36ccb221296b48cc1249d8c04c08347ba6377))
+- **simple-config:** avoid merging the config when mergeObjects is ([789208c](https://github.com/homer0/packages/commit/789208cd4be874dd3263a3d9b3bfa86c04c1845f))
+
+### BREAKING CHANGES
+
+- **monorepo:** Node 20 is not longer supported. Node 22 is the minimum required version now.
+
 ## [5.0.9](https://github.com/homer0/packages/compare/@homer0/simple-config@5.0.8...@homer0/simple-config@5.0.9) (2026-04-26)
 
 ### Bug Fixes

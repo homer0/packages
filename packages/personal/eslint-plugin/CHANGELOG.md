@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [15.0.0](https://github.com/homer0/packages/compare/%40homer0%2Feslint-plugin%4014.2.4...%40homer0%2Feslint-plugin%4015.0.0) (2026-08-08)
+
+### Bug Fixes
+
+- **eslint-plugin:** require Node 22.13 ([1d18be2](https://github.com/homer0/packages/commit/1d18be2c8ce9b73de280ec5c60d5cf491ca9a60c))
+- **eslint-plugin:** update @eslint/js ([437f928](https://github.com/homer0/packages/commit/437f9280962fccce95bee9a8b24ca3fdd67268d5))
+- **eslint-plugin:** update eslint-plugin-jsdoc ([cdc24f9](https://github.com/homer0/packages/commit/cdc24f9c0c00a71a54249d18e75ea3515c98030f))
+- **eslint-plugin:** update eslint-plugin-n ([faa4763](https://github.com/homer0/packages/commit/faa47639aa18c7542a2914a2fbf69b4412af32f5))
+- **monorepo:** drop Node 20 support ([7af36cc](https://github.com/homer0/packages/commit/7af36ccb221296b48cc1249d8c04c08347ba6377))
+- **monorepo:** update package dependencies ([5cc0870](https://github.com/homer0/packages/commit/5cc08701b1be1b78bb720387cbabef3863e0ae2e))
+
+### BREAKING CHANGES
+
+- **monorepo:** Node 20 is not longer supported. Node 22 is the minimum required version now.
+- **eslint-plugin:** Node 22.13 or newer is required.
+
 ## [14.2.4](https://github.com/homer0/packages/compare/@homer0/eslint-plugin@14.2.3...@homer0/eslint-plugin@14.2.4) (2026-04-26)
 
 ### Bug Fixes
