@@ -16,7 +16,7 @@
 ## Commands that matter
 
 - `pnpm build` — run every package build through Lerna.
-- `pnpm test` — run every package test; use `pnpm test -- --scope <package>` for one package.
+- `pnpm test` — run every package test; use `pnpm test --scope <package>` for one package. Pass package test arguments after `--`, for example `pnpm test --scope <package> -- --coverage`.
 - `pnpm types:check` — run package type checks through Lerna.
 - `pnpm lint:all` — lint root files and every package.
 
