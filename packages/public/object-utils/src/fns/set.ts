@@ -94,7 +94,8 @@ function set<T = Record<string, unknown>>(
     return undefined;
   }
 
-  const last = parts.pop();
+  // Path validation ensures that every component is defined and non-empty.
+  const last = parts.pop()!;
   let currentElement = result;
   let currentPath = '';
   let foundInvalid = false;
@@ -121,9 +122,7 @@ function set<T = Record<string, unknown>>(
 
   if (foundInvalid) return undefined;
 
-  if (result && last) {
-    currentElement[last] = useValue;
-  }
+  currentElement[last] = useValue;
 
   return result as T | undefined;
 }
