@@ -80,8 +80,28 @@ export type GeneratedConfig = {
   rules: RuleSettings;
 };
 
-export type ResolveConfigComponents = {
+export type CreateTestOverrideOptions = {
+  testConfig: ResolvedTestConfig;
+  extensions?: ExtensionFragments;
+};
+
+export type ResolveConfigComponentsOptions = CreateConfigSettings & {
+  testConfig?: ResolvedTestConfig;
+  baseFragment?: ConfigFragment;
+  baseExtensionFragment?: ConfigFragment;
+};
+
+export type ResolveTestConfigComponentsOptions = {
   config: ConfigName;
+  testConfig?: ResolvedTestConfig;
+  tests?: TestsOption;
+  ts?: boolean;
+};
+
+export type ResolveConfigComponentsResult = {
+  config: ConfigName;
+  testConfig?: ResolvedTestConfig;
   fragments: ConfigFragment[];
   plugins: string[];
+  configGlobals?: Record<string, boolean | string>;
 };

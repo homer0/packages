@@ -120,7 +120,7 @@ describe('generated Oxlint configurations', () => {
       file: 'tests/example.test.ts',
       printConfig: true,
       source:
-        "import { expect, it } from 'vitest';\nit('works', () => expect(true).toBe(true));\n",
+        "const mock = vi.fn();\nit('works', () => expect(mock).toBeTypeOf('function'));\n",
     });
 
     expect(result).toMatchObject({ status: 0 });

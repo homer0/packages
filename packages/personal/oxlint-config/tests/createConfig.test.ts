@@ -46,9 +46,14 @@ describe('createConfig', () => {
     });
 
     expect(config.plugins).toContain('vitest');
-    expect(config.overrides?.[0]?.rules).toMatchObject({
-      'vitest/no-focused-tests': 'error',
-      'vitest/valid-expect': 'error',
+    expect(config.overrides?.[0]).toMatchObject({
+      globals: expect.objectContaining({
+        vi: false,
+      }),
+      rules: expect.objectContaining({
+        'vitest/no-focused-tests': 'error',
+        'vitest/valid-expect': 'error',
+      }),
     });
   });
 

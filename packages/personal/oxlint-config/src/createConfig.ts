@@ -1,3 +1,4 @@
+import globals from 'globals';
 import { TEST_FILES } from './consts.js';
 import { extensionFragments } from './fragments.js';
 import {
@@ -9,12 +10,14 @@ import type {
   ConfigFragment,
   ConfigName,
   CreateConfigSettings,
-  ExtensionFragments,
   GeneratedConfig,
   GeneratedConfigOverride,
   ResolvedTestConfig,
   ResolveTestConfigOptions,
-  ResolveConfigComponents,
+  ResolveConfigComponentsOptions,
+  ResolveConfigComponentsResult,
+  ResolveTestConfigComponentsOptions,
+  CreateTestOverrideOptions,
 } from './types.js';
 
 const mergeRules = (...fragments: (ConfigFragment | undefined)[]) =>
@@ -38,76 +41,6 @@ const getConfig = (configs: ConfigName[]): ConfigName => {
   }
 
   return config;
-};
-
-const resolveConfigComponents = (
-  options: CreateConfigSettings,
-): ResolveConfigComponents => {
-  const { configs, extensions, jsdoc, nextjs, react, ts, typeAware } = options;
-
-  const config = getConfig(options.configs);
-
-  const fragments: ConfigFragment[] = [
-    extensionFragments.base,
-    extensionFragments[config],
-  ];
-  const plugins = ['import'];
-  if (configs.includes('node')) {
-    plugins.push('node');
-  }
-
-  if (jsdoc) {
-    fragments.push(extensionFragments.jsdoc);
-    plugins.push('jsdoc');
-  }
-
-  if (ts) {
-    fragments.push(extensionFragments.typescript);
-  }
-
-  if (typeAware) {
-    fragments.push({ rules: typeAwareRules });
-  }
-
-  if (ts || typeAware) {
-    plugins.push('typescript');
-  }
-
-  if (react) {
-    fragments.push(extensionFragments.react);
-    plugins.push('react', 'jsx-a11y', 'react-perf');
-  }
-
-  if (nextjs) {
-    fragments.push({ rules: nextjsRules });
-    plugins.push('nextjs');
-  }
-
-  if (extensions?.base) {
-    fragments.push(extensions.base);
-  }
-
-  if (extensions?.[config]) {
-    fragments.push(extensions[config]);
-  }
-
-  if (jsdoc && extensions?.jsdoc) {
-    fragments.push(extensions.jsdoc);
-  }
-
-  if (ts && extensions?.typescript) {
-    fragments.push(extensions.typescript);
-  }
-
-  if (react && extensions?.react) {
-    fragments.push(extensions.react);
-  }
-
-  return {
-    config,
-    fragments,
-    plugins,
-  };
 };
 
 const resolveTestConfig = ({
@@ -141,20 +74,150 @@ const resolveTestConfig = ({
   };
 };
 
-const createTestOverride = (
-  testConfig: ResolvedTestConfig,
-  extensions: ExtensionFragments | undefined,
-): GeneratedConfigOverride => {
-  const config = getConfig(testConfig.configs);
-  const rules = mergeRules(
-    extensionFragments.tests,
-    extensionFragments[config],
-    testConfig.ts ? extensionFragments.typescript : undefined,
-    testConfig.framework === 'vitest' ? { rules: vitestRules } : undefined,
-    extensions?.tests,
-    extensions?.[config],
-    testConfig.ts ? extensions?.typescript : undefined,
-  );
+const resolveTestConfigComponents = ({
+  config,
+  testConfig,
+  tests,
+  ts,
+}: ResolveTestConfigComponentsOptions) => {
+  if (testConfig) {
+    return {
+      doingTestsSetup: true,
+      testConfig,
+    };
+  }
+
+  if (!tests) {
+    return {
+      doingTestsSetup: false,
+      testConfig: undefined,
+    };
+  }
+
+  return {
+    doingTestsSetup: false,
+    testConfig: resolveTestConfig({
+      tests,
+      productionConfig: config,
+      productionTs: ts ?? false,
+    }),
+  };
+};
+
+const resolveConfigComponents = (
+  options: ResolveConfigComponentsOptions,
+): ResolveConfigComponentsResult => {
+  const {
+    configs,
+    extensions,
+    jsdoc,
+    nextjs,
+    react,
+    ts,
+    typeAware,
+    baseFragment = extensionFragments.base,
+    baseExtensionFragment: baseExtensionFragmentOption,
+  } = options;
+
+  const baseExtensionFragment = baseExtensionFragmentOption ?? extensions?.base;
+
+  const config = getConfig(options.configs);
+
+  const { doingTestsSetup, testConfig } = resolveTestConfigComponents({
+    config,
+    testConfig: options.testConfig,
+    tests: options.tests,
+    ts,
+  });
+
+  const fragments: ConfigFragment[] = [baseFragment, extensionFragments[config]];
+
+  const plugins = ['import'];
+
+  const configGlobals: Array<Record<string, boolean | string>> = [];
+
+  if (configs.includes('node')) {
+    plugins.push('node');
+  }
+
+  if (jsdoc) {
+    fragments.push(extensionFragments.jsdoc);
+    plugins.push('jsdoc');
+  }
+
+  if (ts) {
+    fragments.push(extensionFragments.typescript);
+  }
+
+  if (typeAware) {
+    fragments.push({ rules: typeAwareRules });
+  }
+
+  if (ts || typeAware) {
+    plugins.push('typescript');
+  }
+
+  if (react) {
+    fragments.push(extensionFragments.react);
+    plugins.push('react', 'jsx-a11y', 'react-perf');
+  }
+
+  if (nextjs) {
+    fragments.push({ rules: nextjsRules });
+    plugins.push('nextjs');
+  }
+
+  if (testConfig?.framework === 'vitest') {
+    plugins.push('vitest');
+    if (doingTestsSetup) {
+      fragments.push({ rules: vitestRules });
+      configGlobals.push(globals.vitest);
+    }
+  }
+
+  if (baseExtensionFragment) {
+    fragments.push(baseExtensionFragment);
+  }
+
+  if (extensions?.[config]) {
+    fragments.push(extensions[config]);
+  }
+
+  if (jsdoc && extensions?.jsdoc) {
+    fragments.push(extensions.jsdoc);
+  }
+
+  if (ts && extensions?.typescript) {
+    fragments.push(extensions.typescript);
+  }
+
+  if (react && extensions?.react) {
+    fragments.push(extensions.react);
+  }
+
+  return {
+    config,
+    fragments,
+    plugins,
+    testConfig,
+    configGlobals:
+      configGlobals.length > 0 ? Object.assign({}, ...configGlobals) : undefined,
+  };
+};
+
+const createTestOverride = ({
+  testConfig,
+  extensions,
+}: CreateTestOverrideOptions): GeneratedConfigOverride => {
+  const { config, fragments, configGlobals } = resolveConfigComponents({
+    configs: testConfig.configs,
+    extensions,
+    testConfig,
+    ts: testConfig.ts,
+    baseFragment: extensionFragments.tests,
+    baseExtensionFragment: extensions?.tests,
+  });
+  const rules = mergeRules(...fragments);
 
   if (testConfig.files.length === 0) {
     throw new Error('Custom test configuration requires at least one file glob.');
@@ -162,25 +225,20 @@ const createTestOverride = (
 
   return {
     files: testConfig.files,
-    globals: extensionFragments[config].globals,
+    globals: {
+      ...extensionFragments[config].globals,
+      ...configGlobals,
+    },
     rules,
   };
 };
 
 /** Creates a native Oxlint configuration from one environment and optional policy layers. */
 export const createConfig = (options: CreateConfigSettings): GeneratedConfig => {
-  const { fragments, plugins, config } = resolveConfigComponents(options);
-  const { extensions, ignores, tests, ts, typeAware } = options;
+  const { fragments, plugins, config, testConfig } = resolveConfigComponents(options);
+  const { extensions, ignores, typeAware } = options;
 
   const rules = mergeRules(...fragments);
-  const testConfig = resolveTestConfig({
-    tests,
-    productionConfig: config,
-    productionTs: ts ?? false,
-  });
-  if (testConfig?.framework === 'vitest') {
-    plugins.push('vitest');
-  }
 
   return {
     globals: {
@@ -191,6 +249,6 @@ export const createConfig = (options: CreateConfigSettings): GeneratedConfig => 
     options: typeAware ? { typeAware: true } : undefined,
     plugins,
     rules,
-    overrides: testConfig ? [createTestOverride(testConfig, extensions)] : undefined,
+    overrides: testConfig ? [createTestOverride({ testConfig, extensions })] : undefined,
   };
 };
