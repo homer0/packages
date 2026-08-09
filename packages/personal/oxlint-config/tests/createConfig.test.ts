@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createConfig, createReactConfig } from '@src/index.js';
+import { createConfig, createNextjsConfig, createReactConfig } from '@src/index.js';
 
 describe('createConfig', () => {
   it('should compose Node TypeScript policy with directory tests', () => {
@@ -79,6 +79,57 @@ describe('createConfig', () => {
     expect(config.overrides?.[0]?.rules).toMatchObject({
       'no-magic-numbers': 'off',
     });
+  });
+
+  it('should compose opt-in JSDoc and TypeScript policy extensions', () => {
+    const config = createConfig({
+      configs: ['node'],
+      extensions: {
+        jsdoc: {
+          rules: {
+            'jsdoc/check-access': 'warn',
+          },
+        },
+        typescript: {
+          rules: {
+            'typescript/no-unused-vars': 'warn',
+          },
+        },
+      },
+      jsdoc: true,
+      ts: true,
+    });
+
+    expect(config.plugins).toContain('jsdoc');
+    expect(config.rules).toMatchObject({
+      'jsdoc/check-access': 'warn',
+      'jsdoc/require-returns': 'error',
+      'typescript/no-unused-vars': 'warn',
+    });
+  });
+
+  it('should compose the Next.js profile', () => {
+    const config = createNextjsConfig({
+      jsdoc: true,
+    });
+
+    expect(config).toMatchObject({
+      ignorePatterns: ['.next/**', 'out/**', 'build/**', 'next-env.d.ts'],
+      plugins: expect.arrayContaining(['nextjs', 'jsdoc']),
+      rules: expect.objectContaining({
+        'jsdoc/check-access': 'error',
+        'nextjs/no-html-link-for-pages': 'error',
+        'react/jsx-key': 2,
+        'typescript/no-unused-vars': 'error',
+      }),
+    });
+  });
+
+  it('should only enable optional plugins when their profiles are selected', () => {
+    const config = createConfig({ configs: ['node'] });
+
+    expect(config.plugins).not.toContain('jsdoc');
+    expect(config.plugins).not.toContain('nextjs');
   });
 
   it('should only enable type-aware linting when requested', () => {

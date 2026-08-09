@@ -5,14 +5,14 @@ This record compares enabled rules in `@homer0/eslint-plugin` with the initial O
 ## Policy decisions
 
 - `sort-imports` is disabled. Import ordering remains outside this package.
-- JSDoc has no initial profile.
+- JSDoc is opt-in through `jsdoc: true` and includes native rules only.
 - Rules without a native Oxlint equivalent are omitted rather than provided through JavaScript plugins.
 
 ## Intentional omissions and approximations
 
 The initial profile is native-only. Unsupported `import-x` rules for dependency checks, package boundaries, path cleanup, resolution, and ordering are omitted; import ordering remains formatter-owned. Unsupported Node compatibility and dependency rules are also omitted rather than approximated with JavaScript plugins.
 
-There is no JSDoc profile. Oxlint's native JSDoc support is intentionally deferred because it does not cover the existing validation policy. React's obsolete JSX-use rules are covered by Oxlint's unused-variable analysis; `react/no-deprecated` can only be partially covered by optional type-aware `typescript/no-deprecated` when project typings mark an API as deprecated.
+The opt-in JSDoc profile uses the native subset that covers access, tags, parameters, properties, and returns. Its unsupported validation and description policy remains omitted. React's obsolete JSX-use rules are covered by Oxlint's unused-variable analysis; `react/no-deprecated` can only be partially covered by optional type-aware `typescript/no-deprecated` when project typings mark an API as deprecated.
 
 ## Native equivalents
 
@@ -237,77 +237,79 @@ There is no JSDoc profile. Oxlint's native JSDoc support is intentionally deferr
 
 ## Omitted rules
 
-| ESLint rule                                     | Oxlint rule | Reason                                                    |
-| ----------------------------------------------- | ----------- | --------------------------------------------------------- |
-| `camelcase`                                     | —           | Oxlint 1.77 has no native equivalent.                     |
-| `import-x/no-extraneous-dependencies`           | —           | Oxlint 1.77 has no native equivalent.                     |
-| `import-x/no-import-module-exports`             | —           | Oxlint 1.77 has no native equivalent.                     |
-| `import-x/no-relative-packages`                 | —           | Oxlint 1.77 has no native equivalent.                     |
-| `import-x/no-unresolved`                        | —           | Oxlint 1.77 has no native equivalent.                     |
-| `import-x/no-useless-path-segments`             | —           | Oxlint 1.77 has no native equivalent.                     |
-| `import-x/order`                                | —           | Import ordering remains outside this package.             |
-| `n/no-deprecated-api`                           | —           | Oxlint 1.77 has no native equivalent.                     |
-| `n/no-extraneous-import`                        | —           | Oxlint 1.77 has no native equivalent.                     |
-| `n/no-extraneous-require`                       | —           | Oxlint 1.77 has no native equivalent.                     |
-| `n/no-unsupported-features/es-builtins`         | —           | Oxlint 1.77 has no native equivalent.                     |
-| `n/no-unsupported-features/es-syntax`           | —           | Oxlint 1.77 has no native equivalent.                     |
-| `n/no-unsupported-features/node-builtins`       | —           | Oxlint 1.77 has no native equivalent.                     |
-| `n/process-exit-as-throw`                       | —           | Oxlint 1.77 has no native equivalent.                     |
-| `no-dupe-args`                                  | —           | Oxlint 1.77 has no native equivalent.                     |
-| `no-octal`                                      | —           | Oxlint 1.77 has no native equivalent.                     |
-| `no-octal-escape`                               | —           | Oxlint 1.77 has no native equivalent.                     |
-| `no-restricted-globals`                         | —           | Browser globals are provided by the browser profile.      |
-| `no-restricted-syntax`                          | —           | Oxlint 1.77 has no native equivalent.                     |
-| `no-undef-init`                                 | —           | Oxlint 1.77 has no native equivalent.                     |
-| `one-var`                                       | —           | Oxlint 1.77 has no native equivalent.                     |
-| `strict`                                        | —           | Oxlint 1.77 has no native equivalent.                     |
-| `react-hooks/config`                            | —           | React Compiler rules are outside the initial profile.     |
-| `react-hooks/error-boundaries`                  | —           | React Compiler rules are outside the initial profile.     |
-| `react-hooks/gating`                            | —           | React Compiler rules are outside the initial profile.     |
-| `react-hooks/globals`                           | —           | React Compiler rules are outside the initial profile.     |
-| `react-hooks/immutability`                      | —           | React Compiler rules are outside the initial profile.     |
-| `react-hooks/incompatible-library`              | —           | React Compiler rules are outside the initial profile.     |
-| `react-hooks/preserve-manual-memoization`       | —           | React Compiler rules are outside the initial profile.     |
-| `react-hooks/purity`                            | —           | React Compiler rules are outside the initial profile.     |
-| `react-hooks/refs`                              | —           | React Compiler rules are outside the initial profile.     |
-| `react-hooks/set-state-in-effect`               | —           | React Compiler rules are outside the initial profile.     |
-| `react-hooks/set-state-in-render`               | —           | React Compiler rules are outside the initial profile.     |
-| `react-hooks/static-components`                 | —           | React Compiler rules are outside the initial profile.     |
-| `react-hooks/unsupported-syntax`                | —           | React Compiler rules are outside the initial profile.     |
-| `react-hooks/use-memo`                          | —           | React Compiler rules are outside the initial profile.     |
-| `react/jsx-uses-react`                          | —           | React 17+ uses the automatic JSX transform.               |
-| `react/jsx-uses-vars`                           | —           | Oxlint’s unused-variable analysis recognizes JSX usage.   |
-| `react/no-deprecated`                           | —           | Type-aware TypeScript provides the available replacement. |
-| `react/prop-types`                              | —           | The package targets TypeScript rather than PropTypes.     |
-| `jsdoc/check-access`                            | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/check-alignment`                         | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/check-param-names`                       | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/check-property-names`                    | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/check-syntax`                            | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/check-tag-names`                         | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/check-types`                             | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/implements-on-classes`                   | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/match-description`                       | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/require-description`                     | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/require-hyphen-before-param-description` | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/require-jsdoc`                           | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/require-param`                           | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/require-param-description`               | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/require-param-name`                      | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/require-param-type`                      | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/require-property`                        | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/require-property-description`            | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/require-property-name`                   | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/require-property-type`                   | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/require-returns`                         | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/require-returns-check`                   | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/require-returns-type`                    | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/require-throws`                          | —           | The initial package omits the JSDoc profile.              |
-| `jsdoc/valid-types`                             | —           | The initial package omits the JSDoc profile.              |
+| ESLint rule                                     | Oxlint rule                          | Reason                                                    |
+| ----------------------------------------------- | ------------------------------------ | --------------------------------------------------------- |
+| `camelcase`                                     | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `import-x/no-extraneous-dependencies`           | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `import-x/no-import-module-exports`             | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `import-x/no-relative-packages`                 | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `import-x/no-unresolved`                        | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `import-x/no-useless-path-segments`             | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `import-x/order`                                | —                                    | Import ordering remains outside this package.             |
+| `n/no-deprecated-api`                           | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `n/no-extraneous-import`                        | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `n/no-extraneous-require`                       | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `n/no-unsupported-features/es-builtins`         | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `n/no-unsupported-features/es-syntax`           | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `n/no-unsupported-features/node-builtins`       | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `n/process-exit-as-throw`                       | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `no-dupe-args`                                  | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `no-octal`                                      | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `no-octal-escape`                               | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `no-restricted-globals`                         | —                                    | Browser globals are provided by the browser profile.      |
+| `no-restricted-syntax`                          | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `no-undef-init`                                 | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `one-var`                                       | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `strict`                                        | —                                    | Oxlint 1.77 has no native equivalent.                     |
+| `react-hooks/config`                            | —                                    | React Compiler rules are outside the initial profile.     |
+| `react-hooks/error-boundaries`                  | —                                    | React Compiler rules are outside the initial profile.     |
+| `react-hooks/gating`                            | —                                    | React Compiler rules are outside the initial profile.     |
+| `react-hooks/globals`                           | —                                    | React Compiler rules are outside the initial profile.     |
+| `react-hooks/immutability`                      | —                                    | React Compiler rules are outside the initial profile.     |
+| `react-hooks/incompatible-library`              | —                                    | React Compiler rules are outside the initial profile.     |
+| `react-hooks/preserve-manual-memoization`       | —                                    | React Compiler rules are outside the initial profile.     |
+| `react-hooks/purity`                            | —                                    | React Compiler rules are outside the initial profile.     |
+| `react-hooks/refs`                              | —                                    | React Compiler rules are outside the initial profile.     |
+| `react-hooks/set-state-in-effect`               | —                                    | React Compiler rules are outside the initial profile.     |
+| `react-hooks/set-state-in-render`               | —                                    | React Compiler rules are outside the initial profile.     |
+| `react-hooks/static-components`                 | —                                    | React Compiler rules are outside the initial profile.     |
+| `react-hooks/unsupported-syntax`                | —                                    | React Compiler rules are outside the initial profile.     |
+| `react-hooks/use-memo`                          | —                                    | React Compiler rules are outside the initial profile.     |
+| `react/jsx-uses-react`                          | —                                    | React 17+ uses the automatic JSX transform.               |
+| `react/jsx-uses-vars`                           | —                                    | Oxlint’s unused-variable analysis recognizes JSX usage.   |
+| `react/no-deprecated`                           | —                                    | Type-aware TypeScript provides the available replacement. |
+| `react/prop-types`                              | —                                    | The package targets TypeScript rather than PropTypes.     |
+| `jsdoc/check-access`                            | `jsdoc/check-access`                 | Native equivalent.                                        |
+| `jsdoc/check-alignment`                         | —                                    | The initial package omits the JSDoc profile.              |
+| `jsdoc/check-param-names`                       | —                                    | The initial package omits the JSDoc profile.              |
+| `jsdoc/check-property-names`                    | `jsdoc/check-property-names`         | Native equivalent.                                        |
+| `jsdoc/check-syntax`                            | —                                    | The initial package omits the JSDoc profile.              |
+| `jsdoc/check-tag-names`                         | `jsdoc/check-tag-names`              | Native equivalent; custom tags are not configured.        |
+| `jsdoc/check-types`                             | —                                    | The initial package omits the JSDoc profile.              |
+| `jsdoc/implements-on-classes`                   | `jsdoc/implements-on-classes`        | Native equivalent.                                        |
+| `jsdoc/match-description`                       | —                                    | The initial package omits the JSDoc profile.              |
+| `jsdoc/require-description`                     | —                                    | The initial package omits the JSDoc profile.              |
+| `jsdoc/require-hyphen-before-param-description` | —                                    | The initial package omits the JSDoc profile.              |
+| `jsdoc/require-jsdoc`                           | —                                    | The initial package omits the JSDoc profile.              |
+| `jsdoc/require-param`                           | `jsdoc/require-param`                | Native equivalent.                                        |
+| `jsdoc/require-param-description`               | `jsdoc/require-param-description`    | Native equivalent.                                        |
+| `jsdoc/require-param-name`                      | `jsdoc/require-param-name`           | Native equivalent.                                        |
+| `jsdoc/require-param-type`                      | `jsdoc/require-param-type`           | Native equivalent.                                        |
+| `jsdoc/require-property`                        | `jsdoc/require-property`             | Native equivalent.                                        |
+| `jsdoc/require-property-description`            | `jsdoc/require-property-description` | Native equivalent.                                        |
+| `jsdoc/require-property-name`                   | `jsdoc/require-property-name`        | Native equivalent.                                        |
+| `jsdoc/require-property-type`                   | `jsdoc/require-property-type`        | Native equivalent.                                        |
+| `jsdoc/require-returns`                         | `jsdoc/require-returns`              | Native equivalent.                                        |
+| `jsdoc/require-returns-check`                   | —                                    | The initial package omits the JSDoc profile.              |
+| `jsdoc/require-returns-type`                    | `jsdoc/require-returns-type`         | Native equivalent.                                        |
+| `jsdoc/require-throws`                          | —                                    | The initial package omits the JSDoc profile.              |
+| `jsdoc/valid-types`                             | —                                    | The initial package omits the JSDoc profile.              |
 
 ## Profile overrides
 
 - Browser provides the globals from the `globals` package.
 - Node provides the globals from the `globals` package.
 - TypeScript enables the TypeScript plugin rules.
+- JSDoc is opt-in through `jsdoc: true`.
+- `createNextjsConfig` adds native Next.js recommended and Core Web Vitals rules, plus Next.js build-output ignores.
 - Tests disable `import/first`, `max-classes-per-file`, and `no-magic-numbers`.

@@ -1,6 +1,6 @@
 import globals from 'globals';
 import type { ExtensionFragmentName } from './consts.js';
-import { base, browser, node, react, tests, typescript } from './rules/index.js';
+import { base, browser, jsdoc, node, react, tests, typescript } from './rules/index.js';
 
 /** Policy fragments used by the configuration factories and caller extensions. */
 export const extensionFragments = {
@@ -11,6 +11,9 @@ export const extensionFragments = {
   browser: {
     globals: globals.browser,
     rules: browser,
+  },
+  jsdoc: {
+    rules: jsdoc,
   },
   node: {
     globals: globals.node,

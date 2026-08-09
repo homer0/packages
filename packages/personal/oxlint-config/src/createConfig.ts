@@ -1,5 +1,6 @@
 import { TEST_FILES } from './consts.js';
 import { extensionFragments } from './fragments.js';
+import { nextjs as nextjsRules } from './rules/index.js';
 import type {
   ConfigFragment,
   ConfigName,
@@ -94,22 +95,64 @@ export const createConfig = ({
   configs,
   extensions,
   ignores,
+  jsdoc = false,
+  nextjs = false,
   react = false,
   tests,
   ts = false,
   typeAware = false,
 }: CreateConfigSettings): GeneratedConfig => {
   const config = getConfig(configs);
-  const rules = mergeRules(
+  const fragments: ConfigFragment[] = [
     extensionFragments.base,
     extensionFragments[config],
-    ts ? extensionFragments.typescript : undefined,
-    react ? extensionFragments.react : undefined,
-    extensions?.base,
-    extensions?.[config],
-    ts ? extensions?.typescript : undefined,
-    react ? extensions?.react : undefined,
-  );
+  ];
+  const plugins = ['import'];
+  if (configs.includes('node')) {
+    plugins.push('node');
+  }
+
+  if (jsdoc) {
+    fragments.push(extensionFragments.jsdoc);
+    plugins.push('jsdoc');
+  }
+
+  if (ts) {
+    fragments.push(extensionFragments.typescript);
+    plugins.push('typescript');
+  }
+
+  if (react) {
+    fragments.push(extensionFragments.react);
+    plugins.push('react', 'jsx-a11y');
+  }
+
+  if (nextjs) {
+    fragments.push({ rules: nextjsRules });
+    plugins.push('nextjs');
+  }
+
+  if (extensions?.base) {
+    fragments.push(extensions.base);
+  }
+
+  if (extensions?.[config]) {
+    fragments.push(extensions[config]);
+  }
+
+  if (jsdoc && extensions?.jsdoc) {
+    fragments.push(extensions.jsdoc);
+  }
+
+  if (ts && extensions?.typescript) {
+    fragments.push(extensions.typescript);
+  }
+
+  if (react && extensions?.react) {
+    fragments.push(extensions.react);
+  }
+
+  const rules = mergeRules(...fragments);
   const testConfig = resolveTestConfig({
     tests,
     productionConfig: config,
@@ -123,7 +166,7 @@ export const createConfig = ({
     },
     ignorePatterns: ignores,
     options: typeAware ? { typeAware: true } : undefined,
-    plugins: ['import', 'node', 'typescript', 'react', 'jsx-a11y'],
+    plugins,
     rules,
     overrides: testConfig ? [createTestOverride(testConfig, extensions)] : undefined,
   };

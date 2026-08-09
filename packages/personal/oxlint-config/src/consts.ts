@@ -6,6 +6,7 @@ export const TEST_FILES = {
 export const EXTENSION_FRAGMENT_NAMES = [
   'base',
   'browser',
+  'jsdoc',
   'node',
   'react',
   'tests',

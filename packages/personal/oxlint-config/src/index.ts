@@ -2,11 +2,13 @@ import { createConfig } from './createConfig.js';
 import type { CreateReactConfigOptions } from './types.js';
 
 export { createConfig } from './createConfig.js';
+export { createNextjsConfig } from './createNextjsConfig.js';
 export { extensionFragments } from './fragments.js';
 export type {
   ConfigFragment,
   ConfigName,
   CreateConfigOptions,
+  CreateNextjsConfigOptions,
   CreateReactConfigOptions,
   ExtensionFragmentName,
   ExtensionFragments,

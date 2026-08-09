@@ -6,6 +6,7 @@ import { spawnSync } from 'node:child_process';
 import { describe, expect, it } from 'vitest';
 import {
   createConfig,
+  createNextjsConfig,
   createReactConfig,
   extensionFragments,
   type GeneratedConfig,
@@ -91,6 +92,31 @@ describe('generated Oxlint configurations', () => {
     });
 
     expect(result).toMatchObject({ status: 0 });
+  });
+
+  it('should validate opt-in JSDoc policy', () => {
+    const result = runOxlint({
+      config: createConfig({
+        configs: ['node'],
+        jsdoc: true,
+      }),
+      file: 'source.ts',
+      printConfig: true,
+      source: 'export const value = true;\n',
+    });
+
+    expect(result).toMatchObject({ status: 0 });
+  });
+
+  it('should apply native Next.js Core Web Vitals rules', () => {
+    const result = runOxlint({
+      config: createNextjsConfig({}),
+      file: 'page.tsx',
+      source: 'export default () => <img alt="image" />;\n',
+    });
+
+    expect(result).toMatchObject({ status: 1 });
+    expect(result.output).toContain('next(no-img-element)');
   });
 
   it('should apply production rules without applying test relaxations', () => {
@@ -183,8 +209,8 @@ describe('generated Oxlint configurations', () => {
       'no-unexpected-multiline': 'off',
     });
     expect(config.rules).not.toHaveProperty('sort-imports');
+    expect(extensionFragments).toHaveProperty('jsdoc');
     expect(extensionFragments).toHaveProperty('typescript');
-    expect(extensionFragments).not.toHaveProperty('jsdoc');
   });
 
   it('should retain TypeScript and React rule overrides', () => {

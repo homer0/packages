@@ -28,6 +28,8 @@ export type CreateConfigOptions = {
   configs: ConfigName[];
   extensions?: ExtensionFragments;
   ignores?: string[];
+  /** Enables the native subset of JSDoc policy. */
+  jsdoc?: boolean;
   tests?: TestsOption;
   ts?: boolean;
   /** Enables Oxlint's root-only type-aware mode. Requires oxlint-tsgolint and TypeScript 7+. */
@@ -36,7 +38,10 @@ export type CreateConfigOptions = {
 
 export type CreateReactConfigOptions = CreateConfigOptions;
 
+export type CreateNextjsConfigOptions = Omit<CreateConfigOptions, 'configs' | 'ts'>;
+
 export type CreateConfigSettings = CreateConfigOptions & {
+  nextjs?: boolean;
   react?: boolean;
 };
 

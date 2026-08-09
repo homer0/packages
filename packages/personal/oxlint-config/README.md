@@ -84,6 +84,31 @@ export default createConfig({
 });
 ```
 
+### JSDoc
+
+Set `jsdoc: true` to opt into Oxlint's native JSDoc subset. It covers JSDoc access, tag, parameter, property, and return declarations; rules without a native equivalent remain omitted.
+
+```ts
+export default createConfig({
+  configs: ['node'],
+  jsdoc: true,
+  ts: true,
+});
+```
+
+### Next.js
+
+Use `createNextjsConfig` for a Node, TypeScript, and React configuration with native Next.js recommended and Core Web Vitals rules. It ignores Next.js build output by default.
+
+```ts
+import { createNextjsConfig } from '@homer0/oxlint-config';
+
+export default createNextjsConfig({
+  jsdoc: true,
+  tests: 'directory',
+});
+```
+
 ### Type-aware linting
 
 `typeAware` is a root-only option, disabled by default. It enables Oxlint type-aware mode for the complete config, not only TypeScript overrides. It requires the optional `oxlint-tsgolint` peer dependency and TypeScript 7 or newer:
@@ -102,7 +127,7 @@ export default createConfig({
 
 ### Extensions
 
-Use `extensions` to add supported native rule settings without manually merging policy maps. Available fragment names are `base`, `browser`, `node`, `typescript`, `tests`, and `react`.
+Use `extensions` to add supported native rule settings without manually merging policy maps. Available fragment names are `base`, `browser`, `jsdoc`, `node`, `typescript`, `tests`, and `react`.
 
 ```ts
 createConfig({

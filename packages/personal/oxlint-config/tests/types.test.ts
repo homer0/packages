@@ -2,6 +2,7 @@ import { describe, expectTypeOf, it } from 'vitest';
 import type {
   ConfigName,
   CreateConfigOptions,
+  CreateNextjsConfigOptions,
   ExtensionFragments,
   TestsOption,
 } from '@src/index.js';
@@ -18,6 +19,7 @@ describe('public types', () => {
         },
       },
       ignores: ['dist/**'],
+      jsdoc: true,
       tests: {
         configs: ['node'],
         files: ['tests/**/*.ts'],
@@ -44,10 +46,18 @@ describe('public types', () => {
     expectTypeOf(tests).toEqualTypeOf<TestsOption>();
   });
 
-  it('should reject unsupported extension fragments', () => {
-    // @ts-expect-error -- JSDoc is not an initial extension fragment.
+  it('should support the JSDoc extension fragment', () => {
     const extensions: ExtensionFragments = { jsdoc: {} };
 
     expectTypeOf(extensions).toMatchTypeOf<ExtensionFragments>();
+  });
+
+  it('should fix Next.js projects to Node TypeScript configuration', () => {
+    const options = {
+      jsdoc: true,
+      tests: 'directory',
+    } satisfies CreateNextjsConfigOptions;
+
+    expectTypeOf(options).toMatchTypeOf<CreateNextjsConfigOptions>();
   });
 });
