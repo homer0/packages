@@ -1,9 +1,3 @@
-import { createRequire } from 'node:module';
-import { dirname, join, resolve } from 'node:path';
-import { mkdtempSync, mkdirSync, rmdirSync, unlinkSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { spawnSync } from 'node:child_process';
-import { describe, expect, it } from 'vitest';
 import {
   createConfig,
   createNextjsConfig,
@@ -11,6 +5,12 @@ import {
   extensionFragments,
   type GeneratedConfig,
 } from '@src/index.js';
+import { spawnSync } from 'node:child_process';
+import { mkdtempSync, mkdirSync, rmdirSync, unlinkSync, writeFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { tmpdir } from 'node:os';
+import { dirname, join, resolve } from 'node:path';
+import { describe, expect, it } from 'vitest';
 
 const require = createRequire(import.meta.url);
 const OXLINT_PATH = join(dirname(require.resolve('oxlint/package.json')), 'bin/oxlint');

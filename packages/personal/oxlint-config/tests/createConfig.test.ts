@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
 import { createConfig, createNextjsConfig, createReactConfig } from '@src/index.js';
+import { describe, expect, it } from 'vitest';
 
 describe('createConfig', () => {
   it('should compose Node TypeScript policy with directory tests', () => {
