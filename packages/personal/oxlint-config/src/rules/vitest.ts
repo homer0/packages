@@ -30,6 +30,12 @@ export const vitest = {
    */
   'vitest/no-standalone-expect': 'error',
   /**
+   * Allow mock factories without explicit type parameters.
+   *
+   * @see https://github.com/vitest-dev/eslint-plugin-vitest/blob/main/docs/rules/require-mock-type-parameters.md
+   */
+  'vitest/require-mock-type-parameters': 'off',
+  /**
    * Validate assertion matchers and their arguments.
    *
    * @see https://github.com/vitest-dev/eslint-plugin-vitest/blob/main/docs/rules/valid-expect.md

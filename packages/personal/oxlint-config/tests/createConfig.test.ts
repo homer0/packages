@@ -18,6 +18,7 @@ describe('createConfig', () => {
         rules: expect.objectContaining({
           'no-magic-numbers': 'off',
           'typescript/no-unused-vars': 'error',
+          'vitest/require-mock-type-parameters': 'off',
         }),
       }),
     ]);
