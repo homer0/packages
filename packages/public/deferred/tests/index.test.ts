@@ -22,10 +22,10 @@ describe('deferred', () => {
     expect.assertions(2);
     // When
     setTimeout(() => defer.reject(value), delay);
-    return defer.promise.catch((error) => {
-      // Then
-      expect(error).toBeInstanceOf(Error);
-      expect(error).toEqual(value);
-    });
+    const error = await defer.promise.catch((rejection: unknown) => rejection);
+
+    // Then
+    expect(error).toBeInstanceOf(Error);
+    expect(error).toEqual(value);
   });
 });
