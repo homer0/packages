@@ -61,7 +61,7 @@ describe('DeepAssign', () => {
 
   it('should merge on top of an object with an undefined property', () => {
     // Given
-    let undefinedOnA: undefined;
+    const undefinedOnA = undefined;
     const targetA = {
       a: 'A',
       b: 'B',
@@ -92,7 +92,7 @@ describe('DeepAssign', () => {
       b: 'B',
       d: null,
     };
-    let undefinedOnB: undefined;
+    const undefinedOnB = undefined;
     const targetB = {
       b: 'X',
       c: 'C',
