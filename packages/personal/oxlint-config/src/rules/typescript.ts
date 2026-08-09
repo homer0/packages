@@ -12,6 +12,30 @@ export const typescript = {
    */
   'typescript/no-unused-vars': 'error',
   /**
+   * Allow empty functions for interface implementations and placeholders.
+   *
+   * @see https://eslint.org/docs/latest/rules/no-empty-function
+   */
+  'no-empty-function': 'off',
+  /**
+   * Let the TypeScript-specific rule enforce dot notation.
+   *
+   * @see https://eslint.org/docs/latest/rules/dot-notation
+   */
+  'dot-notation': 'off',
+  /**
+   * Let the TypeScript-specific rule detect unused variables.
+   *
+   * @see https://eslint.org/docs/latest/rules/no-unused-vars
+   */
+  'no-unused-vars': 'off',
+  /**
+   * Allow constructors that TypeScript requires for parameter properties.
+   *
+   * @see https://eslint.org/docs/latest/rules/no-useless-constructor
+   */
+  'no-useless-constructor': 'off',
+  /**
    * Disallow `@ts-<directive>` comments or require descriptions after directives.
    *
    * @see https://typescript-eslint.io/rules/ban-ts-comment

@@ -179,10 +179,32 @@ describe('generated Oxlint configurations', () => {
 
     expect(config.rules).toMatchObject({
       curly: 'off',
+      'import/no-cycle': ['error', { maxDepth: 4294967295 }],
       'no-unexpected-multiline': 'off',
     });
     expect(config.rules).not.toHaveProperty('sort-imports');
     expect(extensionFragments).toHaveProperty('typescript');
     expect(extensionFragments).not.toHaveProperty('jsdoc');
+  });
+
+  it('should retain TypeScript and React rule overrides', () => {
+    const typescriptConfig = createConfig({
+      configs: ['node'],
+      ts: true,
+    });
+    const reactConfig = createReactConfig({
+      configs: ['browser'],
+      ts: true,
+    });
+
+    expect(typescriptConfig.rules).toMatchObject({
+      'dot-notation': 'off',
+      'no-empty-function': 'off',
+      'no-unused-vars': 'off',
+      'no-useless-constructor': 'off',
+    });
+    expect(reactConfig.rules).toMatchObject({
+      'no-use-before-define': 'off',
+    });
   });
 });

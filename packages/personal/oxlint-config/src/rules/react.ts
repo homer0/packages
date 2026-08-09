@@ -377,4 +377,10 @@ export const react = {
    * @see https://github.com/facebook/react/issues/14920
    */
   'react/exhaustive-deps': 'warn',
+  /**
+   * Allow React components to reference declarations defined later in the file.
+   *
+   * @see https://eslint.org/docs/latest/rules/no-use-before-define
+   */
+  'no-use-before-define': 'off',
 } as const;

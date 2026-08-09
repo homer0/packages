@@ -1206,7 +1206,7 @@ export const base = {
   'import/no-cycle': [
     'error',
     {
-      maxDepth: 1000,
+      maxDepth: 4294967295,
     },
   ],
 } as const;
