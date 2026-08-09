@@ -41,7 +41,7 @@ export class RootFile {
    * @template FileType  The type of the required file.
    */
   require<FileType = unknown>(filepath: string): FileType {
-    // eslint-disable-next-line
+    // oxlint-disable-next-line import/no-dynamic-require, node/global-require, typescript/no-require-imports -- The public require API intentionally uses CommonJS loading.
     return require(this.pathUtils.join(filepath)) as FileType;
   }
   /**
