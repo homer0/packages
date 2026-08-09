@@ -1,5 +1,5 @@
-/* eslint-disable */
-// @ts-nocheck - This is just a workaround to get the type.
+/* oxlint-disable no-unused-vars -- This ambient type workaround only declares API shapes. */
+// @ts-nocheck -- This is just a workaround to get the type.
 export class Container {
   static provider<T extends (arg0: Container) => void>(
     register: T,
