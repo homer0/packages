@@ -37,10 +37,10 @@ type FsCacheCleanFsData = {
   mtime: number;
 };
 
-/* eslint-disable no-magic-numbers */
+/* oxlint-disable no-magic-numbers -- Duration constants use literal milliseconds. */
 const FIVE_MINUTES = 5 * 60 * 1000;
 const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
-/* eslint-enable no-magic-numbers */
+/* oxlint-enable no-magic-numbers */
 
 /**
  * The inject helper to resolve the dependencies.
