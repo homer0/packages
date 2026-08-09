@@ -19,6 +19,7 @@ describe('public types', () => {
       },
       ignores: ['dist/**'],
       tests: {
+        configs: ['node'],
         files: ['tests/**/*.ts'],
         ts: true,
       },
