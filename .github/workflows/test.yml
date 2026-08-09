@@ -18,6 +18,7 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
+      - run: pnpm run format:check
       - run: pnpm run lint:all
       - run: pnpm test -- --coverage
       - name: Coveralls for public/object-utils

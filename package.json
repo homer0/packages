@@ -46,6 +46,7 @@
     "types:check": "./utils/scripts/types-check",
     "lint": "./utils/scripts/lint",
     "lint:all": "./utils/scripts/lint-all",
+    "format:check": "oxfmt --check",
     "todo": "./utils/scripts/todo",
     "prepare": "./utils/scripts/prepare"
   }
