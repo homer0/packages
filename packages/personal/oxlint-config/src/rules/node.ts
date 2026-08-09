@@ -1,6 +1,6 @@
 export const node = {
   /**
-   * disallow the assignment to `exports`
+   * Disallow the assignment to `exports`
    *
    * @see https://github.com/eslint-community/eslint-plugin-n/blob/HEAD/docs/rules/no-exports-assign.md
    */
@@ -24,19 +24,19 @@ export const node = {
    */
   'node/no-mixed-requires': 'error',
   /**
-   * disallow `new` operators with calls to `require`
+   * Disallow `new` operators with calls to `require`
    *
    * @see https://github.com/eslint-community/eslint-plugin-n/blob/HEAD/docs/rules/no-new-require.md
    */
   'node/no-new-require': 'error',
   /**
-   * disallow string concatenation with `__dirname` and `__filename`
+   * Disallow string concatenation with `__dirname` and `__filename`
    *
    * @see https://github.com/eslint-community/eslint-plugin-n/blob/HEAD/docs/rules/no-path-concat.md
    */
   'node/no-path-concat': 'error',
   /**
-   * disallow the use of `process.env`
+   * Disallow the use of `process.env`
    *
    * @see https://github.com/eslint-community/eslint-plugin-n/blob/HEAD/docs/rules/no-process-env.md
    */

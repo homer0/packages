@@ -1,7 +1,5 @@
-import { vi, describe, it, expect } from 'vitest';
-import * as path from 'path';
-import { Jimple } from '@homer0/jimple';
 import { EnvUtils } from '@homer0/env-utils';
+import { Jimple } from '@homer0/jimple';
 import { RootFile } from '@homer0/root-file';
 import {
   SimpleConfig,
@@ -9,6 +7,8 @@ import {
   simpleConfigProvider,
   type SimpleConfigOptions,
 } from '@src/index.js';
+import * as path from 'path';
+import { vi, describe, it, expect } from 'vitest';
 
 describe('SimpleConfig', () => {
   type ImportFn = (filepath: string) => void;

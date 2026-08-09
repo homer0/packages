@@ -1,4 +1,4 @@
 {
-  "*.{ts,tsx,js,jsx,json,css,scss,md}": ["prettier --write"],
+  "*.{ts,tsx,js,jsx,json,css,scss,md}": ["oxfmt"],
   "*.{ts,tsx,js,jsx}": ["eslint"]
 }

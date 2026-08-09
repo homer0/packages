@@ -1,16 +1,14 @@
+import { copy } from './copy.js';
 import { get } from './get.js';
 import { set } from './set.js';
-import { copy } from './copy.js';
 /**
- * Used in the {@link extract} function to specify a path for a property, or an "origin path"
- * and an "extraction path".
+ * Used in the {@link extract} function to specify a path for a property, or an "origin
+ * path" and an "extraction path".
  */
 export type extractionPath = string | Record<string, string>;
 
 export type ExtractOptions = {
-  /**
-   * The object from where the property/properties will be extracted.
-   */
+  /** The object from where the property/properties will be extracted. */
   target: unknown;
   /**
    * This can be a single path or a list of them. And for this method, the paths are not
@@ -18,9 +16,7 @@ export type ExtractOptions = {
    * where to "do the extraction", and the value the path on the target object.
    */
   paths: extractionPath | extractionPath[];
-  /**
-   * The delimiter that will separate the path components.
-   */
+  /** The delimiter that will separate the path components. */
   pathDelimiter?: string;
   /**
    * Whether or not to throw an error when the path is invalid. If this is `false`, the
@@ -31,10 +27,7 @@ export type ExtractOptions = {
 /**
  * Extracts a property or properties from an object in order to create a new one.
  *
- * @param options  The options to use.
- * @template T  The type of the returned object.
  * @example
- *
  *   const target = {
  *     name: {
  *       first: 'Pilar',
@@ -53,6 +46,8 @@ export type ExtractOptions = {
  *   );
  *   // Will output { name: 'Pilar', age: 3, address: { planet: 'earth' } }
  *
+ * @template T The type of the returned object.
+ * @param options The options to use.
  */
 export const extract = <T = Record<string, unknown>>(
   options: ExtractOptions,

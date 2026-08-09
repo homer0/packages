@@ -1,8 +1,6 @@
 export type StorageType = 'local' | 'session' | 'memory';
 export type StorageName = 'localStorage' | 'sessionStorage' | 'memoryStorage';
-/**
- * A generic dictionary, for generic's defaults.
- */
+/** A generic dictionary, for generic's defaults. */
 export type Dict = Record<string, unknown>;
 /**
  * Fome reason, the `Window` type doesn't include `console.warn`, so this extension is
@@ -16,41 +14,35 @@ export type StorageWindow = Window & {
 /**
  * The pseudo-interface in which the service organizes the different types of storage.
  *
- * @template T  The type of the value that will be stored.
+ * @template T The type of the value that will be stored.
  */
 export type Storage<T extends Dict> = {
-  /**
-   * The name of the storage, just for reference.
-   */
+  /** The name of the storage, just for reference. */
   name: StorageName;
   /**
    * Whether or not the storage is available.
    *
-   * @param fallbackForm  In case this is called due to another storage not being
-   *                      available.
+   * @param fallbackForm In case this is called due to another storage not being
+   *   available.
    */
   isAvailable: (fallbackFrom?: StorageName) => boolean;
   /**
    * Gets the data from the storage.
    *
-   * @param key  The key in which the data is stored.
+   * @param key The key in which the data is stored.
    */
   get: (key: string) => T | undefined;
   /**
    * Sets the data in the storage.
    *
-   * @param key    The key in which the data is stored.
-   * @param value  The new data to store.
+   * @param key The key in which the data is stored.
+   * @param value The new data to store.
    */
   set: (key: string, value: T) => void;
-  /**
-   * Remove the data from the storage.
-   */
+  /** Remove the data from the storage. */
   remove: (key: string) => void;
 };
-/**
- * The service options specific to the storages.
- */
+/** The service options specific to the storages. */
 export type SimpleStorageStorageOptions = {
   /**
    * The name of the storage, just for reference.
@@ -72,9 +64,7 @@ export type SimpleStorageStorageOptions = {
    */
   priority: StorageType[];
 };
-/**
- * The service options for the "entries feature".
- */
+/** The service options for the "entries feature". */
 export type SimpleStorageEntriesOptions = {
   /**
    * Whether or not the feature is enabled.
@@ -101,9 +91,7 @@ export type SimpleStorageEntriesOptions = {
    */
   saveWhenDeletingExpired: boolean;
 };
-/**
- * The interface of a logger the service could use.
- */
+/** The interface of a logger the service could use. */
 export type SimpleStorageLogger =
   | {
       warn: (message: string) => void;
@@ -122,18 +110,15 @@ export type DeepPartial<T> = {
 /**
  * The service options.
  *
- * @template T  The type of the value that will be stored.
+ * @template T The type of the value that will be stored.
  */
 export type SimpleStorageOptions<T extends Dict = Dict> = {
-  /**
-   * A reference for the window/global object.
-   */
+  /** A reference for the window/global object. */
   window: StorageWindow;
   /**
-   * Whether or not to initialize the service right from the constructor.
-   * It means that it will validate the storage, check for existing data, and sync it.
-   * This can be disabled in case you need to do something between the constructor and the
-   * initialization.
+   * Whether or not to initialize the service right from the constructor. It means that it
+   * will validate the storage, check for existing data, and sync it. This can be disabled
+   * in case you need to do something between the constructor and the initialization.
    */
   initialize: boolean;
   /**
@@ -142,21 +127,13 @@ export type SimpleStorageOptions<T extends Dict = Dict> = {
    * the data will be a dictionary of entries.
    */
   getInitialData: () => T;
-  /**
-   * The service options specific to the storages.
-   */
+  /** The service options specific to the storages. */
   storage: SimpleStorageStorageOptions;
-  /**
-   * The service options for the "entries feature".
-   */
+  /** The service options for the "entries feature". */
   entries: SimpleStorageEntriesOptions;
-  /**
-   * The actual "in-memory" storage.
-   */
+  /** The actual "in-memory" storage. */
   memoryStorage: Record<string, T>;
-  /**
-   * A custom logger to print out the warnings.
-   */
+  /** A custom logger to print out the warnings. */
   logger?: SimpleStorageLogger;
 };
 /**
@@ -165,7 +142,7 @@ export type SimpleStorageOptions<T extends Dict = Dict> = {
  * This is on a separated type because you can't use `DeepPartial` if one of the options
  * is the `Window`, and using it on the `memoryStorage` would also cause issues.
  *
- * @template T  The type of the value that will be stored.
+ * @template T The type of the value that will be stored.
  */
 export type SimpleStorageConstructorOptions<T extends Dict = Dict> = {
   window?: StorageWindow;
@@ -174,15 +151,11 @@ export type SimpleStorageConstructorOptions<T extends Dict = Dict> = {
 /**
  * The format the entries will have when saved in the storage.
  *
- * @template E  The type of the entry.
+ * @template E The type of the entry.
  */
 export type SimpleStorageEntry<E = unknown> = {
-  /**
-   * The time when the entry was created.
-   */
+  /** The time when the entry was created. */
   time: number;
-  /**
-   * The actual data that was saved.
-   */
+  /** The actual data that was saved. */
   value: E;
 };

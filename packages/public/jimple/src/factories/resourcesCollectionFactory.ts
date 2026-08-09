@@ -1,5 +1,5 @@
-import { resourceFactory } from './resourceFactory.js';
 import type { GenericFn, Resource } from './factories.types.js';
+import { resourceFactory } from './resourceFactory.js';
 /**
  * Generates a function to configure a collection of resources of an specified type. This
  * function itself doesn't have logic, but it's just in charge of creating the constraint
@@ -8,15 +8,14 @@ import type { GenericFn, Resource } from './factories.types.js';
  * As all the other _"factory functions"_, this is meant to be used as a building block
  * when extending the container.
  *
- * @returns A function that can be used to configure a collection of resources.
- * @template ResourceName  The literal type of the name the resources needs to have.
- * @template ResourceFn    The type of function the resources needs to have.
  * @example
- *
  *   type ActionFn = (c: Jimple) => void;
  *   const factory = resourcesCollectionFactory<'action', ActionFn>();
  *   const myActions = factory('action', 'fn')({ myActionA, myActionB });
  *
+ * @template ResourceName The literal type of the name the resources needs to have.
+ * @template ResourceFn The type of function the resources needs to have.
+ * @returns A function that can be used to configure a collection of resources.
  */
 export const resourcesCollectionFactory =
   <ResourceName extends string, ResourceFn extends GenericFn>() =>
@@ -26,21 +25,19 @@ export const resourcesCollectionFactory =
    * "resource function" gets called, it calls the function of every resource (with the
    * same args it recevied).
    *
-   * @param name  The resource name the items in the collection must have.
-   * @param key   The key property the items in the collection must have.
-   * @param fn    A custom function to process the items in the collection, when the
-   *              collection function gets called.
-   * @returns A function that can be used to create a resources collection.
-   * @template Name      The literal type of `name`, to be used in the return object.
-   * @template Key       The literal type of `key`, to be used in the return object.
-   * @template ItemKey   To capture the name of the resources in the collection.
-   * @template Items     The kind of dictionary of resources the return function will
-   *                     expect.
-   * @template CustomFn  The type of `fn`, restricted by the factory constraint.
    * @example
-   *
    *   const myActions = factory('action', 'fn')({ myActionA, myActionB });
    *
+   * @template Name The literal type of `name`, to be used in the return object.
+   * @template Key The literal type of `key`, to be used in the return object.
+   * @template ItemKey To capture the name of the resources in the collection.
+   * @template Items The kind of dictionary of resources the return function will expect.
+   * @template CustomFn The type of `fn`, restricted by the factory constraint.
+   * @param name The resource name the items in the collection must have.
+   * @param key The key property the items in the collection must have.
+   * @param fn A custom function to process the items in the collection, when the
+   *   collection function gets called.
+   * @returns A function that can be used to create a resources collection.
    */
   <
     Name extends string,
@@ -57,10 +54,9 @@ export const resourcesCollectionFactory =
     /**
      * The actual function that recevies the items and creates the collection.
      *
-     * @param items  A dictionary of resources for the collection.
+     * @template ItemsParam The literal type of `items`, to be used in the return object.
+     * @param items A dictionary of resources for the collection.
      * @returns A dictionary of the resources, that it's also a resource.
-     * @template ItemsParam  The literal type of `items`, to be used in the return
-     *                       object.
      * @throws If the dictionary contains the resource name or function key as keys.
      * @throws If one of the items doesn't have the resource function.
      */

@@ -1,8 +1,8 @@
-import { vi, describe, it, expect } from 'vitest';
-import { render } from '@testing-library/react';
-import { ConfigLoader } from '@src/configLoader.js';
 import type { Config } from '@src/config.js';
+import { ConfigLoader } from '@src/configLoader.js';
 import type { ConfigSlice, GenericConfig } from '@src/types.js';
+import { render } from '@testing-library/react';
+import { vi, describe, it, expect } from 'vitest';
 
 describe('ConfigLoader', () => {
   const configValue = {

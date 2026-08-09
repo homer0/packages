@@ -6,8 +6,8 @@ type GenericDict = Record<any, any>;
  * A helper that reusable services can use to resolve dependencies in constructors and/or
  * providers.
  *
- * @template InjectDictionary  A dictionary of the dependencies and their types.
- * @template InjectKey         The literal type of the dictionary types.
+ * @template InjectDictionary A dictionary of the dependencies and their types.
+ * @template InjectKey The literal type of the dictionary types.
  */
 export class InjectHelper<
   InjectDictionary extends GenericDict,
@@ -15,20 +15,10 @@ export class InjectHelper<
 > {
   /**
    * This method is meant to be used to validate the dependencies a service receives, and
-   * needs.
-   * It will check on the received dependencies, if a specific dependency exists, it will
-   * return it, otherwise, it will create a new instance.
+   * needs. It will check on the received dependencies, if a specific dependency exists,
+   * it will return it, otherwise, it will create a new instance.
    *
-   * @param dependencies  The dependencies received by the implementation.
-   * @param key           The key of the dependency to validate.
-   * @param init          A function to create a dependency in case it doesn't exist in
-   *                      the dictionary.
-   * @returns An instance of the dependency.
-   * @template DepKey   The literal key of the dependency to validate.
-   * @template DepType  The type of the dependency, obtained from the dictionary sent
-   *                    to the constructor.
    * @example
-   *
    *   type Dependencies = {
    *     dep: string;
    *   };
@@ -42,6 +32,14 @@ export class InjectHelper<
    *     console.log('dep:', dep);
    *   };
    *
+   * @template DepKey The literal key of the dependency to validate.
+   * @template DepType The type of the dependency, obtained from the dictionary sent to
+   *   the constructor.
+   * @param dependencies The dependencies received by the implementation.
+   * @param key The key of the dependency to validate.
+   * @param init A function to create a dependency in case it doesn't exist in the
+   *   dictionary.
+   * @returns An instance of the dependency.
    */
   get<DepKey extends InjectKey, DepType = InjectDictionary[DepKey]>(
     dependencies: Partial<InjectDictionary>,
@@ -62,14 +60,7 @@ export class InjectHelper<
    * the default name, and if it doesn't exist, it will just keep it as `undefined` and
    * expect the service implements {@link InjectHelper.get} to ensure the dependency.
    *
-   * @param dependencies  The dependencies needed by the service.
-   * @param container     A reference to the Jimple container.
-   * @param inject        A dictionary of dependencies names.
-   * @returns A dictionary of dependencies to send to the service.
-   * @template DepKey     The literal key of the dependencies to validate.
-   * @template Container  The type of the Jimple container.
    * @example
-   *
    *   type Dependencies = {
    *     dep: string;
    *   };
@@ -91,6 +82,12 @@ export class InjectHelper<
    *       },
    *   );
    *
+   * @template DepKey The literal key of the dependencies to validate.
+   * @template Container The type of the Jimple container.
+   * @param dependencies The dependencies needed by the service.
+   * @param container A reference to the Jimple container.
+   * @param inject A dictionary of dependencies names.
+   * @returns A dictionary of dependencies to send to the service.
    */
   resolve<DepKey extends InjectKey, Container extends Jimple>(
     dependencies: DepKey[],

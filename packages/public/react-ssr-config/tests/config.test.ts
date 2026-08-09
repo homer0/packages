@@ -1,10 +1,10 @@
 vi.mock('@src/utils.js');
 
-import { describe, it, expect, beforeEach, type Mock } from 'vitest';
 import { Config } from '@src/config.js';
 import { createConfigSlice } from '@src/createConfigSlice.js';
-import { isServer } from '@src/utils.js';
 import type { ConfigSlice } from '@src/types.js';
+import { isServer } from '@src/utils.js';
+import { describe, it, expect, beforeEach, type Mock } from 'vitest';
 
 const isServerMock = isServer as Mock<typeof isServer>;
 

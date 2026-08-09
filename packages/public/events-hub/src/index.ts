@@ -18,30 +18,24 @@ type OnceWrapper = {
    * property set to `true`.
    */
   wrapper: OnceWrapperFn;
-  /**
-   * The original listener that will be called once.
-   */
+  /** The original listener that will be called once. */
   original: GenericFn;
 };
-/**
- * A minimal implementation of an events handler service.
- */
+/** A minimal implementation of an events handler service. */
 export class EventsHub {
-  /**
-   * A dictionary of the events and their listeners.
-   */
+  /** A dictionary of the events and their listeners. */
   protected events: Record<string, GenericFn[]> = {};
   /**
-   * A dictionary of wrappers that were created for "one time subscriptions". This is
-   * used by the {@link EventsHub.off}: if it doesn't find the subscriber as it is, it
-   * will look for a wrapper and remove it.
+   * A dictionary of wrappers that were created for "one time subscriptions". This is used
+   * by the {@link EventsHub.off}: if it doesn't find the subscriber as it is, it will look
+   * for a wrapper and remove it.
    */
   protected onceWrappers: Record<string, OnceWrapper[]> = {};
   /**
-   * Gets all the listeners for a specific event.
-   * The list is returned by reference, so it can be modified once obtained.
+   * Gets all the listeners for a specific event. The list is returned by reference, so it
+   * can be modified once obtained.
    *
-   * @param event  The name of the event.
+   * @param event The name of the event.
    */
   protected getSubscribers(event: string): (GenericFn | OnceWrapperFn)[] {
     if (!this.events[event]) {
@@ -65,18 +59,17 @@ export class EventsHub {
   /**
    * Adds a new event listener.
    *
-   * @param event     An event name or a list of them.
-   * @param listener  The listener function.
-   * @returns An unsubscribe function to remove the listene(s).
-   * @template ListenerFn  The type of the listener function.
    * @example
-   *
    *   const events = new EventsHub();
    *   type Listener = (arg0: string) => void;
    *   const unsubscribe = events.on<Listener>('event', (arg0) => {
    *     console.log(`Event received: ${arg0}`);
    *   });
    *
+   * @template ListenerFn The type of the listener function.
+   * @param event An event name or a list of them.
+   * @param listener The listener function.
+   * @returns An unsubscribe function to remove the listene(s).
    */
   on<ListenerFn extends GenericFn = GenericFn>(
     event: string | string[],
@@ -107,18 +100,17 @@ export class EventsHub {
   /**
    * Adds an event listener that will only be executed once.
    *
-   * @param event     An event name or a list of them.
-   * @param listener  The listener function.
-   * @returns An unsubscribe function to remove the listener(s).
-   * @template ListenerFn  The type of the listener function.
    * @example
-   *
    *   const events = new EventsHub();
    *   type Listener = (arg0: string) => void;
    *   const unsubscribe = events.once<Listener>('event', (arg0) => {
    *     console.log(`Event received: ${arg0}`);
    *   });
    *
+   * @template ListenerFn The type of the listener function.
+   * @param event An event name or a list of them.
+   * @param listener The listener function.
+   * @returns An unsubscribe function to remove the listener(s).
    */
   once<ListenerFn extends GenericFn = GenericFn>(
     event: string | string[],
@@ -176,14 +168,7 @@ export class EventsHub {
   /**
    * Removes an event listener.
    *
-   * @param event     An event name or a list of them.
-   * @param listener  The listener function.
-   * @returns If `event` was a `string`, it will return whether or not the listener
-   *          was found and removed; but if `event`
-   *          was an `Array`, it will return a list of boolean values.
-   * @template ListenerFn  The type of the listener function.
    * @example
-   *
    *   const events = new EventsHub();
    *   const listener = (arg0) => {
    *     console.log(`Event received: ${arg0}`);
@@ -191,6 +176,12 @@ export class EventsHub {
    *   events.on('event', listener); // subscribe.
    *   events.off('event', listener); // manually unsubscribe.
    *
+   * @template ListenerFn The type of the listener function.
+   * @param event An event name or a list of them.
+   * @param listener The listener function.
+   * @returns If `event` was a `string`, it will return whether or not the listener was
+   *   found and removed; but if `event` was an `Array`, it will return a list of boolean
+   *   values.
    */
   off<ListenerFn extends GenericFn | OnceWrapperFn = GenericFn>(
     event: string | string[],
@@ -238,17 +229,16 @@ export class EventsHub {
   /**
    * Emits an event and call all its listeners.
    *
-   * @param event  An event name or a list of them.
-   * @param args   A list of parameters to send to the listeners.
-   * @template Args  The type of the parameters to send to the listeners.
    * @example
-   *
    *   const events = new EventsHub();
    *   events.on('event', (arg0) => {
    *     console.log(`Event received: ${arg0}`);
    *   });
    *   events.emit('event', 'Hello'); // prints "Event received: Hello"
    *
+   * @template Args The type of the parameters to send to the listeners.
+   * @param event An event name or a list of them.
+   * @param args A list of parameters to send to the listeners.
    */
   emit<Args extends GenericParams>(event: string | string[], ...args: Args): void {
     const toClean: { event: string; listener: GenericFn }[] = [];
@@ -271,14 +261,7 @@ export class EventsHub {
    * Asynchronously reduces a target using an event. It's like emit, but the events
    * listener return a modified (or not) version of the `target`.
    *
-   * @param event   An event name or a list of them.
-   * @param target  The variable to reduce with the reducers/listeners.
-   * @param args    A list of parameters to send to the reducers/listeners.
-   * @returns A version of the `target` processed by the listeners.
-   * @template Target  The type of the target.
-   * @template Args    The type of the parameters to send to the reducers/listeners.
    * @example
-   *
    *   const events = new EventsHub();
    *   events.on('event', async (target, arg0) => {
    *     const data = await fetch(`https://api.example.com/${arg0}`);
@@ -288,6 +271,12 @@ export class EventsHub {
    *   const result = await events.reduce('event', [], 'Hello');
    *   // result would be a list of data fetched from the API.
    *
+   * @template Target The type of the target.
+   * @template Args The type of the parameters to send to the reducers/listeners.
+   * @param event An event name or a list of them.
+   * @param target The variable to reduce with the reducers/listeners.
+   * @param args A list of parameters to send to the reducers/listeners.
+   * @returns A version of the `target` processed by the listeners.
    */
   async reduce<Target, Args extends GenericParams>(
     event: string | string[],
@@ -336,14 +325,7 @@ export class EventsHub {
    * Synchronously reduces a target using an event. It's like emit, but the events
    * listener return a modified (or not) version of the `target`.
    *
-   * @param event   An event name or a list of them.
-   * @param target  The variable to reduce with the reducers/listeners.
-   * @param args    A list of parameters to send to the reducers/listeners.
-   * @returns A version of the `target` processed by the listeners.
-   * @template Target  The type of the target.
-   * @template Args    The type of the parameters to send to the reducers/listeners.
    * @example
-   *
    *   const events = new EventsHub();
    *   events.on('event', (target, arg0) => {
    *     target.push(arg0);
@@ -351,6 +333,12 @@ export class EventsHub {
    *   });
    *   events.reduce('event', [], 'Hello'); // returns ['Hello']
    *
+   * @template Target The type of the target.
+   * @template Args The type of the parameters to send to the reducers/listeners.
+   * @param event An event name or a list of them.
+   * @param target The variable to reduce with the reducers/listeners.
+   * @param args A list of parameters to send to the reducers/listeners.
+   * @returns A version of the `target` processed by the listeners.
    */
   reduceSync<Target, ReducerArgs extends GenericParams>(
     event: string | string[],

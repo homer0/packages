@@ -1,8 +1,8 @@
-import * as path from 'path';
-import * as fs from 'fs/promises';
 import { deferred, type DeferredPromise } from '@homer0/deferred';
-import { pathUtils, type PathUtils } from '@homer0/path-utils';
 import { providerCreator, injectHelper } from '@homer0/jimple';
+import { pathUtils, type PathUtils } from '@homer0/path-utils';
+import * as fs from 'fs/promises';
+import * as path from 'path';
 import type {
   FsCacheOptions,
   FsCacheEntryOptions,
@@ -13,18 +13,12 @@ import type {
   FsCacheShouldRemoveFileInfo,
   FsCacheCleanOptions,
 } from './types.js';
-/**
- * The dictionary of dependencies that need to be injected in {@link FsCache}.
- */
+/** The dictionary of dependencies that need to be injected in {@link FsCache}. */
 export type FsCacheInjectOptions = {
-  /**
-   * The service that generates paths relative to the project root.
-   */
+  /** The service that generates paths relative to the project root. */
   pathUtils: PathUtils;
 };
-/**
- * The options to construct the {@link FsCache} service.
- */
+/** The options to construct the {@link FsCache} service. */
 export type FsCacheConstructorOptions = Partial<FsCacheOptions> & {
   inject?: Partial<FsCacheInjectOptions>;
 };
@@ -42,34 +36,22 @@ const FIVE_MINUTES = 5 * 60 * 1000;
 const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
 /* oxlint-enable no-magic-numbers */
 
-/**
- * The inject helper to resolve the dependencies.
- */
+/** The inject helper to resolve the dependencies. */
 const deps = injectHelper<FsCacheInjectOptions>();
-/**
- * A small and friendly service to cache data on the file system.
- */
+/** A small and friendly service to cache data on the file system. */
 export class FsCache {
-  /**
-   * The service customization options.
-   */
+  /** The service customization options. */
   protected options: FsCacheOptions;
-  /**
-   * A dictionary with timeout functions for the entries that need to be expired.
-   */
+  /** A dictionary with timeout functions for the entries that need to be expired. */
   protected deletionTasks: Record<string, NodeJS.Timeout> = {};
   /**
    * A dictionary of deferred promises for the entries, in case the same entry is
    * requested multiple times.
    */
   protected promises: Record<string, DeferredPromise<string>> = {};
-  /**
-   * The "in memory cache" the service uses.
-   */
+  /** The "in memory cache" the service uses. */
   protected memory: Record<string, FsCacheMemoryEntry> = {};
-  /**
-   * The service that generates paths relative to the project root.
-   */
+  /** The service that generates paths relative to the project root. */
   protected pathUtils: PathUtils;
   constructor({ inject = {}, ...options }: FsCacheConstructorOptions = {}) {
     this.pathUtils = deps.get(inject, 'pathUtils', () => pathUtils());
@@ -84,9 +66,7 @@ export class FsCache {
 
     this.validateOptions();
   }
-  /**
-   * Gets the service options.
-   */
+  /** Gets the service options. */
   getOptions(): FsCacheOptions {
     return { ...this.options };
   }
@@ -95,14 +75,7 @@ export class FsCache {
    * will try to recover a cached value in order to return, but if it doesn't exist or is
    * expired, it will call the `init` function and cache it result.
    *
-   * @param options  The options to generate the entry.
-   * @returns The value, cached or not.
-   * @throws If the TTL is less than or equal to zero.
-   * @throws If the TTL is greater than the service max TTL.
-   * @example
-   *
-   * <caption>Basic</caption>
-   *
+   * @example <caption>Basic</caption>
    *   const cachedResponse = await cache.use({
    *     key: 'my-key',
    *     init: async () => {
@@ -112,10 +85,7 @@ export class FsCache {
    *     },
    *   });
    *
-   * @example
-   *
-   * <caption>Custom TTL</caption>
-   *
+   * @example <caption>Custom TTL</caption>
    *   const cachedResponse = await cache.use({
    *     key: 'my-key',
    *     ttl: 60 * 60 * 24, // 1 day
@@ -126,6 +96,10 @@ export class FsCache {
    *     },
    *   });
    *
+   * @param options The options to generate the entry.
+   * @returns The value, cached or not.
+   * @throws If the TTL is less than or equal to zero.
+   * @throws If the TTL is greater than the service max TTL.
    */
   async use(options: FsCacheEntryOptions<string>): Promise<string> {
     const {
@@ -234,8 +208,8 @@ export class FsCache {
    * serialization/deserialization so the value can be something different than a string.
    * Yes, this is used behind {@link FsCache.useJSON}.
    *
-   * @param options  The options to generate the entry.
-   * @template T  The type of the value.
+   * @template T The type of the value.
+   * @param options The options to generate the entry.
    */
   async useCustom<T = unknown>({
     serialize,
@@ -256,8 +230,8 @@ export class FsCache {
    * Generates a JSON entry: The value will be stored as a JSON string, and parsed when
    * read.
    *
-   * @param options  The options to generate the entry.
-   * @template T  The type of the value.
+   * @template T The type of the value.
+   * @param options The options to generate the entry.
    */
   async useJSON<T = unknown>(options: FsCacheEntryOptions<T>): Promise<T> {
     return this.useCustom({
@@ -269,9 +243,9 @@ export class FsCache {
   /**
    * Removes an entry from the service memory.
    *
-   * @param key      The key of the entry.
-   * @param options  Custom options in case the file for the removed entry should be
-   *                 removed too.
+   * @param key The key of the entry.
+   * @param options Custom options in case the file for the removed entry should be
+   *   removed too.
    */
   async removeFromMemory(
     key: string,
@@ -294,8 +268,8 @@ export class FsCache {
   /**
    * Removes an entry from the fs.
    *
-   * @param key      The key of the entry.
-   * @param options  Custom options to validate the file before removing it.
+   * @param key The key of the entry.
+   * @param options Custom options to validate the file before removing it.
    */
   async removeFromFs(key: string, options: FsCacheCleanFsOptions = {}): Promise<void> {
     const { extension = this.options.extension, ttl = this.options.defaultTTL } = options;
@@ -319,8 +293,8 @@ export class FsCache {
   /**
    * Removes an entry from the service memory, and the fs.
    *
-   * @param key      The key of the entry.
-   * @param options  Custom options to validate the file before removing it.
+   * @param key The key of the entry.
+   * @param options Custom options to validate the file before removing it.
    */
   remove(key: string, options: FsCacheCleanOptions = {}): Promise<void> {
     return this.removeFromFs(key, {
@@ -331,8 +305,8 @@ export class FsCache {
   /**
    * Removes all entries from the service memory.
    *
-   * @param options  Custom options in case the files for the removed entries should be
-   *                 removed too.
+   * @param options Custom options in case the files for the removed entries should be
+   *   removed too.
    */
   async cleanMemory(options: FsCacheCleanMemoryOptions = {}): Promise<void> {
     await Promise.all(
@@ -342,7 +316,7 @@ export class FsCache {
   /**
    * Removes all entries from the fs.
    *
-   * @param options  Custom options to validate the files before removing them.
+   * @param options Custom options to validate the files before removing them.
    */
   async cleanFs(options: FsCacheCleanFsOptions = {}): Promise<void> {
     const { extension = this.options.extension } = options;
@@ -359,7 +333,7 @@ export class FsCache {
   /**
    * Removes all entries from the service memory, and the fs.
    *
-   * @param options  Custom options to validate the files before removing them.
+   * @param options Custom options to validate the files before removing them.
    */
   clean(options: Omit<FsCacheCleanFsOptions, 'includeMemory'> = {}): Promise<void> {
     return this.cleanFs({
@@ -370,8 +344,8 @@ export class FsCache {
   /**
    * Removes all expired entries from the service memory.
    *
-   * @param options  Custom options in case the files for the removed entries should be
-   *                 removed too.
+   * @param options Custom options in case the files for the removed entries should be
+   *   removed too.
    */
   async purgeMemory(options: FsCacheCleanMemoryOptions = {}): Promise<void> {
     const { ttl = this.options.defaultTTL } = options;
@@ -387,7 +361,7 @@ export class FsCache {
   /**
    * Removes all expired entries from the fs.
    *
-   * @param options  Custom options to validate the files before removing them.
+   * @param options Custom options to validate the files before removing them.
    */
   async purgeFs(options: FsCacheCleanFsOptions = {}): Promise<void> {
     const { extension = this.options.extension, ttl = this.options.defaultTTL } = options;
@@ -423,7 +397,7 @@ export class FsCache {
   /**
    * Removes all expired entries from the fs and the service memory.
    *
-   * @param options  Custom options to validate the files before removing them.
+   * @param options Custom options to validate the files before removing them.
    */
   async purge(options: Omit<FsCacheCleanFsOptions, 'includeMemory'> = {}): Promise<void> {
     return this.purgeFs({
@@ -449,7 +423,7 @@ export class FsCache {
   /**
    * Small utility to validate if a path exists in the file system.
    *
-   * @param filepath  The filepath to validate.
+   * @param filepath The filepath to validate.
    */
   protected async pathExists(filepath: string): Promise<boolean> {
     let exists = false;
@@ -467,9 +441,7 @@ export class FsCache {
 
     return exists;
   }
-  /**
-   * Ensures that the cache directory exists: if it doesn't, it will create it.
-   */
+  /** Ensures that the cache directory exists: if it doesn't, it will create it. */
   protected async ensureCacheDir(): Promise<void> {
     const exists = await this.pathExists(this.pathUtils.join(this.options.path));
     if (!exists) {
@@ -479,8 +451,8 @@ export class FsCache {
   /**
    * Generates the file (name and path) information for an entry key.
    *
-   * @param key        The key of the entry.
-   * @param extension  The extension to add.
+   * @param key The key of the entry.
+   * @param extension The extension to add.
    * @returns The filename for the entry, and its absolute path.
    */
   protected getFilepathInfo(
@@ -494,8 +466,8 @@ export class FsCache {
   /**
    * Extracts an entry key from a filepath.
    *
-   * @param filepath   The filepath to an entry.
-   * @param extension  The extension to remove.
+   * @param filepath The filepath to an entry.
+   * @param extension The extension to remove.
    */
   protected getKeyFromFilepath(filepath: string, extension: string): string {
     const filename = path.basename(filepath);
@@ -505,8 +477,8 @@ export class FsCache {
    * Filters a list of files by validating it against the extension set in the
    * constructor.
    *
-   * @param files      The files to filter.
-   * @param extension  The extension the files should have.
+   * @param files The files to filter.
+   * @param extension The extension the files should have.
    */
   protected filterFiles(files: string[], extension: string): string[] {
     return files.filter((file) => file.endsWith(`.${extension}`));
@@ -517,8 +489,8 @@ export class FsCache {
    * different places, and we don't want to repeat calls to the file system (to check if
    * the file exists and get the stats).
    *
-   * @param key      The key of the entry.
-   * @param options  Custom options to validate the file before removing it.
+   * @param key The key of the entry.
+   * @param options Custom options to validate the file before removing it.
    */
   protected async removeEntryFromFs(
     key: string,
@@ -557,15 +529,13 @@ export class FsCache {
 /**
  * Shorthand for `new FsCache()`.
  *
- * @param args  The same parameters as the {@link FsCache} constructor.
+ * @param args The same parameters as the {@link FsCache} constructor.
  * @returns A new instance of {@link FsCache}.
  */
 export const fsCache = (...args: ConstructorParameters<typeof FsCache>): FsCache =>
   new FsCache(...args);
 
-/**
- * The options for the {@link FsCache} Jimple's provider creator.
- */
+/** The options for the {@link FsCache} Jimple's provider creator. */
 export type FsCacheProviderOptions = Omit<FsCacheConstructorOptions, 'inject'> & {
   /**
    * The name that will be used to register the service.
@@ -581,9 +551,7 @@ export type FsCacheProviderOptions = Omit<FsCacheConstructorOptions, 'inject'> &
     [key in keyof FsCacheInjectOptions]?: string;
   };
 };
-/**
- * A provider creator to register {@link FsCache} in a Jimple container.
- */
+/** A provider creator to register {@link FsCache} in a Jimple container. */
 export const fsCacheProvider = providerCreator(
   ({ serviceName = 'fsCache', ...rest }: FsCacheProviderOptions = {}) =>
     (container) => {

@@ -1,7 +1,7 @@
-/* oxlint-disable node/no-process-env -- Tests need to control process.env. */
-import { vi, describe, expect, it, beforeEach } from 'vitest';
 import { Jimple } from '@homer0/jimple';
 import { EnvUtils, envUtilsProvider, envUtils } from '@src/index.js';
+/* oxlint-disable node/no-process-env -- Tests need to control process.env. */
+import { vi, describe, expect, it, beforeEach } from 'vitest';
 
 const originalEnv = process.env;
 

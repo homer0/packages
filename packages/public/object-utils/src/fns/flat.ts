@@ -4,15 +4,13 @@ import { merge } from './merge.js';
 /**
  * Checks whether a key for an array or an Object should be flattened.
  *
- * @param key    The key to check inside its parent.
- * @param value  The value of the key.
+ * @param key The key to check inside its parent.
+ * @param value The value of the key.
  */
 export type ShouldFlattenFn = (key: string, value: unknown) => boolean;
 
 export type FlatOptions = {
-  /**
-   * The object to transform.
-   */
+  /** The object to transform. */
   target: unknown;
   /**
    * A custom prefix to be added before the name of the properties. This can be used on
@@ -20,9 +18,7 @@ export type FlatOptions = {
    * sub object.
    */
   prefix?: string;
-  /**
-   * The delimiter that will separate the path components.
-   */
+  /** The delimiter that will separate the path components. */
   pathDelimiter?: string;
   /**
    * A custom function that can be used in order to tell the function whether an Object or
@@ -33,19 +29,18 @@ export type FlatOptions = {
 /**
  * Flattens an object properties into a single level dictionary.
  *
- * @param options  The options to use.
- * @template T  The type of the returned object.
  * @example
+ *   const target = {
+ *   propOne: {
+ *   propOneSub: 'Charito!',
+ *   },
+ *   propTwo: '!!!',
+ *   };
+ *   console.log(flat({ target });
+ *   // Will output { 'propOne.propOneSub': 'Charito!', propTwo: '!!!' }
  *
- * const target = {
- * propOne: {
- * propOneSub: 'Charito!',
- * },
- * propTwo: '!!!',
- * };
- * console.log(flat({ target });
- * // Will output { 'propOne.propOneSub': 'Charito!', propTwo: '!!!' }
- *
+ * @template T The type of the returned object.
+ * @param options The options to use.
  */
 export const flat = <T = Record<string, unknown>>(options: FlatOptions): T => {
   const { target, shouldFlatten, pathDelimiter = '.', prefix = '' } = options;

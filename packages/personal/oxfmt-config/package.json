@@ -1,0 +1,58 @@
+{
+  "name": "@homer0/oxfmt-config",
+  "description": "My Oxfmt configuration.",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/homer0/packages.git",
+    "directory": "packages/personal/oxfmt-config"
+  },
+  "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    },
+    "./json": "./dist/index.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/",
+    "src/"
+  ],
+  "devDependencies": {
+    "@homer0/oxlint-config": "workspace:*",
+    "@homer0/tsconfig": "workspace:*",
+    "@vitest/coverage-v8": "catalog:",
+    "oxfmt": "^0.62.0",
+    "oxlint": "catalog:",
+    "tsup": "catalog:",
+    "typescript": "catalog:",
+    "unplugin-swc": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "oxfmt": ">=0.62.0"
+  },
+  "engine-strict": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "lint": "oxlint .",
+    "test": "vitest run $@",
+    "format": "pnpm run build && oxfmt --config ./tests/fixtures/root-default/oxfmt.config.ts .",
+    "format:check": "pnpm run build && oxfmt --check --config ./tests/fixtures/root-default/oxfmt.config.ts .",
+    "types:check": "tsc --noEmit && tsc --noEmit --project ./tests/tsconfig.json",
+    "build": "tsup && node ./scripts/generateConfigJson.mjs",
+    "prepublishOnly": "pnpm run build"
+  }
+}

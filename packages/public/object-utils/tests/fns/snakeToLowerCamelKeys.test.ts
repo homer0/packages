@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
 import { snakeToLowerCamelKeys } from '@src/fns/snakeToLowerCamelKeys.js';
+import { describe, it, expect } from 'vitest';
 
 describe('snakeToLowerCamelKeys', () => {
   it('should transform all keys to lower camel case', () => {

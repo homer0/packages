@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
 import { get } from '@src/fns/get.js';
+import { describe, it, expect } from 'vitest';
 
 describe('get', () => {
   it('should read a property from an object using its name', () => {

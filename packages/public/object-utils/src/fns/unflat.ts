@@ -1,23 +1,16 @@
 import { set } from './set.js';
 
 export type UnflatOptions = {
-  /**
-   * The object to transform.
-   */
+  /** The object to transform. */
   target: unknown;
-  /**
-   * The delimiter that will separate the path components.
-   */
+  /** The delimiter that will separate the path components. */
   pathDelimiter?: string;
 };
 /**
  * This method does the exact opposite from `flat`: It takes an already flatten object and
  * restores it structure.
  *
- * @param options  The options to use.
- * @template T  The type of the returned object.
  * @example
- *
  *   const target = {
  *     'propOne.propOneSub': 'Charito!',
  *     propTwo: '!!!',
@@ -25,6 +18,8 @@ export type UnflatOptions = {
  *   console.log(unflat({ target }));
  *   // Will output { propOne: { propOneSub: 'Charito!' }, 'propTwo': '!!!' }
  *
+ * @template T The type of the returned object.
+ * @param options The options to use.
  */
 export const unflat = <T = Record<string, unknown>>(options: UnflatOptions): T => {
   const { target, pathDelimiter = '.' } = options;

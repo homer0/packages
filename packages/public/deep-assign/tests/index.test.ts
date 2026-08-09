@@ -1,10 +1,10 @@
-import { describe, expect, it } from 'vitest';
 import {
   deepAssign,
   deepAssignWithConcat,
   deepAssignWithOverwrite,
   deepAssignWithShallowMerge,
 } from '@src/index.js';
+import { describe, expect, it } from 'vitest';
 
 describe('exports', () => {
   describe('deepAssign', () => {

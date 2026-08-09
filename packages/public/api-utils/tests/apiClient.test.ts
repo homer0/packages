@@ -1,5 +1,5 @@
-import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { APIClient, apiClient, type APIClientBodyInit } from '@src/apiClient.js';
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 describe('APIClient', () => {
   const originalFetch = global.fetch;
@@ -359,9 +359,7 @@ describe('APIClient', () => {
   it("shouldn't encode the body if is not an object literal", async () => {
     // Given
     const requestURL = 'http://example.com';
-    /**
-     * A custom format that the API won't try to encode.
-     */
+    /** A custom format that the API won't try to encode. */
     class CustomFormData {}
     const requestBody = new CustomFormData();
     const requestResponseData = {

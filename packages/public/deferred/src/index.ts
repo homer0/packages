@@ -10,8 +10,8 @@ export type DeferredPromise<Value> = {
 /**
  * Creates a deferred promise.
  *
+ * @template Value The type of the value that will be resolved.
  * @returns An object with a deferred promise, and its resolve and reject functions.
- * @template Value  The type of the value that will be resolved.
  */
 export const deferred = <Value = string>(): DeferredPromise<Value> => {
   let resolve: DeferredPromiseResolveFn<Value>;

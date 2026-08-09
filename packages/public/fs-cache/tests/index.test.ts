@@ -1,6 +1,17 @@
 vi.mock('fs/promises');
 vi.unmock('@src/index.js');
 
+import { Jimple } from '@homer0/jimple';
+import { PathUtils } from '@homer0/path-utils';
+import {
+  FsCache,
+  fsCache,
+  fsCacheProvider,
+  type FsCacheConstructorOptions,
+} from '@src/index.js';
+import type { FsCacheEntryOptions } from '@src/types.js';
+import type { Stats, Dirent } from 'fs';
+import * as originalFsPromises from 'fs/promises';
 import {
   describe,
   it,
@@ -10,17 +21,6 @@ import {
   type MockedObject,
   type MockInstance,
 } from 'vitest';
-import { Jimple } from '@homer0/jimple';
-import * as originalFsPromises from 'fs/promises';
-import type { Stats, Dirent } from 'fs';
-import { PathUtils } from '@homer0/path-utils';
-import {
-  FsCache,
-  fsCache,
-  fsCacheProvider,
-  type FsCacheConstructorOptions,
-} from '@src/index.js';
-import type { FsCacheEntryOptions } from '@src/types.js';
 
 const fs = originalFsPromises as MockedObject<typeof originalFsPromises>;
 

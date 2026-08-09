@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
 import { flat } from '@src/fns/flat.js';
+import { describe, it, expect } from 'vitest';
 
 describe('flat', () => {
   it('should flattern the properties of an object', () => {

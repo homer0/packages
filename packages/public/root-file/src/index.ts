@@ -1,21 +1,13 @@
-import { pathUtils, type PathUtils } from '@homer0/path-utils';
 import { providerCreator, injectHelper } from '@homer0/jimple';
-/**
- * The dictionary of dependencies that need to be injected in {@link RootFile}.
- */
+import { pathUtils, type PathUtils } from '@homer0/path-utils';
+/** The dictionary of dependencies that need to be injected in {@link RootFile}. */
 type RootFileInjectOptions = {
-  /**
-   * The service that creates the path relative to the project root.
-   */
+  /** The service that creates the path relative to the project root. */
   pathUtils: PathUtils;
 };
-/**
- * The inject helper to resolve the dependencies.
- */
+/** The inject helper to resolve the dependencies. */
 const deps = injectHelper<RootFileInjectOptions>();
-/**
- * The options for the service constructor.
- */
+/** The options for the service constructor. */
 export type RootFileOptions = {
   /**
    * A dictionary with the dependency injections for the service. If one or more are not
@@ -23,13 +15,9 @@ export type RootFileOptions = {
    */
   inject?: Partial<RootFileInjectOptions>;
 };
-/**
- * A small service that reads the contents of the implementation's package.json file.
- */
+/** A small service that reads the contents of the implementation's package.json file. */
 export class RootFile {
-  /**
-   * Used to resolve the path of the files.
-   */
+  /** Used to resolve the path of the files. */
   pathUtils: PathUtils;
   constructor({ inject = {} }: RootFileOptions = {}) {
     this.pathUtils = deps.get(inject, 'pathUtils', () => pathUtils());
@@ -37,8 +25,8 @@ export class RootFile {
   /**
    * Require a file with a path relative to the project root.
    *
-   * @param filepath  The path to the file, relative to the project root.
-   * @template FileType  The type of the required file.
+   * @template FileType The type of the required file.
+   * @param filepath The path to the file, relative to the project root.
    */
   require<FileType = unknown>(filepath: string): FileType {
     // oxlint-disable-next-line import/no-dynamic-require, node/global-require, typescript/no-require-imports -- The public require API intentionally uses CommonJS loading.
@@ -47,8 +35,8 @@ export class RootFile {
   /**
    * Import a file with a path relative to the project root.
    *
-   * @param filepath  The path to the file, relative to the project root.
-   * @template FileType  The type of the required file.
+   * @template FileType The type of the required file.
+   * @param filepath The path to the file, relative to the project root.
    */
   import<FileType = unknown>(filepath: string): Promise<FileType> {
     return import(this.pathUtils.join(filepath)) as Promise<FileType>;
@@ -57,14 +45,12 @@ export class RootFile {
 /**
  * Shorthand for `new RootFile()`.
  *
- * @param args  The same parameters as the {@link RootFile} constructor.
+ * @param args The same parameters as the {@link RootFile} constructor.
  * @returns A new instance of {@link RootFile}.
  */
 export const rootFile = (...args: ConstructorParameters<typeof RootFile>): RootFile =>
   new RootFile(...args);
-/**
- * The options for the {@link RootFile} Jimple's provider creator.
- */
+/** The options for the {@link RootFile} Jimple's provider creator. */
 export type RootFileProviderOptions = {
   /**
    * The name that will be used to register the service.
@@ -80,9 +66,7 @@ export type RootFileProviderOptions = {
     [key in keyof RootFileInjectOptions]?: string;
   };
 };
-/**
- * A provider creator to register {@link RootFile} in a Jimple container.
- */
+/** A provider creator to register {@link RootFile} in a Jimple container. */
 export const rootFileProvider = providerCreator(
   ({ serviceName = 'rootFile', ...rest }: RootFileProviderOptions = {}) =>
     (container) => {

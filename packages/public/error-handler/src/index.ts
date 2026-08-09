@@ -1,25 +1,15 @@
-import { simpleLogger, type SimpleLogger } from '@homer0/simple-logger';
 import { providerCreator, injectHelper } from '@homer0/jimple';
-/**
- * The dictionary of dependencies that need to be injected in {@link ErrorHandler}.
- */
+import { simpleLogger, type SimpleLogger } from '@homer0/simple-logger';
+/** The dictionary of dependencies that need to be injected in {@link ErrorHandler}. */
 type ErrorHandlerInjectOptions = {
-  /**
-   * The service that logs the messages on the console.
-   */
+  /** The service that logs the messages on the console. */
   simpleLogger: SimpleLogger;
-  /**
-   * An alternative to the regular logger, with the project name.
-   */
+  /** An alternative to the regular logger, with the project name. */
   appLogger: SimpleLogger;
 };
-/**
- * The inject helper to resolve the dependencies.
- */
+/** The inject helper to resolve the dependencies. */
 const deps = injectHelper<ErrorHandlerInjectOptions>();
-/**
- * The options for the service constructor.
- */
+/** The options for the service constructor. */
 export type ErrorHandlerOptions = {
   /**
    * A dictionary with the dependency injections for the service. If one or more are not
@@ -33,21 +23,13 @@ export type ErrorHandlerOptions = {
    */
   exitOnError?: boolean;
 };
-/**
- * A small service that reads the contents of the implementation's package.json file.
- */
+/** A small service that reads the contents of the implementation's package.json file. */
 export class ErrorHandler {
-  /**
-   * Used to log the errors on the console.
-   */
+  /** Used to log the errors on the console. */
   protected logger: SimpleLogger;
-  /**
-   * Whether or not to exit the process after receiving an error.
-   */
+  /** Whether or not to exit the process after receiving an error. */
   readonly exitOnError: boolean;
-  /**
-   * The list of events this handler will listen for in order to catch errors.
-   */
+  /** The list of events this handler will listen for in order to catch errors. */
   protected eventNames: string[] = ['uncaughtException', 'unhandledRejection'];
   constructor({ inject = {}, exitOnError = true }: ErrorHandlerOptions = {}) {
     this.logger = deps.get(inject, 'simpleLogger', () => simpleLogger());
@@ -59,7 +41,7 @@ export class ErrorHandler {
    * Starts listening for unhandled errors.
    *
    * @returns A function to stop listing (a reference for
-   *          {@link ErrorHandler.stopListening}).
+   *   {@link ErrorHandler.stopListening}).
    */
   listen() {
     this.eventNames.forEach((eventName) => {
@@ -68,9 +50,7 @@ export class ErrorHandler {
 
     return this.stopListening;
   }
-  /**
-   * Stops listening for unhandled errors.
-   */
+  /** Stops listening for unhandled errors. */
   stopListening() {
     this.eventNames.forEach((eventName) => {
       process.removeListener(eventName, this.handle);
@@ -78,10 +58,10 @@ export class ErrorHandler {
   }
   /**
    * This is called by the process listeners when an uncaught exception is thrown or a
-   * rejected promise is not handled. It logs the error on detail.
-   * The process exits when after logging an error.
+   * rejected promise is not handled. It logs the error on detail. The process exits when
+   * after logging an error.
    *
-   * @param error  The unhandled error.
+   * @param error The unhandled error.
    */
   handle(error: Error) {
     // If the logger is configured to show the time...
@@ -106,16 +86,14 @@ export class ErrorHandler {
 /**
  * Shorthand for `new ErrorHandler()`.
  *
- * @param args  The same parameters as the {@link ErrorHandler} constructor.
+ * @param args The same parameters as the {@link ErrorHandler} constructor.
  * @returns A new instance of {@link ErrorHandler}.
  */
 export const errorHandler = (
   ...args: ConstructorParameters<typeof ErrorHandler>
 ): ErrorHandler => new ErrorHandler(...args);
 
-/**
- * The options for the {@link ErrorHandler} Jimple's provider creator.
- */
+/** The options for the {@link ErrorHandler} Jimple's provider creator. */
 export type ErrorHandlerProviderOptions = Omit<ErrorHandlerOptions, 'inject'> & {
   /**
    * The name that will be used to register the service.
@@ -131,9 +109,7 @@ export type ErrorHandlerProviderOptions = Omit<ErrorHandlerOptions, 'inject'> & 
     [key in keyof ErrorHandlerInjectOptions]?: string;
   };
 };
-/**
- * A provider creator to register {@link ErrorHandler} in a Jimple container.
- */
+/** A provider creator to register {@link ErrorHandler} in a Jimple container. */
 export const errorHandlerProvider = providerCreator(
   ({ serviceName = 'errorHandler', ...rest }: ErrorHandlerProviderOptions = {}) =>
     (container) => {

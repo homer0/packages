@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
 import { DeepAssign } from '@src/deepAssign.js';
+import { describe, expect, it } from 'vitest';
 
 describe('DeepAssign', () => {
   it('should throw an error when instantiated with an invalid `arrayMode` option', () => {

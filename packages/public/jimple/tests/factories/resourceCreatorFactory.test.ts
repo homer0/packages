@@ -1,5 +1,5 @@
-import { vi, describe, expect, it } from 'vitest';
 import { resourceCreatorFactory } from '@src/factories/index.js';
+import { vi, describe, expect, it } from 'vitest';
 
 describe('resourceCreatorFactory', () => {
   it('should create a resource creator', () => {

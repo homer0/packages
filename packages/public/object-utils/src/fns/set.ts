@@ -9,25 +9,17 @@ import { copy } from './copy.js';
 const FORBIDDEN_PATHS = ['__proto__', 'prototype', 'constructor'];
 
 export type SetOptions = {
-  /**
-   * The object where the property will be set.
-   */
+  /** The object where the property will be set. */
   target: unknown;
-  /**
-   * The path for the property.
-   */
+  /** The path for the property. */
   path: string;
-  /**
-   * The value to set on the property.
-   */
+  /** The value to set on the property. */
   value: unknown;
-  /**
-   * The delimiter that will separate the path components.
-   */
+  /** The delimiter that will separate the path components. */
   pathDelimiter?: string;
   /**
-   * Whether or not to throw an error when the path is invalid. If this is `false`, the method
-   * will silently fail and return `undefined`.
+   * Whether or not to throw an error when the path is invalid. If this is `false`, the
+   * method will silently fail and return `undefined`.
    */
   failWithError?: boolean;
 };
@@ -35,16 +27,15 @@ export type SetOptions = {
  * Sets a property on an object using a path. If the path doesn't exist, it will be
  * created.
  *
- * @param options  The options to use.
- * @template T  The type of the returned object.
- * @throws {Error} If one of the path components is for a non-object property and
- *                 `failWithError` is set to `true`.
  * @example
- *
  *   const target = {};
  *   console.log(set({ target, path: 'some.prop.path', value: 'some-value' }));
  *   // Will output { some: { prop: { path: 'some-value' } } }
  *
+ * @template T The type of the returned object.
+ * @param options The options to use.
+ * @throws {Error} If one of the path components is for a non-object property and
+ *   `failWithError` is set to `true`.
  */
 function set<T = Record<string, unknown>>(options: SetOptions): T | undefined;
 function set<T = Record<string, unknown>>(

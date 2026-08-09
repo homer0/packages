@@ -17,7 +17,10 @@ export type ExtensionFragments = Partial<Record<ExtensionFragmentName, ConfigFra
 /** Selects a test framework-specific native rule policy. */
 export type TestFramework = 'vitest';
 
-/** Narrows a test override and optionally selects its environment, framework, and TypeScript policy. */
+/**
+ * Narrows a test override and optionally selects its environment, framework, and
+ * TypeScript policy.
+ */
 export type TestConfigOptions = {
   configs?: ConfigName[];
   framework?: TestFramework;
@@ -38,7 +41,10 @@ export type CreateConfigOptions = {
   tests?: TestsOption;
   /** Defaults to `true`. */
   ts?: boolean;
-  /** Enables Oxlint's root-only type-aware mode. Requires oxlint-tsgolint and TypeScript 7+. */
+  /**
+   * Enables Oxlint's root-only type-aware mode. Requires oxlint-tsgolint and TypeScript
+   * 7+.
+   */
   typeAware?: boolean;
 };
 

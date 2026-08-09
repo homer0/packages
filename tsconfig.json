@@ -1,4 +1,4 @@
 {
   "extends": "./packages/personal/tsconfig/tsconfig.node.json",
-  "include": ["./*.ts", "./*.js", "oxlint.config.ts", ".prettierrc.js"]
+  "include": ["./*.ts", "./*.js", "oxfmt.config.ts", "oxlint.config.ts"]
 }

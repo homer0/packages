@@ -1,22 +1,16 @@
-import { DEFAULT_CONFIG_STORE, SCRIPT_CONFIG_ID } from './consts.js';
 import { Config } from './config.js';
+import { DEFAULT_CONFIG_STORE, SCRIPT_CONFIG_ID } from './consts.js';
 import { getStore } from './store.js';
 import type { GenericConfig, ConfigSlice } from './types.js';
-/**
- * The options to create a config.
- */
+/** The options to create a config. */
 type ConfigOptions<Slices extends Record<string, ConfigSlice<string, GenericConfig>>> = {
-  /**
-   * The dictionary of slices that will compose the config.
-   */
+  /** The dictionary of slices that will compose the config. */
   slices: Slices;
-  /**
-   * The name of the config. If none is provider, the function will use a default name.
-   */
+  /** The name of the config. If none is provider, the function will use a default name. */
   name?: string;
   /**
-   * If true and there's already a config with the same name, it will be overwritten.
-   * This may be useful in development.
+   * If true and there's already a config with the same name, it will be overwritten. This
+   * may be useful in development.
    *
    * @default false
    */
@@ -25,7 +19,7 @@ type ConfigOptions<Slices extends Record<string, ConfigSlice<string, GenericConf
 /**
  * Creates a config instance.
  *
- * @param options  The slices and/or customization options for the config.
+ * @param options The slices and/or customization options for the config.
  * @returns A new config instance.
  * @throws If a config with the same name already exists and `overwrite` is `false`.
  */

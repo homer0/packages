@@ -1,7 +1,7 @@
-import { vi, describe, expect, it, beforeEach } from 'vitest';
-import * as path from 'path';
 import { Jimple } from '@homer0/jimple';
 import { PathUtils, pathUtilsProvider, pathUtils } from '@src/index.js';
+import * as path from 'path';
+import { vi, describe, expect, it, beforeEach } from 'vitest';
 
 const originalProcesssCwd = process.cwd;
 const originalRootFile = process.argv[1];

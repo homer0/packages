@@ -10,11 +10,9 @@ vi.mock('colors/safe.js', async (original) => {
 });
 vi.mock('@homer0/package-info');
 
-import { describe, expect, it, beforeEach, type MockedObject, type Mock } from 'vitest';
-import colorsOriginal from 'colors/safe.js';
 import { Jimple } from '@homer0/jimple';
-import { PathUtils } from '@homer0/path-utils';
 import { PackageInfo, packageInfo as originalPackageInfo } from '@homer0/package-info';
+import { PathUtils } from '@homer0/path-utils';
 import {
   SimpleLogger,
   simpleLogger,
@@ -22,6 +20,8 @@ import {
   appLoggerProvider,
   type SimpleLoggerMessage,
 } from '@src/index.js';
+import colorsOriginal from 'colors/safe.js';
+import { describe, expect, it, beforeEach, type MockedObject, type Mock } from 'vitest';
 
 const originalConsoleLog = console.log;
 

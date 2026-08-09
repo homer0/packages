@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
 import { dashToSnakeKeys } from '@src/fns/dashToSnakeKeys.js';
+import { describe, it, expect } from 'vitest';
 
 describe('dashToSnakeKeys', () => {
   it('should transform all keys to snake case', () => {

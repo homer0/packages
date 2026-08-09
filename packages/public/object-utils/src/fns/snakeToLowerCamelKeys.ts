@@ -4,8 +4,8 @@ import { formatKeys, type FormatKeysExtensionOptions } from './formatKeys.js';
  * A shorthand method for {@link formatKeys} that transforms the keys from `snake_case` to
  * `lowerCamelCase`.
  *
- * @param options  The options to use.
- * @template T  The type of the returned object.
+ * @template T The type of the returned object.
+ * @param options The options to use.
  */
 export const snakeToLowerCamelKeys = <T>(options: FormatKeysExtensionOptions): T =>
   formatKeys<T>({

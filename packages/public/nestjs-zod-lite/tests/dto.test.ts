@@ -1,6 +1,6 @@
+import { createZodDto } from '@src/dto.js';
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import { createZodDto } from '@src/dto.js';
 
 describe('createZodDto', () => {
   it('should correctly create DTO', () => {

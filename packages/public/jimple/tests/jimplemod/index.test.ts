@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
 import { Jimple } from '@src/jimplemod/index.js';
+import { describe, expect, it } from 'vitest';
 
 describe('Jimple', () => {
   it('should correctly re-export Jimple', () => {

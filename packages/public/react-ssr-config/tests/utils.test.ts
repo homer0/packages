@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
 import { isServer } from '@src/utils.js';
+import { describe, it, expect } from 'vitest';
 
 describe('utils', () => {
   describe('isServer', () => {

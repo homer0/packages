@@ -19,11 +19,11 @@ export class Route<Definition extends RoutePath = RoutePath> {
    */
   protected knownParamsIndex: Map<string, number> = new Map();
   /**
-   * @param definition  The route definition to wrap.
+   * @param definition The route definition to wrap.
    * @throws An error if a param in the route path is not defined in the params
-   *         array.
+   * array.
    * @throws An error if a param in the params array is not defined in the route
-   *         path.
+   * path.
    */
   constructor(public readonly definition: Definition) {
     this.pathComponents = definition.path.split('/').filter(Boolean);
@@ -54,9 +54,9 @@ export class Route<Definition extends RoutePath = RoutePath> {
   /**
    * Creates a route path string from the definition.
    *
-   * @param params  The parameters to replace in the route path. If the route has no
-   *                params, this can be omitted. Params not present in the definition
-   *                will be added as query parameters.
+   * @param params The parameters to replace in the route path. If the route has no
+   *   params, this can be omitted. Params not present in the definition will be added as
+   *   query parameters.
    * @throws An error if the params are required but not provided.
    * @throws An error if a required param is missing.
    * @throws An error if a required query param is missing.

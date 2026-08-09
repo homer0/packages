@@ -1,4 +1,3 @@
-import { describe, expectTypeOf, it } from 'vitest';
 import type {
   ConfigName,
   CreateConfigOptions,
@@ -6,6 +5,7 @@ import type {
   ExtensionFragments,
   TestsOption,
 } from '@src/index.js';
+import { describe, expectTypeOf, it } from 'vitest';
 
 describe('public types', () => {
   it('should support the documented configuration options', () => {

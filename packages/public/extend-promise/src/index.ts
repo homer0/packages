@@ -21,14 +21,11 @@ type ExtendedFn<F extends GenericFn, P> = F & P;
  * themselves recursively.
  */
 class PromiseExtender<T extends Promise<unknown>, P extends Record<string, unknown>> {
-  /**
-   * The proxied promise.
-   */
+  /** The proxied promise. */
   readonly promise: ExtendedPromise<T, P>;
   /**
-   * @param promise     The promise to extend.
-   * @param properties  A dictionary of custom properties to _inject_ in the promise
-   *                    chain.
+   * @param promise The promise to extend.
+   * @param properties A dictionary of custom properties to _inject_ in the promise chain.
    */
   constructor(promise: T, properties: P) {
     this.promise = this.extend(promise, properties);
@@ -40,12 +37,11 @@ class PromiseExtender<T extends Promise<unknown>, P extends Record<string, unkno
    * proxies are created is because those methods return new promises, and without being
    * proxied, the custom properties would be lost.
    *
-   * @param promise     The promise to proxy.
-   * @param properties  A dictionary of custom properties to _inject_ in the promise
-   *                    chain.
+   * @param promise The promise to proxy.
+   * @param properties A dictionary of custom properties to _inject_ in the promise chain.
    * @throws {Error} If `promise` is not a valid instance of {@link Promise}.
    * @throws {Error} If `properties` is not an object or if it doesn't have any
-   *                 properties.
+   *   properties.
    */
   extend(promise: T, properties: P): ExtendedPromise<T, P> {
     if (!(promise instanceof Promise)) {
@@ -59,15 +55,14 @@ class PromiseExtender<T extends Promise<unknown>, P extends Record<string, unkno
     const extended = new Proxy(promise, {
       /**
        * This is a trap for when something is trying to read/access a property for the
-       * promise.
-       * The function first validates if it's one of the functions
+       * promise. The function first validates if it's one of the functions
        * (`then`/`catch`/`finally`) in order to return a proxied function; then, if it's
        * another function (one that doesn't return another promise), it just calls the
        * original; finally, before doing a fallback to the original promise, it checks if
        * it's one of the custom properties that exented the promise.
        *
-       * @param target  The original promise.
-       * @param name    The name of the property.
+       * @param target The original promise.
+       * @param name The name of the property.
        */
       get: (target, name) => {
         const targetKey = name as keyof typeof target;
@@ -98,22 +93,20 @@ class PromiseExtender<T extends Promise<unknown>, P extends Record<string, unkno
    * Creates a proxy for a promise function (`then`/`catch`/`finally`) so the returned
    * promise can also be extended.
    *
-   * @param fn          The promise function to proxy.
-   * @param properties  A dictionary of custom properties to _inject_ in the promise
-   *                    chain.
+   * @param fn The promise function to proxy.
+   * @param properties A dictionary of custom properties to _inject_ in the promise chain.
    */
   protected extendFunction<F extends GenericFn>(fn: F, properties: P): ExtendedFn<F, P> {
     return new Proxy(fn, {
       /**
        * This is a trap for when a function gets called (remember this gets used for
-       * `then`/
-       * `catch`/`finally`); it processes the result using the oringinal function and
-       * since promise methods return a promise, instead of returning the original result,
-       * it returns an _extended_ version of it.
+       * `then`/ `catch`/`finally`); it processes the result using the oringinal function
+       * and since promise methods return a promise, instead of returning the original
+       * result, it returns an _extended_ version of it.
        *
-       * @param target   The original function.
-       * @param thisArg  The promise the function belongs to.
-       * @param args     The list of arguments sent to the trap.
+       * @param target The original function.
+       * @param thisArg The promise the function belongs to.
+       * @param args The list of arguments sent to the trap.
        */
       apply: (target, thisArg, args) => {
         const value = target.bind(thisArg)(...args);
@@ -128,12 +121,11 @@ class PromiseExtender<T extends Promise<unknown>, P extends Record<string, unkno
  * custom properties will be available on the promise chain no matter how many `then`s,
  * `catch`s or `finally`s are added.
  *
- * @param promise     The promise to extend.
- * @param properties  A dictionary of custom properties to _inject_ in the promise
- *                    chain.
+ * @param promise The promise to extend.
+ * @param properties A dictionary of custom properties to _inject_ in the promise chain.
  * @throws {Error} If `promise` is not a valid instance of {@link Promise}.
  * @throws {Error} If `properties` is not an object or if it doesn't have any
- *                 properties.
+ * properties.
  */
 export const extendPromise = <
   T extends Promise<unknown>,

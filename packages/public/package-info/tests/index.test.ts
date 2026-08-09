@@ -1,12 +1,12 @@
 vi.mock('fs');
 vi.mock('fs/promises');
 
-import { describe, it, beforeEach, expect, type MockedObject } from 'vitest';
 import { Jimple } from '@homer0/jimple';
-import * as originalFsSync from 'fs';
-import * as originalFsPromises from 'fs/promises';
 import { PathUtils } from '@homer0/path-utils';
 import { PackageInfo, packageInfo, packageInfoProvider } from '@src/index.js';
+import * as originalFsSync from 'fs';
+import * as originalFsPromises from 'fs/promises';
+import { describe, it, beforeEach, expect, type MockedObject } from 'vitest';
 
 const mockFsSync = originalFsSync as MockedObject<typeof originalFsSync>;
 const mockFsPromises = originalFsPromises as MockedObject<typeof originalFsPromises>;

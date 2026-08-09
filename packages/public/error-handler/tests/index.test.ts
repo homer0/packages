@@ -1,7 +1,7 @@
-import { vi, describe, expect, it, afterEach } from 'vitest';
 import { Jimple } from '@homer0/jimple';
 import { SimpleLogger } from '@homer0/simple-logger';
 import { ErrorHandler, errorHandler, errorHandlerProvider } from '@src/index.js';
+import { vi, describe, expect, it, afterEach } from 'vitest';
 
 const originalProcessOn = process.on;
 const originalProcessRemoveListener = process.removeListener;
