@@ -131,13 +131,13 @@ describe('createConfig', () => {
 
     expect(config).toMatchObject({
       ignorePatterns: [
-        'coverage/**',
-        'coverage-*/**',
-        'dist/**',
-        'node_modules/**',
-        '.next/**',
-        'out/**',
-        'build/**',
+        'coverage/',
+        'coverage-*/',
+        'dist/',
+        'node_modules/',
+        '.next/',
+        'out/',
+        'build/',
         'next-env.d.ts',
       ],
       plugins: expect.arrayContaining(['nextjs', 'jsdoc']),

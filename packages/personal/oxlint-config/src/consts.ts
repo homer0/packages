@@ -1,9 +1,4 @@
-export const DEFAULT_IGNORES = [
-  'coverage/**',
-  'coverage-*/**',
-  'dist/**',
-  'node_modules/**',
-];
+export const DEFAULT_IGNORES = ['coverage/', 'coverage-*/', 'dist/', 'node_modules/'];
 
 export const TEST_FILES = {
   colocated: ['**/*.{test,spec}.{js,jsx,ts,tsx,mjs,cjs,mts,cts}'],
