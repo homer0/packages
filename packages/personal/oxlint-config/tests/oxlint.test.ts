@@ -196,11 +196,12 @@ describe('generated Oxlint configurations', () => {
         ts: true,
       }),
       file: 'component.tsx',
-      source: 'export const image = <img />;\n',
+      source: 'export const image = <><img /><button /></>;\n',
     });
 
     expect(result).toMatchObject({ status: 1 });
     expect(result.output).toContain('jsx-a11y(alt-text)');
+    expect(result.output).toContain('jsx-a11y(control-has-associated-label)');
   });
 
   it('should ignore matching files', () => {
@@ -231,6 +232,20 @@ describe('generated Oxlint configurations', () => {
     expect(extensionFragments).toHaveProperty('typescript');
   });
 
+  it('should apply the TypeScript recommended rule equivalents', () => {
+    const result = runOxlint({
+      config: createConfig({
+        configs: ['node'],
+        ts: true,
+      }),
+      file: 'source.ts',
+      source: 'export const value: any = 1;\n',
+    });
+
+    expect(result).toMatchObject({ status: 1 });
+    expect(result.output).toContain('typescript(no-explicit-any)');
+  });
+
   it('should retain TypeScript and React rule overrides', () => {
     const typescriptConfig = createConfig({
       configs: ['node'],
@@ -243,9 +258,13 @@ describe('generated Oxlint configurations', () => {
 
     expect(typescriptConfig.rules).toMatchObject({
       'dot-notation': 'off',
+      'no-array-constructor': 'off',
       'no-empty-function': 'off',
+      'no-unused-expressions': 'off',
       'no-unused-vars': 'off',
       'no-useless-constructor': 'off',
+      'typescript/no-explicit-any': 'error',
+      'typescript/no-unused-expressions': 'error',
     });
     expect(reactConfig.rules).toMatchObject({
       'no-use-before-define': 'off',

@@ -20,7 +20,25 @@ The opt-in JSDoc profile uses the native subset that covers access, tags, parame
 | -------------------------------------------------------- | -------------------------------------------------------- |
 | `@typescript-eslint/ban-ts-comment`                      | `typescript/ban-ts-comment`                              |
 | `@typescript-eslint/dot-notation`                        | `typescript/dot-notation`                                |
+| `@typescript-eslint/no-array-constructor`                | `typescript/no-array-constructor`                        |
+| `@typescript-eslint/no-duplicate-enum-values`            | `typescript/no-duplicate-enum-values`                    |
+| `@typescript-eslint/no-empty-object-type`                | `typescript/no-empty-object-type`                        |
+| `@typescript-eslint/no-explicit-any`                     | `typescript/no-explicit-any`                             |
+| `@typescript-eslint/no-extra-non-null-assertion`         | `typescript/no-extra-non-null-assertion`                 |
+| `@typescript-eslint/no-misused-new`                      | `typescript/no-misused-new`                              |
+| `@typescript-eslint/no-namespace`                        | `typescript/no-namespace`                                |
+| `@typescript-eslint/no-non-null-asserted-optional-chain` | `typescript/no-non-null-asserted-optional-chain`         |
+| `@typescript-eslint/no-require-imports`                  | `typescript/no-require-imports`                          |
+| `@typescript-eslint/no-this-alias`                       | `typescript/no-this-alias`                               |
+| `@typescript-eslint/no-unnecessary-type-constraint`      | `typescript/no-unnecessary-type-constraint`              |
+| `@typescript-eslint/no-unsafe-declaration-merging`       | `typescript/no-unsafe-declaration-merging`               |
+| `@typescript-eslint/no-unsafe-function-type`             | `typescript/no-unsafe-function-type`                     |
+| `@typescript-eslint/no-unused-expressions`               | `typescript/no-unused-expressions`                       |
 | `@typescript-eslint/no-unused-vars`                      | `typescript/no-unused-vars`                              |
+| `@typescript-eslint/no-wrapper-object-types`             | `typescript/no-wrapper-object-types`                     |
+| `@typescript-eslint/prefer-as-const`                     | `typescript/prefer-as-const`                             |
+| `@typescript-eslint/prefer-namespace-keyword`            | `typescript/prefer-namespace-keyword`                    |
+| `@typescript-eslint/triple-slash-reference`              | `typescript/triple-slash-reference`                      |
 | `array-callback-return`                                  | `array-callback-return`                                  |
 | `arrow-body-style`                                       | `arrow-body-style`                                       |
 | `block-scoped-var`                                       | `block-scoped-var`                                       |
@@ -188,6 +206,7 @@ The opt-in JSDoc profile uses the native subset that covers access, tags, parame
 | `jsx-a11y/aria-unsupported-elements`                     | `jsx-a11y/aria-unsupported-elements`                     |
 | `jsx-a11y/autocomplete-valid`                            | `jsx-a11y/autocomplete-valid`                            |
 | `jsx-a11y/click-events-have-key-events`                  | `jsx-a11y/click-events-have-key-events`                  |
+| `jsx-a11y/control-has-associated-label`                  | `jsx-a11y/control-has-associated-label`                  |
 | `jsx-a11y/heading-has-content`                           | `jsx-a11y/heading-has-content`                           |
 | `jsx-a11y/html-has-lang`                                 | `jsx-a11y/html-has-lang`                                 |
 | `jsx-a11y/iframe-has-title`                              | `jsx-a11y/iframe-has-title`                              |
@@ -309,7 +328,7 @@ The opt-in JSDoc profile uses the native subset that covers access, tags, parame
 
 - Browser provides the globals from the `globals` package.
 - Node provides the globals from the `globals` package.
-- TypeScript enables the TypeScript plugin rules.
+- TypeScript enables native equivalents of `typescript-eslint`'s recommended rules, alongside this package's TypeScript overrides.
 - `typeAware: true` additionally checks deprecated APIs, floating promises, and Promises used in synchronous contexts.
 - JSDoc is opt-in through `jsdoc: true`.
 - `createNextjsConfig` adds native Next.js recommended and Core Web Vitals rules, plus Next.js build-output ignores.

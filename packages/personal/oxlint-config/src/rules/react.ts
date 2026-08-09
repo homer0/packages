@@ -62,6 +62,12 @@ export const react = {
    */
   'jsx-a11y/click-events-have-key-events': 'error',
   /**
+   * Enforce interactive controls have an associated text label.
+   *
+   * @see https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/tree/HEAD/docs/rules/control-has-associated-label.md
+   */
+  'jsx-a11y/control-has-associated-label': 'error',
+  /**
    * Enforce heading (`h1`, `h2`, etc) elements contain accessible content.
    *
    * @see https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/tree/HEAD/docs/rules/heading-has-content.md
