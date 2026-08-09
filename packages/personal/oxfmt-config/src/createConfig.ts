@@ -1,6 +1,17 @@
+import type { SortImportsConfig } from 'oxfmt';
 import type { CreateConfigOptions, GeneratedConfig } from './types.js';
 
 const DEFAULT_IGNORES = ['coverage/', 'coverage-*/', 'dist/', 'node_modules/'];
+
+const DEFAULT_SORT_IMPORTS = {
+  groups: [
+    ['builtin', 'external', 'internal', 'subpath'],
+    ['parent', 'sibling', 'index'],
+    'style',
+    'unknown',
+  ],
+  newlinesBetween: false,
+} as const satisfies SortImportsConfig;
 
 const BASE_CONFIG = {
   arrowParens: 'always',
@@ -27,7 +38,7 @@ export const createConfig = ({
   ...BASE_CONFIG,
   ignorePatterns: [...DEFAULT_IGNORES, ...ignores],
   jsdoc,
-  sortImports,
+  sortImports: sortImports ? DEFAULT_SORT_IMPORTS : false,
   sortPackageJson,
   ...overrides,
 });

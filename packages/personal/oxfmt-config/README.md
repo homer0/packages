@@ -10,7 +10,7 @@ pnpm add --save-dev @homer0/oxfmt-config oxfmt
 
 ## Configuration
 
-The default export applies the shared formatting style, native JSDoc formatting, import sorting, and ignores coverage, build, and dependency directories.
+The default export applies the shared formatting style, native JSDoc formatting, import sorting, and ignores coverage, build, and dependency directories. Import sorting keeps built-in, external, internal, and Node subpath imports together before relative imports, without adding blank lines between groups.
 
 ```ts
 import config from '@homer0/oxfmt-config';

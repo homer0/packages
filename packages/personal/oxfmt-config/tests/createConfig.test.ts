@@ -14,7 +14,15 @@ describe('createConfig', () => {
       quoteProps: 'as-needed',
       semi: true,
       singleQuote: true,
-      sortImports: true,
+      sortImports: {
+        groups: [
+          ['builtin', 'external', 'internal', 'subpath'],
+          ['parent', 'sibling', 'index'],
+          'style',
+          'unknown',
+        ],
+        newlinesBetween: false,
+      },
       sortPackageJson: false,
       tabWidth: 2,
       trailingComma: 'all',
