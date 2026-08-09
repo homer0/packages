@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '22', '24', '26' ]
+        node: ['22', '24', '26']
     name: Run tests and linter (Node ${{ matrix.node }})
     steps:
       - uses: actions/checkout@v6
@@ -203,9 +203,9 @@ jobs:
           base-path: ./packages/public/routes-manager
 
   finish:
-      needs: build
-      runs-on: ubuntu-latest
-      steps:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: Coveralls Finished
         uses: coverallsapp/github-action@v2
         with:
