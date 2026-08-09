@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* oxlint-disable typescript/no-explicit-any -- Generic validation type defaults must remain any for schema inference. */
 import type { ZodType } from 'zod';
 import { isZodDto, type ZodDto } from './dto.js';
 import { createZodValidationException, type ZodExceptionCreator } from './exception.js';

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* oxlint-disable typescript/no-explicit-any -- Generic DTO type defaults must remain any for schema inference. */
 import type { ZodType } from 'zod';
 
 export interface ZodDto<TOutput = any, TInput = TOutput> {
