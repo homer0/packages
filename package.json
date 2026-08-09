@@ -11,13 +11,13 @@
   "type": "module",
   "dependencies": {},
   "devDependencies": {
-    "@homer0/eslint-plugin": "workspace:*",
+    "@homer0/oxlint-config": "workspace:*",
     "@homer0/prettier-config": "workspace:*",
     "@homer0/prettier-plugin-jsdoc": "^12.0.0",
     "@commitlint/cli": "^21.2.1",
     "@commitlint/config-conventional": "^21.2.0",
     "@types/node": "catalog:",
-    "eslint": "catalog:",
+    "oxlint": "catalog:",
     "husky": "^9.1.7",
     "leasot": "^14.4.0",
     "lerna": "^10.0.0",
@@ -38,7 +38,7 @@
       "prettier --write"
     ],
     "*.{ts,tsx,js,jsx}": [
-      "eslint"
+      "oxlint"
     ]
   },
   "scripts": {

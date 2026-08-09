@@ -103,11 +103,11 @@ This repository uses [Lerna](https://lerna.js.org) for managing the publication 
 
 ### Linting
 
-The entire repository is linted using [ESLint](https://eslint.org) and custom plugin you can find in `packages/personal/eslint-plugin`.
+The entire repository is linted using [Oxlint](https://oxc.rs/docs/guide/usage/linter) and the custom configuration in `packages/personal/oxlint-config`.
 
 There are two scripts you can use to lint files:
 
-- `pnpm run lint` will use [`lint-staged`](https://npmjs.com/package/lint-staged) to run ESLint on the files that are staged.
+- `pnpm run lint` will use [`lint-staged`](https://npmjs.com/package/lint-staged) to run Oxlint on the files that are staged.
 - `pnpm run lint:all` will lint the entire repository.
 
 ### Tests
