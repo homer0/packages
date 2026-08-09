@@ -27,11 +27,10 @@ import { createConfig } from '@homer0/oxlint-config';
 export default createConfig({
   configs: ['node'],
   tests: 'directory',
-  ts: true,
 });
 ```
 
-`configs` accepts exactly one environment: `node` or `browser`. Set `ts: true` to apply the native TypeScript policy to TypeScript files. It does not enable type-aware rules or require the TypeScript compiler.
+`configs` accepts exactly one environment: `node` or `browser`. Native TypeScript policy is enabled by default; set `ts: false` to disable it. It does not enable type-aware rules or require the TypeScript compiler.
 
 ### Browser
 
@@ -40,7 +39,6 @@ import { createConfig } from '@homer0/oxlint-config';
 
 export default createConfig({
   configs: ['browser'],
-  ts: true,
 });
 ```
 
@@ -54,19 +52,18 @@ import { createReactConfig } from '@homer0/oxlint-config';
 export default createReactConfig({
   configs: ['browser'],
   tests: 'colocated',
-  ts: true,
 });
 ```
 
 ### Tests
 
-| `tests` value      | Matching files                              | Environment and TypeScript policy                                                                                 |
-| ------------------ | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| Omitted or `false` | None                                        | No test override.                                                                                                 |
-| `true`             | Both `*.test`/`*.spec` files and `tests/**` | Uses production settings.                                                                                         |
-| `'colocated'`      | `*.test` and `*.spec` files                 | Uses production settings.                                                                                         |
-| `'directory'`      | `tests/**`                                  | Uses production settings.                                                                                         |
-| Object             | Custom `files` glob or globs                | Uses custom `configs` and `ts`, or production settings by default. Set `framework: 'vitest'` to add Vitest rules. |
+| `tests` value      | Matching files                                | Environment and TypeScript policy                                                     |
+| ------------------ | --------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Omitted or `false` | None                                          | No test override.                                                                     |
+| `true`             | Both `*.test`/`*.spec` files and `tests/**`   | Uses production settings and Vitest rules.                                            |
+| `'colocated'`      | `*.test` and `*.spec` files                   | Uses production settings and Vitest rules.                                            |
+| `'directory'`      | `tests/**`                                    | Uses production settings and Vitest rules.                                            |
+| Object             | Built-in `files` convention or custom glob(s) | Uses custom `configs` and `ts`, or production settings by default, with Vitest rules. |
 
 A browser project can use Node TypeScript policy for its tests without changing production rules:
 
@@ -77,11 +74,8 @@ export default createConfig({
   configs: ['browser'],
   tests: {
     configs: ['node'],
-    files: 'tests/**/*.ts',
-    framework: 'vitest',
-    ts: true,
+    files: 'directory',
   },
-  ts: true,
 });
 ```
 

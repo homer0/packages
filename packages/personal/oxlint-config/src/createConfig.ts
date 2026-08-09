@@ -1,5 +1,5 @@
 import globals from 'globals';
-import { TEST_FILES } from './consts.js';
+import { DEFAULT_IGNORES, TEST_FILES, type TestConvention } from './consts.js';
 import { extensionFragments } from './fragments.js';
 import {
   nextjs as nextjsRules,
@@ -43,6 +43,15 @@ const getConfig = (configs: ConfigName[]): ConfigName => {
   return config;
 };
 
+const resolveTestFiles = (files: string | string[] | undefined): string[] => {
+  if (typeof files === 'undefined') return [];
+  if (Array.isArray(files)) return files.slice();
+  if (Object.hasOwn(TEST_FILES, files))
+    return TEST_FILES[files as TestConvention].slice();
+
+  return [files];
+};
+
 const resolveTestConfig = ({
   tests,
   productionConfig,
@@ -54,6 +63,7 @@ const resolveTestConfig = ({
     return {
       configs: [productionConfig],
       files: [...TEST_FILES.colocated, ...TEST_FILES.directory],
+      framework: 'vitest',
       ts: productionTs,
     };
   }
@@ -62,14 +72,15 @@ const resolveTestConfig = ({
     return {
       configs: [productionConfig],
       files: TEST_FILES[tests].slice(),
+      framework: 'vitest',
       ts: productionTs,
     };
   }
 
   return {
     configs: tests.configs ?? [productionConfig],
-    files: typeof tests.files === 'string' ? [tests.files] : (tests.files?.slice() ?? []),
-    framework: tests.framework,
+    files: resolveTestFiles(tests.files),
+    framework: tests.framework || 'vitest',
     ts: tests.ts ?? productionTs,
   };
 };
@@ -113,7 +124,7 @@ const resolveConfigComponents = (
     jsdoc,
     nextjs,
     react,
-    ts,
+    ts = true,
     typeAware,
     baseFragment = extensionFragments.base,
     baseExtensionFragment: baseExtensionFragmentOption,
@@ -245,7 +256,7 @@ export const createConfig = (options: CreateConfigSettings): GeneratedConfig => 
       ...extensionFragments.base.globals,
       ...extensionFragments[config].globals,
     },
-    ignorePatterns: ignores,
+    ignorePatterns: [...DEFAULT_IGNORES, ...(ignores || [])],
     options: typeAware ? { typeAware: true } : undefined,
     plugins,
     rules,

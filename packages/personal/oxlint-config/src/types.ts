@@ -21,7 +21,8 @@ export type TestFramework = 'vitest';
 export type TestConfigOptions = {
   configs?: ConfigName[];
   framework?: TestFramework;
-  files?: string | string[];
+  /** Uses a built-in convention or custom glob(s). */
+  files?: TestConvention | (string & {}) | string[];
   ts?: boolean;
 };
 
@@ -35,6 +36,7 @@ export type CreateConfigOptions = {
   /** Enables the native subset of JSDoc policy. */
   jsdoc?: boolean;
   tests?: TestsOption;
+  /** Defaults to `true`. */
   ts?: boolean;
   /** Enables Oxlint's root-only type-aware mode. Requires oxlint-tsgolint and TypeScript 7+. */
   typeAware?: boolean;

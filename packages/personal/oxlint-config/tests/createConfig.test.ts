@@ -6,7 +6,6 @@ describe('createConfig', () => {
     const config = createConfig({
       configs: ['node'],
       tests: 'directory',
-      ts: true,
     });
 
     expect(config.rules).toMatchObject({
@@ -41,7 +40,6 @@ describe('createConfig', () => {
       configs: ['node'],
       tests: {
         files: 'tests/**/*.ts',
-        framework: 'vitest',
       },
     });
 
@@ -62,16 +60,14 @@ describe('createConfig', () => {
       configs: ['browser'],
       tests: {
         configs: ['node'],
-        files: 'tests/**/*.ts',
-        ts: true,
+        files: 'directory',
       },
-      ts: true,
     });
 
     expect(config.globals).toHaveProperty('window');
     expect(config.rules).not.toHaveProperty('node/no-process-env');
     expect(config.overrides?.[0]).toMatchObject({
-      files: ['tests/**/*.ts'],
+      files: ['tests/**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}'],
       rules: expect.objectContaining({
         'node/no-process-env': 'error',
         'typescript/no-unused-vars': 'error',
@@ -90,7 +86,6 @@ describe('createConfig', () => {
         },
       },
       tests: 'colocated',
-      ts: true,
     });
 
     expect(config.rules).toMatchObject({
@@ -135,7 +130,16 @@ describe('createConfig', () => {
     });
 
     expect(config).toMatchObject({
-      ignorePatterns: ['.next/**', 'out/**', 'build/**', 'next-env.d.ts'],
+      ignorePatterns: [
+        'coverage/**',
+        'coverage-*/**',
+        'dist/**',
+        'node_modules/**',
+        '.next/**',
+        'out/**',
+        'build/**',
+        'next-env.d.ts',
+      ],
       plugins: expect.arrayContaining(['nextjs', 'jsdoc']),
       rules: expect.objectContaining({
         'jsdoc/check-access': 'error',
