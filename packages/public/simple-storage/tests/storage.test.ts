@@ -8,22 +8,23 @@ import {
   type StorageWindow,
 } from '@src/index.js';
 
-type getStorageProxyMocks<T> = {
+type GetStorageProxyMocks<T> = {
   get: Mock<(name: string) => T | undefined>;
   set: Mock<(name: string, value: T) => void>;
   remove: Mock<(name: string) => void>;
 };
 
-type getStorageProxyReturns<T> = [getStorageProxyMocks<T>, Record<string, T>];
+type getStorageProxyReturns<T> = [GetStorageProxyMocks<T>, Record<string, T>];
 
-const originalDate = global.Date;
+const originalDate = globalThis.Date;
 
 describe('SimpleStorage', () => {
   const getStorageProxy = <T = Dict>(
     initialData: Record<string, T> = {},
   ): getStorageProxyReturns<T> => {
     const data = { ...initialData };
-    const mocks: getStorageProxyMocks<T> = {
+    /* oxlint-disable vitest/require-mock-type-parameters -- The object is already typed. */
+    const mocks: GetStorageProxyMocks<T> = {
       get: vi.fn((name) => data[name]),
       set: vi.fn((name, value) => {
         data[name] = value;
@@ -32,6 +33,8 @@ describe('SimpleStorage', () => {
         delete data[name];
       }),
     };
+    /* oxlint-enable vitest/require-mock-type-parameters */
+
     const storage = new Proxy({} as typeof data, {
       get(target, name) {
         if (name in target) {
@@ -89,7 +92,7 @@ describe('SimpleStorage', () => {
       const initialData = {
         initial: 'data',
       };
-      const getInitialDataFn = vi.fn(() => initialData);
+      const getInitialDataFn = vi.fn<() => typeof initialData>(() => initialData);
       const newOptions: SimpleStorageConstructorOptions<typeof initialData> = {
         initialize: false,
         storage: {
@@ -153,7 +156,7 @@ describe('SimpleStorage', () => {
               priority: ['session', 'local'],
             },
             logger: {
-              warn: vi.fn(),
+              warn: vi.fn<() => void>(),
             },
           }),
       ).toThrow(/none of the specified storage types are available/i);
@@ -212,7 +215,7 @@ describe('SimpleStorage', () => {
         // Given
         const [, storage] = getStorageProxy();
         const logger = {
-          warn: vi.fn(),
+          warn: vi.fn<() => void>(),
         };
         const fakeWindow = {} as StorageWindow;
         const options: SimpleStorageConstructorOptions = {
@@ -237,7 +240,7 @@ describe('SimpleStorage', () => {
         // Given
         const [, storage] = getStorageProxy();
         const logger = {
-          warning: vi.fn(),
+          warning: vi.fn<() => void>(),
         };
         const fakeWindow = {} as StorageWindow;
         const options: SimpleStorageConstructorOptions = {
@@ -263,7 +266,7 @@ describe('SimpleStorage', () => {
         const [, storage] = getStorageProxy();
         const fakeWindow = {
           console: {
-            warn: vi.fn(),
+            warn: vi.fn<() => void>(),
           },
         } as unknown as StorageWindow;
         const options: SimpleStorageConstructorOptions = {
@@ -292,7 +295,7 @@ describe('SimpleStorage', () => {
         const initialData = {
           names: ['Rosario', 'Pilar'],
         };
-        const getInitialData = vi.fn(() => initialData);
+        const getInitialData = vi.fn<() => typeof initialData>(() => initialData);
         const [storageMocks, storage] = getStorageProxy({
           [storageKey]: savedData,
         });
@@ -494,7 +497,7 @@ describe('SimpleStorage', () => {
         const initialData = {
           initial: 'data',
         };
-        const getInitialData = vi.fn(() => initialData);
+        const getInitialData = vi.fn<() => typeof initialData>(() => initialData);
         const options: SimpleStorageConstructorOptions = {
           entries: {
             enabled: true,
@@ -555,7 +558,7 @@ describe('SimpleStorage', () => {
 
     describe('entries', () => {
       afterEach(() => {
-        global.Date = originalDate;
+        globalThis.Date = originalDate;
       });
 
       it('should throw an error when trying to access an entry and `entries` is disabled', () => {
@@ -620,12 +623,12 @@ describe('SimpleStorage', () => {
         const currentTime = Date.now();
         const expiration = 3600;
         const future = currentTime + expiration * 1000 * 2;
-        const now = vi.fn();
+        const now = vi.fn<() => number>();
         now.mockImplementationOnce(() => currentTime);
         now.mockImplementationOnce(() => currentTime);
         now.mockImplementationOnce(() => future);
         // @ts-expect-error - we're mocking the Date object
-        global.Date = { now };
+        globalThis.Date = { now };
         const storageKey = 'myStorage';
         const entryKey = 'user';
         const entryValue = {
@@ -734,8 +737,8 @@ describe('SimpleStorage', () => {
         // Given
         const currentTime = 0;
         // @ts-expect-error - we're mocking the Date object
-        global.Date = {
-          now: vi.fn(() => currentTime),
+        globalThis.Date = {
+          now: vi.fn<() => number>(() => currentTime),
         };
         const storageKey = 'myStorage';
         const entryKey = 'user';
@@ -779,8 +782,8 @@ describe('SimpleStorage', () => {
         // Given
         const currentTime = 0;
         // @ts-expect-error - we're mocking the Date object
-        global.Date = {
-          now: vi.fn(() => currentTime),
+        globalThis.Date = {
+          now: vi.fn<() => number>(() => currentTime),
         };
         const storageKey = 'myStorage';
         const entryKey = 'user';
@@ -822,8 +825,8 @@ describe('SimpleStorage', () => {
         // Given
         const currentTime = 0;
         // @ts-expect-error - we're mocking the Date object
-        global.Date = {
-          now: vi.fn(() => currentTime),
+        globalThis.Date = {
+          now: vi.fn<() => number>(() => currentTime),
         };
         const storageKey = 'myStorage';
         const entryKey = 'user';
@@ -861,8 +864,8 @@ describe('SimpleStorage', () => {
         // Given
         const currentTime = 0;
         // @ts-expect-error - we're mocking the Date object
-        global.Date = {
-          now: vi.fn(() => currentTime),
+        globalThis.Date = {
+          now: vi.fn<() => number>(() => currentTime),
         };
         const storageKey = 'myStorage';
         const entryKey = 'user';
@@ -907,8 +910,8 @@ describe('SimpleStorage', () => {
         // Given
         const currentTime = 0;
         // @ts-expect-error - we're mocking the Date object
-        global.Date = {
-          now: vi.fn(() => currentTime),
+        globalThis.Date = {
+          now: vi.fn<() => number>(() => currentTime),
         };
         const storageKey = 'myStorage';
         const entryKey = 'user';
@@ -954,8 +957,8 @@ describe('SimpleStorage', () => {
         // Given
         const currentTime = 0;
         // @ts-expect-error - we're mocking the Date object
-        global.Date = {
-          now: vi.fn(() => currentTime),
+        globalThis.Date = {
+          now: vi.fn<() => number>(() => currentTime),
         };
         const storageKey = 'myStorage';
         const entryKey = 'user';
@@ -1080,7 +1083,7 @@ describe('SimpleStorage', () => {
         )!;
         const [, storage] = getStorageProxy();
         const logger = {
-          warn: vi.fn(),
+          warn: vi.fn<() => void>(),
         };
         const fakeWindow = {
           [`${storageName}Storage`]: storage,
@@ -1111,7 +1114,7 @@ describe('SimpleStorage', () => {
         const initialData = {
           names: ['Rosario', 'Pilar'],
         };
-        const getInitialData = vi.fn(() => initialData);
+        const getInitialData = vi.fn<() => typeof initialData>(() => initialData);
         const [storageMocks, storage] = getStorageProxy({
           [storageKey]: JSON.stringify(savedData),
         });

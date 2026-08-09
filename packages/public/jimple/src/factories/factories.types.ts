@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* oxlint-disable typescript/no-explicit-any -- Generic callable types must retain any for inference. */
 
 export type GenericFn = (...args: any[]) => any;
 

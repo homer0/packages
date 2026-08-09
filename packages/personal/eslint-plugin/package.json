@@ -63,8 +63,10 @@
     "typescript-eslint": "^8.65.0"
   },
   "devDependencies": {
+    "@homer0/oxlint-config": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
     "eslint": "catalog:",
+    "oxlint": "catalog:",
     "eslint-config-next": "^16.2.12",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
@@ -99,7 +101,8 @@
     "node": ">=22.13"
   },
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint . && oxlint .",
+    "lint:file": "eslint $@ && oxlint $@",
     "types:check": "tsc --noEmit",
     "dev": "tsup --watch",
     "build": "tsup",

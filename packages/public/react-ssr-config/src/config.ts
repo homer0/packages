@@ -127,7 +127,7 @@ export class Config<
     try {
       newConfig = JSON.parse(script.textContent);
     } catch (error) {
-      // eslint-disable-next-line no-console
+      // oxlint-disable-next-line no-console -- Reports the client-side configuration parsing failure.
       console.error('Error parsing the config loaded from the client');
       throw error;
     }

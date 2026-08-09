@@ -1,2 +1,2 @@
 #!/bin/bash -e
-eslint . && lerna run lint
+oxlint --disable-nested-config . && lerna run lint

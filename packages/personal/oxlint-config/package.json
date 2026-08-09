@@ -1,0 +1,62 @@
+{
+  "name": "@homer0/oxlint-config",
+  "description": "My Oxlint configurations.",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/homer0/packages.git",
+    "directory": "packages/personal/oxlint-config"
+  },
+  "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./src/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/",
+    "docs/",
+    "src/"
+  ],
+  "dependencies": {
+    "globals": "^17.9.0"
+  },
+  "devDependencies": {
+    "@homer0/tsconfig": "workspace:*",
+    "@vitest/coverage-v8": "catalog:",
+    "tsup": "catalog:",
+    "typescript": "catalog:",
+    "unplugin-swc": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "oxlint": ">=1.77.0",
+    "oxlint-tsgolint": ">=0.0.0"
+  },
+  "peerDependenciesMeta": {
+    "oxlint-tsgolint": {
+      "optional": true
+    }
+  },
+  "engine-strict": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "lint": "oxlint .",
+    "test": "vitest run $@",
+    "types:check": "tsc --noEmit && tsc --noEmit --project ./tests/tsconfig.json",
+    "build": "tsup",
+    "prepublishOnly": "pnpm run build"
+  }
+}

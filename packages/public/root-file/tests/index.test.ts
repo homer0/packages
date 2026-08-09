@@ -52,7 +52,7 @@ describe('RootFile', () => {
   describe('provider', () => {
     it('should include a Jimple provider', () => {
       // Given
-      const setFn = vi.fn();
+      const setFn = vi.fn<Jimple['set']>();
       class Container extends Jimple {
         override set(...args: Parameters<Jimple['set']>) {
           setFn(...args);
@@ -71,8 +71,8 @@ describe('RootFile', () => {
 
     it('should allow custom options on its provider', () => {
       // Given
-      const getFn = vi.fn();
-      const setFn = vi.fn();
+      const getFn = vi.fn<(key: string) => void>();
+      const setFn = vi.fn<Jimple['set']>();
       class Container extends Jimple {
         override get<T>(key: string): T {
           getFn(key);
@@ -103,8 +103,8 @@ describe('RootFile', () => {
 
     it('should allow custom services on its provider', () => {
       // Given
-      const getFn = vi.fn();
-      const setFn = vi.fn();
+      const getFn = vi.fn<(key: string) => void>();
+      const setFn = vi.fn<Jimple['set']>();
       class Container extends Jimple {
         override get<T>(key: string): T {
           getFn(key);
@@ -115,7 +115,7 @@ describe('RootFile', () => {
           super.set(...args);
         }
       }
-      const joinFn = vi.fn();
+      const joinFn = vi.fn<(...args: Parameters<PathUtils['join']>) => void>();
       class MyPathUtils extends PathUtils {
         override join(
           ...args: Parameters<PathUtils['join']>

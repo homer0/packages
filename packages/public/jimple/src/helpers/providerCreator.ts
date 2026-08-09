@@ -10,9 +10,9 @@ import type { ProviderRegisterFn } from './provider.js';
  */
 export const createProviderCreator = <ContainerType extends Jimple = Jimple>() => {
   type RegisterFn = ProviderRegisterFn<ContainerType>;
-  type ProviderCreatorFn = GenericCurriedFn<RegisterFn>;
+  type ProviderCreatorFunction = GenericCurriedFn<RegisterFn>;
   const factory = resourceCreatorFactory<RegisterFn>();
-  return <CreatorFn extends ProviderCreatorFn>(creator: CreatorFn) =>
+  return <CreatorFn extends ProviderCreatorFunction>(creator: CreatorFn) =>
     factory('provider', 'register', creator);
 };
 /**

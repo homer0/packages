@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- It's a generic function.
+// oxlint-disable-next-line typescript/no-explicit-any -- Generic function arguments and return type must remain any for listener inference.
 type GenericFn = (...args: any[]) => any;
 type GenericParams = Parameters<GenericFn>;
 type OnceWrapperFn = GenericFn & {
@@ -147,7 +147,7 @@ export class EventsHub {
     }, null);
 
     if (!wrapper) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- It's a generic function.
+      // oxlint-disable-next-line typescript/no-explicit-any -- The wrapper must retain any arguments for listener inference.
       const newWrapper = (...args: any[]) => listener(...args);
       newWrapper.once = true;
       wrapper = newWrapper;

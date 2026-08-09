@@ -135,9 +135,9 @@ export type RoutePathAsString<T extends RoutePathDefinition> = T extends RoutePa
  *
  */
 export type PrefixedPath<
-  RoutePath extends RoutePathDefinition,
+  RoutePathDef extends RoutePathDefinition,
   RootRoutePath extends RoutePathDefinition,
-  RoutePathStr extends string = RoutePathAsString<RoutePath>,
+  RoutePathStr extends string = RoutePathAsString<RoutePathDef>,
   RootRoutePathStr extends string = RoutePathAsString<RootRoutePath>,
 > = RootRoutePathStr extends '/' ? RoutePathStr : `${RootRoutePathStr}${RoutePathStr}`;
 /**

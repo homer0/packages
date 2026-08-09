@@ -1,4 +1,4 @@
-/* eslint-disable n/no-process-env */
+/* oxlint-disable node/no-process-env -- EnvUtils intentionally reads and writes process.env. */
 import { providerCreator } from '@homer0/jimple';
 
 /**

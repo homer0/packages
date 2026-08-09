@@ -1,6 +1,6 @@
 import type { Jimple } from '../jimple/index.js';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- They are dynamically extended.
+// oxlint-disable-next-line typescript/no-explicit-any -- Dictionary keys and values are dynamically extended.
 type GenericDict = Record<any, any>;
 /**
  * A helper that reusable services can use to resolve dependencies in constructors and/or

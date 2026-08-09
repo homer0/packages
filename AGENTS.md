@@ -8,7 +8,7 @@
 
 ## Project-specific gotchas
 
-- Root ESLint intentionally ignores `packages/**`; package linting is run through Lerna.
+- Root Oxlint intentionally ignores `packages/**`; package linting is run through Lerna.
 - `pnpm lint` runs `lint-staged`, so it only checks staged files. Use `pnpm lint:all` to lint the whole repository and all packages.
 - Tests, builds, and type checks are delegated to package scripts through Lerna. Pass package scopes and package-specific arguments through the wrapper as documented in `README.md`.
 - The workspace enforces a five-day minimum release age for external dependencies, except `@homer0/*` packages.

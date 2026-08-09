@@ -1,6 +1,5 @@
 export type DeferredPromiseResolveFn<Value> = (value: Value) => void;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- `reason` can be any type.
-export type DeferredPromiseRejectFn = (reason: any) => void;
+export type DeferredPromiseRejectFn = (reason: unknown) => void;
 
 export type DeferredPromise<Value> = {
   promise: Promise<Value>;

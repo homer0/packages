@@ -256,18 +256,18 @@ describe('APIClient', () => {
       endpoints: {},
       fetchClient: fetch,
     });
-    try {
-      await sut.get(requestURL);
-    } catch (error) {
-      // Then
-      expect(error).toBeInstanceOf(Error);
-      expect((error as Error).message).toBe(
-        `[${errorStatus}]: ${requestResponseData.error}`,
-      );
-    }
+    const error = await sut
+      .get(requestURL)
+      .catch((requestError: unknown) => requestError);
+
+    // Then
+    expect(error).toBeInstanceOf(Error);
+    expect((error as Error).message).toBe(
+      `[${errorStatus}]: ${requestResponseData.error}`,
+    );
   });
 
-  it('should make a failed GET request with an uknown message', async () => {
+  it('should make a failed GET request with an unknown message', async () => {
     // Given
     const requestURL = 'http://example.com';
     const errorStatus = 404;
@@ -283,13 +283,13 @@ describe('APIClient', () => {
       endpoints: {},
       fetchClient: fetch,
     });
-    try {
-      await sut.get(requestURL);
-    } catch (error) {
-      // Then
-      expect(error).toBeInstanceOf(Error);
-      expect((error as Error).message).toBe(`[${errorStatus}]: Unknown error`);
-    }
+    const error = await sut
+      .get(requestURL)
+      .catch((requestError: unknown) => requestError);
+
+    // Then
+    expect(error).toBeInstanceOf(Error);
+    expect((error as Error).message).toBe(`[${errorStatus}]: Unknown error`);
   });
 
   it("shouldn't overwrite the content type if it was already set", async () => {
