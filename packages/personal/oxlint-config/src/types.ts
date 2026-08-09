@@ -14,9 +14,13 @@ export type ConfigFragment = {
 /** Overrides are keyed by the generated fragment they extend. */
 export type ExtensionFragments = Partial<Record<ExtensionFragmentName, ConfigFragment>>;
 
-/** Narrows a test override and optionally selects its environment and TypeScript policy. */
+/** Selects a test framework-specific native rule policy. */
+export type TestFramework = 'vitest';
+
+/** Narrows a test override and optionally selects its environment, framework, and TypeScript policy. */
 export type TestConfigOptions = {
   configs?: ConfigName[];
+  framework?: TestFramework;
   files?: string | string[];
   ts?: boolean;
 };
@@ -54,6 +58,7 @@ export type ResolveTestConfigOptions = {
 export type ResolvedTestConfig = {
   configs: ConfigName[];
   files: string[];
+  framework?: TestFramework;
   ts: boolean;
 };
 
@@ -73,4 +78,10 @@ export type GeneratedConfig = {
   overrides?: GeneratedConfigOverride[];
   plugins: string[];
   rules: RuleSettings;
+};
+
+export type ResolveConfigComponents = {
+  config: ConfigName;
+  fragments: ConfigFragment[];
+  plugins: string[];
 };

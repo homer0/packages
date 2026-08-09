@@ -108,6 +108,24 @@ describe('generated Oxlint configurations', () => {
     expect(result).toMatchObject({ status: 0 });
   });
 
+  it('should validate the Vitest test override', () => {
+    const result = runOxlint({
+      config: createConfig({
+        configs: ['node'],
+        tests: {
+          files: 'tests/**/*.ts',
+          framework: 'vitest',
+        },
+      }),
+      file: 'tests/example.test.ts',
+      printConfig: true,
+      source:
+        "import { expect, it } from 'vitest';\nit('works', () => expect(true).toBe(true));\n",
+    });
+
+    expect(result).toMatchObject({ status: 0 });
+  });
+
   it('should apply native Next.js Core Web Vitals rules', () => {
     const result = runOxlint({
       config: createNextjsConfig({}),
@@ -231,6 +249,9 @@ describe('generated Oxlint configurations', () => {
     });
     expect(reactConfig.rules).toMatchObject({
       'no-use-before-define': 'off',
+      'react-perf/jsx-no-new-array-as-prop': 'error',
+      'react-perf/jsx-no-new-function-as-prop': 'error',
+      'react-perf/jsx-no-new-object-as-prop': 'error',
     });
   });
 });

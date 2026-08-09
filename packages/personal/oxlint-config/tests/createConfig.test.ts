@@ -36,6 +36,22 @@ describe('createConfig', () => {
     ]);
   });
 
+  it('should compose Vitest rules for custom test files', () => {
+    const config = createConfig({
+      configs: ['node'],
+      tests: {
+        files: 'tests/**/*.ts',
+        framework: 'vitest',
+      },
+    });
+
+    expect(config.plugins).toContain('vitest');
+    expect(config.overrides?.[0]?.rules).toMatchObject({
+      'vitest/no-focused-tests': 'error',
+      'vitest/valid-expect': 'error',
+    });
+  });
+
   it('should compose browser production with Node TypeScript tests', () => {
     const config = createConfig({
       configs: ['browser'],
@@ -134,8 +150,21 @@ describe('createConfig', () => {
 
   it('should only enable type-aware linting when requested', () => {
     expect(createConfig({ configs: ['node'] }).options).toBeUndefined();
-    expect(createConfig({ configs: ['node'], typeAware: true }).options).toEqual({
+
+    const config = createConfig({
+      configs: ['node'],
       typeAware: true,
+    });
+
+    expect(config).toMatchObject({
+      options: {
+        typeAware: true,
+      },
+      rules: {
+        'typescript/no-deprecated': 'error',
+        'typescript/no-floating-promises': 'error',
+        'typescript/no-misused-promises': 'error',
+      },
     });
   });
 

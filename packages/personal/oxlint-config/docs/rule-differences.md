@@ -310,6 +310,8 @@ The opt-in JSDoc profile uses the native subset that covers access, tags, parame
 - Browser provides the globals from the `globals` package.
 - Node provides the globals from the `globals` package.
 - TypeScript enables the TypeScript plugin rules.
+- `typeAware: true` additionally checks deprecated APIs, floating promises, and Promises used in synchronous contexts.
 - JSDoc is opt-in through `jsdoc: true`.
 - `createNextjsConfig` adds native Next.js recommended and Core Web Vitals rules, plus Next.js build-output ignores.
-- Tests disable `import/first`, `max-classes-per-file`, and `no-magic-numbers`.
+- Tests disable `import/first`, `max-classes-per-file`, and `no-magic-numbers`; custom test options can select the Vitest rule policy with `framework: 'vitest'`.
+- React and Next.js profiles also enable rules that prohibit new arrays, functions, and objects passed directly as JSX props.

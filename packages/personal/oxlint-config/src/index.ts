@@ -16,6 +16,7 @@ export type {
   GeneratedConfigOverride,
   RuleSettings,
   TestConfigOptions,
+  TestFramework,
   TestsOption,
 } from './types.js';
 

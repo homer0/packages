@@ -23,6 +23,7 @@ describe('public types', () => {
       tests: {
         configs: ['node'],
         files: ['tests/**/*.ts'],
+        framework: 'vitest',
         ts: true,
       },
       ts: true,

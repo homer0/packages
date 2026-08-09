@@ -46,7 +46,7 @@ export default createConfig({
 
 ### React
 
-Use `createReactConfig` with the same options to add React and JSX accessibility rules.
+Use `createReactConfig` with the same options to add React, JSX accessibility, and React-performance rules.
 
 ```ts
 import { createReactConfig } from '@homer0/oxlint-config';
@@ -60,13 +60,13 @@ export default createReactConfig({
 
 ### Tests
 
-| `tests` value      | Matching files                              | Environment and TypeScript policy                                  |
-| ------------------ | ------------------------------------------- | ------------------------------------------------------------------ |
-| Omitted or `false` | None                                        | No test override.                                                  |
-| `true`             | Both `*.test`/`*.spec` files and `tests/**` | Uses production settings.                                          |
-| `'colocated'`      | `*.test` and `*.spec` files                 | Uses production settings.                                          |
-| `'directory'`      | `tests/**`                                  | Uses production settings.                                          |
-| Object             | Custom `files` glob or globs                | Uses custom `configs` and `ts`, or production settings by default. |
+| `tests` value      | Matching files                              | Environment and TypeScript policy                                                                                 |
+| ------------------ | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Omitted or `false` | None                                        | No test override.                                                                                                 |
+| `true`             | Both `*.test`/`*.spec` files and `tests/**` | Uses production settings.                                                                                         |
+| `'colocated'`      | `*.test` and `*.spec` files                 | Uses production settings.                                                                                         |
+| `'directory'`      | `tests/**`                                  | Uses production settings.                                                                                         |
+| Object             | Custom `files` glob or globs                | Uses custom `configs` and `ts`, or production settings by default. Set `framework: 'vitest'` to add Vitest rules. |
 
 A browser project can use Node TypeScript policy for its tests without changing production rules:
 
@@ -78,6 +78,7 @@ export default createConfig({
   tests: {
     configs: ['node'],
     files: 'tests/**/*.ts',
+    framework: 'vitest',
     ts: true,
   },
   ts: true,
@@ -111,7 +112,7 @@ export default createNextjsConfig({
 
 ### Type-aware linting
 
-`typeAware` is a root-only option, disabled by default. It enables Oxlint type-aware mode for the complete config, not only TypeScript overrides. It requires the optional `oxlint-tsgolint` peer dependency and TypeScript 7 or newer:
+`typeAware` is a root-only option, disabled by default. It enables Oxlint type-aware mode and checks deprecated APIs, floating promises, and Promises used in synchronous contexts. It requires the optional `oxlint-tsgolint` peer dependency and TypeScript 7 or newer:
 
 ```bash
 pnpm add --save-dev oxlint-tsgolint typescript

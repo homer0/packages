@@ -378,6 +378,24 @@ export const react = {
    */
   'react/exhaustive-deps': 'warn',
   /**
+   * Disallow new arrays passed directly as JSX props.
+   *
+   * @see https://github.com/cvazac/eslint-plugin-react-perf/blob/master/docs/rules/jsx-no-new-array-as-prop.md
+   */
+  'react-perf/jsx-no-new-array-as-prop': 'error',
+  /**
+   * Disallow new functions passed directly as JSX props.
+   *
+   * @see https://github.com/cvazac/eslint-plugin-react-perf/blob/master/docs/rules/jsx-no-new-function-as-prop.md
+   */
+  'react-perf/jsx-no-new-function-as-prop': 'error',
+  /**
+   * Disallow new objects passed directly as JSX props.
+   *
+   * @see https://github.com/cvazac/eslint-plugin-react-perf/blob/master/docs/rules/jsx-no-new-object-as-prop.md
+   */
+  'react-perf/jsx-no-new-object-as-prop': 'error',
+  /**
    * Allow React components to reference declarations defined later in the file.
    *
    * @see https://eslint.org/docs/latest/rules/no-use-before-define

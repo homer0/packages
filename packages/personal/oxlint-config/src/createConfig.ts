@@ -1,6 +1,10 @@
 import { TEST_FILES } from './consts.js';
 import { extensionFragments } from './fragments.js';
-import { nextjs as nextjsRules } from './rules/index.js';
+import {
+  nextjs as nextjsRules,
+  typeAware as typeAwareRules,
+  vitest as vitestRules,
+} from './rules/index.js';
 import type {
   ConfigFragment,
   ConfigName,
@@ -10,6 +14,7 @@ import type {
   GeneratedConfigOverride,
   ResolvedTestConfig,
   ResolveTestConfigOptions,
+  ResolveConfigComponents,
 } from './types.js';
 
 const mergeRules = (...fragments: (ConfigFragment | undefined)[]) =>
@@ -33,6 +38,76 @@ const getConfig = (configs: ConfigName[]): ConfigName => {
   }
 
   return config;
+};
+
+const resolveConfigComponents = (
+  options: CreateConfigSettings,
+): ResolveConfigComponents => {
+  const { configs, extensions, jsdoc, nextjs, react, ts, typeAware } = options;
+
+  const config = getConfig(options.configs);
+
+  const fragments: ConfigFragment[] = [
+    extensionFragments.base,
+    extensionFragments[config],
+  ];
+  const plugins = ['import'];
+  if (configs.includes('node')) {
+    plugins.push('node');
+  }
+
+  if (jsdoc) {
+    fragments.push(extensionFragments.jsdoc);
+    plugins.push('jsdoc');
+  }
+
+  if (ts) {
+    fragments.push(extensionFragments.typescript);
+  }
+
+  if (typeAware) {
+    fragments.push({ rules: typeAwareRules });
+  }
+
+  if (ts || typeAware) {
+    plugins.push('typescript');
+  }
+
+  if (react) {
+    fragments.push(extensionFragments.react);
+    plugins.push('react', 'jsx-a11y', 'react-perf');
+  }
+
+  if (nextjs) {
+    fragments.push({ rules: nextjsRules });
+    plugins.push('nextjs');
+  }
+
+  if (extensions?.base) {
+    fragments.push(extensions.base);
+  }
+
+  if (extensions?.[config]) {
+    fragments.push(extensions[config]);
+  }
+
+  if (jsdoc && extensions?.jsdoc) {
+    fragments.push(extensions.jsdoc);
+  }
+
+  if (ts && extensions?.typescript) {
+    fragments.push(extensions.typescript);
+  }
+
+  if (react && extensions?.react) {
+    fragments.push(extensions.react);
+  }
+
+  return {
+    config,
+    fragments,
+    plugins,
+  };
 };
 
 const resolveTestConfig = ({
@@ -61,6 +136,7 @@ const resolveTestConfig = ({
   return {
     configs: tests.configs ?? [productionConfig],
     files: typeof tests.files === 'string' ? [tests.files] : (tests.files?.slice() ?? []),
+    framework: tests.framework,
     ts: tests.ts ?? productionTs,
   };
 };
@@ -74,6 +150,7 @@ const createTestOverride = (
     extensionFragments.tests,
     extensionFragments[config],
     testConfig.ts ? extensionFragments.typescript : undefined,
+    testConfig.framework === 'vitest' ? { rules: vitestRules } : undefined,
     extensions?.tests,
     extensions?.[config],
     testConfig.ts ? extensions?.typescript : undefined,
@@ -91,73 +168,19 @@ const createTestOverride = (
 };
 
 /** Creates a native Oxlint configuration from one environment and optional policy layers. */
-export const createConfig = ({
-  configs,
-  extensions,
-  ignores,
-  jsdoc = false,
-  nextjs = false,
-  react = false,
-  tests,
-  ts = false,
-  typeAware = false,
-}: CreateConfigSettings): GeneratedConfig => {
-  const config = getConfig(configs);
-  const fragments: ConfigFragment[] = [
-    extensionFragments.base,
-    extensionFragments[config],
-  ];
-  const plugins = ['import'];
-  if (configs.includes('node')) {
-    plugins.push('node');
-  }
-
-  if (jsdoc) {
-    fragments.push(extensionFragments.jsdoc);
-    plugins.push('jsdoc');
-  }
-
-  if (ts) {
-    fragments.push(extensionFragments.typescript);
-    plugins.push('typescript');
-  }
-
-  if (react) {
-    fragments.push(extensionFragments.react);
-    plugins.push('react', 'jsx-a11y');
-  }
-
-  if (nextjs) {
-    fragments.push({ rules: nextjsRules });
-    plugins.push('nextjs');
-  }
-
-  if (extensions?.base) {
-    fragments.push(extensions.base);
-  }
-
-  if (extensions?.[config]) {
-    fragments.push(extensions[config]);
-  }
-
-  if (jsdoc && extensions?.jsdoc) {
-    fragments.push(extensions.jsdoc);
-  }
-
-  if (ts && extensions?.typescript) {
-    fragments.push(extensions.typescript);
-  }
-
-  if (react && extensions?.react) {
-    fragments.push(extensions.react);
-  }
+export const createConfig = (options: CreateConfigSettings): GeneratedConfig => {
+  const { fragments, plugins, config } = resolveConfigComponents(options);
+  const { extensions, ignores, tests, ts, typeAware } = options;
 
   const rules = mergeRules(...fragments);
   const testConfig = resolveTestConfig({
     tests,
     productionConfig: config,
-    productionTs: ts,
+    productionTs: ts ?? false,
   });
+  if (testConfig?.framework === 'vitest') {
+    plugins.push('vitest');
+  }
 
   return {
     globals: {
