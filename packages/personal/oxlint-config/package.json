@@ -1,6 +1,6 @@
 {
   "name": "@homer0/oxlint-config",
-  "description": "My Oxlint configurations.",
+  "description": "My custom Oxlint configurations.",
   "version": "0.2.0",
   "repository": {
     "type": "git",
