@@ -11,18 +11,17 @@
   "type": "module",
   "dependencies": {},
   "devDependencies": {
+    "@homer0/oxfmt-config": "workspace:*",
     "@homer0/oxlint-config": "workspace:*",
-    "@homer0/prettier-config": "workspace:*",
-    "@homer0/prettier-plugin-jsdoc": "^12.0.0",
     "@commitlint/cli": "^21.2.1",
     "@commitlint/config-conventional": "^21.2.0",
     "@types/node": "catalog:",
+    "oxfmt": "^0.62.0",
     "oxlint": "catalog:",
     "husky": "^9.1.7",
     "leasot": "^14.4.0",
     "lerna": "^10.0.0",
-    "lint-staged": "^17.3.0",
-    "prettier": "^3.9.6"
+    "lint-staged": "^17.3.0"
   },
   "engine-strict": true,
   "engines": {
@@ -35,7 +34,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,json,css,scss,md}": [
-      "prettier --write"
+      "oxfmt"
     ],
     "*.{ts,tsx,js,jsx}": [
       "oxlint"
