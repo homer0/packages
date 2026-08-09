@@ -11,6 +11,8 @@ import {
 } from '@src/index.js';
 
 describe('SimpleConfig', () => {
+  type ImportFn = (filepath: string) => void;
+
   describe('class', () => {
     describe('constructor', () => {
       it('should be instantiated', () => {
@@ -318,7 +320,7 @@ describe('SimpleConfig', () => {
           oldest: 'Rosario',
           youngest: 'Pilar',
         };
-        const importFn = vi.fn();
+        const importFn = vi.fn<ImportFn>();
         class MyRootFile extends RootFile {
           override import<FileType = unknown>(filepath: string): Promise<FileType> {
             importFn(filepath);
@@ -378,7 +380,7 @@ describe('SimpleConfig', () => {
           oldest: 'Rosario',
           youngest: 'Pilar',
         };
-        const fileContents = vi.fn(() => fileConfig);
+        const fileContents = vi.fn<() => typeof fileConfig>(() => fileConfig);
         class MyRootFile extends RootFile {
           override import<FileType = unknown>(): Promise<FileType> {
             return Promise.resolve(fileContents as unknown as FileType);
@@ -408,7 +410,9 @@ describe('SimpleConfig', () => {
           oldest: 'Rosario',
           youngest: 'Pilar',
         };
-        const fileContents = vi.fn(() => Promise.resolve(fileConfig));
+        const fileContents = vi.fn<() => Promise<typeof fileConfig>>(() =>
+          Promise.resolve(fileConfig),
+        );
         class MyRootFile extends RootFile {
           override import<FileType = unknown>(): Promise<FileType> {
             return Promise.resolve(fileContents as unknown as FileType);
@@ -450,7 +454,7 @@ describe('SimpleConfig', () => {
         };
         let importIndex = -1;
         const imports = [fileAConfig, fileBConfig];
-        const importFn = vi.fn();
+        const importFn = vi.fn<ImportFn>();
         class MyRootFile extends RootFile {
           override import<FileType = unknown>(filepath: string): Promise<FileType> {
             importFn(filepath);
@@ -512,11 +516,11 @@ describe('SimpleConfig', () => {
         );
       });
 
-      it('should throw an error if the promise to load a file was rejected', async () => {
+      it('should throw an error if the promise to load a file was rejected with a non-error', async () => {
         // Given
         class MyRootFile extends RootFile {
           override import<FileType = unknown>(filepath: string): Promise<FileType> {
-            // eslint-disable-next-line prefer-promise-reject-errors -- Testing non-errors.
+            // oxlint-disable-next-line unicorn/prefer-promise-reject-errors -- Testing non-errors.
             return Promise.reject(`Something went wrong with ${filepath}`);
           }
         }
@@ -674,7 +678,7 @@ describe('SimpleConfig', () => {
           youngestNickname: 'Pilar',
         };
         const fileConfigName = 'nicknames';
-        const importFn = vi.fn();
+        const importFn = vi.fn<ImportFn>();
         class MyRootFile extends RootFile {
           override import<FileType = unknown>(filepath: string): Promise<FileType> {
             importFn(filepath);
@@ -728,7 +732,7 @@ describe('SimpleConfig', () => {
           youngestNickname: 'Pilar',
         };
         const fileConfigName = 'nicknames';
-        const importFn = vi.fn();
+        const importFn = vi.fn<ImportFn>();
         class MyRootFile extends RootFile {
           override import<FileType = unknown>(filepath: string): Promise<FileType> {
             importFn(filepath);
@@ -736,7 +740,7 @@ describe('SimpleConfig', () => {
           }
         }
         const myRootFile = new MyRootFile();
-        const getEnvVarFn = vi.fn();
+        const getEnvVarFn = vi.fn<(...args: Parameters<EnvUtils['get']>) => void>();
         class MyEnvUtils extends EnvUtils {
           override get(...args: Parameters<EnvUtils['get']>): string {
             getEnvVarFn(...args);
@@ -775,7 +779,7 @@ describe('SimpleConfig', () => {
 
       it("shouldn't do anything if the env var is empty", async () => {
         // Given
-        const getEnvVarFn = vi.fn();
+        const getEnvVarFn = vi.fn<EnvUtils['get']>();
         class MyEnvUtils extends EnvUtils {
           override get(...args: Parameters<EnvUtils['get']>): string {
             getEnvVarFn(...args);
@@ -839,7 +843,7 @@ describe('SimpleConfig', () => {
           youngestNickname: 'Pilar',
         };
         const fileConfigName = 'nicknames';
-        const importFn = vi.fn();
+        const importFn = vi.fn<ImportFn>();
         class MyRootFile extends RootFile {
           override import<FileType = unknown>(filepath: string): Promise<FileType> {
             importFn(filepath);
@@ -921,7 +925,7 @@ describe('SimpleConfig', () => {
   describe('provider', () => {
     it('should include a Jimple provider', () => {
       // Given
-      const setFn = vi.fn();
+      const setFn = vi.fn<Jimple['set']>();
       class Container extends Jimple {
         override set(...args: Parameters<Jimple['set']>) {
           setFn(...args);
