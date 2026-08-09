@@ -53,6 +53,7 @@
     "node": ">=22"
   },
   "scripts": {
+    "lint": "oxlint .",
     "test": "vitest run $@",
     "types:check": "tsc --noEmit && tsc --noEmit --project ./tests/tsconfig.json",
     "build": "tsup",

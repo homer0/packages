@@ -1,3 +1,5 @@
+const maxComplexity = 30;
+
 export const base = {
   /**
    * Enforce `return` statements in callbacks of array methods.
@@ -21,7 +23,7 @@ export const base = {
    *
    * @see https://eslint.org/docs/latest/rules/complexity
    */
-  complexity: ['warn', 30],
+  complexity: ['warn', maxComplexity],
   /**
    * Require `return` statements to either always or never specify values.
    *

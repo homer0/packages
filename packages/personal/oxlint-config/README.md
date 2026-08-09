@@ -132,6 +132,7 @@ See [rule differences](./docs/rule-differences.md) for native equivalents, inten
 
 ```bash
 pnpm run build
+pnpm run lint
 pnpm run test
 pnpm run types:check
 ```
