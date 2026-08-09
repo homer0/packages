@@ -1,0 +1,20 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# 0.2.0 (2026-08-09)
+
+### Bug Fixes
+
+- **oxlint-config:** align migrated rule overrides ([06eb3d5](https://github.com/homer0/packages/commit/06eb3d52a652c6ea602caf63f112195c4390f1a0))
+- **oxlint-config:** configure Vitest test globals ([d8cbf5f](https://github.com/homer0/packages/commit/d8cbf5f759da6616f0486392ec40ca43a30e73c2))
+- **oxlint-config:** disable rule that requires generics on vi.fn ([caf3d9e](https://github.com/homer0/packages/commit/caf3d9ee706f2e964df024131f6590dd5e0897d9))
+- **oxlint-config:** restore preset rule coverage ([069f901](https://github.com/homer0/packages/commit/069f9015753822e9a0fc2b5b202f912e5d4d680b))
+- **oxlint-config:** use directory ignore patterns ([41030ff](https://github.com/homer0/packages/commit/41030ff1221ab5d1df6221a05e5e47e79d04e78e))
+
+### Features
+
+- **oxlint-config:** add JSDoc and Next.js profiles ([21b3dad](https://github.com/homer0/packages/commit/21b3dade2fc7ce7d399d7ef1a59886d94e017dd6))
+- **oxlint-config:** add native quality profiles ([7f0d695](https://github.com/homer0/packages/commit/7f0d69521f87dd42fccca84aa68caf504aec6313))
+- **oxlint-config:** add sensible lint defaults ([cb510c8](https://github.com/homer0/packages/commit/cb510c84a4fc7a556d15b1f7225ad7c205b68c1b))

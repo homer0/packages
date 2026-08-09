@@ -1,7 +1,7 @@
 {
   "name": "@homer0/react-ssr-config",
   "description": "A way to have dynamic config sent from SSR and accessible in the client",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/homer0/packages.git",
@@ -26,8 +26,8 @@
     "@types/react": "catalog:",
     "@vitejs/plugin-react": "catalog:",
     "@vitest/coverage-v8": "catalog:",
-    "oxlint": "catalog:",
     "jsdom": "catalog:",
+    "oxlint": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "tsup": "catalog:",

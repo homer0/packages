@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/homer0/packages/compare/%40homer0%2Fdeferred%406.0.0...%40homer0%2Fdeferred%407.0.0) (2026-08-09)
+
+### Features
+
+- **deferred:** type rejection reasons as unknown ([b46d67e](https://github.com/homer0/packages/commit/b46d67e7a89aa607b56808fdec0a40b1a1c7cf34))
+
+### BREAKING CHANGES
+
+- **deferred:** DeferredPromiseRejectFn now receives unknown instead of any.
+
 # [6.0.0](https://github.com/homer0/packages/compare/%40homer0%2Fdeferred%405.0.9...%40homer0%2Fdeferred%406.0.0) (2026-08-08)
 
 ### Bug Fixes

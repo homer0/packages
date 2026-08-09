@@ -1,7 +1,7 @@
 {
   "name": "@homer0/eslint-plugin",
   "description": "My custom configurations for ESLint.",
-  "version": "15.0.0",
+  "version": "15.0.1",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/homer0/packages.git",
@@ -66,11 +66,11 @@
     "@homer0/oxlint-config": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
     "eslint": "catalog:",
-    "oxlint": "catalog:",
     "eslint-config-next": "^16.2.12",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
+    "oxlint": "catalog:",
     "tsup": "catalog:",
     "typescript": "^6.0.3"
   },

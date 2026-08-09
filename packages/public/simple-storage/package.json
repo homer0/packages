@@ -1,7 +1,7 @@
 {
   "name": "@homer0/simple-storage",
   "description": "A service that allows you to build functionalities that relay on browser storage",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/homer0/packages.git",
@@ -39,8 +39,8 @@
     "@homer0/oxlint-config": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
     "@vitest/coverage-v8": "catalog:",
-    "oxlint": "catalog:",
     "jsdom": "catalog:",
+    "oxlint": "catalog:",
     "tsup": "catalog:",
     "typescript": "catalog:",
     "unplugin-swc": "catalog:",
