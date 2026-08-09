@@ -35,10 +35,10 @@
     "src/"
   ],
   "devDependencies": {
-    "@homer0/eslint-plugin": "workspace:*",
+    "@homer0/oxlint-config": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
     "@vitest/coverage-v8": "catalog:",
-    "eslint": "catalog:",
+    "oxlint": "catalog:",
     "typescript": "catalog:",
     "unplugin-swc": "catalog:",
     "vitest": "catalog:"
@@ -48,8 +48,8 @@
     "node": ">=22"
   },
   "scripts": {
-    "lint": "eslint .",
-    "lint:file": "eslint $@",
+    "lint": "oxlint .",
+    "lint:file": "oxlint $@",
     "test": "vitest run $@",
     "types:check": "tsc --noEmit && tsc --noEmit --project ./tests/tsconfig.json"
   }
