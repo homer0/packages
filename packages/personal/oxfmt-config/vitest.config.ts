@@ -1,5 +1,4 @@
 import { resolve } from 'node:path';
-
 import swc from 'unplugin-swc';
 import { defineConfig, type Plugin } from 'vitest/config';
 
