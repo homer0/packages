@@ -1,6 +1,6 @@
-import { vi, describe, expect, it } from 'vitest';
-import { Jimple } from '@src/jimple/index.js';
 import { provider, createProvider } from '@src/helpers/index.js';
+import { Jimple } from '@src/jimple/index.js';
+import { vi, describe, expect, it } from 'vitest';
 
 describe('provider', () => {
   it('should create a Jimple provider', () => {

@@ -1,9 +1,9 @@
-import { describe, expect, it } from 'vitest';
-import { z } from 'zod';
 import { ArgumentMetadata } from '@nestjs/common';
 import { createZodDto } from '@src/dto.js';
 import { ZodValidationException } from '@src/exception.js';
 import { ZodValidationPipe } from '@src/pipe.js';
+import { describe, expect, it } from 'vitest';
+import { z } from 'zod';
 
 describe('ZodValidationPipe', () => {
   const UserSchema = z.object({

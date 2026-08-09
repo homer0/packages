@@ -1,25 +1,17 @@
+import { deferred, type DeferredPromise } from '@homer0/deferred';
+import { providerCreator, injectHelper } from '@homer0/jimple';
+import { pathUtils, type PathUtils } from '@homer0/path-utils';
 import * as fsSync from 'fs';
 import * as fsPromises from 'fs/promises';
 import type { IPackageJson } from 'package-json-type';
-import { pathUtils, type PathUtils } from '@homer0/path-utils';
-import { deferred, type DeferredPromise } from '@homer0/deferred';
-import { providerCreator, injectHelper } from '@homer0/jimple';
-/**
- * The dictionary of dependencies that need to be injected in {@link PackageInfo}.
- */
+/** The dictionary of dependencies that need to be injected in {@link PackageInfo}. */
 type PackageInfoInjectOptions = {
-  /**
-   * The service that creates the path relative to the project root.
-   */
+  /** The service that creates the path relative to the project root. */
   pathUtils: PathUtils;
 };
-/**
- * The inject helper to resolve the dependencies.
- */
+/** The inject helper to resolve the dependencies. */
 const deps = injectHelper<PackageInfoInjectOptions>();
-/**
- * The options for the service constructor.
- */
+/** The options for the service constructor. */
 export type PackageInfoOptions = {
   /**
    * A dictionary with the dependency injections for the service. If one or more are not
@@ -27,9 +19,7 @@ export type PackageInfoOptions = {
    */
   inject?: Partial<PackageInfoInjectOptions>;
 };
-/**
- * A small service that reads the contents of the implementation's package.json file.
- */
+/** A small service that reads the contents of the implementation's package.json file. */
 export class PackageInfo {
   /**
    * A deferred promise that resolves when the package.json file is read. It will be
@@ -37,21 +27,15 @@ export class PackageInfo {
    * the service.
    */
   protected defer?: DeferredPromise<IPackageJson>;
-  /**
-   * This property will store the contents of the file once it is read.
-   */
+  /** This property will store the contents of the file once it is read. */
   protected contents?: IPackageJson;
-  /**
-   * The absolute path to the package.json file.
-   */
+  /** The absolute path to the package.json file. */
   protected filepath: string;
   constructor({ inject = {} }: PackageInfoOptions = {}) {
     const usePathUtils = deps.get(inject, 'pathUtils', () => pathUtils());
     this.filepath = usePathUtils.join('package.json');
   }
-  /**
-   * Gets the contents of the implementation's package.json file.
-   */
+  /** Gets the contents of the implementation's package.json file. */
   async get(): Promise<Readonly<IPackageJson>> {
     if (this.contents) return this.contents;
     if (this.defer) return this.defer.promise;
@@ -60,9 +44,7 @@ export class PackageInfo {
     const packageJson = await fsPromises.readFile(this.filepath, 'utf8');
     return this.updateContents(packageJson);
   }
-  /**
-   * Synchronously gets the contents of the implementation's package.json file.
-   */
+  /** Synchronously gets the contents of the implementation's package.json file. */
   getSync(): Readonly<IPackageJson> {
     if (this.contents) return this.contents;
 
@@ -73,7 +55,7 @@ export class PackageInfo {
    * This is a helper that takes care of updating the property with the file contents, and
    * if the deferred promise exists, resolve it and delete it.
    *
-   * @param contents  The contents of the package.json file.
+   * @param contents The contents of the package.json file.
    */
   protected updateContents(contents: string): IPackageJson {
     this.contents = JSON.parse(contents) as IPackageJson;
@@ -87,15 +69,13 @@ export class PackageInfo {
 /**
  * Shorthand for `new PackageInfo()`.
  *
- * @param args  The same parameters as the {@link PackageInfo} constructor.
+ * @param args The same parameters as the {@link PackageInfo} constructor.
  * @returns A new instance of {@link PackageInfo}.
  */
 export const packageInfo = (
   ...args: ConstructorParameters<typeof PackageInfo>
 ): PackageInfo => new PackageInfo(...args);
-/**
- * The options for the {@link PackageInfo} Jimple's provider creator.
- */
+/** The options for the {@link PackageInfo} Jimple's provider creator. */
 export type PackageInfoProviderOptions = {
   /**
    * The name that will be used to register the service.
@@ -111,9 +91,7 @@ export type PackageInfoProviderOptions = {
     [key in keyof PackageInfoInjectOptions]?: string;
   };
 };
-/**
- * A provider creator to register {@link PackageInfo} in a Jimple container.
- */
+/** A provider creator to register {@link PackageInfo} in a Jimple container. */
 export const packageInfoProvider = providerCreator(
   ({ serviceName = 'packageInfo', ...rest }: PackageInfoProviderOptions = {}) =>
     (container) => {

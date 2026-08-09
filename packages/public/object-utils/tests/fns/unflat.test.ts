@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
 import { unflat } from '@src/fns/unflat.js';
+import { describe, it, expect } from 'vitest';
 
 describe('unflat', () => {
   it('should un-flatten a list of properties into a new object', () => {

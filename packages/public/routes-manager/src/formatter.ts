@@ -16,7 +16,7 @@ import type {
  * Type guard to validate if a target, that can be a route path defintion or a group of
  * routes, is a route path string.
  *
- * @param target  The target to validate.
+ * @param target The target to validate.
  */
 export const isRouteStringDefinition = (
   target: RoutePathDefinition | RoutePathGroup,
@@ -25,7 +25,7 @@ export const isRouteStringDefinition = (
  * Type guard to validate if a target, that can be a route path defintion or a group of
  * routes, is a route path definition object.
  *
- * @param target  The target to validate.
+ * @param target The target to validate.
  */
 export const isRouteDetailDefinition = (
   target: RoutePathDetail | RoutePathGroup,
@@ -34,7 +34,7 @@ export const isRouteDetailDefinition = (
  * Type guard to validate if a target, that can be a route path defintion or a group of
  * routes, is a route path definition.
  *
- * @param target  The target to validate.
+ * @param target The target to validate.
  */
 export const isRouteDefinition = (
   target: RoutePathDefinition | RoutePathGroup,
@@ -44,8 +44,7 @@ export const isRouteDefinition = (
  * Given a route path definition, regardless of the format, it returns the path as a
  * string.
  *
- * @param definition  The route path definition, can be a string or an object with a
- *                    path.
+ * @param definition The route path definition, can be a string or an object with a path.
  */
 export const ensureStringPath = <T extends RoutePathDefinition>(
   definition: T,
@@ -58,8 +57,8 @@ export const ensureStringPath = <T extends RoutePathDefinition>(
  * of the first with the one of the second, unless the second is just `/`, in which case
  * it returns the first as is (to avoid a route starting with `//`).
  *
- * @param routePath      The definition for the route path to prefix.
- * @param rootRoutePath  The definition of the parent route path to prefix with.
+ * @param routePath The definition for the route path to prefix.
+ * @param rootRoutePath The definition of the parent route path to prefix with.
  */
 export const prefixPath = <
   RoutePath extends RoutePathDefinition,
@@ -80,8 +79,8 @@ export const prefixPath = <
  * avoid a route name starting with `.`). This is used when all the groups are flattened
  * to a single object.
  *
- * @param routeName        The name of the route to prefix.
- * @param parentRouteName  The name of the parent route to prefix with.
+ * @param routeName The name of the route to prefix.
+ * @param parentRouteName The name of the parent route to prefix with.
  */
 export const prefixName = <RouteName extends string, ParentRouteName extends string>(
   routeName: RouteName,
@@ -94,7 +93,7 @@ export const prefixName = <RouteName extends string, ParentRouteName extends str
 /**
  * Given a route path string, it will extract all possible params from it into an array.
  *
- * @param route  The route path string to extract the params from.
+ * @param route The route path string to extract the params from.
  */
 export const getParams = <T extends string>(route: T): PathParams<T> => {
   const params = route.split('/').reduce<string[]>((acc, part) => {
@@ -110,7 +109,7 @@ export const getParams = <T extends string>(route: T): PathParams<T> => {
  * if there are any, it will return an object with the `path` and the `params`; otherwise,
  * it will just return an object with the `path`.
  *
- * @param path  The path to extract the params from.
+ * @param path The path to extract the params from.
  */
 export const getPathWithParams = <T extends string>(path: T): PathWithParams<T> => {
   const params = getParams(path);
@@ -128,9 +127,8 @@ export const getPathWithParams = <T extends string>(path: T): PathWithParams<T> 
  * the definition in order to prefix the path with the root path, and extract all possible
  * params from it.
  *
- * @param definition  The route path definition to format.
- * @param rootPath    The route path string that needs to be used to prefix the route
- *                    path.
+ * @param definition The route path definition to format.
+ * @param rootPath The route path string that needs to be used to prefix the route path.
  */
 export const formatRouteDefinition = <
   T extends RoutePathDefinition,
@@ -154,11 +152,10 @@ export const formatRouteDefinition = <
  * Takes a group of route path definitions, and recursively formats them in a flattened
  * dictionary.
  *
- * @param group       The group of routes to format.
- * @param parentName  The name of the parent route, to prefix all the group routes
- *                    with.
- * @param parentRoot  The root path of the parent route, to prefix all the group routes
- *                    with.
+ * @param group The group of routes to format.
+ * @param parentName The name of the parent route, to prefix all the group routes with.
+ * @param parentRoot The root path of the parent route, to prefix all the group routes
+ *   with.
  */
 export const formatGroup = <
   Group extends RoutePathGroup,
@@ -196,7 +193,7 @@ export const formatGroup = <
  * into a flattened dictionary of routes, where the keys are the route names (prefixed by
  * the parent route name), and the values are always objects, with the path and params.
  *
- * @param routes  The top level group of routes.
+ * @param routes The top level group of routes.
  */
 export const formatRoutes = <T extends RoutePathGroup>(
   routes: T,

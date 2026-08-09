@@ -1,19 +1,13 @@
 export type GetOptions = {
-  /**
-   * The object from where the property will be read.
-   */
+  /** The object from where the property will be read. */
   target: unknown;
-  /**
-   * The path to the property.
-   */
+  /** The path to the property. */
   path: string;
-  /**
-   * The delimiter that will separate the path components.
-   */
+  /** The delimiter that will separate the path components. */
   pathDelimiter?: string;
   /**
-   * Whether or not to throw an error when the path is invalid. If this is `false`,
-   *  the method will silently fail and return `undefined`.
+   * Whether or not to throw an error when the path is invalid. If this is `false`, the
+   * method will silently fail and return `undefined`.
    */
   failWithError?: boolean;
 };
@@ -21,11 +15,7 @@ export type GetOptions = {
 /**
  * Returns the value of an object property using a path.
  *
- * @param options  The options to use.
- * @template T  The type of the returned object.
- * @throws {Error} If the path is invalid and `failWithError` is set to `true`.
  * @example
- *
  *   const obj = {
  *     propOne: {
  *       propOneSub: 'Charito!',
@@ -35,6 +25,9 @@ export type GetOptions = {
  *   console.log(get({ target: obj, path: 'propOne.propOneSub' }));
  *   // Will output 'Charito!'
  *
+ * @template T The type of the returned object.
+ * @param options The options to use.
+ * @throws {Error} If the path is invalid and `failWithError` is set to `true`.
  */
 function get<T>(options: GetOptions): T | undefined;
 function get<T>(options: unknown, path: string): T | undefined;

@@ -1,5 +1,5 @@
-import { vi, describe, it, expect } from 'vitest';
 import { EventsHub, eventsHub } from '@src/index.js';
+import { vi, describe, it, expect } from 'vitest';
 
 describe('EventsHub', () => {
   describe('basic', () => {

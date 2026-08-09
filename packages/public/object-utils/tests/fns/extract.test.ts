@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
 import { copy } from '@src/fns/copy.js';
 import { extract } from '@src/fns/extract.js';
+import { describe, it, expect } from 'vitest';
 
 describe('extract', () => {
   it('should extract a list of properties from an object', () => {

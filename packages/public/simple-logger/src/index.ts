@@ -1,49 +1,34 @@
-import colors from 'colors/safe.js';
-import { pathUtils, type PathUtils } from '@homer0/path-utils';
-import { packageInfo, type PackageInfo } from '@homer0/package-info';
 import { providerCreator, injectHelper } from '@homer0/jimple';
-/**
- * The colors supported by the service.
- */
+import { packageInfo, type PackageInfo } from '@homer0/package-info';
+import { pathUtils, type PathUtils } from '@homer0/path-utils';
+import colors from 'colors/safe.js';
+/** The colors supported by the service. */
 export type SimpleLoggerColor =
-  Exclude<keyof typeof colors, 'enabled' | 'enable' | 'disable' | 'setTheme'> | 'raw';
-/**
- * It can be a simple text message, or a message and a color.
- */
+  | Exclude<keyof typeof colors, 'enabled' | 'enable' | 'disable' | 'setTheme'>
+  | 'raw';
+/** It can be a simple text message, or a message and a color. */
 export type SimpleLoggerLine = string | [string, SimpleLoggerColor];
 /**
  * This is the type used on all the log methods: it can be a string, a list of strings, or
  * a list of messages and colors.
  */
 export type SimpleLoggerMessage = string | SimpleLoggerLine[];
-/**
- * The options for the service constructor.
- */
+/** The options for the service constructor. */
 export type SimpleLoggerOptions = {
-  /**
-   * A prefix to include in front of all the messages.
-   */
+  /** A prefix to include in front of all the messages. */
   prefix?: string;
-  /**
-   * Whether or not to show the time on each message.
-   */
+  /** Whether or not to show the time on each message. */
   showTime?: boolean;
 };
 
 type ExceptionLike = {
   stack: string;
 };
-/**
- * Utility service to log messages on the console.
- */
+/** Utility service to log messages on the console. */
 export class SimpleLogger {
-  /**
-   * A prefix to include in front of all the messages.
-   */
+  /** A prefix to include in front of all the messages. */
   readonly prefix: string;
-  /**
-   * Whether or not to show the time on each message.
-   */
+  /** Whether or not to show the time on each message. */
   readonly showTime: boolean;
   constructor({ prefix = '', showTime = false }: SimpleLoggerOptions = {}) {
     this.prefix = prefix;
@@ -57,12 +42,7 @@ export class SimpleLogger {
   /**
    * Logs a message with an specific color on the console.
    *
-   * @param message  A text message to log or a list of them.
-   * @param color    The color of the message (the default is the terminal default).
-   *                 This can be overwritten line by line when the message is an array,
-   *                 take a look at the example.
    * @example
-   *
    *   // Simple
    *   logger.log('hello world');
    *   // Custom color
@@ -80,6 +60,10 @@ export class SimpleLogger {
    *     'grey',
    *   );
    *
+   * @param message A text message to log or a list of them.
+   * @param color The color of the message (the default is the terminal default). This can
+   *   be overwritten line by line when the message is an array, take a look at the
+   *   example.
    */
   log(message: SimpleLoggerMessage, color: SimpleLoggerColor = 'raw'): void {
     const lines: string[] = [];
@@ -101,7 +85,7 @@ export class SimpleLogger {
   /**
    * Logs a success (green) message or messages on the console.
    *
-   * @param message  A single message of a list of them.
+   * @param message A single message of a list of them.
    * @see {@link SimpleLogger.log}
    */
   success(message: SimpleLoggerMessage): void {
@@ -110,7 +94,7 @@ export class SimpleLogger {
   /**
    * Logs an information (gray) message or messages on the console.
    *
-   * @param message  A single message of a list of them.
+   * @param message A single message of a list of them.
    * @see {@link SimpleLogger.log}
    */
   info(message: SimpleLoggerMessage): void {
@@ -119,7 +103,7 @@ export class SimpleLogger {
   /**
    * Logs a warning (yellow) message or messages on the console.
    *
-   * @param message  A single message of a list of them.
+   * @param message A single message of a list of them.
    * @see {@link SimpleLogger.log}
    */
   warn(message: SimpleLoggerMessage): void {
@@ -128,16 +112,14 @@ export class SimpleLogger {
   /**
    * Logs an error (red) message or messages on the console.
    *
-   * @param message    A single message of a list of them.
-   *                   See the `log()` documentation to see all the supported
-   *                   properties for the `message` parameter. Different from the other
-   *                   log methods, you can use an `Error` object and the method will
-   *                   take care of extracting the message and the stack information.
-   * @param exception  If the exception has a `stack`
-   *                   property, the method will log each of the stack calls using
-   *                   `info()`.
-   * @template ErrorType  The type of the exception, to be infered and validate if it
-   *                      has a `stack` property.
+   * @template ErrorType The type of the exception, to be infered and validate if it has a
+   *   `stack` property.
+   * @param message A single message of a list of them. See the `log()` documentation to
+   *   see all the supported properties for the `message` parameter. Different from the
+   *   other log methods, you can use an `Error` object and the method will take care of
+   *   extracting the message and the stack information.
+   * @param exception If the exception has a `stack` property, the method will log each of
+   *   the stack calls using `info()`.
    * @see {@link SimpleLogger.log}
    */
   error<ErrorType extends Error, ExceptionType extends ExceptionLike | Error | string>(
@@ -163,7 +145,7 @@ export class SimpleLogger {
    * Prefixes a message with the text sent to the constructor and, if enabled, the current
    * time.
    *
-   * @param text  The text that needs the prefix.
+   * @param text The text that needs the prefix.
    */
   protected addPrefix(text: string): string {
     const parts: string[] = [];
@@ -189,7 +171,7 @@ export class SimpleLogger {
    * is that the `colors` module doesn't have a `raw` option and the alternative would've
    * been adding a few `if`s on the `log` method.
    *
-   * @param color  The name of the color.
+   * @param color The name of the color.
    * @returns A function that receives a string and returns it colored.
    */
   protected getColorFn(color: SimpleLoggerColor): (str: string) => string {
@@ -202,15 +184,13 @@ export class SimpleLogger {
 /**
  * Shorthand for `new SimpleLogger()`.
  *
- * @param args  The same parameters as the {@link SimpleLogger} constructor.
+ * @param args The same parameters as the {@link SimpleLogger} constructor.
  * @returns A new instance of {@link SimpleLogger}.
  */
 export const simpleLogger = (
   ...args: ConstructorParameters<typeof SimpleLogger>
 ): SimpleLogger => new SimpleLogger(...args);
-/**
- * The options for the {@link SimpleLogger} Jimple's provider creator.
- */
+/** The options for the {@link SimpleLogger} Jimple's provider creator. */
 export type SimpleLoggerProviderOptions = SimpleLoggerOptions & {
   /**
    * The name that will be used to register the service.
@@ -219,22 +199,16 @@ export type SimpleLoggerProviderOptions = SimpleLoggerOptions & {
    */
   serviceName?: string;
 };
-/**
- * A provider creator to register {@link SimpleLogger} in a Jimple container.
- */
+/** A provider creator to register {@link SimpleLogger} in a Jimple container. */
 export const simpleLoggerProvider = providerCreator(
   ({ serviceName = 'simpleLogger', ...rest }: SimpleLoggerProviderOptions = {}) =>
     (container) => {
       container.set(serviceName, () => new SimpleLogger(rest));
     },
 );
-/**
- * The dictionary of dependencies that can be injected in the "app logger provider".
- */
+/** The dictionary of dependencies that can be injected in the "app logger provider". */
 type AppLoggerProviderInjectOptions = {
-  /**
-   * The service that gets the information from the `package.json`.
-   */
+  /** The service that gets the information from the `package.json`. */
   packageInfo: PackageInfo;
   /**
    * The service that creates paths relative to the project root, needed to get the
@@ -242,9 +216,7 @@ type AppLoggerProviderInjectOptions = {
    */
   pathUtils: PathUtils;
 };
-/**
- * The options for the "app logger" Jimple's provider creator.
- */
+/** The options for the "app logger" Jimple's provider creator. */
 export type AppLoggerProviderOptions = Omit<SimpleLoggerProviderOptions, 'prefix'> & {
   /**
    * A dictionary with the name of the services to inject. If one or more are not

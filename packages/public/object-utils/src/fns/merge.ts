@@ -5,22 +5,20 @@ import extend from 'extend';
  * supports arrays: if the first element is an array, it will be merged into an array,
  * otherwise, it will be an object.
  *
- * @param targets  The list of objects to merge.
- * @template T  The type of the merged object that will be returned.
  * @example
- *
  *   const objA = { a: 'first' };
  *   const objB = { b: 'second' };
  *   console.log(merge(objA, objB));
  *   // Will output { a: 'first', b: 'second' }
  *
  * @example
- *
  *   const arrA = [{ a: 'first' }];
  *   const arrB = [{ b: 'second' }];
  *   console.log(merge(objA, objB));
  *   // Will output [{ a: 'first', b: 'second' }]
  *
+ * @template T The type of the merged object that will be returned.
+ * @param targets The list of objects to merge.
  */
 export const merge = <T = unknown>(...targets: unknown[]): T => {
   const [firstTarget] = targets;

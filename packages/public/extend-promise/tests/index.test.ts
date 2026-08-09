@@ -1,5 +1,5 @@
-import { vi, describe, expect, it } from 'vitest';
 import { extendPromise } from '@src/index.js';
+import { vi, describe, expect, it } from 'vitest';
 
 describe('extendPromise', () => {
   it('should throw an error when called with anything but a promise', () => {

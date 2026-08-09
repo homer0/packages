@@ -2,17 +2,11 @@ import { copy } from './copy.js';
 import { get } from './get.js';
 
 export type RemoveOptions = {
-  /**
-   * The object from where the property will be removed.
-   */
+  /** The object from where the property will be removed. */
   target: unknown;
-  /**
-   * The path to the property.
-   */
+  /** The path to the property. */
   path: string;
-  /**
-   * The delimiter that will separate the path components.
-   */
+  /** The delimiter that will separate the path components. */
   pathDelimiter?: string;
   /**
    * Whether or not to throw an error when the path is invalid. If this is `false`, the
@@ -20,18 +14,15 @@ export type RemoveOptions = {
    */
   failWithError?: boolean;
   /**
-   * If this flag is `true` and after removing the property the parent object is empty,
-   * it will remove it recursively until a non empty parent object is found.
+   * If this flag is `true` and after removing the property the parent object is empty, it
+   * will remove it recursively until a non empty parent object is found.
    */
   cleanEmptyProperties?: boolean;
 };
 /**
  * Deletes a property of an object using a path.
  *
- * @param options  The options to use.
- * @template T  The type of the returned object.
  * @example
- *
  *   const target = {
  *     propOne: {
  *       propOneSub: 'Charito!',
@@ -41,6 +32,8 @@ export type RemoveOptions = {
  *   console.log(remove({ target, path: 'propOne.propOneSub' }));
  *   // Will output { propTwo: '!!!' }
  *
+ * @template T The type of the returned object.
+ * @param options The options to use.
  */
 function remove<T = unknown>(options: RemoveOptions): T | undefined;
 function remove<T = unknown>(options: unknown, path: string): T | undefined;

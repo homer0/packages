@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
 import { merge } from '@src/fns/merge.js';
+import { describe, it, expect } from 'vitest';
 
 describe('merge', () => {
   it('should merge two objects into a new one', () => {

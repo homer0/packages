@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
 import { formatKeys } from '@src/fns/formatKeys.js';
+import { describe, it, expect } from 'vitest';
 
 describe('formatKeys', () => {
   it('should make all keys first letters into upper case', () => {

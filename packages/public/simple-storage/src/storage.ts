@@ -15,17 +15,13 @@ import type {
  * You can specify the storage type you want to use, the format in which you want to
  * handle the data, and even expiration time for it.
  *
- * @template T  The type of the value stored in the storage.
- * @template E  The type of the entries stored in the storage.
+ * @template T The type of the value stored in the storage.
+ * @template E The type of the entries stored in the storage.
  */
 export class SimpleStorage<T extends Dict, E = unknown> {
-  /**
-   * The service customization options.
-   */
+  /** The service customization options. */
   protected options: SimpleStorageOptions<T>;
-  /**
-   * A dictionary with the different storages the service supports.
-   */
+  /** A dictionary with the different storages the service supports. */
   protected storages: Record<StorageType, Storage<T>>;
   /**
    * Once the service is initialized, this property will hold a reference to the storage
@@ -109,9 +105,7 @@ export class SimpleStorage<T extends Dict, E = unknown> {
 
     this.storage.set(this.options.storage.key, this.data);
   }
-  /**
-   * Gets the service options.
-   */
+  /** Gets the service options. */
   getOptions(): SimpleStorageOptions<T> {
     return deepAssignWithShallowMerge<SimpleStorageOptions<T>>({}, this.options);
   }
@@ -127,10 +121,10 @@ export class SimpleStorage<T extends Dict, E = unknown> {
    * Overwrites the data reference the service has and, if `save` is used, it also saves
    * it into the storage.
    *
-   * @param data  The new data, or a {@link Promise} that resolves into the new data.
-   * @param save  Whether or not the service should save the data into the storage.
-   * @returns If `data` is an object, it will return the same object; but if `data`
-   *          is a {@link Promise}, it will return the _"promise chain"_.
+   * @param data The new data, or a {@link Promise} that resolves into the new data.
+   * @param save Whether or not the service should save the data into the storage.
+   * @returns If `data` is an object, it will return the same object; but if `data` is a
+   *   {@link Promise}, it will return the _"promise chain"_.
    */
   setData(data: T, save?: boolean): T;
   setData(data: Promise<T>, save?: boolean): Promise<T>;
@@ -143,7 +137,7 @@ export class SimpleStorage<T extends Dict, E = unknown> {
    * Resets the data on the class; If entries are enabled, the data will become an empty
    * object; otherwise, it will call the `getInitialData` option fn.
    *
-   * @param save  Whether or not the service should save the data into the storage.
+   * @param save Whether or not the service should save the data into the storage.
    */
   resetData(save: boolean = true): T {
     const data = this.options.entries.enabled ? ({} as T) : this.options.getInitialData();
@@ -152,9 +146,8 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   /**
    * Deletes the service data from the storage.
    *
-   * @param reset  Whether or not to reset the data to the initial data
-   *               (`getInitialData`), if entries area disabled, or to an empty object,
-   *               if they are enabled.
+   * @param reset Whether or not to reset the data to the initial data (`getInitialData`),
+   *   if entries area disabled, or to an empty object, if they are enabled.
    * @throws If the storage is not available.
    */
   remove(reset: boolean = true) {
@@ -168,8 +161,8 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   /**
    * Gets an entry from the storage dictionary.
    *
-   * @param {string} key  The entry key.
-   * @returns {?SimpleStorageEntry} Whatever is on the storage, or `null`.
+   * @param {string} key The entry key.
+   * @returns {SimpleStorageEntry | null} Whatever is on the storage, or `null`.
    * @throws {Error} If entries are not enabled.
    */
   getEntry(key: string): SimpleStorageEntry<E> | undefined {
@@ -195,7 +188,7 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   /**
    * Gets the value of an entry.
    *
-   * @param key  The entry key.
+   * @param key The entry key.
    */
   getEntryValue(key: string): E | undefined {
     const entry = this.getEntry(key);
@@ -207,11 +200,11 @@ export class SimpleStorage<T extends Dict, E = unknown> {
    * Adds a new entry to the service data, and if `save` is used, saves it into the
    * storage.
    *
-   * @param key    The entry key.
-   * @param value  The entry value, or a {@link Promise} that resolves into the value.
-   * @param save   Whether or not the service should save the data into the storage.
-   * @returns If `value` is an object, it will return the same object; but if `value`
-   *          is a {@link Promise}, it will return the _"promise chain"_.
+   * @param key The entry key.
+   * @param value The entry value, or a {@link Promise} that resolves into the value.
+   * @param save Whether or not the service should save the data into the storage.
+   * @returns If `value` is an object, it will return the same object; but if `value` is a
+   *   {@link Promise}, it will return the _"promise chain"_.
    */
   addEntry(key: string, value: E | Promise<E>, save: boolean = true): E | Promise<E> {
     return this.isPromise(value)
@@ -221,7 +214,7 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   /**
    * Checks whether an entry exists or not.
    *
-   * @param key  The entry key.
+   * @param key The entry key.
    */
   hasEntry(key: string): boolean {
     return !!(this.data as Record<string, E>)[key];
@@ -230,9 +223,9 @@ export class SimpleStorage<T extends Dict, E = unknown> {
    * Deletes an entry from the service data, and if `save` is used, the changes will be
    * saved on the storage.
    *
-   * @param key   The entry key.
-   * @param save  Whether or not the service should save the data into the storage
-   *              after deleting the entry.
+   * @param key The entry key.
+   * @param save Whether or not the service should save the data into the storage after
+   *   deleting the entry.
    * @returns Whether or not the entry was deleted.
    */
   removeEntry(key: string, save: boolean = true): boolean {
@@ -248,14 +241,12 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   }
   /**
    * Merges the service default options with the custom ones that can be sent to the
-   * constructor.
-   * The reason there's a method for this is because of a specific (edgy) use case:
-   * `memoryStorage`
-   * can be a Proxy, and a Proxy without defined keys stops working after an
-   * `Object.assign`/spread.
+   * constructor. The reason there's a method for this is because of a specific (edgy) use
+   * case: `memoryStorage` can be a Proxy, and a Proxy without defined keys stops working
+   * after an `Object.assign`/spread.
    *
-   * @param defaults  The service default options.
-   * @param custom    The custom options sent to the constructor.
+   * @param defaults The service default options.
+   * @param custom The custom options sent to the constructor.
    */
   protected mergeOptions(
     defaults: SimpleStorageOptions<T>,
@@ -281,8 +272,8 @@ export class SimpleStorage<T extends Dict, E = unknown> {
    * {@link SimpleStorage.setData} can receive a {@link Promise}, and in that case, this
    * method gets called after it gets resolved.
    *
-   * @param data  The new data.
-   * @param save  Whether or not the service should save the data into the storage.
+   * @param data The new data.
+   * @param save Whether or not the service should save the data into the storage.
    * @returns The same data that was saved.
    */
   protected setResolvedData(data: T, save: boolean) {
@@ -320,8 +311,7 @@ export class SimpleStorage<T extends Dict, E = unknown> {
    * Initializes the data on the service and if needed, on the storage. It first tries to
    * load existing data from the storage, if there's nothing, it just sets an initial
    * stage; but if there was something on the storage, and entries are enabled, it will
-   * try (if also enabled)
-   * to delete expired entries.
+   * try (if also enabled) to delete expired entries.
    */
   protected initializeStorageData(): T {
     const { storage, entries, getInitialData } = this.options;
@@ -339,10 +329,10 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   /**
    * Filters out a dictionary of entries by checking if they expired or not.
    *
-   * @param entries     A dictionary of key-value, where the value is a
-   *                    {@link SimpleStorageEntry}.
-   * @param expiration  The amount of seconds that need to have passed in order to
-   *                    consider an entry expired.
+   * @param entries A dictionary of key-value, where the value is a
+   *   {@link SimpleStorageEntry}.
+   * @param expiration The amount of seconds that need to have passed in order to consider
+   *   an entry expired.
    * @returns A new dictionary without the expired entries.
    */
   protected deleteExpiredEntries(
@@ -362,14 +352,14 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   }
   /**
    * This is the real method behind {@link SimpleStorage.addEntry}. It Adds a new entry to
-   * the service data and, if `save` is used, it also saves it into the storage.
-   * The reason that there are two methods for this is, is because
+   * the service data and, if `save` is used, it also saves it into the storage. The
+   * reason that there are two methods for this is, is because
    * {@link SimpleStorage.addEntry} can receive a {@link Promise}, and in that case, this
    * method gets called after it gets resolved.
    *
-   * @param key    The entry key.
-   * @param value  The entry value.
-   * @param save   Whether or not the service should save the data into the storage.
+   * @param key The entry key.
+   * @param value The entry value.
+   * @param save Whether or not the service should save the data into the storage.
    */
   protected addResolvedEntry(key: string, value: E, save?: boolean): E {
     const entries = this.data as Record<string, SimpleStorageEntry<E>>;
@@ -385,11 +375,11 @@ export class SimpleStorage<T extends Dict, E = unknown> {
     return value;
   }
   /**
-   * This method is just here to comply with the {@link Storage}
-   * _"interface"_ as the temp storage is always available.
+   * This method is just here to comply with the {@link Storage} _"interface"_ as the temp
+   * storage is always available.
    *
-   * @param fallbackFrom  In case it's being used as a fallback, this will be the name
-   *                      of the storage that wasn't available.
+   * @param fallbackFrom In case it's being used as a fallback, this will be the name of
+   *   the storage that wasn't available.
    */
   protected isMemoryStorageAvailable(fallbackFrom?: StorageName): boolean {
     if (fallbackFrom) {
@@ -401,7 +391,7 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   /**
    * Gets an object from the _"memory storage"_.
    *
-   * @param key  The key used to save the object.
+   * @param key The key used to save the object.
    */
   protected getFromMemoryStorage(key: string): T | undefined {
     return this.options.memoryStorage[key];
@@ -409,8 +399,8 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   /**
    * Sets an object into the _"memory storage"_.
    *
-   * @param key    The object key.
-   * @param value  The object to save.
+   * @param key The object key.
+   * @param value The object to save.
    */
   protected setOnMemoryStorage(key: string, value: T): void {
     this.options.memoryStorage[key] = value;
@@ -418,7 +408,7 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   /**
    * Deletes an object from the _"memory storage"_.
    *
-   * @param key  The object key.
+   * @param key The object key.
    */
   protected removeFromMemoryStorage(key: string): void {
     delete this.options.memoryStorage[key];
@@ -426,8 +416,8 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   /**
    * Checks whether `localStorage` is available or not.
    *
-   * @param fallbackFrom  In case it's being used as a fallback, this will be the name
-   *                      of the storage that wasn't available.
+   * @param fallbackFrom In case it's being used as a fallback, this will be the name of
+   *   the storage that wasn't available.
    */
   protected isLocalStorageAvailable(fallbackFrom?: StorageName): boolean {
     if (fallbackFrom) {
@@ -439,7 +429,7 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   /**
    * Gets an object from `localStorage`.
    *
-   * @param key  The key used to save the object.
+   * @param key The key used to save the object.
    */
   protected getFromLocalStorage(key: string): T | undefined {
     const value = this.options.window.localStorage[key];
@@ -448,8 +438,8 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   /**
    * Sets an object into the `localStorage`.
    *
-   * @param key    The object key.
-   * @param value  The object to save.
+   * @param key The object key.
+   * @param value The object to save.
    */
   protected setOnLocalStorage(key: string, value: T): void {
     this.options.window.localStorage[key] = JSON.stringify(value);
@@ -457,7 +447,7 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   /**
    * Deletes an object from the `localStorage`.
    *
-   * @param key  The object key.
+   * @param key The object key.
    */
   protected removeFromLocalStorage(key: string): void {
     delete this.options.window.localStorage[key];
@@ -465,8 +455,8 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   /**
    * Checks whether `sessionStorage` is available or not.
    *
-   * @param fallbackFrom  In case it's being used as a fallback, this will be the name
-   *                      of the storage that wasn't available.
+   * @param fallbackFrom In case it's being used as a fallback, this will be the name of
+   *   the storage that wasn't available.
    */
   protected isSessionStorageAvailable(fallbackFrom?: StorageName): boolean {
     if (fallbackFrom) {
@@ -478,7 +468,7 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   /**
    * Gets an object from `sessionStorage`.
    *
-   * @param key  The key used to save the object.
+   * @param key The key used to save the object.
    */
   protected getFromSessionStorage(key: string): T | undefined {
     const value = this.options.window.sessionStorage[key];
@@ -487,8 +477,8 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   /**
    * Sets an object into the `sessionStorage`.
    *
-   * @param key    The object key.
-   * @param value  The object to save.
+   * @param key The object key.
+   * @param value The object to save.
    */
   protected setOnSessionStorage(key: string, value: T): void {
     this.options.window.sessionStorage[key] = JSON.stringify(value);
@@ -496,7 +486,7 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   /**
    * Deletes an object from the `sessionStorage`.
    *
-   * @param key  The object key.
+   * @param key The object key.
    */
   protected removeFromSessionStorage(key: string): void {
     delete this.options.window.sessionStorage[key];
@@ -505,9 +495,8 @@ export class SimpleStorage<T extends Dict, E = unknown> {
    * Validates the service options before loading the storage and the data.
    *
    * @throws If either `storage.name` or `storage.key` are missing from the options.
-   * @throws If the options have a custom logger but it doesn't have `warn` nor
-   *         `warning`
-   *         methods.
+   * @throws If the options have a custom logger but it doesn't have `warn` nor `warning`
+   *   methods.
    */
   protected validateOptions(): void {
     const { storage, logger } = this.options;
@@ -527,7 +516,7 @@ export class SimpleStorage<T extends Dict, E = unknown> {
    * (from the service options), otherwise, it will fallback to the `console` on the
    * `window` option.
    *
-   * @param message  The message to print out.
+   * @param message The message to print out.
    */
   protected warn(message: string): void {
     const { logger } = this.options;
@@ -545,8 +534,8 @@ export class SimpleStorage<T extends Dict, E = unknown> {
    * Prints out a message saying that the service is doing a fallback from a storage to
    * another one.
    *
-   * @param from  The name of the storage that's not available.
-   * @param to    The name of the storage that will be used instead.
+   * @param from The name of the storage that's not available.
+   * @param to The name of the storage that will be used instead.
    */
   protected warnStorageFallback(from: StorageName, to: StorageName): void {
     this.warn(`${from} is not available; switching to ${to}`);
@@ -554,7 +543,7 @@ export class SimpleStorage<T extends Dict, E = unknown> {
   /**
    * Checks whether an object is a Promise or not.
    *
-   * @param value  The object to test.
+   * @param value The object to test.
    */
   protected isPromise<P>(value: P | Promise<P>): value is Promise<P> {
     return (
@@ -568,10 +557,10 @@ export class SimpleStorage<T extends Dict, E = unknown> {
 /**
  * Shorthand for `new SimpleStorage()`.
  *
- * @param options  The customatization options for the service.
+ * @template T The type of the value stored in the storage.
+ * @template E The type of the entries stored in the storage.
+ * @param options The customatization options for the service.
  * @returns A new instance of {@link SimpleStorage}.
- * @template T  The type of the value stored in the storage.
- * @template E  The type of the entries stored in the storage.
  */
 export const simpleStorage = <T extends Dict, E>(
   options?: SimpleStorageConstructorOptions<T>,

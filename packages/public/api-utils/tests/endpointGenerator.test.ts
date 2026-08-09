@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
 import { EndpointsGenerator, endpointsGenerator } from '@src/endpointsGenerator.js';
 import type { EndpointsDict } from '@src/types.js';
+import { describe, it, expect } from 'vitest';
 
 describe('EndpointsGenertor', () => {
   it('should be correctly initialized', () => {

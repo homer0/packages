@@ -1,4 +1,3 @@
-import { resourceFactory } from './resourceFactory.js';
 import type {
   GenericFn,
   GenericCurriedFn,
@@ -6,6 +5,7 @@ import type {
   ResourceCreatorCurriedFn,
   ResourceCreatorHandler,
 } from './factories.types.js';
+import { resourceFactory } from './resourceFactory.js';
 /**
  * Generates a function to create resource creators of an specified type. This function
  * itself doesn't have logic, but it's just in charge of creating the constraint for the
@@ -14,39 +14,36 @@ import type {
  * As all the other _"factory functions"_, this is meant to be used as a building block
  * when extending the container.
  *
- * @returns A function that can be used to create "resource creators".
- * @template ResourceFn  The type of function the resource creator needs to have.
  * @example
- *
  *   type ActionFn = (c: Jimple) => void;
  *   const factory = resourceCreatorFactory<ActionFn>();
  *   const myAction = factory('action', 'fn', (name = 'foo') => (c) => {
  *     c.set(name, 'bar');
  *   });
  *
+ * @template ResourceFn The type of function the resource creator needs to have.
+ * @returns A function that can be used to create "resource creators".
  */
 export const resourceCreatorFactory =
   <ResourceFn extends GenericFn>() =>
   /**
    * Generates a new resource creator using the contraint defined in the factory.
    *
-   * @param name       The name of the resource.
-   * @param key        The property key for the function.
-   * @param creatorFn  The curried function that returns the actual resource function.
-   * @returns A resource creator: an object that can be used as a resource, and as a
-   *          function that returns a resource.
-   * @template Name       The literal type of `name`, to be used in the return object.
-   * @template Key        The literal type of `key`, to be used in the return object.
-   * @template ResFn      The type of the resource function, the creator function needs
-   *                      to return. This is restricted by the factory constraint.
-   * @template CreatorFn  The literal type of `creatorFn`, to be used in the return
-   *                      object.
    * @example
-   *
    *   const myAction = factory('action', 'fn', (name = 'foo') => (c) => {
    *     c.set(name, 'bar');
    *   });
    *
+   * @template Name The literal type of `name`, to be used in the return object.
+   * @template Key The literal type of `key`, to be used in the return object.
+   * @template ResFn The type of the resource function, the creator function needs to
+   *   return. This is restricted by the factory constraint.
+   * @template CreatorFn The literal type of `creatorFn`, to be used in the return object.
+   * @param name The name of the resource.
+   * @param key The property key for the function.
+   * @param creatorFn The curried function that returns the actual resource function.
+   * @returns A resource creator: an object that can be used as a resource, and as a
+   *   function that returns a resource.
    */
   <
     Name extends string,

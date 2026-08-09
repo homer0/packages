@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
 import { copy } from '@src/fns/copy.js';
 import { set } from '@src/fns/set.js';
+import { describe, it, expect } from 'vitest';
 
 describe('set', () => {
   it('should set a property on an object using its name', () => {

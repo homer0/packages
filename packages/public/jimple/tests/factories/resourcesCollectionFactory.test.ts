@@ -1,5 +1,5 @@
-import { vi, describe, expect, it } from 'vitest';
 import { resourceFactory, resourcesCollectionFactory } from '@src/factories/index.js';
+import { vi, describe, expect, it } from 'vitest';
 
 describe('resourcesCollectionFactory', () => {
   it('should throw an error if an item uses the name of the resource as key', () => {

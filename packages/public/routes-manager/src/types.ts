@@ -2,34 +2,20 @@
 // Core
 // ============================================================
 
-/**
- * A representation of a route path, that always starts with a `/`.
- */
+/** A representation of a route path, that always starts with a `/`. */
 export type RoutePathString = `/${string}`;
-/**
- * The properties that make a route path.
- */
+/** The properties that make a route path. */
 export type RoutePathDetail = {
-  /**
-   * The path of the route, that always starts with a `/`.
-   */
+  /** The path of the route, that always starts with a `/`. */
   path: RoutePathString;
-  /**
-   * A list of required query parameters.
-   */
+  /** A list of required query parameters. */
   queryParams?: ReadonlyArray<string>;
-  /**
-   * A list of optional query parameters.
-   */
+  /** A list of optional query parameters. */
   optionalQueryParams?: ReadonlyArray<string>;
-  /**
-   * A comment string to describe the route.
-   */
+  /** A comment string to describe the route. */
   comments?: Readonly<string>;
 };
-/**
- * A route can be defined as a string, or as an object with a path and other properties.
- */
+/** A route can be defined as a string, or as an object with a path and other properties. */
 export type RoutePathDefinition = RoutePathString | RoutePathDetail;
 /**
  * The base properties all groups have. The reason this interface exists is so the
@@ -55,9 +41,7 @@ export interface RoutePathGroup extends BaseRouterPathGroups {
  * least one key.
  */
 type HasAtLeastOneKey<T> = keyof T extends never ? false : true;
-/**
- * Picks all the keys of an object type that can be undefined.
- */
+/** Picks all the keys of an object type that can be undefined. */
 type PickKeysWithPartialValues<T> = keyof {
   [K in keyof T as undefined extends T[K] ? K : never]: K;
 };
@@ -69,8 +53,8 @@ type HasAtLeastOneRequiredKey<T> = HasAtLeastOneKey<
   Omit<T, PickKeysWithPartialValues<T>>
 >;
 /**
- * This utility is used in conditional types to ensure an inferred array type has at
- * least one item.
+ * This utility is used in conditional types to ensure an inferred array type has at least
+ * one item.
  */
 type HasAtLeastOneItem<T> = T extends readonly unknown[]
   ? T['length'] extends 0
@@ -84,17 +68,13 @@ type HasAtLeastOneItem<T> = T extends readonly unknown[]
  * This is copied from the `type-fest` package.
  */
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] } & {};
-/**
- * A version of the `Simplify` utility (from `type-fest`) that makes the object readonly.
- */
+/** A version of the `Simplify` utility (from `type-fest`) that makes the object readonly. */
 type SimplifyReadonly<T> = Simplify<Readonly<T>>;
 /**
  * Extracts all the parameters from a path string into a tuple.
  *
  * @example
- *
  *   type Params = PathParams<'/root/:foo/:bar/:baz'>; // ['foo', 'bar', 'baz']
- *
  */
 export type PathParams<
   T extends string,
@@ -108,19 +88,15 @@ export type PathParams<
  * Validates a path string and returns an object with the path, and if needed, the params.
  *
  * @example
- *
  *   type PathWithParams = PathWithParams<'/root/:foo/:bar'>;
  *   // { path: '/root/:foo/:bar', params: ['foo', 'bar'] }
  *   type PathWithNoParams = PathWithParams<'/root'>;
  *   // { path: '/root' }
- *
  */
 export type PathWithParams<T extends string, TP = PathParams<T>> = {
   path: T;
 } & (HasAtLeastOneItem<TP> extends true ? { params: Readonly<TP> } : object);
-/**
- * Extracts the path from a route path definition, whether it's a string or an object.
- */
+/** Extracts the path from a route path definition, whether it's a string or an object. */
 export type RoutePathAsString<T extends RoutePathDefinition> = T extends RoutePathDetail
   ? T['path']
   : T;
@@ -129,10 +105,8 @@ export type RoutePathAsString<T extends RoutePathDefinition> = T extends RoutePa
  * and if it's just `/`, so we can avoid prefixing a path that already starts with `/`.
  *
  * @example
- *
  *   type PrefixedPath = PrefixedPath<'/route', '/root'>; // '/root/route'
  *   type PrefixedPathWithoutRoot = PrefixedPath<'/route', '/'>; // '/route'
- *
  */
 export type PrefixedPath<
   RoutePathDef extends RoutePathDefinition,
@@ -145,10 +119,8 @@ export type PrefixedPath<
  * the groups are flattened to a single object.
  *
  * @example
- *
  *   type PrefixedName = PrefixedName<'settings', 'account'>; // 'account.settings'
  *   type PrefixedNameWithoutParent = PrefixedName<'settings'>; // 'settings'
- *
  */
 export type PrefixedName<
   RouteName extends string,
@@ -176,8 +148,8 @@ export type FormattedRoutePathDefinition<
 
 /**
  * Recursively flattens a group of routes, and possible sub groups, into a single object,
- * where the keys are the route names (prefixed with the parent route name), and the values
- * are always objects, with the path and params.
+ * where the keys are the route names (prefixed with the parent route name), and the
+ * values are always objects, with the path and params.
  */
 type FlattenGroup<
   Group extends RoutePathGroup,
@@ -200,15 +172,11 @@ type FlattenGroup<
           [P in PrefixedName<K & string, ParentName>]: Group[K];
         };
 }[keyof Omit<Group, 'root'>];
-/**
- * Utility method that allows us to merge all the flattened groups into a single object.
- */
+/** Utility method that allows us to merge all the flattened groups into a single object. */
 type Merge<T> = (T extends unknown ? (x: T) => void : never) extends (x: infer R) => void
   ? SimplifyReadonly<R>
   : never;
-/**
- * Flattens and formats all the groups into a single object.
- */
+/** Flattens and formats all the groups into a single object. */
 export type FormattedRoutePaths<T extends RoutePathGroup> = Merge<FlattenGroup<T>>;
 
 // ============================================================
@@ -228,7 +196,7 @@ export type RoutePath = RoutePathDetail & {
  * params, the query params, and the optional query params.
  *
  * @todo Create a utility type that will allow us to extract the params from a path
- *       string.
+ *   string.
  */
 type RouteParamsObject<T extends RoutePath> = Simplify<
   // - path params
@@ -268,7 +236,8 @@ type RouteParamsObject<T extends RoutePath> = Simplify<
  * routes: the type returns an array of arguments which value may change depending on
  * whether the route has params or not. If the {@link RouteParamsObject} has at least one
  * key, the arguments' returned will be a dictionary with the params; but if it doesn't,
- * the params will be optional (as the manager always allows for unexpected query params).
+ * the params will be optional (as the manager always allows for unexpected query
+ * params).
  */
 export type RoutePathParams<T extends RoutePath, P = RouteParamsObject<T>> =
   HasAtLeastOneKey<P> extends true

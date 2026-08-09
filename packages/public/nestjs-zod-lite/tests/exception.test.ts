@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest';
 import { BadRequestException, HttpStatus } from '@nestjs/common';
-import { z } from 'zod';
 import { ZodValidationException } from '@src/exception.js';
+import { describe, expect, it } from 'vitest';
+import { z } from 'zod';
 
 describe('ZodValidationException', () => {
   it('should correctly create exception', () => {

@@ -1,8 +1,8 @@
 vi.mock('@src/store.js');
 
-import { describe, it, expect, beforeEach, type Mock } from 'vitest';
 import { createGetConfig, getConfig, resetGetConfig } from '@src/createGetConfig.js';
 import { getStore } from '@src/store.js';
+import { describe, it, expect, beforeEach, type Mock } from 'vitest';
 
 const getStoreMock = getStore as Mock;
 

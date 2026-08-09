@@ -1,17 +1,13 @@
-import * as path from 'path';
 import { providerCreator } from '@homer0/jimple';
-/**
- * The options for the service constructor.
- */
+import * as path from 'path';
+/** The options for the service constructor. */
 export type PathUtilsOptions = {
   /**
    * The location of the project's `home`(root) directory. By default it uses
    * `process.cwd()`.
    */
   home?: string;
-  /**
-   * A dictionary of known locations in the project.
-   */
+  /** A dictionary of known locations in the project. */
   locations?: Record<string, string>;
 };
 /**
@@ -19,13 +15,9 @@ export type PathUtilsOptions = {
  * to the project root or from where the app executable is located.
  */
 export class PathUtils {
-  /**
-   * The root path from where the app is being executed.
-   */
+  /** The root path from where the app is being executed. */
   protected path: string;
-  /**
-   * The dictionary with the known locations in the project.
-   */
+  /** The dictionary with the known locations in the project. */
   protected locations: Record<string, string> = {};
   constructor(options: PathUtilsOptions = {}) {
     this.path = process.cwd();
@@ -42,9 +34,9 @@ export class PathUtils {
   /**
    * Adds a new location.
    *
-   * @param name      The reference name.
-   * @param location  The path of the location. It must be inside the path from where
-   *                  the app is being executed.
+   * @param name The reference name.
+   * @param location The path of the location. It must be inside the path from where the
+   *   app is being executed.
    */
   addLocation(name: string, location: string) {
     let locPath = location;
@@ -65,7 +57,7 @@ export class PathUtils {
   /**
    * Gets a location path by its name.
    *
-   * @param name  The location name.
+   * @param name The location name.
    * @throws If there location is not registered.
    */
   getLocation(name: string): string {
@@ -76,17 +68,15 @@ export class PathUtils {
 
     return location;
   }
-  /**
-   * Gets the dictionary with the known locations.
-   */
+  /** Gets the dictionary with the known locations. */
   getLocations(): Record<string, string> {
     return { ...this.locations };
   }
   /**
    * Builds a path using a location path as base.
    *
-   * @param location  The location name.
-   * @param paths     The rest of the path components to join.
+   * @param location The location name.
+   * @param paths The rest of the path components to join.
    */
   joinFrom(location: string, ...paths: string[]) {
     const locationPath = this.getLocation(location);
@@ -95,26 +85,20 @@ export class PathUtils {
   /**
    * Alias to {@link PathUtils.joinFrom} that uses the `home` location by default.
    *
-   * @param paths  The rest of the path components to join.
+   * @param paths The rest of the path components to join.
    */
   join(...paths: string[]) {
     return this.joinFrom('home', ...paths);
   }
-  /**
-   * Gets the project root path.
-   */
+  /** Gets the project root path. */
   getHome(): string {
     return this.getLocation('home');
   }
-  /**
-   * The path to the directory where the app executable is located.
-   */
+  /** The path to the directory where the app executable is located. */
   getApp(): string {
     return this.getLocation('app');
   }
-  /**
-   * The root path from where the app is being executed (`cwd`).
-   */
+  /** The root path from where the app is being executed (`cwd`). */
   getPath(): string {
     return this.path;
   }
@@ -122,15 +106,13 @@ export class PathUtils {
 /**
  * Shorthand for `new PathUtils()`.
  *
- * @param args  The same parameters as the {@link PathUtils} constructor.
+ * @param args The same parameters as the {@link PathUtils} constructor.
  * @returns A new instance of {@link PathUtils}.
  */
 export const pathUtils = (...args: ConstructorParameters<typeof PathUtils>): PathUtils =>
   new PathUtils(...args);
 
-/**
- * The options for the {@link PathUtils} Jimple's provider creator.
- */
+/** The options for the {@link PathUtils} Jimple's provider creator. */
 export type PathUtilsProviderOptions = PathUtilsOptions & {
   /**
    * The name that will be used to register the service.
@@ -139,9 +121,7 @@ export type PathUtilsProviderOptions = PathUtilsOptions & {
    */
   serviceName?: string;
 };
-/**
- * A provider creator to register {@link PathUtils} in a Jimple container.
- */
+/** A provider creator to register {@link PathUtils} in a Jimple container. */
 export const pathUtilsProvider = providerCreator(
   ({ serviceName = 'pathUtils', ...rest }: PathUtilsProviderOptions = {}) =>
     (container) => {

@@ -1,10 +1,10 @@
-import { describe, expect, it } from 'vitest';
-import { Route } from '@src/route.js';
 import { RoutesManager, createRoutesManager } from '@src/manager.js';
+import { Route } from '@src/route.js';
+import { describe, expect, it } from 'vitest';
 
 /**
- * These types are copied from `type-fest` to avoid adding it as a dependency just
- * for `isEqual`.
+ * These types are copied from `type-fest` to avoid adding it as a dependency just for
+ * `isEqual`.
  */
 export type IsEqual<A, B> = [A, B] extends [infer AA, infer BB]
   ? [AA] extends [never]

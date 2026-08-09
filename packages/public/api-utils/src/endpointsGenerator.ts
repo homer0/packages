@@ -1,21 +1,15 @@
-import urijs from 'urijs';
 import { flat, copy } from '@homer0/object-utils';
+import urijs from 'urijs';
 import type {
   EndpointDefinition,
   EndpointDefinitionProps,
   EndpointsDict,
 } from './types.js';
-/**
- * The options for the service constructor.
- */
+/** The options for the service constructor. */
 export type EndpointsGeneratorOptions = {
-  /**
-   * The base URL for the endpoints.
-   */
+  /** The base URL for the endpoints. */
   url: string;
-  /**
-   * The dictionary with the endpoints' definitions.
-   */
+  /** The dictionary with the endpoints' definitions. */
   endpoints: EndpointsDict;
   /**
    * The format the placeholders must have in order to be replaced by the service. It can
@@ -25,17 +19,11 @@ export type EndpointsGeneratorOptions = {
    */
   paramsPlaceholder?: string;
 };
-/**
- * A service that allows the generation of endpoints in a easy way.
- */
+/** A service that allows the generation of endpoints in a easy way. */
 export class EndpointsGenerator {
-  /**
-   * The base URL for the endpoints.
-   */
+  /** The base URL for the endpoints. */
   protected url: string;
-  /**
-   * A flatten dictionary with the endpoints' definitions.
-   */
+  /** A flatten dictionary with the endpoints' definitions. */
   protected endpoints: Record<string, EndpointDefinition>;
   /**
    * The format the placeholders must have in order to be replaced by the service. It can
@@ -60,10 +48,10 @@ export class EndpointsGenerator {
   /**
    * Generates an endpoint's URL.
    *
-   * @param key         The key property of the endpoint in the flatten dictionary.
-   * @param parameters  A dictionary of paramteres that will replace the placeholders
-   *                    in the path. If a parameter doesn't have a placeholder, it will
-   *                    be added to the query string.
+   * @param key The key property of the endpoint in the flatten dictionary.
+   * @param parameters A dictionary of paramteres that will replace the placeholders in
+   *   the path. If a parameter doesn't have a placeholder, it will be added to the query
+   *   string.
    * @returns A generated endpoint URL.
    * @throws If the endpoint doesn't exist in the dictionary.
    */
@@ -129,15 +117,11 @@ export class EndpointsGenerator {
     // Return the `urijs` object as a string.
     return uri.toString();
   }
-  /**
-   * Gets the dictionary of endpoints the service uses.
-   */
+  /** Gets the dictionary of endpoints the service uses. */
   getEndpoints(): Record<string, EndpointDefinition> {
     return copy(this.endpoints);
   }
-  /**
-   * Gets the base URL for the endpoints.
-   */
+  /** Gets the base URL for the endpoints. */
   getUrl(): string {
     return this.url;
   }
@@ -145,7 +129,7 @@ export class EndpointsGenerator {
 /**
  * Shorthand for `new EndpointsGenerator()`.
  *
- * @param args  The same parameters as the {@link EndpointsGenerator} constructor.
+ * @param args The same parameters as the {@link EndpointsGenerator} constructor.
  * @returns A new instance of {@link EndpointsGenerator}.
  */
 export const endpointsGenerator = (

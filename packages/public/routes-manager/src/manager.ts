@@ -15,17 +15,15 @@ type RoutesDict<
   Definitions extends RoutePathGroup,
   Routes = FormattedRoutePaths<Definitions>,
 > = {
-  [
-    K in keyof Routes as Routes[K] extends RoutePath ? K : never
-  ]: Routes[K] extends RoutePath ? Route<Routes[K]> : never;
+  [K in keyof Routes as Routes[K] extends RoutePath
+    ? K
+    : never]: Routes[K] extends RoutePath ? Route<Routes[K]> : never;
 };
-/**
- * Extracts the parameters from a route definition inside a {@link Route} instance.
- */
+/** Extracts the parameters from a route definition inside a {@link Route} instance. */
 type RouteClassFormatParams<T> = T extends Route<infer P> ? RoutePathParams<P> : [];
 /**
- * The orchestrator class that takes all the route defintions, formats them into {@link Route}
- * instances, and provides a way to access them.
+ * The orchestrator class that takes all the route defintions, formats them into
+ * {@link Route} instances, and provides a way to access them.
  */
 export class RoutesManager<
   Definitions extends RoutePathGroup,
@@ -38,13 +36,11 @@ export class RoutesManager<
    */
   protected definitions: Routes;
   /**
-   * A dictionary of the formatted routes, wrapped inside {@link Route} instances. The
-   * keys are the route names.
+   * A dictionary of the formatted routes, wrapped inside {@link Route} instances. The keys
+   * are the route names.
    */
   protected routes: RoutesDictionary;
-  /**
-   * @param routes  The raw defintions of the routes.
-   */
+  /** @param routes The raw defintions of the routes. */
   constructor(routes: Definitions) {
     const definitions = formatRoutes(routes);
     this.routes = Object.entries(definitions).reduce((acc, [keyRaw, valueRaw]) => {
@@ -56,9 +52,7 @@ export class RoutesManager<
     }, {} as RoutesDictionary);
     this.definitions = definitions as Routes;
   }
-  /**
-   * Gets a readonly dictionary with the the formatted definitions of the routes.
-   */
+  /** Gets a readonly dictionary with the the formatted definitions of the routes. */
   getDefinitions(): Readonly<Routes> {
     return this.definitions as Routes;
   }
@@ -66,7 +60,7 @@ export class RoutesManager<
    * Gets a specific route definition by its key. The key is the name of the route, and if
    * it is a sub route, it will be prefixed with the parent route name and a dot.
    *
-   * @param key  The key of the route definition to get.
+   * @param key The key of the route definition to get.
    * @throws An error if the route definition is not found.
    */
   getDefinition<K extends keyof Routes>(key: K): Routes[K] {
@@ -89,7 +83,7 @@ export class RoutesManager<
    * Gets a specific {@link Route} by its key. The key is the name of the route, and if it
    * is a sub route, it will be prefixed with the parent route name and a dot.
    *
-   * @param key  The key of the route definition to get.
+   * @param key The key of the route definition to get.
    * @throws An error if the route definition is not found.
    */
   getRoute<K extends keyof RoutesDictionary>(key: K): RoutesDictionary[K] {
@@ -104,10 +98,9 @@ export class RoutesManager<
   /**
    * Generates a route string path.
    *
-   * @param key     The key of the route definition.
-   * @param params  The dictionary of parameters to replace in the route path.
-   *                Parameters not present in the definition will be added as query
-   *                parameters.
+   * @param key The key of the route definition.
+   * @param params The dictionary of parameters to replace in the route path. Parameters
+   *   not present in the definition will be added as query parameters.
    */
   getPath<K extends keyof RoutesDictionary>(
     key: K,
@@ -121,7 +114,7 @@ export class RoutesManager<
 /**
  * Shorthand to create a new {@link RoutesManager} instance.
  *
- * @param routes  The raw definitions of the routes.
+ * @param routes The raw definitions of the routes.
  */
 export const createRoutesManager = <Definitions extends RoutePathGroup>(
   routes: Definitions,

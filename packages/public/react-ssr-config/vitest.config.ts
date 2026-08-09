@@ -1,7 +1,7 @@
-import { resolve } from 'node:path';
 import react from '@vitejs/plugin-react';
-import { defineConfig, type Plugin } from 'vitest/config';
+import { resolve } from 'node:path';
 import swc from 'unplugin-swc';
+import { defineConfig, type Plugin } from 'vitest/config';
 
 export default defineConfig({
   plugins: [

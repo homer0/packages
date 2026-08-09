@@ -1,4 +1,3 @@
-import { vi, describe, it, expect, afterEach, type Mock } from 'vitest';
 import { deepAssignWithShallowMerge } from '@homer0/deep-assign';
 import {
   simpleStorage,
@@ -7,6 +6,7 @@ import {
   type SimpleStorageConstructorOptions,
   type StorageWindow,
 } from '@src/index.js';
+import { vi, describe, it, expect, afterEach, type Mock } from 'vitest';
 
 type GetStorageProxyMocks<T> = {
   get: Mock<(name: string) => T | undefined>;

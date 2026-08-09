@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
 import { copy } from '@src/fns/copy.js';
 import { remove } from '@src/fns/remove.js';
+import { describe, it, expect } from 'vitest';
 
 describe('remove', () => {
   it('should delete a property from an object using its name', () => {

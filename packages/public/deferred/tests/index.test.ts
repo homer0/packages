@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
 import { deferred } from '@src/index.js';
+import { describe, expect, it } from 'vitest';
 
 describe('deferred', () => {
   it('should be able to resolve a deferred promise', async () => {

@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
 import { createConfigSlice } from '@src/createConfigSlice.js';
+import { describe, it, expect } from 'vitest';
 
 describe('createConfigSlice', () => {
   const sliceName = 'dummy';

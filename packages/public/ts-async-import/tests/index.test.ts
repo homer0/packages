@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest';
-import * as path from 'path';
 import { tsAsyncImport } from '@src/index.js';
+import * as path from 'path';
+import { describe, expect, it } from 'vitest';
 
 describe('tsAsyncImport', () => {
   const here = __dirname;

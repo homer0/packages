@@ -1,11 +1,11 @@
-import { vi, describe, expect, it } from 'vitest';
-import { Jimple } from '@src/jimple/index.js';
 import {
   provider,
   providerCreator,
   providers,
   createProviders,
 } from '@src/helpers/index.js';
+import { Jimple } from '@src/jimple/index.js';
+import { vi, describe, expect, it } from 'vitest';
 
 describe('providers', () => {
   it('should create a collection of providers', () => {

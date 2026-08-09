@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
 import { lowerCamelToDashKeys } from '@src/fns/lowerCamelToDashKeys.js';
+import { describe, it, expect } from 'vitest';
 
 describe('lowerCamelToDashKeys', () => {
   it('should transform all keys to dash case', () => {
