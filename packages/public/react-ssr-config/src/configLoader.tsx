@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import type { Config } from './config.js';
 import type { ConfigSlice, GenericConfig } from './types.js';
 
@@ -23,13 +23,18 @@ type ConfigLoaderProps = {
  */
 export const ConfigLoader: React.FC<ConfigLoaderProps> = ({ config, children }) => {
   const configValue = config.getConfig();
+  const scriptContent = useMemo(
+    () => ({ __html: JSON.stringify(configValue) }),
+    [configValue],
+  );
+
   return (
     <>
       {children}
       <script
         id={config.scriptId}
         type="application/json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(configValue) }}
+        dangerouslySetInnerHTML={scriptContent}
       />
     </>
   );

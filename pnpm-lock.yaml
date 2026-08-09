@@ -27,6 +27,9 @@ catalogs:
     jsdom:
       specifier: ^30.0.1
       version: 30.0.1
+    oxlint:
+      specifier: ^1.77.0
+      version: 1.77.0
     react:
       specifier: ^19.2.8
       version: 19.2.8
@@ -626,9 +629,9 @@ importers:
 
   packages/public/react-ssr-config:
     devDependencies:
-      '@homer0/eslint-plugin':
+      '@homer0/oxlint-config':
         specifier: workspace:*
-        version: link:../../personal/eslint-plugin
+        version: link:../../personal/oxlint-config
       '@homer0/tsconfig':
         specifier: workspace:*
         version: link:../../personal/tsconfig
@@ -644,12 +647,12 @@ importers:
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.10(vitest@4.1.10)
-      eslint:
-        specifier: 'catalog:'
-        version: 9.39.5(jiti@2.6.1)
       jsdom:
         specifier: 'catalog:'
         version: 30.0.1
+      oxlint:
+        specifier: 'catalog:'
+        version: 1.77.0(oxlint-tsgolint@7.0.2001)
       react:
         specifier: 'catalog:'
         version: 19.2.8
