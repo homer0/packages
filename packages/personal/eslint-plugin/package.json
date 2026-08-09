@@ -64,6 +64,8 @@
   },
   "devDependencies": {
     "@homer0/oxlint-config": "workspace:*",
+    "@homer0/prettier-config": "workspace:*",
+    "@homer0/prettier-plugin-jsdoc": "^12.0.0",
     "@homer0/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "eslint-config-next": "^16.2.12",
@@ -71,6 +73,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "oxlint": "catalog:",
+    "prettier": "^3.9.6",
     "tsup": "catalog:",
     "typescript": "^6.0.3"
   },
