@@ -32,7 +32,7 @@ describe('ZodValidationPipe', () => {
       };
 
       expect(pipe.transform(valid, metadata)).toEqual(valid);
-      expect(() => pipe.transform(invalid, metadata)).toThrow();
+      expect(() => pipe.transform(invalid, metadata)).toThrow(ZodValidationException);
     }
   });
 
