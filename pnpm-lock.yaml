@@ -212,12 +212,12 @@ importers:
 
   packages/public/api-utils:
     devDependencies:
-      '@homer0/eslint-plugin':
-        specifier: workspace:*
-        version: link:../../personal/eslint-plugin
       '@homer0/object-utils':
         specifier: workspace:*
         version: link:../object-utils
+      '@homer0/oxlint-config':
+        specifier: workspace:*
+        version: link:../../personal/oxlint-config
       '@homer0/tsconfig':
         specifier: workspace:*
         version: link:../../personal/tsconfig
@@ -227,9 +227,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.10(vitest@4.1.10)
-      eslint:
+      oxlint:
         specifier: 'catalog:'
-        version: 9.39.5(jiti@2.6.1)
+        version: 1.77.0(oxlint-tsgolint@7.0.2001)
       tsup:
         specifier: 'catalog:'
         version: 8.5.1(@swc/core@1.15.47)(jiti@2.6.1)(postcss@8.5.25)(supports-color@7.2.0)(typescript@6.0.3)(yaml@2.9.0)
