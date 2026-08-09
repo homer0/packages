@@ -13,7 +13,7 @@ export default defineConfig([
      * we can use it here, and it has a `index.d.ts` that exports the types from `src` in order
      * to have proper autocompletion.
      */
-    ignores: ['eslint.config.js', 'local-config/**'],
+    ignores: ['eslint.config.js', 'oxlint.config.ts', 'local-config/**'],
     importUrl: import.meta.url,
     configs: ['node-ts-with-prettier'],
   }),
