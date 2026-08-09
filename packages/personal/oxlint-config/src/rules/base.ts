@@ -1,0 +1,425 @@
+/**
+ * @todo Document the intent and Oxlint status of every base rule.
+ */
+export const base = {
+  'array-callback-return': [
+    'error',
+    {
+      allowImplicit: true,
+    },
+  ],
+  'block-scoped-var': 'error',
+  complexity: ['warn', 30],
+  'consistent-return': 'error',
+  curly: 'off',
+  'default-case': [
+    'error',
+    {
+      commentPattern: '^no default$',
+    },
+  ],
+  'default-case-last': 'error',
+  'default-param-last': 'error',
+  'dot-notation': [
+    'error',
+    {
+      allowKeywords: true,
+    },
+  ],
+  eqeqeq: [
+    'error',
+    'always',
+    {
+      null: 'ignore',
+    },
+  ],
+  'grouped-accessor-pairs': 'error',
+  'guard-for-in': 'error',
+  'max-classes-per-file': ['error', 1],
+  'no-alert': 'warn',
+  'no-caller': 'error',
+  'no-case-declarations': 'error',
+  'no-constructor-return': 'error',
+  'no-else-return': [
+    'error',
+    {
+      allowElseIf: false,
+    },
+  ],
+  'no-empty-function': [
+    'error',
+    {
+      allow: ['arrowFunctions', 'functions', 'methods'],
+    },
+  ],
+  'no-empty-pattern': 'error',
+  'no-eval': 'error',
+  'no-extend-native': 'error',
+  'no-extra-bind': 'error',
+  'no-extra-label': 'error',
+  'no-fallthrough': 'error',
+  'no-global-assign': [
+    'error',
+    {
+      exceptions: [],
+    },
+  ],
+  'no-implied-eval': 'error',
+  'no-iterator': 'error',
+  'no-labels': [
+    'error',
+    {
+      allowLoop: false,
+      allowSwitch: false,
+    },
+  ],
+  'no-lone-blocks': 'error',
+  'no-loop-func': 'error',
+  'no-magic-numbers': [
+    'error',
+    {
+      ignore: [0, 1, -1, 60, 100, 1000],
+      ignoreArrayIndexes: true,
+      enforceConst: false,
+      detectObjects: false,
+    },
+  ],
+  'no-multi-str': 'error',
+  'no-new': 'error',
+  'no-new-func': 'error',
+  'no-new-wrappers': 'error',
+  'no-nonoctal-decimal-escape': 'error',
+  'no-param-reassign': [
+    'error',
+    {
+      props: true,
+      ignorePropertyModificationsFor: [
+        'acc',
+        'accumulator',
+        'e',
+        'ctx',
+        'context',
+        'req',
+        'request',
+        'res',
+        'response',
+        '$scope',
+        'staticContext',
+        'state',
+        'ref',
+        'sacc',
+      ],
+    },
+  ],
+  'no-proto': 'error',
+  'no-redeclare': 'error',
+  'no-restricted-properties': [
+    'error',
+    {
+      object: 'arguments',
+      property: 'callee',
+      message: 'arguments.callee is deprecated',
+    },
+    {
+      object: 'global',
+      property: 'isFinite',
+      message: 'Please use Number.isFinite instead',
+    },
+    {
+      object: 'self',
+      property: 'isFinite',
+      message: 'Please use Number.isFinite instead',
+    },
+    {
+      object: 'window',
+      property: 'isFinite',
+      message: 'Please use Number.isFinite instead',
+    },
+    {
+      object: 'global',
+      property: 'isNaN',
+      message: 'Please use Number.isNaN instead',
+    },
+    {
+      object: 'self',
+      property: 'isNaN',
+      message: 'Please use Number.isNaN instead',
+    },
+    {
+      object: 'window',
+      property: 'isNaN',
+      message: 'Please use Number.isNaN instead',
+    },
+    {
+      property: '__defineGetter__',
+      message: 'Please use Object.defineProperty instead.',
+    },
+    {
+      property: '__defineSetter__',
+      message: 'Please use Object.defineProperty instead.',
+    },
+    {
+      object: 'Math',
+      property: 'pow',
+      message: 'Use the exponentiation operator (**) instead.',
+    },
+  ],
+  'no-return-assign': ['error', 'always'],
+  'no-script-url': 'error',
+  'no-self-assign': [
+    'error',
+    {
+      props: true,
+    },
+  ],
+  'no-self-compare': 'error',
+  'no-sequences': 'error',
+  'no-throw-literal': 'error',
+  'no-unmodified-loop-condition': 'error',
+  'no-unused-expressions': [
+    'error',
+    {
+      allowShortCircuit: false,
+      allowTernary: false,
+      allowTaggedTemplates: false,
+    },
+  ],
+  'no-unused-labels': 'error',
+  'no-useless-call': 'error',
+  'no-useless-catch': 'error',
+  'no-useless-concat': 'error',
+  'no-useless-return': 'error',
+  'no-void': 'error',
+  'no-with': 'error',
+  'prefer-promise-reject-errors': [
+    'error',
+    {
+      allowEmptyReject: true,
+    },
+  ],
+  'prefer-regex-literals': [
+    'error',
+    {
+      disallowRedundantWrapping: true,
+    },
+  ],
+  radix: 'error',
+  'vars-on-top': 'error',
+  yoda: 'error',
+  'for-direction': 'error',
+  'getter-return': [
+    'error',
+    {
+      allowImplicit: true,
+    },
+  ],
+  'no-async-promise-executor': 'error',
+  'no-compare-neg-zero': 'error',
+  'no-cond-assign': ['error', 'always'],
+  'no-console': 'warn',
+  'no-control-regex': 'error',
+  'no-debugger': 'error',
+  'no-dupe-else-if': 'error',
+  'no-dupe-keys': 'error',
+  'no-duplicate-case': 'error',
+  'no-empty': 'error',
+  'no-empty-character-class': 'error',
+  'no-ex-assign': 'error',
+  'no-extra-boolean-cast': 'error',
+  'no-func-assign': 'error',
+  'no-import-assign': 'error',
+  'no-inner-declarations': 'error',
+  'no-invalid-regexp': 'error',
+  'no-irregular-whitespace': 'error',
+  'no-loss-of-precision': 'error',
+  'no-misleading-character-class': 'error',
+  'no-obj-calls': 'error',
+  'no-promise-executor-return': 'error',
+  'no-prototype-builtins': 'error',
+  'no-regex-spaces': 'error',
+  'no-setter-return': 'error',
+  'no-sparse-arrays': 'error',
+  'no-template-curly-in-string': 'error',
+  'no-unexpected-multiline': 'off',
+  'no-unreachable': 'error',
+  'no-unreachable-loop': [
+    'error',
+    {
+      ignore: [],
+    },
+  ],
+  'no-unsafe-finally': 'error',
+  'no-unsafe-negation': 'error',
+  'no-unsafe-optional-chaining': [
+    'error',
+    {
+      disallowArithmeticOperators: true,
+    },
+  ],
+  'no-useless-backreference': 'error',
+  'use-isnan': 'error',
+  'valid-typeof': [
+    'error',
+    {
+      requireStringLiterals: true,
+    },
+  ],
+  'func-names': 'warn',
+  'new-cap': [
+    'error',
+    {
+      newIsCap: true,
+      newIsCapExceptions: [],
+      capIsNew: false,
+      capIsNewExceptions: ['Immutable.Map', 'Immutable.Set', 'Immutable.List'],
+    },
+  ],
+  'no-array-constructor': 'error',
+  'no-bitwise': 'error',
+  'no-continue': 'error',
+  'no-lonely-if': 'error',
+  'no-multi-assign': ['error'],
+  'no-nested-ternary': 'error',
+  'no-underscore-dangle': [
+    'error',
+    {
+      allow: ['__'],
+      allowAfterThis: true,
+      allowAfterSuper: true,
+      enforceInMethodNames: false,
+    },
+  ],
+  'no-unneeded-ternary': [
+    'error',
+    {
+      defaultAssignment: false,
+    },
+  ],
+  'operator-assignment': ['error', 'always'],
+  'prefer-exponentiation-operator': 'error',
+  'prefer-object-spread': 'error',
+  'unicode-bom': ['error', 'never'],
+  'no-delete-var': 'error',
+  'no-label-var': 'error',
+  'no-shadow': 'error',
+  'no-shadow-restricted-names': 'error',
+  'no-undef': 'error',
+  'no-unused-vars': [
+    'error',
+    {
+      vars: 'all',
+      args: 'after-used',
+      ignoreRestSiblings: true,
+    },
+  ],
+  'no-use-before-define': [
+    'error',
+    {
+      functions: true,
+      classes: true,
+      variables: true,
+    },
+  ],
+  'arrow-body-style': [
+    'error',
+    'as-needed',
+    {
+      requireReturnForObjectLiteral: false,
+    },
+  ],
+  'constructor-super': 'error',
+  'no-class-assign': 'error',
+  'no-const-assign': 'error',
+  'no-dupe-class-members': 'error',
+  'no-restricted-exports': [
+    'error',
+    {
+      restrictedNamedExports: ['default', 'then'],
+    },
+  ],
+  'no-this-before-super': 'error',
+  'no-useless-computed-key': 'error',
+  'no-useless-constructor': 'error',
+  'no-useless-rename': [
+    'error',
+    {
+      ignoreDestructuring: false,
+      ignoreImport: false,
+      ignoreExport: false,
+    },
+  ],
+  'no-var': 'error',
+  'object-shorthand': [
+    'error',
+    'always',
+    {
+      ignoreConstructors: false,
+      avoidQuotes: true,
+    },
+  ],
+  'prefer-arrow-callback': [
+    'error',
+    {
+      allowNamedFunctions: false,
+      allowUnboundThis: true,
+    },
+  ],
+  'prefer-const': [
+    'error',
+    {
+      destructuring: 'any',
+      ignoreReadBeforeAssign: true,
+    },
+  ],
+  'prefer-destructuring': [
+    'error',
+    {
+      VariableDeclarator: {
+        array: false,
+        object: true,
+      },
+      AssignmentExpression: {
+        array: true,
+        object: false,
+      },
+    },
+    {
+      enforceForRenamedProperties: false,
+    },
+  ],
+  'prefer-numeric-literals': 'error',
+  'prefer-rest-params': 'error',
+  'prefer-spread': 'error',
+  'prefer-template': 'error',
+  'require-yield': 'error',
+  'symbol-description': 'error',
+  'import/named': 'error',
+  'import/export': 'error',
+  'import/no-named-as-default': 'error',
+  'import/no-named-as-default-member': 'error',
+  'import/no-mutable-exports': 'error',
+  'import/no-amd': 'error',
+  'import/first': 'error',
+  'import/no-duplicates': 'error',
+  'import/extensions': [
+    'error',
+    'ignorePackages',
+    {
+      js: 'never',
+      mjs: 'never',
+      jsx: 'never',
+    },
+  ],
+  'import/newline-after-import': 'error',
+  'import/no-absolute-path': 'error',
+  'import/no-dynamic-require': 'error',
+  'import/no-webpack-loader-syntax': 'error',
+  'import/no-named-default': 'error',
+  'import/no-self-import': 'error',
+  'import/no-cycle': [
+    'error',
+    {
+      maxDepth: 1000,
+    },
+  ],
+} as const;
