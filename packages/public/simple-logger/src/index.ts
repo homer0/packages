@@ -95,7 +95,7 @@ export class SimpleLogger {
       lines.push(this.getColorFn(color)(this.addPrefix(message)));
     }
 
-    // eslint-disable-next-line no-console
+    // oxlint-disable-next-line no-console -- The logger intentionally writes messages to stdout.
     lines.forEach((line) => console.log(line));
   }
   /**

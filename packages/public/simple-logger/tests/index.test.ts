@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* oxlint-disable no-console -- Tests intentionally replace and restore console.log. */
 vi.mock('colors/safe.js', async (original) => {
   try {
     const mock = await import('./mocks/colors.mock.js');
@@ -59,7 +59,7 @@ describe('SimpleLogger', () => {
     it('should log a message', () => {
       // Given
       const message = 'hello world';
-      const logFn = vi.fn();
+      const logFn = vi.fn<SimpleLogger['log']>();
       vi.spyOn(console, 'log').mockImplementation(logFn);
       // When
       const sut = new SimpleLogger();
@@ -73,7 +73,7 @@ describe('SimpleLogger', () => {
       // Given
       const prefix = 'my-app';
       const message = 'hello world';
-      const logFn = vi.fn();
+      const logFn = vi.fn<SimpleLogger['log']>();
       vi.spyOn(console, 'log').mockImplementation(logFn);
       // When
       const sut = new SimpleLogger({ prefix });
@@ -87,7 +87,7 @@ describe('SimpleLogger', () => {
       // Given
       const now = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
       const message = 'hello world';
-      const logFn = vi.fn();
+      const logFn = vi.fn<SimpleLogger['log']>();
       vi.spyOn(console, 'log').mockImplementation(logFn);
       // When
       const sut = new SimpleLogger({ showTime: true });
@@ -101,7 +101,7 @@ describe('SimpleLogger', () => {
       // Given
       const message = 'hello world';
       const color = 'red';
-      const logFn = vi.fn();
+      const logFn = vi.fn<SimpleLogger['log']>();
       vi.spyOn(console, 'log').mockImplementation(logFn);
       // // When
       const sut = new SimpleLogger();
@@ -116,7 +116,7 @@ describe('SimpleLogger', () => {
     it('should log a list of messages', () => {
       // Given
       const messages = ['hello world', 'goodbye world'];
-      const log = vi.fn();
+      const log = vi.fn<SimpleLogger['log']>();
       vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
@@ -132,7 +132,7 @@ describe('SimpleLogger', () => {
       // Given
       const messages = ['hello world', 'goodbye world'];
       const color = 'blue';
-      const log = vi.fn();
+      const log = vi.fn<SimpleLogger['log']>();
       vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
@@ -152,7 +152,7 @@ describe('SimpleLogger', () => {
         ['hello world', 'green'],
         ['goodbye world', 'yellow'],
       ];
-      const log = vi.fn();
+      const log = vi.fn<SimpleLogger['log']>();
       vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
@@ -170,7 +170,7 @@ describe('SimpleLogger', () => {
       // Given
       const message = 'Something is not working';
       const color = 'yellow';
-      const log = vi.fn();
+      const log = vi.fn<SimpleLogger['log']>();
       vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
@@ -186,7 +186,7 @@ describe('SimpleLogger', () => {
       // Given
       const message = 'Everything works!';
       const color = 'green';
-      const log = vi.fn();
+      const log = vi.fn<SimpleLogger['log']>();
       vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
@@ -202,7 +202,7 @@ describe('SimpleLogger', () => {
       // Given
       const message = 'Be aware of the Batman';
       const color = 'grey';
-      const log = vi.fn();
+      const log = vi.fn<SimpleLogger['log']>();
       vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
@@ -218,7 +218,7 @@ describe('SimpleLogger', () => {
       // Given
       const message = 'Something went terribly wrong';
       const color = 'red';
-      const log = vi.fn();
+      const log = vi.fn<SimpleLogger['log']>();
       vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
@@ -235,7 +235,7 @@ describe('SimpleLogger', () => {
       const message = 'Something went terribly wrong';
       const exception = 'ORDER 66';
       const color = 'red';
-      const log = vi.fn();
+      const log = vi.fn<SimpleLogger['log']>();
       vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
@@ -256,7 +256,7 @@ describe('SimpleLogger', () => {
       stack.splice(0, 1);
       const errorColor = 'red';
       const stackColor = 'grey';
-      const log = vi.fn();
+      const log = vi.fn<SimpleLogger['log']>();
       vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
@@ -279,7 +279,7 @@ describe('SimpleLogger', () => {
       stack.splice(0, 1);
       const errorColor = 'red';
       const stackColor = 'grey';
-      const log = vi.fn();
+      const log = vi.fn<SimpleLogger['log']>();
       vi.spyOn(console, 'log').mockImplementation(log);
       // When
       const sut = new SimpleLogger();
@@ -306,7 +306,7 @@ describe('SimpleLogger', () => {
   describe('provider', () => {
     it('should include a Jimple provider', () => {
       // Given
-      const setFn = vi.fn();
+      const setFn = vi.fn<Jimple['set']>();
       class Container extends Jimple {
         override set(...args: Parameters<Jimple['set']>) {
           setFn(...args);
@@ -327,7 +327,7 @@ describe('SimpleLogger', () => {
 
     it('should allow custom options on its provider', () => {
       // Given
-      const setFn = vi.fn();
+      const setFn = vi.fn<Jimple['set']>();
       class Container extends Jimple {
         override set(...args: Parameters<Jimple['set']>) {
           setFn(...args);
@@ -353,8 +353,8 @@ describe('SimpleLogger', () => {
   describe('appLogger provider', () => {
     it('should register the service with the app name as prefix', () => {
       // Given
-      const getFn = vi.fn();
-      const setFn = vi.fn();
+      const getFn = vi.fn<Jimple['get']>();
+      const setFn = vi.fn<Jimple['set']>();
       class Container extends Jimple {
         override get<T>(key: string): T {
           getFn(key);
@@ -395,8 +395,8 @@ describe('SimpleLogger', () => {
 
     it('should use appLoggerPrefix instead of the package name', () => {
       // Given
-      const getFn = vi.fn();
-      const setFn = vi.fn();
+      const getFn = vi.fn<Jimple['get']>();
+      const setFn = vi.fn<Jimple['set']>();
       class Container extends Jimple {
         override get<T>(key: string): T {
           getFn(key);
@@ -438,8 +438,8 @@ describe('SimpleLogger', () => {
 
     it('should create the services to inject if they are not available', () => {
       // Given
-      const getFn = vi.fn();
-      const setFn = vi.fn();
+      const getFn = vi.fn<Jimple['get']>();
+      const setFn = vi.fn<Jimple['set']>();
       class Container extends Jimple {
         override get<T>(key: string): T {
           getFn(key);
@@ -471,8 +471,8 @@ describe('SimpleLogger', () => {
 
     it('should register the service with custom options', () => {
       // Given
-      const getFn = vi.fn();
-      const setFn = vi.fn();
+      const getFn = vi.fn<Jimple['get']>();
+      const setFn = vi.fn<Jimple['set']>();
       class Container extends Jimple {
         override get<T>(key: string): T {
           getFn(key);

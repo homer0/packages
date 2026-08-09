@@ -15,7 +15,7 @@ const colors = [
 
 const mocks = colors.reduce(
   (acc, color) => {
-    acc[color] = vi.fn((str) => str);
+    acc[color] = vi.fn<(str: string) => string>((str) => str);
     return acc;
   },
   {} as Record<string, Mock>,
@@ -27,9 +27,3 @@ const clear = () =>
   });
 
 export default { ...mocks, clear };
-
-// module.exports = {
-//   mocks,
-//   clear,
-//   // ...mocks,
-// };
