@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.4](https://github.com/homer0/packages/compare/%40homer0%2Fsimple-storage%406.0.3...%40homer0%2Fsimple-storage%406.0.4) (2026-08-09)
+
+**Note:** Version bump only for package @homer0/simple-storage
+
 ## [6.0.3](https://github.com/homer0/packages/compare/%40homer0%2Fsimple-storage%406.0.2...%40homer0%2Fsimple-storage%406.0.3) (2026-08-09)
 
 **Note:** Version bump only for package @homer0/simple-storage
