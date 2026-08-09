@@ -8,6 +8,12 @@ This record compares enabled rules in `@homer0/eslint-plugin` with the initial O
 - JSDoc has no initial profile.
 - Rules without a native Oxlint equivalent are omitted rather than provided through JavaScript plugins.
 
+## Intentional omissions and approximations
+
+The initial profile is native-only. Unsupported `import-x` rules for dependency checks, package boundaries, path cleanup, resolution, and ordering are omitted; import ordering remains formatter-owned. Unsupported Node compatibility and dependency rules are also omitted rather than approximated with JavaScript plugins.
+
+There is no JSDoc profile. Oxlint's native JSDoc support is intentionally deferred because it does not cover the existing validation policy. React's obsolete JSX-use rules are covered by Oxlint's unused-variable analysis; `react/no-deprecated` can only be partially covered by optional type-aware `typescript/no-deprecated` when project typings mark an API as deprecated.
+
 ## Native equivalents
 
 | ESLint rule                                              | Oxlint rule                                              |
