@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/homer0/packages/compare/%40homer0%2Foxlint-config%400.2.0...%40homer0%2Foxlint-config%400.3.0) (2026-08-09)
+
+### Features
+
+- **oxlint-config:** publish first version ([62bd5d3](https://github.com/homer0/packages/commit/62bd5d36863f21dacf72bc4874538104996f07fc))
+
+### BREAKING CHANGES
+
+- **oxlint-config:** First release
+
 # 0.2.0 (2026-08-09)
 
 ### Bug Fixes

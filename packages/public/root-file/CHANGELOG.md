@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.2](https://github.com/homer0/packages/compare/%40homer0%2Froot-file%406.0.1...%40homer0%2Froot-file%406.0.2) (2026-08-09)
+
+**Note:** Version bump only for package @homer0/root-file
+
 ## [6.0.1](https://github.com/homer0/packages/compare/%40homer0%2Froot-file%406.0.0...%40homer0%2Froot-file%406.0.1) (2026-08-09)
 
 **Note:** Version bump only for package @homer0/root-file
