@@ -19,6 +19,10 @@
     },
     "./package.json": "./package.json"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "devDependencies": {
     "@homer0/oxlint-config": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
