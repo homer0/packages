@@ -1,7 +1,7 @@
 {
   "name": "@homer0/env-utils",
   "description": "A simple service to avoid calling process.env on multiples places",
-  "version": "6.0.4",
+  "version": "6.0.5",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/homer0/packages.git",

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.0.5](https://github.com/homer0/packages/compare/%40homer0%2Feslint-plugin%4015.0.4...%40homer0%2Feslint-plugin%4015.0.5) (2026-08-10)
+
+### Bug Fixes
+
+- **eslint-plugin:** build with tsdown ([c5d9f9f](https://github.com/homer0/packages/commit/c5d9f9f4747350548f6c3a940f703bf2d76211f4))
+
 ## [15.0.4](https://github.com/homer0/packages/compare/%40homer0%2Feslint-plugin%4015.0.3...%40homer0%2Feslint-plugin%4015.0.4) (2026-08-09)
 
 **Note:** Version bump only for package @homer0/eslint-plugin

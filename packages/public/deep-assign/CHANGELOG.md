@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.5](https://github.com/homer0/packages/compare/%40homer0%2Fdeep-assign%406.0.4...%40homer0%2Fdeep-assign%406.0.5) (2026-08-10)
+
+### Bug Fixes
+
+- **deep-assign:** build with tsdown ([27ec652](https://github.com/homer0/packages/commit/27ec6521dc022b9e4fa8a749efa9fa989dc7ccf7))
+
 ## [6.0.4](https://github.com/homer0/packages/compare/%40homer0%2Fdeep-assign%406.0.3...%40homer0%2Fdeep-assign%406.0.4) (2026-08-09)
 
 **Note:** Version bump only for package @homer0/deep-assign

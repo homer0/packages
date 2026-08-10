@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.5](https://github.com/homer0/packages/compare/%40homer0%2Freact-ssr-config%404.0.4...%40homer0%2Freact-ssr-config%404.0.5) (2026-08-10)
+
+### Bug Fixes
+
+- **react-ssr-config:** build with tsdown ([9d976b8](https://github.com/homer0/packages/commit/9d976b8d1ca1ebea446df095871262d1084b5541))
+- **react-ssr-config:** only publish src and dist ([f9d17a4](https://github.com/homer0/packages/commit/f9d17a47a41191a99c339874be9305cf10c11520))
+
 ## [4.0.4](https://github.com/homer0/packages/compare/%40homer0%2Freact-ssr-config%404.0.3...%40homer0%2Freact-ssr-config%404.0.4) (2026-08-09)
 
 **Note:** Version bump only for package @homer0/react-ssr-config

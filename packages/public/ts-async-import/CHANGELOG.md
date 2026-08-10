@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.5](https://github.com/homer0/packages/compare/%40homer0%2Fts-async-import%404.0.4...%40homer0%2Fts-async-import%404.0.5) (2026-08-10)
+
+**Note:** Version bump only for package @homer0/ts-async-import
+
 ## [4.0.4](https://github.com/homer0/packages/compare/%40homer0%2Fts-async-import%404.0.3...%40homer0%2Fts-async-import%404.0.4) (2026-08-09)
 
 **Note:** Version bump only for package @homer0/ts-async-import

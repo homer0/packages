@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.5](https://github.com/homer0/packages/compare/%40homer0%2Fnestjs-zod-lite%405.0.4...%40homer0%2Fnestjs-zod-lite%405.0.5) (2026-08-10)
+
+### Bug Fixes
+
+- **nestjs-zod-lite:** build with tsdown ([cafe16d](https://github.com/homer0/packages/commit/cafe16d306086430417bd3b7b85d9220ddefc1c1))
+
 ## [5.0.4](https://github.com/homer0/packages/compare/%40homer0%2Fnestjs-zod-lite%405.0.3...%40homer0%2Fnestjs-zod-lite%405.0.4) (2026-08-09)
 
 **Note:** Version bump only for package @homer0/nestjs-zod-lite

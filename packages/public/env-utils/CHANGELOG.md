@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.5](https://github.com/homer0/packages/compare/%40homer0%2Fenv-utils%406.0.4...%40homer0%2Fenv-utils%406.0.5) (2026-08-10)
+
+### Bug Fixes
+
+- **env-utils:** build with tsdown ([aa39e8a](https://github.com/homer0/packages/commit/aa39e8a4c525416c954c6d46866d6a5eb94c440b))
+
 ## [6.0.4](https://github.com/homer0/packages/compare/%40homer0%2Fenv-utils%406.0.3...%40homer0%2Fenv-utils%406.0.4) (2026-08-09)
 
 **Note:** Version bump only for package @homer0/env-utils

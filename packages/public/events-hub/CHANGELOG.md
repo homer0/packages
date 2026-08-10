@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.5](https://github.com/homer0/packages/compare/%40homer0%2Fevents-hub%406.0.4...%40homer0%2Fevents-hub%406.0.5) (2026-08-10)
+
+### Bug Fixes
+
+- **events-hub:** build with tsdown ([2c77488](https://github.com/homer0/packages/commit/2c7748844ad77208bb01a74a09a50a43e25688bd))
+
 ## [6.0.4](https://github.com/homer0/packages/compare/%40homer0%2Fevents-hub%406.0.3...%40homer0%2Fevents-hub%406.0.4) (2026-08-09)
 
 **Note:** Version bump only for package @homer0/events-hub

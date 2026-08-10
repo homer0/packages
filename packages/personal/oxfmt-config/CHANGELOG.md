@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/homer0/packages/compare/%40homer0%2Foxfmt-config%401.1.0...%40homer0%2Foxfmt-config%401.1.1) (2026-08-10)
+
+### Bug Fixes
+
+- **oxfmt-config:** build with tsdown ([a2ff542](https://github.com/homer0/packages/commit/a2ff54221af24ed9dd8d4f0a8d02e34f705023c4))
+
 # 1.1.0 (2026-08-09)
 
 ### Bug Fixes

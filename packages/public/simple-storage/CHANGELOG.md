@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.5](https://github.com/homer0/packages/compare/%40homer0%2Fsimple-storage%406.0.4...%40homer0%2Fsimple-storage%406.0.5) (2026-08-10)
+
+### Bug Fixes
+
+- **simple-storage:** build with tsdown ([cdf27ae](https://github.com/homer0/packages/commit/cdf27aed76cad46798583d6312677e64ae7f0817))
+
 ## [6.0.4](https://github.com/homer0/packages/compare/%40homer0%2Fsimple-storage%406.0.3...%40homer0%2Fsimple-storage%406.0.4) (2026-08-09)
 
 **Note:** Version bump only for package @homer0/simple-storage

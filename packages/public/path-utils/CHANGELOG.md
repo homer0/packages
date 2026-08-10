@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.5](https://github.com/homer0/packages/compare/%40homer0%2Fpath-utils%406.0.4...%40homer0%2Fpath-utils%406.0.5) (2026-08-10)
+
+### Bug Fixes
+
+- **path-utils:** build with tsdown ([6b43f45](https://github.com/homer0/packages/commit/6b43f450c684bb0beec3bc82a6eeefa0f1a06752))
+
 ## [6.0.4](https://github.com/homer0/packages/compare/%40homer0%2Fpath-utils%406.0.3...%40homer0%2Fpath-utils%406.0.4) (2026-08-09)
 
 **Note:** Version bump only for package @homer0/path-utils

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.5](https://github.com/homer0/packages/compare/%40homer0%2Ferror-handler%406.0.4...%40homer0%2Ferror-handler%406.0.5) (2026-08-10)
+
+### Bug Fixes
+
+- **error-handler:** build with tsdown ([14c9d73](https://github.com/homer0/packages/commit/14c9d734524b35ecaf9049000149f0f6b0cfb0d0))
+
 ## [6.0.4](https://github.com/homer0/packages/compare/%40homer0%2Ferror-handler%406.0.3...%40homer0%2Ferror-handler%406.0.4) (2026-08-09)
 
 **Note:** Version bump only for package @homer0/error-handler

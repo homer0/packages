@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.4](https://github.com/homer0/packages/compare/%40homer0%2Fdeferred%407.0.3...%40homer0%2Fdeferred%407.0.4) (2026-08-10)
+
+### Bug Fixes
+
+- **deferred:** build with tsdown ([7ae3258](https://github.com/homer0/packages/commit/7ae3258a9c27cb6c82f4ddb7dbc106cf66f85cf9))
+
 ## [7.0.3](https://github.com/homer0/packages/compare/%40homer0%2Fdeferred%407.0.2...%40homer0%2Fdeferred%407.0.3) (2026-08-09)
 
 **Note:** Version bump only for package @homer0/deferred

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.5](https://github.com/homer0/packages/compare/%40homer0%2Froot-file%406.0.4...%40homer0%2Froot-file%406.0.5) (2026-08-10)
+
+### Bug Fixes
+
+- **root-file:** build with tsdown ([b3f3fdd](https://github.com/homer0/packages/commit/b3f3fddafe326156282818b7f4f0bf0b8991453a))
+
 ## [6.0.4](https://github.com/homer0/packages/compare/%40homer0%2Froot-file%406.0.3...%40homer0%2Froot-file%406.0.4) (2026-08-09)
 
 **Note:** Version bump only for package @homer0/root-file

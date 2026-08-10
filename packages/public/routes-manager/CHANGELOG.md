@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.5](https://github.com/homer0/packages/compare/%40homer0%2Froutes-manager%404.0.4...%40homer0%2Froutes-manager%404.0.5) (2026-08-10)
+
+### Bug Fixes
+
+- **routes-manager:** build with tsdown ([60f568c](https://github.com/homer0/packages/commit/60f568c7e108b5191f69358d23b1ff8cb3304da6))
+- **routes-manager:** only publish src and dist ([c888c24](https://github.com/homer0/packages/commit/c888c247a25ae571d61dc11fb76dce39f8d4c366))
+
 ## [4.0.4](https://github.com/homer0/packages/compare/%40homer0%2Froutes-manager%404.0.3...%40homer0%2Froutes-manager%404.0.4) (2026-08-09)
 
 **Note:** Version bump only for package @homer0/routes-manager

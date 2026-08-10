@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.5](https://github.com/homer0/packages/compare/%40homer0%2Fsimple-logger%406.0.4...%40homer0%2Fsimple-logger%406.0.5) (2026-08-10)
+
+### Bug Fixes
+
+- **simple-logger:** build with tsdown ([9ca72ce](https://github.com/homer0/packages/commit/9ca72ce7ee9fbf52b77e4339bfdaa7ce8168aff4))
+
 ## [6.0.4](https://github.com/homer0/packages/compare/%40homer0%2Fsimple-logger%406.0.3...%40homer0%2Fsimple-logger%406.0.4) (2026-08-09)
 
 **Note:** Version bump only for package @homer0/simple-logger

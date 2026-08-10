@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.5](https://github.com/homer0/packages/compare/%40homer0%2Fapi-utils%406.0.4...%40homer0%2Fapi-utils%406.0.5) (2026-08-10)
+
+### Bug Fixes
+
+- **api-utils:** build with tsdown ([0a2bf92](https://github.com/homer0/packages/commit/0a2bf92aa65c26ef8f72ee2ac0a6fce5492852bb))
+
 ## [6.0.4](https://github.com/homer0/packages/compare/%40homer0%2Fapi-utils%406.0.3...%40homer0%2Fapi-utils%406.0.4) (2026-08-09)
 
 **Note:** Version bump only for package @homer0/api-utils
