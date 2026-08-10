@@ -34,7 +34,7 @@
     "@vitest/coverage-v8": "catalog:",
     "oxfmt": "^0.62.0",
     "oxlint": "catalog:",
-    "tsup": "catalog:",
+    "tsdown": "catalog:",
     "typescript": "catalog:",
     "unplugin-swc": "catalog:",
     "vitest": "catalog:"
@@ -52,7 +52,7 @@
     "format": "pnpm run build && oxfmt --config ./tests/fixtures/root-default/oxfmt.config.ts .",
     "format:check": "pnpm run build && oxfmt --check --config ./tests/fixtures/root-default/oxfmt.config.ts .",
     "types:check": "tsc --noEmit && tsc --noEmit --project ./tests/tsconfig.json",
-    "build": "tsup && node ./scripts/generateConfigJson.mjs",
+    "build": "tsdown && node ./scripts/generateConfigJson.mjs",
     "prepublishOnly": "pnpm run build"
   }
 }
