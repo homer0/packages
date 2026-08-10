@@ -40,7 +40,7 @@
     "@vitest/coverage-v8": "catalog:",
     "jimple": "^1.5.0",
     "oxlint": "catalog:",
-    "tsup": "catalog:",
+    "tsdown": "catalog:",
     "typescript": "catalog:",
     "unplugin-swc": "catalog:",
     "vitest": "catalog:"
@@ -54,7 +54,7 @@
     "lint:file": "oxlint $@",
     "test": "vitest run $@",
     "types:check": "tsc --noEmit && tsc --noEmit --project ./tests/tsconfig.json",
-    "build": "tsup",
+    "build": "tsdown",
     "prepublishOnly": "pnpm run build"
   }
 }
