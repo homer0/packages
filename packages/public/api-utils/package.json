@@ -40,7 +40,7 @@
     "@types/urijs": "^1.19.26",
     "@vitest/coverage-v8": "catalog:",
     "oxlint": "catalog:",
-    "tsup": "catalog:",
+    "tsdown": "catalog:",
     "typescript": "catalog:",
     "unplugin-swc": "catalog:",
     "urijs": "^1.19.11",
@@ -55,7 +55,7 @@
     "lint:file": "oxlint $@",
     "test": "vitest run $@",
     "types:check": "tsc --noEmit && tsc --noEmit --project ./tests/tsconfig.json",
-    "build": "tsup",
+    "build": "tsdown",
     "prepublishOnly": "pnpm run build"
   }
 }
