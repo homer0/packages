@@ -30,7 +30,7 @@
     "oxlint": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "tsup": "catalog:",
+    "tsdown": "catalog:",
     "typescript": "catalog:",
     "unplugin-swc": "catalog:",
     "vitest": "catalog:"
@@ -47,7 +47,7 @@
     "lint:file": "oxlint $@",
     "test": "vitest run $@",
     "types:check": "tsc --noEmit && tsc --noEmit --project ./tests/tsconfig.json",
-    "build": "tsup",
+    "build": "tsdown",
     "prepublishOnly": "pnpm run build"
   }
 }
