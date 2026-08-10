@@ -5,5 +5,5 @@
     "outDir": "dist",
     "removeComments": true
   },
-  "include": ["src", "tsup.config.ts", "vitest.config.ts", "oxlint.config.ts"]
+  "include": ["src", "tsdown.config.ts", "vitest.config.ts", "oxlint.config.ts"]
 }

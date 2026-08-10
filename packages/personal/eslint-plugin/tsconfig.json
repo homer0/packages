@@ -7,7 +7,7 @@
   },
   "include": [
     "src/**/*.ts",
-    "tsup.config.ts",
+    "tsdown.config.ts",
     "vitest.config.ts",
     "oxlint.config.ts",
     ".prettierrc.js"

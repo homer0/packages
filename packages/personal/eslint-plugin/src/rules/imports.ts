@@ -10,7 +10,7 @@ const extraDevDirs = ['.storybook'];
 const extraDevFiles = [
   '.prettierrc',
   'eslint.config',
-  'tsup.config',
+  'tsdown.config',
   'vite.config',
   'vitest.config',
   '*.{stories,mocks,test,spec}',

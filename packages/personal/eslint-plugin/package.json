@@ -74,7 +74,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "oxlint": "catalog:",
     "prettier": "^3.9.6",
-    "tsup": "catalog:",
+    "tsdown": "catalog:",
     "typescript": "^6.0.3"
   },
   "peerDependencies": {
@@ -107,8 +107,8 @@
     "lint": "eslint . && oxlint .",
     "lint:file": "eslint $@ && oxlint $@",
     "types:check": "tsc --noEmit",
-    "dev": "tsup --watch",
-    "build": "tsup",
+    "dev": "tsdown --watch",
+    "build": "tsdown",
     "prepublishOnly": "pnpm run build"
   }
 }
