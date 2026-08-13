@@ -10,8 +10,9 @@ export type {
   CreateConfigOptions,
   CreateNextjsConfigOptions,
   CreateReactConfigOptions,
-  ExtensionFragmentName,
   ExtensionFragments,
+  GlobalVarMode,
+  GlobalVars,
   GeneratedConfig,
   GeneratedConfigOverride,
   RuleSettings,
@@ -19,6 +20,7 @@ export type {
   TestFramework,
   TestsOption,
 } from './types.js';
+export type { ExtensionFragmentName } from './consts.js';
 
 /** Creates a native Oxlint configuration with React and JSX accessibility policy. */
 export const createReactConfig = (options: CreateReactConfigOptions) =>

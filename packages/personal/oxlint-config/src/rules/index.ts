@@ -1,4 +1,4 @@
-export { base } from './base.js';
+export * from './base.js';
 export { browser } from './browser.js';
 export { jsdoc } from './jsdoc.js';
 export { nextjs } from './nextjs.js';

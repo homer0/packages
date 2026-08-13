@@ -79,6 +79,32 @@ export default createConfig({
 });
 ```
 
+### Globals
+
+Use `globals` to add named globals or `$`-prefixed global groups from the [`globals`](https://www.npmjs.com/package/globals) package. Named globals use Oxlint's `'readonly'`, `'writable'`, or `'off'` modes; `true` makes a named global writable. Groups use `true`. Added globals also apply to generated test overrides.
+
+```ts
+export default createConfig({
+  configs: ['node'],
+  globals: {
+    $browser: true,
+    __piMcpState: 'readonly',
+  },
+  tests: 'directory',
+});
+```
+
+### Allowed dangling underscores
+
+Use `allowedDangleNames` to add exact identifiers to the base `no-underscore-dangle` allow-list. The built-in `__` entry remains allowed, and added names also apply to generated test overrides.
+
+```ts
+export default createConfig({
+  allowedDangleNames: ['__piMcpState'],
+  configs: ['node'],
+});
+```
+
 ### JSDoc
 
 Set `jsdoc: true` to opt into Oxlint's native JSDoc subset. It covers JSDoc access, tag, parameter, property, and return declarations; rules without a native equivalent remain omitted.

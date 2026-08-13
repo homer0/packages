@@ -5,10 +5,14 @@ import {
   nextjs as nextjsRules,
   typeAware as typeAwareRules,
   vitest as vitestRules,
+  noUnderscoreDangleRule,
+  noUnderscoreDangleOptions,
 } from './rules/index.js';
 import type {
   ConfigFragment,
   ConfigName,
+  DangleRuleOptions,
+  DangleRuleSettings,
   CreateConfigSettings,
   GeneratedConfig,
   GeneratedConfigOverride,
@@ -17,7 +21,11 @@ import type {
   ResolveConfigComponentsOptions,
   ResolveConfigComponentsResult,
   ResolveTestConfigComponentsOptions,
+  ResolveTestConfigComponentsResult,
   CreateTestOverrideOptions,
+  ResolveGlobalsOptions,
+  ResolvedGlobalVars,
+  RuleSettings,
 } from './types.js';
 
 const mergeRules = (...fragments: (ConfigFragment | undefined)[]) =>
@@ -25,6 +33,61 @@ const mergeRules = (...fragments: (ConfigFragment | undefined)[]) =>
     Object.assign(acc, fragment?.rules);
     return acc;
   }, {});
+
+const allowDangleNames = (rules: RuleSettings, names: string[] = []): RuleSettings => {
+  if (names.length === 0) return rules;
+
+  const dangleRule = rules['no-underscore-dangle'] || noUnderscoreDangleRule;
+  if (!Array.isArray(dangleRule)) return rules;
+
+  const [severity, configuredOptions] = dangleRule as DangleRuleSettings;
+  const options: DangleRuleOptions =
+    typeof configuredOptions === 'object' && configuredOptions !== null
+      ? configuredOptions
+      : {};
+
+  return {
+    ...rules,
+    'no-underscore-dangle': [
+      severity,
+      {
+        ...noUnderscoreDangleOptions,
+        ...options,
+        allow: Array.from(
+          new Set([
+            ...noUnderscoreDangleOptions.allow,
+            ...(options.allow || []),
+            ...names,
+          ]),
+        ),
+      },
+    ],
+  };
+};
+
+const resolveGlobals = ({
+  globals: globalVars = {},
+  doingTestsSetup,
+}: ResolveGlobalsOptions): ResolvedGlobalVars => {
+  if (doingTestsSetup) {
+    return globalVars;
+  }
+
+  return Object.entries(globalVars).reduce<ResolvedGlobalVars>((acc, [name, mode]) => {
+    if (name.startsWith('$')) {
+      const groupName = name.slice(1);
+      if (!Object.hasOwn(globals, groupName)) {
+        throw new Error(`Unknown global group: "${groupName}".`);
+      }
+
+      Object.assign(acc, globals[groupName as keyof typeof globals]);
+    } else {
+      acc[name] = mode === true ? 'writable' : mode;
+    }
+
+    return acc;
+  }, {});
+};
 
 const getConfig = (configs: ConfigName[]): ConfigName => {
   if (configs.length !== 1) {
@@ -56,9 +119,7 @@ const resolveTestConfig = ({
   tests,
   productionConfig,
   productionTs,
-}: ResolveTestConfigOptions): ResolvedTestConfig | undefined => {
-  if (!tests) return undefined;
-
+}: ResolveTestConfigOptions): ResolvedTestConfig => {
   if (tests === true) {
     return {
       configs: [productionConfig],
@@ -89,8 +150,8 @@ const resolveTestConfigComponents = ({
   config,
   testConfig,
   tests,
-  ts,
-}: ResolveTestConfigComponentsOptions) => {
+  ts = false,
+}: ResolveTestConfigComponentsOptions): ResolveTestConfigComponentsResult => {
   if (testConfig) {
     return {
       doingTestsSetup: true,
@@ -110,7 +171,7 @@ const resolveTestConfigComponents = ({
     testConfig: resolveTestConfig({
       tests,
       productionConfig: config,
-      productionTs: ts ?? false,
+      productionTs: ts,
     }),
   };
 };
@@ -121,6 +182,7 @@ const resolveConfigComponents = (
   const {
     configs,
     extensions,
+    globals: globalVars,
     jsdoc,
     nextjs,
     react,
@@ -142,6 +204,7 @@ const resolveConfigComponents = (
   });
 
   const fragments: ConfigFragment[] = [baseFragment, extensionFragments[config]];
+  const resolvedGlobals = resolveGlobals({ globals: globalVars, doingTestsSetup });
 
   const plugins = ['import'];
 
@@ -209,6 +272,7 @@ const resolveConfigComponents = (
   return {
     config,
     fragments,
+    globals: resolvedGlobals,
     plugins,
     testConfig,
     configGlobals:
@@ -218,17 +282,25 @@ const resolveConfigComponents = (
 
 const createTestOverride = ({
   testConfig,
+  allowedDangleNames,
   extensions,
+  globals: globalVars,
 }: CreateTestOverrideOptions): GeneratedConfigOverride => {
-  const { config, fragments, configGlobals } = resolveConfigComponents({
+  const {
+    config,
+    fragments,
+    globals: resolvedGlobals,
+    configGlobals,
+  } = resolveConfigComponents({
     configs: testConfig.configs,
     extensions,
+    globals: globalVars,
     testConfig,
     ts: testConfig.ts,
     baseFragment: extensionFragments.tests,
     baseExtensionFragment: extensions?.tests,
   });
-  const rules = mergeRules(...fragments);
+  const rules = allowDangleNames(mergeRules(...fragments), allowedDangleNames);
 
   if (testConfig.files.length === 0) {
     throw new Error('Custom test configuration requires at least one file glob.');
@@ -238,6 +310,7 @@ const createTestOverride = ({
     files: testConfig.files,
     globals: {
       ...extensionFragments[config].globals,
+      ...resolvedGlobals,
       ...configGlobals,
     },
     rules,
@@ -246,20 +319,36 @@ const createTestOverride = ({
 
 /** Creates a native Oxlint configuration from one environment and optional policy layers. */
 export const createConfig = (options: CreateConfigSettings): GeneratedConfig => {
-  const { fragments, plugins, config, testConfig } = resolveConfigComponents(options);
-  const { extensions, ignores, typeAware } = options;
+  const {
+    fragments,
+    globals: resolvedGlobals,
+    plugins,
+    config,
+    testConfig,
+  } = resolveConfigComponents(options);
+  const { allowedDangleNames, extensions, ignores, typeAware } = options;
 
-  const rules = mergeRules(...fragments);
+  const rules = allowDangleNames(mergeRules(...fragments), allowedDangleNames);
 
   return {
     globals: {
       ...extensionFragments.base.globals,
       ...extensionFragments[config].globals,
+      ...resolvedGlobals,
     },
     ignorePatterns: [...DEFAULT_IGNORES, ...(ignores || [])],
     options: typeAware ? { typeAware: true } : undefined,
     plugins,
     rules,
-    overrides: testConfig ? [createTestOverride({ testConfig, extensions })] : undefined,
+    overrides: testConfig
+      ? [
+          createTestOverride({
+            testConfig,
+            allowedDangleNames,
+            extensions,
+            globals: resolvedGlobals,
+          }),
+        ]
+      : undefined,
   };
 };

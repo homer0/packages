@@ -56,6 +56,99 @@ describe('createConfig', () => {
     });
   });
 
+  it('should add configured globals to production and test overrides', () => {
+    const config = createConfig({
+      configs: ['node'],
+      globals: {
+        $browser: true,
+        __piMcpState: 'readonly',
+        writableGlobal: true,
+      },
+      tests: 'directory',
+    });
+
+    expect(config.globals).toMatchObject({
+      __piMcpState: 'readonly',
+      window: false,
+      writableGlobal: 'writable',
+    });
+    expect(config.overrides?.[0]?.globals).toMatchObject({
+      __piMcpState: 'readonly',
+      window: false,
+      writableGlobal: 'writable',
+    });
+  });
+
+  it('should allow configured dangling-underscore names in production and test rules', () => {
+    const config = createConfig({
+      allowedDangleNames: ['__piMcpState', '__piMcpState'],
+      configs: ['node'],
+      tests: 'directory',
+    });
+
+    expect(config.rules['no-underscore-dangle']).toEqual([
+      'error',
+      {
+        allow: ['__', '__piMcpState'],
+        allowAfterThis: true,
+        allowAfterSuper: true,
+        enforceInMethodNames: false,
+      },
+    ]);
+    expect(config.overrides?.[0]?.rules['no-underscore-dangle']).toEqual(
+      config.rules['no-underscore-dangle'],
+    );
+  });
+
+  it('should preserve a non-array dangling-underscore rule override', () => {
+    const config = createConfig({
+      allowedDangleNames: ['__piMcpState'],
+      configs: ['node'],
+      extensions: {
+        base: {
+          rules: {
+            'no-underscore-dangle': 'off',
+          },
+        },
+      },
+    });
+
+    expect(config.rules['no-underscore-dangle']).toBe('off');
+  });
+
+  it('should retain base dangling-underscore options when an override omits them', () => {
+    const config = createConfig({
+      allowedDangleNames: ['__piMcpState'],
+      configs: ['node'],
+      extensions: {
+        base: {
+          rules: {
+            'no-underscore-dangle': ['warn'],
+          },
+        },
+      },
+    });
+
+    expect(config.rules['no-underscore-dangle']).toEqual([
+      'warn',
+      {
+        allow: ['__', '__piMcpState'],
+        allowAfterThis: true,
+        allowAfterSuper: true,
+        enforceInMethodNames: false,
+      },
+    ]);
+  });
+
+  it('should reject unknown global groups', () => {
+    expect(() =>
+      createConfig({
+        configs: ['node'],
+        globals: { $unknown: true },
+      }),
+    ).toThrow(/unknown global group: "unknown"/i);
+  });
+
   it('should compose browser production with Node TypeScript tests', () => {
     const config = createConfig({
       configs: ['browser'],
@@ -95,6 +188,29 @@ describe('createConfig', () => {
     });
     expect(config.overrides?.[0]?.rules).toMatchObject({
       'no-magic-numbers': 'off',
+    });
+  });
+
+  it('should apply base and environment extension fragments', () => {
+    const config = createConfig({
+      configs: ['node'],
+      extensions: {
+        base: {
+          rules: {
+            'no-console': 'warn',
+          },
+        },
+        node: {
+          rules: {
+            'node/no-process-env': 'warn',
+          },
+        },
+      },
+    });
+
+    expect(config.rules).toMatchObject({
+      'no-console': 'warn',
+      'node/no-process-env': 'warn',
     });
   });
 
@@ -152,10 +268,11 @@ describe('createConfig', () => {
   });
 
   it('should only enable optional plugins when their profiles are selected', () => {
-    const config = createConfig({ configs: ['node'] });
+    const config = createConfig({ configs: ['node'], ts: false });
 
     expect(config.plugins).not.toContain('jsdoc');
     expect(config.plugins).not.toContain('nextjs');
+    expect(config.plugins).not.toContain('typescript');
   });
 
   it('should only enable type-aware linting when requested', () => {
@@ -163,6 +280,7 @@ describe('createConfig', () => {
 
     const config = createConfig({
       configs: ['node'],
+      ts: false,
       typeAware: true,
     });
 
@@ -180,6 +298,9 @@ describe('createConfig', () => {
 
   it('should reject invalid environment and custom test selections', () => {
     expect(() => createConfig({ configs: [] })).toThrow(/exactly one environment/i);
+    expect(() =>
+      createConfig({ configs: [undefined] as unknown as Array<'node' | 'browser'> }),
+    ).toThrow(/exactly one environment/i);
     expect(() => createConfig({ configs: ['node', 'browser'] })).toThrow(
       /exactly one environment/i,
     );
@@ -187,6 +308,12 @@ describe('createConfig', () => {
       createConfig({
         configs: ['node'],
         tests: { files: [] },
+      }),
+    ).toThrow(/requires at least one file glob/i);
+    expect(() =>
+      createConfig({
+        configs: ['node'],
+        tests: { files: undefined },
       }),
     ).toThrow(/requires at least one file glob/i);
   });
