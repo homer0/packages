@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/homer0/packages/compare/%40homer0%2Foxlint-config%401.0.3...%40homer0%2Foxlint-config%401.1.0) (2026-08-13)
+
+### Bug Fixes
+
+- **oxlint-config:** simplify config resolution defaults ([879a14f](https://github.com/homer0/packages/commit/879a14f737d5e9f58062b8a639e1524cbbf5d936))
+
+### Features
+
+- **oxlint-config:** add configurable globals ([303d17f](https://github.com/homer0/packages/commit/303d17f4b22c47258529cf75fe71b2d8fa940bd5))
+- **oxlint-config:** allow configured dangling underscores ([7a56510](https://github.com/homer0/packages/commit/7a5651033777cec7f16f76f48b1eaf4484322d10))
+
 ## [1.0.3](https://github.com/homer0/packages/compare/%40homer0%2Foxlint-config%401.0.2...%40homer0%2Foxlint-config%401.0.3) (2026-08-10)
 
 ### Bug Fixes
