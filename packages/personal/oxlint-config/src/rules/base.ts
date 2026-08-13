@@ -1,4 +1,11 @@
-const maxComplexity = 30;
+export const maxComplexity = 30;
+export const noUnderscoreDangleOptions = {
+  allow: ['__'],
+  allowAfterThis: true,
+  allowAfterSuper: true,
+  enforceInMethodNames: false,
+};
+export const noUnderscoreDangleRule = ['error', noUnderscoreDangleOptions] as const;
 
 export const base = {
   /**
@@ -822,15 +829,7 @@ export const base = {
    *
    * @see https://eslint.org/docs/latest/rules/no-underscore-dangle
    */
-  'no-underscore-dangle': [
-    'error',
-    {
-      allow: ['__'],
-      allowAfterThis: true,
-      allowAfterSuper: true,
-      enforceInMethodNames: false,
-    },
-  ],
+  'no-underscore-dangle': noUnderscoreDangleRule,
   /**
    * Disallow ternary operators when simpler alternatives exist.
    *

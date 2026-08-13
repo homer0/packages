@@ -94,6 +94,17 @@ export default createConfig({
 });
 ```
 
+### Allowed dangling underscores
+
+Use `allowedDangleNames` to add exact identifiers to the base `no-underscore-dangle` allow-list. The built-in `__` entry remains allowed, and added names also apply to generated test overrides.
+
+```ts
+export default createConfig({
+  allowedDangleNames: ['__piMcpState'],
+  configs: ['node'],
+});
+```
+
 ### JSDoc
 
 Set `jsdoc: true` to opt into Oxlint's native JSDoc subset. It covers JSDoc access, tag, parameter, property, and return declarations; rules without a native equivalent remain omitted.

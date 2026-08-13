@@ -79,6 +79,67 @@ describe('createConfig', () => {
     });
   });
 
+  it('should allow configured dangling-underscore names in production and test rules', () => {
+    const config = createConfig({
+      allowedDangleNames: ['__piMcpState', '__piMcpState'],
+      configs: ['node'],
+      tests: 'directory',
+    });
+
+    expect(config.rules['no-underscore-dangle']).toEqual([
+      'error',
+      {
+        allow: ['__', '__piMcpState'],
+        allowAfterThis: true,
+        allowAfterSuper: true,
+        enforceInMethodNames: false,
+      },
+    ]);
+    expect(config.overrides?.[0]?.rules['no-underscore-dangle']).toEqual(
+      config.rules['no-underscore-dangle'],
+    );
+  });
+
+  it('should preserve a non-array dangling-underscore rule override', () => {
+    const config = createConfig({
+      allowedDangleNames: ['__piMcpState'],
+      configs: ['node'],
+      extensions: {
+        base: {
+          rules: {
+            'no-underscore-dangle': 'off',
+          },
+        },
+      },
+    });
+
+    expect(config.rules['no-underscore-dangle']).toBe('off');
+  });
+
+  it('should retain base dangling-underscore options when an override omits them', () => {
+    const config = createConfig({
+      allowedDangleNames: ['__piMcpState'],
+      configs: ['node'],
+      extensions: {
+        base: {
+          rules: {
+            'no-underscore-dangle': ['warn'],
+          },
+        },
+      },
+    });
+
+    expect(config.rules['no-underscore-dangle']).toEqual([
+      'warn',
+      {
+        allow: ['__', '__piMcpState'],
+        allowAfterThis: true,
+        allowAfterSuper: true,
+        enforceInMethodNames: false,
+      },
+    ]);
+  });
+
   it('should reject unknown global groups', () => {
     expect(() =>
       createConfig({

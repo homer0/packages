@@ -5,6 +5,15 @@ export type ConfigName = 'browser' | 'node';
 
 export type RuleSettings = Record<string, unknown>;
 
+export type DangleRuleOptions = {
+  allow?: string[];
+  allowAfterThis?: boolean;
+  allowAfterSuper?: boolean;
+  enforceInMethodNames?: boolean;
+};
+
+export type DangleRuleSettings = [unknown, DangleRuleOptions?];
+
 /** Controls whether a named global can be reassigned. */
 export type GlobalVarMode = 'readonly' | 'writable' | 'off';
 
@@ -45,6 +54,8 @@ export type TestsOption = boolean | TestConvention | TestConfigOptions;
 
 export type CreateConfigOptions = {
   configs: ConfigName[];
+  /** Adds exact identifiers allowed by `no-underscore-dangle`. */
+  allowedDangleNames?: string[];
   extensions?: ExtensionFragments;
   globals?: GlobalVars;
   ignores?: string[];
@@ -102,6 +113,7 @@ export type GeneratedConfig = {
 
 export type CreateTestOverrideOptions = {
   testConfig: ResolvedTestConfig;
+  allowedDangleNames?: string[];
   extensions?: ExtensionFragments;
   globals?: GlobalVars | ResolvedGlobalVars;
 };

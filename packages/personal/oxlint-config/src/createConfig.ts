@@ -5,10 +5,14 @@ import {
   nextjs as nextjsRules,
   typeAware as typeAwareRules,
   vitest as vitestRules,
+  noUnderscoreDangleRule,
+  noUnderscoreDangleOptions,
 } from './rules/index.js';
 import type {
   ConfigFragment,
   ConfigName,
+  DangleRuleOptions,
+  DangleRuleSettings,
   CreateConfigSettings,
   GeneratedConfig,
   GeneratedConfigOverride,
@@ -21,6 +25,7 @@ import type {
   CreateTestOverrideOptions,
   ResolveGlobalsOptions,
   ResolvedGlobalVars,
+  RuleSettings,
 } from './types.js';
 
 const mergeRules = (...fragments: (ConfigFragment | undefined)[]) =>
@@ -28,6 +33,37 @@ const mergeRules = (...fragments: (ConfigFragment | undefined)[]) =>
     Object.assign(acc, fragment?.rules);
     return acc;
   }, {});
+
+const allowDangleNames = (rules: RuleSettings, names: string[] = []): RuleSettings => {
+  if (names.length === 0) return rules;
+
+  const dangleRule = rules['no-underscore-dangle'] || noUnderscoreDangleRule;
+  if (!Array.isArray(dangleRule)) return rules;
+
+  const [severity, configuredOptions] = dangleRule as DangleRuleSettings;
+  const options: DangleRuleOptions =
+    typeof configuredOptions === 'object' && configuredOptions !== null
+      ? configuredOptions
+      : {};
+
+  return {
+    ...rules,
+    'no-underscore-dangle': [
+      severity,
+      {
+        ...noUnderscoreDangleOptions,
+        ...options,
+        allow: Array.from(
+          new Set([
+            ...noUnderscoreDangleOptions.allow,
+            ...(options.allow || []),
+            ...names,
+          ]),
+        ),
+      },
+    ],
+  };
+};
 
 const resolveGlobals = ({
   globals: globalVars = {},
@@ -246,6 +282,7 @@ const resolveConfigComponents = (
 
 const createTestOverride = ({
   testConfig,
+  allowedDangleNames,
   extensions,
   globals: globalVars,
 }: CreateTestOverrideOptions): GeneratedConfigOverride => {
@@ -263,7 +300,7 @@ const createTestOverride = ({
     baseFragment: extensionFragments.tests,
     baseExtensionFragment: extensions?.tests,
   });
-  const rules = mergeRules(...fragments);
+  const rules = allowDangleNames(mergeRules(...fragments), allowedDangleNames);
 
   if (testConfig.files.length === 0) {
     throw new Error('Custom test configuration requires at least one file glob.');
@@ -289,9 +326,9 @@ export const createConfig = (options: CreateConfigSettings): GeneratedConfig => 
     config,
     testConfig,
   } = resolveConfigComponents(options);
-  const { extensions, ignores, typeAware } = options;
+  const { allowedDangleNames, extensions, ignores, typeAware } = options;
 
-  const rules = mergeRules(...fragments);
+  const rules = allowDangleNames(mergeRules(...fragments), allowedDangleNames);
 
   return {
     globals: {
@@ -307,6 +344,7 @@ export const createConfig = (options: CreateConfigSettings): GeneratedConfig => 
       ? [
           createTestOverride({
             testConfig,
+            allowedDangleNames,
             extensions,
             globals: resolvedGlobals,
           }),

@@ -11,6 +11,7 @@ import { describe, expectTypeOf, it } from 'vitest';
 describe('public types', () => {
   it('should support the documented configuration options', () => {
     const options = {
+      allowedDangleNames: ['__piMcpState'],
       configs: ['node'],
       extensions: {
         typescript: {
