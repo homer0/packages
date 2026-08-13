@@ -56,6 +56,38 @@ describe('createConfig', () => {
     });
   });
 
+  it('should add configured globals to production and test overrides', () => {
+    const config = createConfig({
+      configs: ['node'],
+      globals: {
+        $browser: true,
+        __piMcpState: 'readonly',
+        writableGlobal: true,
+      },
+      tests: 'directory',
+    });
+
+    expect(config.globals).toMatchObject({
+      __piMcpState: 'readonly',
+      window: false,
+      writableGlobal: 'writable',
+    });
+    expect(config.overrides?.[0]?.globals).toMatchObject({
+      __piMcpState: 'readonly',
+      window: false,
+      writableGlobal: 'writable',
+    });
+  });
+
+  it('should reject unknown global groups', () => {
+    expect(() =>
+      createConfig({
+        configs: ['node'],
+        globals: { $unknown: true },
+      }),
+    ).toThrow(/unknown global group: "unknown"/i);
+  });
+
   it('should compose browser production with Node TypeScript tests', () => {
     const config = createConfig({
       configs: ['browser'],

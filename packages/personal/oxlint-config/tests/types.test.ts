@@ -3,6 +3,7 @@ import type {
   CreateConfigOptions,
   CreateNextjsConfigOptions,
   ExtensionFragments,
+  GlobalVars,
   TestsOption,
 } from '@src/index.js';
 import { describe, expectTypeOf, it } from 'vitest';
@@ -18,6 +19,10 @@ describe('public types', () => {
           },
         },
       },
+      globals: {
+        $browser: true,
+        __piMcpState: 'readonly',
+      },
       ignores: ['dist/**'],
       jsdoc: true,
       tests: {
@@ -31,6 +36,19 @@ describe('public types', () => {
     } satisfies CreateConfigOptions;
 
     expectTypeOf(options).toMatchTypeOf<CreateConfigOptions>();
+  });
+
+  it('should support global groups and writable named globals', () => {
+    const globals = {
+      $node: true,
+      customGlobal: true,
+    } satisfies GlobalVars;
+
+    // @ts-expect-error -- Global groups must be enabled with true.
+    const invalidKnownGroup: GlobalVars = { $node: 'readonly' };
+
+    expectTypeOf(globals).toMatchTypeOf<GlobalVars>();
+    expectTypeOf(invalidKnownGroup).toMatchTypeOf<GlobalVars>();
   });
 
   it('should reject unsupported configuration names', () => {

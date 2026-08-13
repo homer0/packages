@@ -17,7 +17,10 @@ import type {
   ResolveConfigComponentsOptions,
   ResolveConfigComponentsResult,
   ResolveTestConfigComponentsOptions,
+  ResolveTestConfigComponentsResult,
   CreateTestOverrideOptions,
+  ResolveGlobalsOptions,
+  ResolvedGlobalVars,
 } from './types.js';
 
 const mergeRules = (...fragments: (ConfigFragment | undefined)[]) =>
@@ -25,6 +28,34 @@ const mergeRules = (...fragments: (ConfigFragment | undefined)[]) =>
     Object.assign(acc, fragment?.rules);
     return acc;
   }, {});
+
+const resolveGlobals = ({
+  globals: globalVars,
+  doingTestsSetup,
+}: ResolveGlobalsOptions): ResolvedGlobalVars => {
+  if (doingTestsSetup) {
+    return globalVars || {};
+  }
+
+  if (!globalVars) {
+    return {};
+  }
+
+  return Object.entries(globalVars).reduce<ResolvedGlobalVars>((acc, [name, mode]) => {
+    if (name.startsWith('$')) {
+      const groupName = name.slice(1);
+      if (!Object.hasOwn(globals, groupName)) {
+        throw new Error(`Unknown global group: "${groupName}".`);
+      }
+
+      Object.assign(acc, globals[groupName as keyof typeof globals]);
+    } else {
+      acc[name] = mode === true ? 'writable' : mode;
+    }
+
+    return acc;
+  }, {});
+};
 
 const getConfig = (configs: ConfigName[]): ConfigName => {
   if (configs.length !== 1) {
@@ -90,7 +121,7 @@ const resolveTestConfigComponents = ({
   testConfig,
   tests,
   ts,
-}: ResolveTestConfigComponentsOptions) => {
+}: ResolveTestConfigComponentsOptions): ResolveTestConfigComponentsResult => {
   if (testConfig) {
     return {
       doingTestsSetup: true,
@@ -121,6 +152,7 @@ const resolveConfigComponents = (
   const {
     configs,
     extensions,
+    globals: globalVars,
     jsdoc,
     nextjs,
     react,
@@ -142,6 +174,7 @@ const resolveConfigComponents = (
   });
 
   const fragments: ConfigFragment[] = [baseFragment, extensionFragments[config]];
+  const resolvedGlobals = resolveGlobals({ globals: globalVars, doingTestsSetup });
 
   const plugins = ['import'];
 
@@ -209,6 +242,7 @@ const resolveConfigComponents = (
   return {
     config,
     fragments,
+    globals: resolvedGlobals,
     plugins,
     testConfig,
     configGlobals:
@@ -219,10 +253,17 @@ const resolveConfigComponents = (
 const createTestOverride = ({
   testConfig,
   extensions,
+  globals: globalVars,
 }: CreateTestOverrideOptions): GeneratedConfigOverride => {
-  const { config, fragments, configGlobals } = resolveConfigComponents({
+  const {
+    config,
+    fragments,
+    globals: resolvedGlobals,
+    configGlobals,
+  } = resolveConfigComponents({
     configs: testConfig.configs,
     extensions,
+    globals: globalVars,
     testConfig,
     ts: testConfig.ts,
     baseFragment: extensionFragments.tests,
@@ -238,6 +279,7 @@ const createTestOverride = ({
     files: testConfig.files,
     globals: {
       ...extensionFragments[config].globals,
+      ...resolvedGlobals,
       ...configGlobals,
     },
     rules,
@@ -246,7 +288,13 @@ const createTestOverride = ({
 
 /** Creates a native Oxlint configuration from one environment and optional policy layers. */
 export const createConfig = (options: CreateConfigSettings): GeneratedConfig => {
-  const { fragments, plugins, config, testConfig } = resolveConfigComponents(options);
+  const {
+    fragments,
+    globals: resolvedGlobals,
+    plugins,
+    config,
+    testConfig,
+  } = resolveConfigComponents(options);
   const { extensions, ignores, typeAware } = options;
 
   const rules = mergeRules(...fragments);
@@ -255,11 +303,20 @@ export const createConfig = (options: CreateConfigSettings): GeneratedConfig => 
     globals: {
       ...extensionFragments.base.globals,
       ...extensionFragments[config].globals,
+      ...resolvedGlobals,
     },
     ignorePatterns: [...DEFAULT_IGNORES, ...(ignores || [])],
     options: typeAware ? { typeAware: true } : undefined,
     plugins,
     rules,
-    overrides: testConfig ? [createTestOverride({ testConfig, extensions })] : undefined,
+    overrides: testConfig
+      ? [
+          createTestOverride({
+            testConfig,
+            extensions,
+            globals: resolvedGlobals,
+          }),
+        ]
+      : undefined,
   };
 };
