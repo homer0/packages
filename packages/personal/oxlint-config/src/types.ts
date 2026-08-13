@@ -70,7 +70,7 @@ export type CreateConfigSettings = CreateConfigOptions & {
 };
 
 export type ResolveTestConfigOptions = {
-  tests: TestsOption | undefined;
+  tests: Exclude<TestsOption, false>;
   productionConfig: ConfigName;
   productionTs: boolean;
 };

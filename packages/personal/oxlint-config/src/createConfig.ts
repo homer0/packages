@@ -30,15 +30,11 @@ const mergeRules = (...fragments: (ConfigFragment | undefined)[]) =>
   }, {});
 
 const resolveGlobals = ({
-  globals: globalVars,
+  globals: globalVars = {},
   doingTestsSetup,
 }: ResolveGlobalsOptions): ResolvedGlobalVars => {
   if (doingTestsSetup) {
-    return globalVars || {};
-  }
-
-  if (!globalVars) {
-    return {};
+    return globalVars;
   }
 
   return Object.entries(globalVars).reduce<ResolvedGlobalVars>((acc, [name, mode]) => {
@@ -87,9 +83,7 @@ const resolveTestConfig = ({
   tests,
   productionConfig,
   productionTs,
-}: ResolveTestConfigOptions): ResolvedTestConfig | undefined => {
-  if (!tests) return undefined;
-
+}: ResolveTestConfigOptions): ResolvedTestConfig => {
   if (tests === true) {
     return {
       configs: [productionConfig],
@@ -120,7 +114,7 @@ const resolveTestConfigComponents = ({
   config,
   testConfig,
   tests,
-  ts,
+  ts = false,
 }: ResolveTestConfigComponentsOptions): ResolveTestConfigComponentsResult => {
   if (testConfig) {
     return {
@@ -141,7 +135,7 @@ const resolveTestConfigComponents = ({
     testConfig: resolveTestConfig({
       tests,
       productionConfig: config,
-      productionTs: ts ?? false,
+      productionTs: ts,
     }),
   };
 };

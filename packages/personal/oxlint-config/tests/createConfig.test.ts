@@ -130,6 +130,29 @@ describe('createConfig', () => {
     });
   });
 
+  it('should apply base and environment extension fragments', () => {
+    const config = createConfig({
+      configs: ['node'],
+      extensions: {
+        base: {
+          rules: {
+            'no-console': 'warn',
+          },
+        },
+        node: {
+          rules: {
+            'node/no-process-env': 'warn',
+          },
+        },
+      },
+    });
+
+    expect(config.rules).toMatchObject({
+      'no-console': 'warn',
+      'node/no-process-env': 'warn',
+    });
+  });
+
   it('should compose opt-in JSDoc and TypeScript policy extensions', () => {
     const config = createConfig({
       configs: ['node'],
@@ -184,10 +207,11 @@ describe('createConfig', () => {
   });
 
   it('should only enable optional plugins when their profiles are selected', () => {
-    const config = createConfig({ configs: ['node'] });
+    const config = createConfig({ configs: ['node'], ts: false });
 
     expect(config.plugins).not.toContain('jsdoc');
     expect(config.plugins).not.toContain('nextjs');
+    expect(config.plugins).not.toContain('typescript');
   });
 
   it('should only enable type-aware linting when requested', () => {
@@ -195,6 +219,7 @@ describe('createConfig', () => {
 
     const config = createConfig({
       configs: ['node'],
+      ts: false,
       typeAware: true,
     });
 
@@ -212,6 +237,9 @@ describe('createConfig', () => {
 
   it('should reject invalid environment and custom test selections', () => {
     expect(() => createConfig({ configs: [] })).toThrow(/exactly one environment/i);
+    expect(() =>
+      createConfig({ configs: [undefined] as unknown as Array<'node' | 'browser'> }),
+    ).toThrow(/exactly one environment/i);
     expect(() => createConfig({ configs: ['node', 'browser'] })).toThrow(
       /exactly one environment/i,
     );
@@ -219,6 +247,12 @@ describe('createConfig', () => {
       createConfig({
         configs: ['node'],
         tests: { files: [] },
+      }),
+    ).toThrow(/requires at least one file glob/i);
+    expect(() =>
+      createConfig({
+        configs: ['node'],
+        tests: { files: undefined },
       }),
     ).toThrow(/requires at least one file glob/i);
   });
