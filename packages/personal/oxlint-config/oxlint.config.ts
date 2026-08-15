@@ -3,7 +3,7 @@ import { createConfig } from './dist/index.js';
 
 export default defineConfig(
   createConfig({
-    configs: ['node'],
+    env: 'node',
     tests: 'directory',
   }),
 );

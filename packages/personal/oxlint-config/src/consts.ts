@@ -1,3 +1,6 @@
+export const CONFIG_ENVS = ['browser', 'node'] as const;
+export type ConfigEnv = (typeof CONFIG_ENVS)[number];
+
 export const DEFAULT_IGNORES = ['coverage/', 'coverage-*/', 'dist/', 'node_modules/'];
 
 export const TEST_FILES = {

@@ -1,5 +1,11 @@
 import globals from 'globals';
-import { DEFAULT_IGNORES, TEST_FILES, type TestConvention } from './consts.js';
+import {
+  DEFAULT_IGNORES,
+  TEST_FILES,
+  CONFIG_ENVS,
+  type ConfigEnv,
+  type TestConvention,
+} from './consts.js';
 import { extensionFragments } from './fragments.js';
 import {
   nextjs as nextjsRules,
@@ -10,7 +16,7 @@ import {
 } from './rules/index.js';
 import type {
   ConfigFragment,
-  ConfigName,
+  ConfigOverrideOptions,
   DangleRuleOptions,
   DangleRuleSettings,
   CreateConfigSettings,
@@ -33,6 +39,54 @@ const mergeRules = (...fragments: (ConfigFragment | undefined)[]) =>
     Object.assign(acc, fragment?.rules);
     return acc;
   }, {});
+
+/** Combines config rules with user overrides. */
+const mergeRuleSettings = (fragments: ConfigFragment[], settings: RuleSettings[] = []) =>
+  mergeRules(...fragments, ...settings.map((rules) => ({ rules })));
+
+/** Marks environment globals as unavailable. */
+const disableGlobals = (env: ConfigEnv): ResolvedGlobalVars =>
+  Object.fromEntries(
+    Object.keys(extensionFragments[env].globals).map((name) => [name, 'off']),
+  );
+
+/** Checks if an override applies to files. */
+const isConfigOverride = (
+  override: ConfigOverrideOptions | RuleSettings,
+): override is ConfigOverrideOptions => Object.hasOwn(override, 'files');
+
+/** Splits rule overrides from file overrides. */
+const resolveUserOverrides = (overrides: CreateConfigSettings['overrides']) => {
+  if (!overrides) {
+    return {
+      configOverrides: [],
+      ruleOverrides: [],
+    };
+  }
+
+  if (!Array.isArray(overrides)) {
+    return {
+      configOverrides: [],
+      ruleOverrides: [overrides],
+    };
+  }
+
+  return overrides.reduce<{
+    configOverrides: ConfigOverrideOptions[];
+    ruleOverrides: RuleSettings[];
+  }>(
+    (acc, override) => {
+      if (isConfigOverride(override)) {
+        acc.configOverrides.push(override);
+      } else {
+        acc.ruleOverrides.push(override);
+      }
+
+      return acc;
+    },
+    { configOverrides: [], ruleOverrides: [] },
+  );
+};
 
 const allowDangleNames = (rules: RuleSettings, names: string[] = []): RuleSettings => {
   if (names.length === 0) return rules;
@@ -89,40 +143,36 @@ const resolveGlobals = ({
   }, {});
 };
 
-const getConfig = (configs: ConfigName[]): ConfigName => {
-  if (configs.length !== 1) {
-    throw new Error(
-      'Exactly one environment config must be selected: "node" or "browser".',
-    );
+const getEnvironment = (env: ConfigEnv): ConfigEnv => {
+  if (!CONFIG_ENVS.includes(env)) {
+    const humanReadableEnvs = CONFIG_ENVS.map((e) => `"${e}"`).join(' or ');
+    throw new Error(`Environment must be ${humanReadableEnvs}.`);
   }
 
-  const [config] = configs;
-  if (typeof config === 'undefined') {
-    throw new Error(
-      'Exactly one environment config must be selected: "node" or "browser".',
-    );
-  }
-
-  return config;
+  return env;
 };
+
+/** Turns a file glob into a list. */
+const resolveFiles = (files: string | string[]): string[] =>
+  Array.isArray(files) ? files.slice() : [files];
 
 const resolveTestFiles = (files: string | string[] | undefined): string[] => {
   if (typeof files === 'undefined') return [];
-  if (Array.isArray(files)) return files.slice();
-  if (Object.hasOwn(TEST_FILES, files))
+  if (typeof files === 'string' && Object.hasOwn(TEST_FILES, files)) {
     return TEST_FILES[files as TestConvention].slice();
+  }
 
-  return [files];
+  return resolveFiles(files);
 };
 
 const resolveTestConfig = ({
   tests,
-  productionConfig,
+  productionEnv,
   productionTs,
 }: ResolveTestConfigOptions): ResolvedTestConfig => {
   if (tests === true) {
     return {
-      configs: [productionConfig],
+      env: productionEnv,
       files: [...TEST_FILES.colocated, ...TEST_FILES.directory],
       framework: 'vitest',
       ts: productionTs,
@@ -131,7 +181,7 @@ const resolveTestConfig = ({
 
   if (typeof tests === 'string') {
     return {
-      configs: [productionConfig],
+      env: productionEnv,
       files: TEST_FILES[tests].slice(),
       framework: 'vitest',
       ts: productionTs,
@@ -139,7 +189,7 @@ const resolveTestConfig = ({
   }
 
   return {
-    configs: tests.configs ?? [productionConfig],
+    env: tests.env ?? productionEnv,
     files: resolveTestFiles(tests.files),
     framework: tests.framework || 'vitest',
     ts: tests.ts ?? productionTs,
@@ -147,7 +197,7 @@ const resolveTestConfig = ({
 };
 
 const resolveTestConfigComponents = ({
-  config,
+  env,
   testConfig,
   tests,
   ts = false,
@@ -170,7 +220,7 @@ const resolveTestConfigComponents = ({
     doingTestsSetup: false,
     testConfig: resolveTestConfig({
       tests,
-      productionConfig: config,
+      productionEnv: env,
       productionTs: ts,
     }),
   };
@@ -180,7 +230,7 @@ const resolveConfigComponents = (
   options: ResolveConfigComponentsOptions,
 ): ResolveConfigComponentsResult => {
   const {
-    configs,
+    env: environment,
     extensions,
     globals: globalVars,
     jsdoc,
@@ -194,23 +244,23 @@ const resolveConfigComponents = (
 
   const baseExtensionFragment = baseExtensionFragmentOption ?? extensions?.base;
 
-  const config = getConfig(options.configs);
+  const env = getEnvironment(environment);
 
   const { doingTestsSetup, testConfig } = resolveTestConfigComponents({
-    config,
+    env,
     testConfig: options.testConfig,
     tests: options.tests,
     ts,
   });
 
-  const fragments: ConfigFragment[] = [baseFragment, extensionFragments[config]];
+  const fragments: ConfigFragment[] = [baseFragment, extensionFragments[env]];
   const resolvedGlobals = resolveGlobals({ globals: globalVars, doingTestsSetup });
 
   const plugins = ['import'];
 
   const configGlobals: Array<Record<string, boolean | string>> = [];
 
-  if (configs.includes('node')) {
+  if (env === 'node') {
     plugins.push('node');
   }
 
@@ -253,8 +303,8 @@ const resolveConfigComponents = (
     fragments.push(baseExtensionFragment);
   }
 
-  if (extensions?.[config]) {
-    fragments.push(extensions[config]);
+  if (extensions?.[env]) {
+    fragments.push(extensions[env]);
   }
 
   if (jsdoc && extensions?.jsdoc) {
@@ -270,7 +320,7 @@ const resolveConfigComponents = (
   }
 
   return {
-    config,
+    env,
     fragments,
     globals: resolvedGlobals,
     plugins,
@@ -281,18 +331,20 @@ const resolveConfigComponents = (
 };
 
 const createTestOverride = ({
+  parentEnv,
   testConfig,
   allowedDangleNames,
   extensions,
+  extraRules = [],
   globals: globalVars,
 }: CreateTestOverrideOptions): GeneratedConfigOverride => {
   const {
-    config,
+    env,
     fragments,
     globals: resolvedGlobals,
     configGlobals,
   } = resolveConfigComponents({
-    configs: testConfig.configs,
+    env: testConfig.env,
     extensions,
     globals: globalVars,
     testConfig,
@@ -300,7 +352,10 @@ const createTestOverride = ({
     baseFragment: extensionFragments.tests,
     baseExtensionFragment: extensions?.tests,
   });
-  const rules = allowDangleNames(mergeRules(...fragments), allowedDangleNames);
+  const rules = allowDangleNames(
+    mergeRuleSettings(fragments, extraRules),
+    allowedDangleNames,
+  );
 
   if (testConfig.files.length === 0) {
     throw new Error('Custom test configuration requires at least one file glob.');
@@ -309,11 +364,69 @@ const createTestOverride = ({
   return {
     files: testConfig.files,
     globals: {
-      ...extensionFragments[config].globals,
+      ...disableGlobals(parentEnv),
+      ...extensionFragments[env].globals,
       ...resolvedGlobals,
       ...configGlobals,
     },
     rules,
+  };
+};
+
+type CreateConfigOverrideOptions = {
+  override: ConfigOverrideOptions;
+  options: CreateConfigSettings;
+  parentEnv: ConfigEnv;
+  rootRuleOverrides: RuleSettings[];
+};
+
+/** Creates a file override and its test override. */
+const createConfigOverride = ({
+  override,
+  options,
+  parentEnv,
+  rootRuleOverrides,
+}: CreateConfigOverrideOptions) => {
+  const { files, ignores, rules: overrideRules, tests, ...overrideOptions } = override;
+  const {
+    env,
+    fragments,
+    globals: resolvedGlobals,
+    plugins,
+    testConfig,
+  } = resolveConfigComponents({
+    ...options,
+    ...overrideOptions,
+    env: override.env ?? parentEnv,
+    tests,
+  });
+  const extraRules = [...rootRuleOverrides, ...(overrideRules ? [overrideRules] : [])];
+
+  return {
+    override: {
+      excludeFiles: ignores,
+      files: resolveFiles(files),
+      globals: {
+        ...disableGlobals(parentEnv),
+        ...extensionFragments[env].globals,
+        ...resolvedGlobals,
+      },
+      rules: allowDangleNames(
+        mergeRuleSettings(fragments, extraRules),
+        options.allowedDangleNames,
+      ),
+    },
+    plugins,
+    testOverride: testConfig
+      ? createTestOverride({
+          parentEnv,
+          testConfig,
+          allowedDangleNames: options.allowedDangleNames,
+          extensions: overrideOptions.extensions ?? options.extensions,
+          extraRules,
+          globals: overrideOptions.globals ?? options.globals,
+        })
+      : undefined,
   };
 };
 
@@ -322,33 +435,61 @@ export const createConfig = (options: CreateConfigSettings): GeneratedConfig => 
   const {
     fragments,
     globals: resolvedGlobals,
-    plugins,
-    config,
+    plugins: resolvedPlugins,
+    env,
     testConfig,
   } = resolveConfigComponents(options);
   const { allowedDangleNames, extensions, ignores, typeAware } = options;
+  const { configOverrides, ruleOverrides } = resolveUserOverrides(options.overrides);
+  const generatedOverrides: GeneratedConfigOverride[] = [];
+  const plugins = resolvedPlugins.slice();
 
-  const rules = allowDangleNames(mergeRules(...fragments), allowedDangleNames);
+  if (testConfig) {
+    generatedOverrides.push(
+      createTestOverride({
+        parentEnv: env,
+        testConfig,
+        allowedDangleNames,
+        extensions,
+        extraRules: ruleOverrides,
+        globals: resolvedGlobals,
+      }),
+    );
+  }
+
+  for (const override of configOverrides) {
+    const generatedOverride = createConfigOverride({
+      override,
+      options,
+      parentEnv: env,
+      rootRuleOverrides: ruleOverrides,
+    });
+
+    generatedOverrides.push(generatedOverride.override);
+    if (generatedOverride.testOverride) {
+      generatedOverrides.push(generatedOverride.testOverride);
+    }
+
+    for (const plugin of generatedOverride.plugins) {
+      if (!plugins.includes(plugin)) plugins.push(plugin);
+    }
+  }
+
+  const rules = allowDangleNames(
+    mergeRuleSettings(fragments, ruleOverrides),
+    allowedDangleNames,
+  );
 
   return {
     globals: {
       ...extensionFragments.base.globals,
-      ...extensionFragments[config].globals,
+      ...extensionFragments[env].globals,
       ...resolvedGlobals,
     },
     ignorePatterns: [...DEFAULT_IGNORES, ...(ignores || [])],
     options: typeAware ? { typeAware: true } : undefined,
     plugins,
     rules,
-    overrides: testConfig
-      ? [
-          createTestOverride({
-            testConfig,
-            allowedDangleNames,
-            extensions,
-            globals: resolvedGlobals,
-          }),
-        ]
-      : undefined,
+    overrides: generatedOverrides.length > 0 ? generatedOverrides : undefined,
   };
 };

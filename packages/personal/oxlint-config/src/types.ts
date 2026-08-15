@@ -1,7 +1,5 @@
 import type globals from 'globals';
-import type { ExtensionFragmentName, TestConvention } from './consts.js';
-
-export type ConfigName = 'browser' | 'node';
+import type { ExtensionFragmentName, TestConvention, ConfigEnv } from './consts.js';
 
 export type RuleSettings = Record<string, unknown>;
 
@@ -37,43 +35,52 @@ export type ExtensionFragments = Partial<Record<ExtensionFragmentName, ConfigFra
 /** Selects a test framework-specific native rule policy. */
 export type TestFramework = 'vitest';
 
+type TestConfigBaseOptions = {
+  env?: ConfigEnv;
+  framework?: TestFramework;
+  ts?: boolean;
+};
+
 /**
  * Narrows a test override and optionally selects its environment, framework, and
  * TypeScript policy.
  */
-export type TestConfigOptions = {
-  configs?: ConfigName[];
-  framework?: TestFramework;
+export type TestConfigOptions = TestConfigBaseOptions & {
   /** Uses a built-in convention or custom glob(s). */
   files?: TestConvention | (string & {}) | string[];
-  ts?: boolean;
 };
 
 /** Selects both conventions, one built-in convention, or a custom test override. */
 export type TestsOption = boolean | TestConvention | TestConfigOptions;
 
-export type CreateConfigOptions = {
-  configs: ConfigName[];
-  /** Adds exact identifiers allowed by `no-underscore-dangle`. */
+type CreateConfigBaseOptions = {
+  env: ConfigEnv;
   allowedDangleNames?: string[];
   extensions?: ExtensionFragments;
   globals?: GlobalVars;
   ignores?: string[];
-  /** Enables the native subset of JSDoc policy. */
   jsdoc?: boolean;
-  tests?: TestsOption;
-  /** Defaults to `true`. */
   ts?: boolean;
-  /**
-   * Enables Oxlint's root-only type-aware mode. Requires oxlint-tsgolint and TypeScript
-   * 7+.
-   */
+};
+
+export type TestConfigOverrideOptions = TestConfigBaseOptions & {
+  files: string | string[];
+};
+
+export type ConfigOverrideOptions = {
+  files: string | string[];
+  rules?: RuleSettings;
+  tests?: TestConfigOverrideOptions;
+} & Partial<CreateConfigBaseOptions>;
+
+export type CreateConfigOptions = CreateConfigBaseOptions & {
+  tests?: TestsOption;
+  overrides?: RuleSettings | Array<ConfigOverrideOptions | RuleSettings>;
+  /** Enables Oxlint's root-only type-aware mode. Requires oxlint-tsgolint and TS 7+ */
   typeAware?: boolean;
 };
 
-export type CreateReactConfigOptions = CreateConfigOptions;
-
-export type CreateNextjsConfigOptions = Omit<CreateConfigOptions, 'configs' | 'ts'>;
+export type CreateNextjsConfigOptions = Omit<CreateConfigOptions, 'env' | 'ts'>;
 
 export type CreateConfigSettings = CreateConfigOptions & {
   nextjs?: boolean;
@@ -82,18 +89,19 @@ export type CreateConfigSettings = CreateConfigOptions & {
 
 export type ResolveTestConfigOptions = {
   tests: Exclude<TestsOption, false>;
-  productionConfig: ConfigName;
+  productionEnv: ConfigEnv;
   productionTs: boolean;
 };
 
 export type ResolvedTestConfig = {
-  configs: ConfigName[];
+  env: ConfigEnv;
   files: string[];
   framework?: TestFramework;
   ts: boolean;
 };
 
 export type GeneratedConfigOverride = {
+  excludeFiles?: string[];
   files: string[];
   globals: ResolvedGlobalVars;
   rules: RuleSettings;
@@ -112,8 +120,10 @@ export type GeneratedConfig = {
 };
 
 export type CreateTestOverrideOptions = {
+  parentEnv: ConfigEnv;
   testConfig: ResolvedTestConfig;
   allowedDangleNames?: string[];
+  extraRules?: RuleSettings[];
   extensions?: ExtensionFragments;
   globals?: GlobalVars | ResolvedGlobalVars;
 };
@@ -126,7 +136,7 @@ export type ResolveConfigComponentsOptions = Omit<CreateConfigSettings, 'globals
 };
 
 export type ResolveTestConfigComponentsOptions = {
-  config: ConfigName;
+  env: ConfigEnv;
   testConfig?: ResolvedTestConfig;
   tests?: TestsOption;
   ts?: boolean;
@@ -138,7 +148,7 @@ export type ResolveTestConfigComponentsResult = {
 };
 
 export type ResolveConfigComponentsResult = {
-  config: ConfigName;
+  env: ConfigEnv;
   globals: ResolvedGlobalVars;
   testConfig?: ResolvedTestConfig;
   fragments: ConfigFragment[];

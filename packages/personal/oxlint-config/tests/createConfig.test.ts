@@ -1,10 +1,10 @@
-import { createConfig, createNextjsConfig, createReactConfig } from '@src/index.js';
+import { createConfig, createNextjsConfig } from '@src/index.js';
 import { describe, expect, it } from 'vitest';
 
 describe('createConfig', () => {
   it('should compose Node TypeScript policy with directory tests', () => {
     const config = createConfig({
-      configs: ['node'],
+      env: 'node',
       tests: 'directory',
     });
 
@@ -26,7 +26,7 @@ describe('createConfig', () => {
 
   it('should select both test conventions when tests is true', () => {
     const config = createConfig({
-      configs: ['node'],
+      env: 'node',
       tests: true,
     });
 
@@ -38,7 +38,7 @@ describe('createConfig', () => {
 
   it('should compose Vitest rules for custom test files', () => {
     const config = createConfig({
-      configs: ['node'],
+      env: 'node',
       tests: {
         files: 'tests/**/*.ts',
       },
@@ -58,7 +58,7 @@ describe('createConfig', () => {
 
   it('should add configured globals to production and test overrides', () => {
     const config = createConfig({
-      configs: ['node'],
+      env: 'node',
       globals: {
         $browser: true,
         __piMcpState: 'readonly',
@@ -82,7 +82,7 @@ describe('createConfig', () => {
   it('should allow configured dangling-underscore names in production and test rules', () => {
     const config = createConfig({
       allowedDangleNames: ['__piMcpState', '__piMcpState'],
-      configs: ['node'],
+      env: 'node',
       tests: 'directory',
     });
 
@@ -103,7 +103,7 @@ describe('createConfig', () => {
   it('should preserve a non-array dangling-underscore rule override', () => {
     const config = createConfig({
       allowedDangleNames: ['__piMcpState'],
-      configs: ['node'],
+      env: 'node',
       extensions: {
         base: {
           rules: {
@@ -119,7 +119,7 @@ describe('createConfig', () => {
   it('should retain base dangling-underscore options when an override omits them', () => {
     const config = createConfig({
       allowedDangleNames: ['__piMcpState'],
-      configs: ['node'],
+      env: 'node',
       extensions: {
         base: {
           rules: {
@@ -143,7 +143,7 @@ describe('createConfig', () => {
   it('should reject unknown global groups', () => {
     expect(() =>
       createConfig({
-        configs: ['node'],
+        env: 'node',
         globals: { $unknown: true },
       }),
     ).toThrow(/unknown global group: "unknown"/i);
@@ -151,9 +151,9 @@ describe('createConfig', () => {
 
   it('should compose browser production with Node TypeScript tests', () => {
     const config = createConfig({
-      configs: ['browser'],
+      env: 'browser',
       tests: {
-        configs: ['node'],
+        env: 'node',
         files: 'directory',
       },
     });
@@ -169,9 +169,88 @@ describe('createConfig', () => {
     });
   });
 
+  it('should apply an object rule override to production and tests', () => {
+    const config = createConfig({
+      env: 'node',
+      overrides: {
+        'max-classes-per-file': ['warn', 3],
+      },
+      tests: 'directory',
+    });
+
+    expect(config.rules['max-classes-per-file']).toEqual(['warn', 3]);
+    expect(config.overrides?.[0]?.rules['max-classes-per-file']).toEqual(['warn', 3]);
+  });
+
+  it('should compose root, file, environment, and nested test overrides', () => {
+    const config = createConfig({
+      env: 'browser',
+      overrides: [
+        {
+          'max-classes-per-file': ['warn', 3],
+        },
+        {
+          files: 'src/**/*.dtos.ts',
+          ignores: ['src/special.dtos.ts'],
+          rules: {
+            'no-magic-numbers': 'warn',
+          },
+        },
+        {
+          env: 'node',
+          files: ['utils/plugins/**/*.ts'],
+          tests: {
+            files: ['utils/plugins/**/*.test.ts'],
+          },
+        },
+      ],
+      tests: {
+        env: 'node',
+        files: 'directory',
+      },
+    });
+
+    expect(config.plugins).toContain('node');
+    expect(config.rules['max-classes-per-file']).toEqual(['warn', 3]);
+    expect(config.overrides).toEqual([
+      expect.objectContaining({
+        files: ['tests/**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}'],
+        rules: expect.objectContaining({
+          'max-classes-per-file': ['warn', 3],
+          'node/no-process-env': 'error',
+        }),
+      }),
+      expect.objectContaining({
+        excludeFiles: ['src/special.dtos.ts'],
+        files: ['src/**/*.dtos.ts'],
+        rules: expect.objectContaining({
+          'no-magic-numbers': 'warn',
+        }),
+      }),
+      expect.objectContaining({
+        files: ['utils/plugins/**/*.ts'],
+        globals: expect.objectContaining({
+          process: false,
+          window: 'off',
+        }),
+        rules: expect.objectContaining({
+          'node/no-process-env': 'error',
+        }),
+      }),
+      expect.objectContaining({
+        files: ['utils/plugins/**/*.test.ts'],
+        rules: expect.objectContaining({
+          'node/no-process-env': 'error',
+          'vitest/no-focused-tests': 'error',
+        }),
+      }),
+    ]);
+  });
+
   it('should apply extension fragments without requiring manual React rule merging', () => {
-    const config = createReactConfig({
-      configs: ['browser'],
+    const config = createConfig({
+      env: 'browser',
+      react: true,
       extensions: {
         react: {
           rules: {
@@ -193,7 +272,7 @@ describe('createConfig', () => {
 
   it('should apply base and environment extension fragments', () => {
     const config = createConfig({
-      configs: ['node'],
+      env: 'node',
       extensions: {
         base: {
           rules: {
@@ -216,7 +295,7 @@ describe('createConfig', () => {
 
   it('should compose opt-in JSDoc and TypeScript policy extensions', () => {
     const config = createConfig({
-      configs: ['node'],
+      env: 'node',
       extensions: {
         jsdoc: {
           rules: {
@@ -243,6 +322,7 @@ describe('createConfig', () => {
 
   it('should compose the Next.js profile', () => {
     const config = createNextjsConfig({
+      globals: { customGlobal: 'readonly' },
       jsdoc: true,
     });
 
@@ -257,6 +337,10 @@ describe('createConfig', () => {
         'build/',
         'next-env.d.ts',
       ],
+      globals: expect.objectContaining({
+        customGlobal: 'readonly',
+        window: false,
+      }),
       plugins: expect.arrayContaining(['nextjs', 'jsdoc']),
       rules: expect.objectContaining({
         'jsdoc/check-access': 'error',
@@ -268,7 +352,7 @@ describe('createConfig', () => {
   });
 
   it('should only enable optional plugins when their profiles are selected', () => {
-    const config = createConfig({ configs: ['node'], ts: false });
+    const config = createConfig({ env: 'node', ts: false });
 
     expect(config.plugins).not.toContain('jsdoc');
     expect(config.plugins).not.toContain('nextjs');
@@ -276,10 +360,10 @@ describe('createConfig', () => {
   });
 
   it('should only enable type-aware linting when requested', () => {
-    expect(createConfig({ configs: ['node'] }).options).toBeUndefined();
+    expect(createConfig({ env: 'node' }).options).toBeUndefined();
 
     const config = createConfig({
-      configs: ['node'],
+      env: 'node',
       ts: false,
       typeAware: true,
     });
@@ -297,22 +381,27 @@ describe('createConfig', () => {
   });
 
   it('should reject invalid environment and custom test selections', () => {
-    expect(() => createConfig({ configs: [] })).toThrow(/exactly one environment/i);
-    expect(() =>
-      createConfig({ configs: [undefined] as unknown as Array<'node' | 'browser'> }),
-    ).toThrow(/exactly one environment/i);
-    expect(() => createConfig({ configs: ['node', 'browser'] })).toThrow(
-      /exactly one environment/i,
+    expect(() => createConfig({ env: undefined as unknown as 'node' })).toThrow(
+      /environment/i,
+    );
+    expect(() => createConfig({ env: 'deno' as unknown as 'node' })).toThrow(
+      /environment/i,
     );
     expect(() =>
       createConfig({
-        configs: ['node'],
+        env: 'node',
+        tests: { env: 'deno' as unknown as 'node', files: 'directory' },
+      }),
+    ).toThrow(/environment/i);
+    expect(() =>
+      createConfig({
+        env: 'node',
         tests: { files: [] },
       }),
     ).toThrow(/requires at least one file glob/i);
     expect(() =>
       createConfig({
-        configs: ['node'],
+        env: 'node',
         tests: { files: undefined },
       }),
     ).toThrow(/requires at least one file glob/i);

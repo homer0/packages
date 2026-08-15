@@ -1,6 +1,6 @@
-import { createReactConfig } from '@homer0/oxlint-config';
+import { createConfig } from '@homer0/oxlint-config';
 
-export default createReactConfig({
-  configs: ['browser'],
+export default createConfig({
+  env: 'browser',
   tests: 'directory',
 });

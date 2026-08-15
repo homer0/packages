@@ -25,12 +25,12 @@ Create an `oxlint.config.ts` file and export one composed config.
 import { createConfig } from '@homer0/oxlint-config';
 
 export default createConfig({
-  configs: ['node'],
+  env: 'node',
   tests: 'directory',
 });
 ```
 
-`configs` accepts exactly one environment: `node` or `browser`. Native TypeScript policy is enabled by default; set `ts: false` to disable it. It does not enable type-aware rules or require the TypeScript compiler.
+`env` selects one environment: `node` or `browser`. Native TypeScript policy is enabled by default; set `ts: false` to disable it. It does not enable type-aware rules or require the TypeScript compiler.
 
 ### Browser
 
@@ -38,32 +38,32 @@ export default createConfig({
 import { createConfig } from '@homer0/oxlint-config';
 
 export default createConfig({
-  configs: ['browser'],
+  env: 'browser',
 });
 ```
 
 ### React
 
-Use `createReactConfig` with the same options to add React, JSX accessibility, and React-performance rules.
+Use `createConfig` and send the `react` option to add React, JSX accessibility, and React-performance rules.
 
 ```ts
-import { createReactConfig } from '@homer0/oxlint-config';
+import { createConfig } from '@homer0/oxlint-config';
 
-export default createReactConfig({
-  configs: ['browser'],
-  tests: 'colocated',
+export default createConfig({
+  env: 'browser',
+  react: true,
 });
 ```
 
 ### Tests
 
-| `tests` value      | Matching files                                | Environment and TypeScript policy                                                     |
-| ------------------ | --------------------------------------------- | ------------------------------------------------------------------------------------- |
-| Omitted or `false` | None                                          | No test override.                                                                     |
-| `true`             | Both `*.test`/`*.spec` files and `tests/**`   | Uses production settings and Vitest rules.                                            |
-| `'colocated'`      | `*.test` and `*.spec` files                   | Uses production settings and Vitest rules.                                            |
-| `'directory'`      | `tests/**`                                    | Uses production settings and Vitest rules.                                            |
-| Object             | Built-in `files` convention or custom glob(s) | Uses custom `configs` and `ts`, or production settings by default, with Vitest rules. |
+| `tests` value      | Matching files                                | Environment and TypeScript policy                                                 |
+| ------------------ | --------------------------------------------- | --------------------------------------------------------------------------------- |
+| Omitted or `false` | None                                          | No test override.                                                                 |
+| `true`             | Both `*.test`/`*.spec` files and `tests/**`   | Uses production settings and Vitest rules.                                        |
+| `'colocated'`      | `*.test` and `*.spec` files                   | Uses production settings and Vitest rules.                                        |
+| `'directory'`      | `tests/**`                                    | Uses production settings and Vitest rules.                                        |
+| Object             | Built-in `files` convention or custom glob(s) | Uses custom `env` and `ts`, or production settings by default, with Vitest rules. |
 
 A browser project can use Node TypeScript policy for its tests without changing production rules:
 
@@ -71,13 +71,59 @@ A browser project can use Node TypeScript policy for its tests without changing 
 import { createConfig } from '@homer0/oxlint-config';
 
 export default createConfig({
-  configs: ['browser'],
+  env: 'browser',
   tests: {
-    configs: ['node'],
+    env: 'node',
     files: 'directory',
   },
 });
 ```
+
+### Overrides
+
+Use `overrides` to change root rules, apply policy to matching files, or select a different environment for a file group. A rule-settings object extends the root policy and generated test policy:
+
+```ts
+export default createConfig({
+  env: 'node',
+  overrides: {
+    'max-classes-per-file': ['warn', 3],
+  },
+});
+```
+
+Use an array to mix root rule settings with file overrides:
+
+```ts
+export default createConfig({
+  env: 'browser',
+  overrides: [
+    {
+      'max-classes-per-file': ['warn', 3],
+    },
+    {
+      files: ['src/**/*.dtos.ts'],
+      ignores: ['src/special.dtos.ts'],
+      rules: {
+        'no-magic-numbers': 'warn',
+      },
+    },
+    {
+      env: 'node',
+      files: ['utils/plugins/**/*.ts'],
+      tests: {
+        files: ['utils/plugins/**/*.test.ts'],
+      },
+    },
+  ],
+  tests: {
+    env: 'node',
+    files: 'directory',
+  },
+});
+```
+
+Root `ignores` exclude files from linting. Override `ignores` exclude matching files only from that override. Override tests require explicit file glob(s) and generate a sibling test override using the parent override's environment by default.
 
 ### Globals
 
@@ -85,7 +131,7 @@ Use `globals` to add named globals or `$`-prefixed global groups from the [`glob
 
 ```ts
 export default createConfig({
-  configs: ['node'],
+  env: 'node',
   globals: {
     $browser: true,
     __piMcpState: 'readonly',
@@ -101,7 +147,7 @@ Use `allowedDangleNames` to add exact identifiers to the base `no-underscore-dan
 ```ts
 export default createConfig({
   allowedDangleNames: ['__piMcpState'],
-  configs: ['node'],
+  env: 'node',
 });
 ```
 
@@ -111,7 +157,7 @@ Set `jsdoc: true` to opt into Oxlint's native JSDoc subset. It covers JSDoc acce
 
 ```ts
 export default createConfig({
-  configs: ['node'],
+  env: 'node',
   jsdoc: true,
   ts: true,
 });
@@ -140,7 +186,7 @@ pnpm add --save-dev oxlint-tsgolint typescript
 
 ```ts
 export default createConfig({
-  configs: ['node'],
+  env: 'node',
   ts: true,
   typeAware: true,
 });
@@ -152,7 +198,7 @@ Use `extensions` to add supported native rule settings without manually merging 
 
 ```ts
 createConfig({
-  configs: ['node'],
+  env: 'node',
   extensions: {
     typescript: {
       rules: {
