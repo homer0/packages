@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/homer0/packages/compare/%40homer0%2Foxlint-config%401.1.0...%40homer0%2Foxlint-config%402.0.0) (2026-08-15)
+
+### Bug Fixes
+
+- **oxlint-config:** add browser globals to the nextjs config ([af52c7f](https://github.com/homer0/packages/commit/af52c7f709dc27429944756a3e5bcf6a0515fc5d))
+- **oxlint-config:** disable no-useless-escape ([16d52a6](https://github.com/homer0/packages/commit/16d52a672bdd52f2ee36ff9b005c4306d18a6248))
+- **oxlint-config:** remove createReactConfig ([4ca4bee](https://github.com/homer0/packages/commit/4ca4bee1dbf31eda036d13df57ae67e9b5a66904))
+- **oxlint-config:** replace configs with env ([0d9840a](https://github.com/homer0/packages/commit/0d9840a2337c6a1c059529f9370c82bd6aeac348))
+
+### Features
+
+- **oxlint-config:** add configuration overrides ([6c5ccb9](https://github.com/homer0/packages/commit/6c5ccb97a0ef7f99e599de515870556175fbbb4b))
+
+### BREAKING CHANGES
+
+- **oxlint-config:** `createReactConfig` was removed, use `createConfig`
+  with `react:true`
+- **oxlint-config:** instead of using `configs: ['node']` or
+  `configs: ['browser']`, you now have to do `env: 'node'` or
+  `env: 'browser'`.
+
 # [1.1.0](https://github.com/homer0/packages/compare/%40homer0%2Foxlint-config%401.0.3...%40homer0%2Foxlint-config%401.1.0) (2026-08-13)
 
 ### Bug Fixes

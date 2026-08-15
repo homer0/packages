@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [15.0.7](https://github.com/homer0/packages/compare/%40homer0%2Feslint-plugin%4015.0.6...%40homer0%2Feslint-plugin%4015.0.7) (2026-08-15)
+
+**Note:** Version bump only for package @homer0/eslint-plugin
+
 ## [15.0.6](https://github.com/homer0/packages/compare/%40homer0%2Feslint-plugin%4015.0.5...%40homer0%2Feslint-plugin%4015.0.6) (2026-08-13)
 
 **Note:** Version bump only for package @homer0/eslint-plugin

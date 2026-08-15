@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.7](https://github.com/homer0/packages/compare/%40homer0%2Ferror-handler%406.0.6...%40homer0%2Ferror-handler%406.0.7) (2026-08-15)
+
+**Note:** Version bump only for package @homer0/error-handler
+
 ## [6.0.6](https://github.com/homer0/packages/compare/%40homer0%2Ferror-handler%406.0.5...%40homer0%2Ferror-handler%406.0.6) (2026-08-13)
 
 **Note:** Version bump only for package @homer0/error-handler
