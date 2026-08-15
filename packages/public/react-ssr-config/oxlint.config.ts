@@ -1,7 +1,7 @@
 import { createConfig } from '@homer0/oxlint-config';
 
 export default createConfig({
-  configs: ['browser'],
+  env: 'browser',
   tests: 'directory',
   react: true,
 });
