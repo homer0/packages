@@ -11,7 +11,7 @@ export const createNextjsConfig = ({
 }: CreateNextjsConfigOptions) =>
   createConfig({
     ...options,
-    configs: ['node'],
+    env: 'node',
     globals: { $browser: true, ...globals },
     ignores: [...NEXTJS_IGNORES, ...ignores],
     nextjs: true,

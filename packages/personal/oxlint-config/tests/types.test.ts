@@ -1,5 +1,5 @@
 import type {
-  ConfigName,
+  ConfigEnv,
   CreateConfigOptions,
   CreateNextjsConfigOptions,
   ExtensionFragments,
@@ -12,7 +12,7 @@ describe('public types', () => {
   it('should support the documented configuration options', () => {
     const options = {
       allowedDangleNames: ['__piMcpState'],
-      configs: ['node'],
+      env: 'node',
       extensions: {
         typescript: {
           rules: {
@@ -27,7 +27,7 @@ describe('public types', () => {
       ignores: ['dist/**'],
       jsdoc: true,
       tests: {
-        configs: ['node'],
+        env: 'node',
         files: ['tests/**/*.ts'],
         framework: 'vitest',
         ts: true,
@@ -52,11 +52,11 @@ describe('public types', () => {
     expectTypeOf(invalidKnownGroup).toMatchTypeOf<GlobalVars>();
   });
 
-  it('should reject unsupported configuration names', () => {
-    // @ts-expect-error -- Only browser and node configuration names are supported.
-    const config: ConfigName = 'node-ts';
+  it('should reject unsupported environments', () => {
+    // @ts-expect-error -- Only browser and node environments are supported.
+    const env: ConfigEnv = 'node-ts';
 
-    expectTypeOf(config).toEqualTypeOf<ConfigName>();
+    expectTypeOf(env).toEqualTypeOf<ConfigEnv>();
   });
 
   it('should reject unsupported test options', () => {

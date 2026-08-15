@@ -66,7 +66,7 @@ describe('generated Oxlint configurations', () => {
   it('should validate a Node TypeScript configuration with directory tests', () => {
     const result = runOxlint({
       config: createConfig({
-        configs: ['node'],
+        env: 'node',
         tests: 'directory',
         ts: true,
       }),
@@ -81,7 +81,7 @@ describe('generated Oxlint configurations', () => {
   it('should validate optional type-aware configuration when tsgolint is available', () => {
     const result = runOxlint({
       config: createConfig({
-        configs: ['node'],
+        env: 'node',
         ts: true,
         typeAware: true,
       }),
@@ -96,7 +96,7 @@ describe('generated Oxlint configurations', () => {
   it('should validate opt-in JSDoc policy', () => {
     const result = runOxlint({
       config: createConfig({
-        configs: ['node'],
+        env: 'node',
         jsdoc: true,
       }),
       file: 'source.ts',
@@ -110,7 +110,7 @@ describe('generated Oxlint configurations', () => {
   it('should validate the Vitest test override', () => {
     const result = runOxlint({
       config: createConfig({
-        configs: ['node'],
+        env: 'node',
         tests: {
           files: 'tests/**/*.ts',
           framework: 'vitest',
@@ -138,7 +138,7 @@ describe('generated Oxlint configurations', () => {
 
   it('should apply production rules without applying test relaxations', () => {
     const config = createConfig({
-      configs: ['node'],
+      env: 'node',
       tests: true,
       ts: true,
     });
@@ -162,9 +162,9 @@ describe('generated Oxlint configurations', () => {
 
   it('should use browser globals in production and Node globals in custom tests', () => {
     const config = createConfig({
-      configs: ['browser'],
+      env: 'browser',
       tests: {
-        configs: ['node'],
+        env: 'node',
         files: 'tests/**/*.ts',
         ts: true,
       },
@@ -191,7 +191,7 @@ describe('generated Oxlint configurations', () => {
   it('should apply React accessibility rules to TSX files', () => {
     const result = runOxlint({
       config: createConfig({
-        configs: ['browser'],
+        env: 'browser',
         react: true,
         ts: true,
       }),
@@ -207,7 +207,7 @@ describe('generated Oxlint configurations', () => {
   it('should ignore matching files', () => {
     const result = runOxlint({
       config: createConfig({
-        configs: ['node'],
+        env: 'node',
         ignores: ['ignored.ts'],
       }),
       file: 'ignored.ts',
@@ -220,7 +220,7 @@ describe('generated Oxlint configurations', () => {
   });
 
   it('should retain documented formatter and omission policy', () => {
-    const config = createConfig({ configs: ['node'] });
+    const config = createConfig({ env: 'node' });
 
     expect(config.rules).toMatchObject({
       curly: 'off',
@@ -235,7 +235,7 @@ describe('generated Oxlint configurations', () => {
   it('should apply the TypeScript recommended rule equivalents', () => {
     const result = runOxlint({
       config: createConfig({
-        configs: ['node'],
+        env: 'node',
         ts: true,
       }),
       file: 'source.ts',
@@ -248,11 +248,11 @@ describe('generated Oxlint configurations', () => {
 
   it('should retain TypeScript and React rule overrides', () => {
     const typescriptConfig = createConfig({
-      configs: ['node'],
+      env: 'node',
       ts: true,
     });
     const reactConfig = createConfig({
-      configs: ['browser'],
+      env: 'browser',
       ts: true,
       react: true,
     });

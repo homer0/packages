@@ -25,12 +25,12 @@ Create an `oxlint.config.ts` file and export one composed config.
 import { createConfig } from '@homer0/oxlint-config';
 
 export default createConfig({
-  configs: ['node'],
+  env: 'node',
   tests: 'directory',
 });
 ```
 
-`configs` accepts exactly one environment: `node` or `browser`. Native TypeScript policy is enabled by default; set `ts: false` to disable it. It does not enable type-aware rules or require the TypeScript compiler.
+`env` selects one environment: `node` or `browser`. Native TypeScript policy is enabled by default; set `ts: false` to disable it. It does not enable type-aware rules or require the TypeScript compiler.
 
 ### Browser
 
@@ -38,7 +38,7 @@ export default createConfig({
 import { createConfig } from '@homer0/oxlint-config';
 
 export default createConfig({
-  configs: ['browser'],
+  env: 'browser',
 });
 ```
 
@@ -50,20 +50,20 @@ Use `createConfig` and send the `react` option to add React, JSX accessibility, 
 import { createConfig } from '@homer0/oxlint-config';
 
 export default createConfig({
-  configs: ['browser'],
+  env: 'browser',
   react: true,
 });
 ```
 
 ### Tests
 
-| `tests` value      | Matching files                                | Environment and TypeScript policy                                                     |
-| ------------------ | --------------------------------------------- | ------------------------------------------------------------------------------------- |
-| Omitted or `false` | None                                          | No test override.                                                                     |
-| `true`             | Both `*.test`/`*.spec` files and `tests/**`   | Uses production settings and Vitest rules.                                            |
-| `'colocated'`      | `*.test` and `*.spec` files                   | Uses production settings and Vitest rules.                                            |
-| `'directory'`      | `tests/**`                                    | Uses production settings and Vitest rules.                                            |
-| Object             | Built-in `files` convention or custom glob(s) | Uses custom `configs` and `ts`, or production settings by default, with Vitest rules. |
+| `tests` value      | Matching files                                | Environment and TypeScript policy                                                 |
+| ------------------ | --------------------------------------------- | --------------------------------------------------------------------------------- |
+| Omitted or `false` | None                                          | No test override.                                                                 |
+| `true`             | Both `*.test`/`*.spec` files and `tests/**`   | Uses production settings and Vitest rules.                                        |
+| `'colocated'`      | `*.test` and `*.spec` files                   | Uses production settings and Vitest rules.                                        |
+| `'directory'`      | `tests/**`                                    | Uses production settings and Vitest rules.                                        |
+| Object             | Built-in `files` convention or custom glob(s) | Uses custom `env` and `ts`, or production settings by default, with Vitest rules. |
 
 A browser project can use Node TypeScript policy for its tests without changing production rules:
 
@@ -71,9 +71,9 @@ A browser project can use Node TypeScript policy for its tests without changing 
 import { createConfig } from '@homer0/oxlint-config';
 
 export default createConfig({
-  configs: ['browser'],
+  env: 'browser',
   tests: {
-    configs: ['node'],
+    env: 'node',
     files: 'directory',
   },
 });
@@ -85,7 +85,7 @@ Use `globals` to add named globals or `$`-prefixed global groups from the [`glob
 
 ```ts
 export default createConfig({
-  configs: ['node'],
+  env: 'node',
   globals: {
     $browser: true,
     __piMcpState: 'readonly',
@@ -101,7 +101,7 @@ Use `allowedDangleNames` to add exact identifiers to the base `no-underscore-dan
 ```ts
 export default createConfig({
   allowedDangleNames: ['__piMcpState'],
-  configs: ['node'],
+  env: 'node',
 });
 ```
 
@@ -111,7 +111,7 @@ Set `jsdoc: true` to opt into Oxlint's native JSDoc subset. It covers JSDoc acce
 
 ```ts
 export default createConfig({
-  configs: ['node'],
+  env: 'node',
   jsdoc: true,
   ts: true,
 });
@@ -140,7 +140,7 @@ pnpm add --save-dev oxlint-tsgolint typescript
 
 ```ts
 export default createConfig({
-  configs: ['node'],
+  env: 'node',
   ts: true,
   typeAware: true,
 });
@@ -152,7 +152,7 @@ Use `extensions` to add supported native rule settings without manually merging 
 
 ```ts
 createConfig({
-  configs: ['node'],
+  env: 'node',
   extensions: {
     typescript: {
       rules: {

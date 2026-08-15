@@ -1,5 +1,11 @@
 import globals from 'globals';
-import { DEFAULT_IGNORES, TEST_FILES, type TestConvention } from './consts.js';
+import {
+  DEFAULT_IGNORES,
+  TEST_FILES,
+  CONFIG_ENVS,
+  type ConfigEnv,
+  type TestConvention,
+} from './consts.js';
 import { extensionFragments } from './fragments.js';
 import {
   nextjs as nextjsRules,
@@ -10,7 +16,6 @@ import {
 } from './rules/index.js';
 import type {
   ConfigFragment,
-  ConfigName,
   DangleRuleOptions,
   DangleRuleSettings,
   CreateConfigSettings,
@@ -89,21 +94,13 @@ const resolveGlobals = ({
   }, {});
 };
 
-const getConfig = (configs: ConfigName[]): ConfigName => {
-  if (configs.length !== 1) {
-    throw new Error(
-      'Exactly one environment config must be selected: "node" or "browser".',
-    );
+const getEnvironment = (env: ConfigEnv): ConfigEnv => {
+  if (!CONFIG_ENVS.includes(env)) {
+    const humanReadableEnvs = CONFIG_ENVS.map((e) => `"${e}"`).join(' or ');
+    throw new Error(`Environment must be ${humanReadableEnvs}.`);
   }
 
-  const [config] = configs;
-  if (typeof config === 'undefined') {
-    throw new Error(
-      'Exactly one environment config must be selected: "node" or "browser".',
-    );
-  }
-
-  return config;
+  return env;
 };
 
 const resolveTestFiles = (files: string | string[] | undefined): string[] => {
@@ -117,12 +114,12 @@ const resolveTestFiles = (files: string | string[] | undefined): string[] => {
 
 const resolveTestConfig = ({
   tests,
-  productionConfig,
+  productionEnv,
   productionTs,
 }: ResolveTestConfigOptions): ResolvedTestConfig => {
   if (tests === true) {
     return {
-      configs: [productionConfig],
+      env: productionEnv,
       files: [...TEST_FILES.colocated, ...TEST_FILES.directory],
       framework: 'vitest',
       ts: productionTs,
@@ -131,7 +128,7 @@ const resolveTestConfig = ({
 
   if (typeof tests === 'string') {
     return {
-      configs: [productionConfig],
+      env: productionEnv,
       files: TEST_FILES[tests].slice(),
       framework: 'vitest',
       ts: productionTs,
@@ -139,7 +136,7 @@ const resolveTestConfig = ({
   }
 
   return {
-    configs: tests.configs ?? [productionConfig],
+    env: tests.env ?? productionEnv,
     files: resolveTestFiles(tests.files),
     framework: tests.framework || 'vitest',
     ts: tests.ts ?? productionTs,
@@ -147,7 +144,7 @@ const resolveTestConfig = ({
 };
 
 const resolveTestConfigComponents = ({
-  config,
+  env,
   testConfig,
   tests,
   ts = false,
@@ -170,7 +167,7 @@ const resolveTestConfigComponents = ({
     doingTestsSetup: false,
     testConfig: resolveTestConfig({
       tests,
-      productionConfig: config,
+      productionEnv: env,
       productionTs: ts,
     }),
   };
@@ -180,7 +177,7 @@ const resolveConfigComponents = (
   options: ResolveConfigComponentsOptions,
 ): ResolveConfigComponentsResult => {
   const {
-    configs,
+    env: environment,
     extensions,
     globals: globalVars,
     jsdoc,
@@ -194,23 +191,23 @@ const resolveConfigComponents = (
 
   const baseExtensionFragment = baseExtensionFragmentOption ?? extensions?.base;
 
-  const config = getConfig(options.configs);
+  const env = getEnvironment(environment);
 
   const { doingTestsSetup, testConfig } = resolveTestConfigComponents({
-    config,
+    env,
     testConfig: options.testConfig,
     tests: options.tests,
     ts,
   });
 
-  const fragments: ConfigFragment[] = [baseFragment, extensionFragments[config]];
+  const fragments: ConfigFragment[] = [baseFragment, extensionFragments[env]];
   const resolvedGlobals = resolveGlobals({ globals: globalVars, doingTestsSetup });
 
   const plugins = ['import'];
 
   const configGlobals: Array<Record<string, boolean | string>> = [];
 
-  if (configs.includes('node')) {
+  if (env === 'node') {
     plugins.push('node');
   }
 
@@ -253,8 +250,8 @@ const resolveConfigComponents = (
     fragments.push(baseExtensionFragment);
   }
 
-  if (extensions?.[config]) {
-    fragments.push(extensions[config]);
+  if (extensions?.[env]) {
+    fragments.push(extensions[env]);
   }
 
   if (jsdoc && extensions?.jsdoc) {
@@ -270,7 +267,7 @@ const resolveConfigComponents = (
   }
 
   return {
-    config,
+    env,
     fragments,
     globals: resolvedGlobals,
     plugins,
@@ -287,12 +284,12 @@ const createTestOverride = ({
   globals: globalVars,
 }: CreateTestOverrideOptions): GeneratedConfigOverride => {
   const {
-    config,
+    env,
     fragments,
     globals: resolvedGlobals,
     configGlobals,
   } = resolveConfigComponents({
-    configs: testConfig.configs,
+    env: testConfig.env,
     extensions,
     globals: globalVars,
     testConfig,
@@ -309,7 +306,7 @@ const createTestOverride = ({
   return {
     files: testConfig.files,
     globals: {
-      ...extensionFragments[config].globals,
+      ...extensionFragments[env].globals,
       ...resolvedGlobals,
       ...configGlobals,
     },
@@ -323,7 +320,7 @@ export const createConfig = (options: CreateConfigSettings): GeneratedConfig => 
     fragments,
     globals: resolvedGlobals,
     plugins,
-    config,
+    env,
     testConfig,
   } = resolveConfigComponents(options);
   const { allowedDangleNames, extensions, ignores, typeAware } = options;
@@ -333,7 +330,7 @@ export const createConfig = (options: CreateConfigSettings): GeneratedConfig => 
   return {
     globals: {
       ...extensionFragments.base.globals,
-      ...extensionFragments[config].globals,
+      ...extensionFragments[env].globals,
       ...resolvedGlobals,
     },
     ignorePatterns: [...DEFAULT_IGNORES, ...(ignores || [])],

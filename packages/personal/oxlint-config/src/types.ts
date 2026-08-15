@@ -1,7 +1,5 @@
 import type globals from 'globals';
-import type { ExtensionFragmentName, TestConvention } from './consts.js';
-
-export type ConfigName = 'browser' | 'node';
+import type { ExtensionFragmentName, TestConvention, ConfigEnv } from './consts.js';
 
 export type RuleSettings = Record<string, unknown>;
 
@@ -42,7 +40,7 @@ export type TestFramework = 'vitest';
  * TypeScript policy.
  */
 export type TestConfigOptions = {
-  configs?: ConfigName[];
+  env?: ConfigEnv;
   framework?: TestFramework;
   /** Uses a built-in convention or custom glob(s). */
   files?: TestConvention | (string & {}) | string[];
@@ -53,7 +51,7 @@ export type TestConfigOptions = {
 export type TestsOption = boolean | TestConvention | TestConfigOptions;
 
 export type CreateConfigOptions = {
-  configs: ConfigName[];
+  env: ConfigEnv;
   /** Adds exact identifiers allowed by `no-underscore-dangle`. */
   allowedDangleNames?: string[];
   extensions?: ExtensionFragments;
@@ -71,7 +69,7 @@ export type CreateConfigOptions = {
   typeAware?: boolean;
 };
 
-export type CreateNextjsConfigOptions = Omit<CreateConfigOptions, 'configs' | 'ts'>;
+export type CreateNextjsConfigOptions = Omit<CreateConfigOptions, 'env' | 'ts'>;
 
 export type CreateConfigSettings = CreateConfigOptions & {
   nextjs?: boolean;
@@ -80,12 +78,12 @@ export type CreateConfigSettings = CreateConfigOptions & {
 
 export type ResolveTestConfigOptions = {
   tests: Exclude<TestsOption, false>;
-  productionConfig: ConfigName;
+  productionEnv: ConfigEnv;
   productionTs: boolean;
 };
 
 export type ResolvedTestConfig = {
-  configs: ConfigName[];
+  env: ConfigEnv;
   files: string[];
   framework?: TestFramework;
   ts: boolean;
@@ -124,7 +122,7 @@ export type ResolveConfigComponentsOptions = Omit<CreateConfigSettings, 'globals
 };
 
 export type ResolveTestConfigComponentsOptions = {
-  config: ConfigName;
+  env: ConfigEnv;
   testConfig?: ResolvedTestConfig;
   tests?: TestsOption;
   ts?: boolean;
@@ -136,7 +134,7 @@ export type ResolveTestConfigComponentsResult = {
 };
 
 export type ResolveConfigComponentsResult = {
-  config: ConfigName;
+  env: ConfigEnv;
   globals: ResolvedGlobalVars;
   testConfig?: ResolvedTestConfig;
   fragments: ConfigFragment[];
