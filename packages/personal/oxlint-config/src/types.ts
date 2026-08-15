@@ -71,8 +71,6 @@ export type CreateConfigOptions = {
   typeAware?: boolean;
 };
 
-export type CreateReactConfigOptions = CreateConfigOptions;
-
 export type CreateNextjsConfigOptions = Omit<CreateConfigOptions, 'configs' | 'ts'>;
 
 export type CreateConfigSettings = CreateConfigOptions & {

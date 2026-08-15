@@ -1,7 +1,6 @@
 import {
   createConfig,
   createNextjsConfig,
-  createReactConfig,
   extensionFragments,
   type GeneratedConfig,
 } from '@src/index.js';
@@ -191,8 +190,9 @@ describe('generated Oxlint configurations', () => {
 
   it('should apply React accessibility rules to TSX files', () => {
     const result = runOxlint({
-      config: createReactConfig({
+      config: createConfig({
         configs: ['browser'],
+        react: true,
         ts: true,
       }),
       file: 'component.tsx',
@@ -251,9 +251,10 @@ describe('generated Oxlint configurations', () => {
       configs: ['node'],
       ts: true,
     });
-    const reactConfig = createReactConfig({
+    const reactConfig = createConfig({
       configs: ['browser'],
       ts: true,
+      react: true,
     });
 
     expect(typescriptConfig.rules).toMatchObject({

@@ -1,4 +1,4 @@
-import { createConfig, createNextjsConfig, createReactConfig } from '@src/index.js';
+import { createConfig, createNextjsConfig } from '@src/index.js';
 import { describe, expect, it } from 'vitest';
 
 describe('createConfig', () => {
@@ -170,8 +170,9 @@ describe('createConfig', () => {
   });
 
   it('should apply extension fragments without requiring manual React rule merging', () => {
-    const config = createReactConfig({
+    const config = createConfig({
       configs: ['browser'],
+      react: true,
       extensions: {
         react: {
           rules: {

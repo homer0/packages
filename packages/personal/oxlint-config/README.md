@@ -44,14 +44,14 @@ export default createConfig({
 
 ### React
 
-Use `createReactConfig` with the same options to add React, JSX accessibility, and React-performance rules.
+Use `createConfig` and send the `react` option to add React, JSX accessibility, and React-performance rules.
 
 ```ts
-import { createReactConfig } from '@homer0/oxlint-config';
+import { createConfig } from '@homer0/oxlint-config';
 
-export default createReactConfig({
+export default createConfig({
   configs: ['browser'],
-  tests: 'colocated',
+  react: true,
 });
 ```
 
