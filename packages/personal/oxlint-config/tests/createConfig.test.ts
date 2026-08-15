@@ -244,6 +244,7 @@ describe('createConfig', () => {
 
   it('should compose the Next.js profile', () => {
     const config = createNextjsConfig({
+      globals: { customGlobal: 'readonly' },
       jsdoc: true,
     });
 
@@ -258,6 +259,10 @@ describe('createConfig', () => {
         'build/',
         'next-env.d.ts',
       ],
+      globals: expect.objectContaining({
+        customGlobal: 'readonly',
+        window: false,
+      }),
       plugins: expect.arrayContaining(['nextjs', 'jsdoc']),
       rules: expect.objectContaining({
         'jsdoc/check-access': 'error',
