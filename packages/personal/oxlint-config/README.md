@@ -79,6 +79,52 @@ export default createConfig({
 });
 ```
 
+### Overrides
+
+Use `overrides` to change root rules, apply policy to matching files, or select a different environment for a file group. A rule-settings object extends the root policy and generated test policy:
+
+```ts
+export default createConfig({
+  env: 'node',
+  overrides: {
+    'max-classes-per-file': ['warn', 3],
+  },
+});
+```
+
+Use an array to mix root rule settings with file overrides:
+
+```ts
+export default createConfig({
+  env: 'browser',
+  overrides: [
+    {
+      'max-classes-per-file': ['warn', 3],
+    },
+    {
+      files: ['src/**/*.dtos.ts'],
+      ignores: ['src/special.dtos.ts'],
+      rules: {
+        'no-magic-numbers': 'warn',
+      },
+    },
+    {
+      env: 'node',
+      files: ['utils/plugins/**/*.ts'],
+      tests: {
+        files: ['utils/plugins/**/*.test.ts'],
+      },
+    },
+  ],
+  tests: {
+    env: 'node',
+    files: 'directory',
+  },
+});
+```
+
+Root `ignores` exclude files from linting. Override `ignores` exclude matching files only from that override. Override tests require explicit file glob(s) and generate a sibling test override using the parent override's environment by default.
+
 ### Globals
 
 Use `globals` to add named globals or `$`-prefixed global groups from the [`globals`](https://www.npmjs.com/package/globals) package. Named globals use Oxlint's `'readonly'`, `'writable'`, or `'off'` modes; `true` makes a named global writable. Groups use `true`. Added globals also apply to generated test overrides.

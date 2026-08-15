@@ -26,6 +26,19 @@ describe('public types', () => {
       },
       ignores: ['dist/**'],
       jsdoc: true,
+      overrides: [
+        {
+          'max-classes-per-file': ['warn', 3],
+        },
+        {
+          env: 'node',
+          files: ['utils/plugins/**/*.ts'],
+          ignores: ['utils/plugins/internal.ts'],
+          tests: {
+            files: 'utils/plugins/**/*.test.ts',
+          },
+        },
+      ],
       tests: {
         env: 'node',
         files: ['tests/**/*.ts'],
@@ -34,6 +47,17 @@ describe('public types', () => {
       },
       ts: true,
       typeAware: false,
+    } satisfies CreateConfigOptions;
+
+    expectTypeOf(options).toMatchTypeOf<CreateConfigOptions>();
+  });
+
+  it('should support rule settings as an override object', () => {
+    const options = {
+      env: 'node',
+      overrides: {
+        'max-classes-per-file': ['warn', 3],
+      },
     } satisfies CreateConfigOptions;
 
     expectTypeOf(options).toMatchTypeOf<CreateConfigOptions>();

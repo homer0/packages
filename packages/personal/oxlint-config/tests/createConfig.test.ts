@@ -169,6 +169,84 @@ describe('createConfig', () => {
     });
   });
 
+  it('should apply an object rule override to production and tests', () => {
+    const config = createConfig({
+      env: 'node',
+      overrides: {
+        'max-classes-per-file': ['warn', 3],
+      },
+      tests: 'directory',
+    });
+
+    expect(config.rules['max-classes-per-file']).toEqual(['warn', 3]);
+    expect(config.overrides?.[0]?.rules['max-classes-per-file']).toEqual(['warn', 3]);
+  });
+
+  it('should compose root, file, environment, and nested test overrides', () => {
+    const config = createConfig({
+      env: 'browser',
+      overrides: [
+        {
+          'max-classes-per-file': ['warn', 3],
+        },
+        {
+          files: 'src/**/*.dtos.ts',
+          ignores: ['src/special.dtos.ts'],
+          rules: {
+            'no-magic-numbers': 'warn',
+          },
+        },
+        {
+          env: 'node',
+          files: ['utils/plugins/**/*.ts'],
+          tests: {
+            files: ['utils/plugins/**/*.test.ts'],
+          },
+        },
+      ],
+      tests: {
+        env: 'node',
+        files: 'directory',
+      },
+    });
+
+    expect(config.plugins).toContain('node');
+    expect(config.rules['max-classes-per-file']).toEqual(['warn', 3]);
+    expect(config.overrides).toEqual([
+      expect.objectContaining({
+        files: ['tests/**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}'],
+        rules: expect.objectContaining({
+          'max-classes-per-file': ['warn', 3],
+          'node/no-process-env': 'error',
+        }),
+      }),
+      expect.objectContaining({
+        excludeFiles: ['src/special.dtos.ts'],
+        files: ['src/**/*.dtos.ts'],
+        rules: expect.objectContaining({
+          'no-magic-numbers': 'warn',
+        }),
+      }),
+      expect.objectContaining({
+        files: ['utils/plugins/**/*.ts'],
+        globals: expect.objectContaining({
+          process: false,
+          window: 'off',
+        }),
+        rules: expect.objectContaining({
+          'node/no-process-env': 'error',
+        }),
+      }),
+      expect.objectContaining({
+        files: ['utils/plugins/**/*.test.ts'],
+        rules: expect.objectContaining({
+          'node/no-process-env': 'error',
+          'vitest/no-focused-tests': 'error',
+        }),
+      }),
+    ]);
+  });
+
   it('should apply extension fragments without requiring manual React rule merging', () => {
     const config = createConfig({
       env: 'browser',

@@ -35,37 +35,48 @@ export type ExtensionFragments = Partial<Record<ExtensionFragmentName, ConfigFra
 /** Selects a test framework-specific native rule policy. */
 export type TestFramework = 'vitest';
 
+type TestConfigBaseOptions = {
+  env?: ConfigEnv;
+  framework?: TestFramework;
+  ts?: boolean;
+};
+
 /**
  * Narrows a test override and optionally selects its environment, framework, and
  * TypeScript policy.
  */
-export type TestConfigOptions = {
-  env?: ConfigEnv;
-  framework?: TestFramework;
+export type TestConfigOptions = TestConfigBaseOptions & {
   /** Uses a built-in convention or custom glob(s). */
   files?: TestConvention | (string & {}) | string[];
-  ts?: boolean;
 };
 
 /** Selects both conventions, one built-in convention, or a custom test override. */
 export type TestsOption = boolean | TestConvention | TestConfigOptions;
 
-export type CreateConfigOptions = {
+type CreateConfigBaseOptions = {
   env: ConfigEnv;
-  /** Adds exact identifiers allowed by `no-underscore-dangle`. */
   allowedDangleNames?: string[];
   extensions?: ExtensionFragments;
   globals?: GlobalVars;
   ignores?: string[];
-  /** Enables the native subset of JSDoc policy. */
   jsdoc?: boolean;
-  tests?: TestsOption;
-  /** Defaults to `true`. */
   ts?: boolean;
-  /**
-   * Enables Oxlint's root-only type-aware mode. Requires oxlint-tsgolint and TypeScript
-   * 7+.
-   */
+};
+
+export type TestConfigOverrideOptions = TestConfigBaseOptions & {
+  files: string | string[];
+};
+
+export type ConfigOverrideOptions = {
+  files: string | string[];
+  rules?: RuleSettings;
+  tests?: TestConfigOverrideOptions;
+} & Partial<CreateConfigBaseOptions>;
+
+export type CreateConfigOptions = CreateConfigBaseOptions & {
+  tests?: TestsOption;
+  overrides?: RuleSettings | Array<ConfigOverrideOptions | RuleSettings>;
+  /** Enables Oxlint's root-only type-aware mode. Requires oxlint-tsgolint and TS 7+ */
   typeAware?: boolean;
 };
 
@@ -90,6 +101,7 @@ export type ResolvedTestConfig = {
 };
 
 export type GeneratedConfigOverride = {
+  excludeFiles?: string[];
   files: string[];
   globals: ResolvedGlobalVars;
   rules: RuleSettings;
@@ -108,8 +120,10 @@ export type GeneratedConfig = {
 };
 
 export type CreateTestOverrideOptions = {
+  parentEnv: ConfigEnv;
   testConfig: ResolvedTestConfig;
   allowedDangleNames?: string[];
+  extraRules?: RuleSettings[];
   extensions?: ExtensionFragments;
   globals?: GlobalVars | ResolvedGlobalVars;
 };
