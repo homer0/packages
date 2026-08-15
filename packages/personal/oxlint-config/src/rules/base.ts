@@ -460,6 +460,12 @@ export const base = {
    */
   'no-useless-concat': 'error',
   /**
+   * Allow escapes that may be unnecessary but improve regular expression readability.
+   *
+   * @see https://eslint.org/docs/latest/rules/no-useless-escape
+   */
+  'no-useless-escape': 'off',
+  /**
    * Disallow redundant return statements.
    *
    * @see https://eslint.org/docs/latest/rules/no-useless-return
