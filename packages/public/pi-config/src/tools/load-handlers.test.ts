@@ -3,7 +3,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 describe('loadHandlers', () => {
   beforeEach(() => {
     vi.resetModules();
-    vi.doUnmock('./handlers/index.js');
+    vi.doMock('./handlers/index.js', () => ({
+      handleGetConfig: vi.fn(),
+      handleSetConfig: vi.fn(),
+    }));
   });
 
   it('shares one import between overlapping calls', async () => {
