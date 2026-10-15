@@ -65,6 +65,10 @@ A tiny service that reads the contents of the project's `package.json`, sync & a
 
 An easy way to manage locations and build paths relative to those locations on a Node app.
 
+#### [🎛️ Pi Config](./packages/public/pi-config)
+
+Config management tools, commands, and library utilities for Pi.
+
 #### [🪄 React SSR config](./packages/public/react-ssr-config)
 
 A way to have dynamic config sent from SSR and accessible in the client.

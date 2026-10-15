@@ -28,6 +28,10 @@ catalog:
   jsdom: ^30.1.2
 
 overrides:
+  # Pi 1.1.0 expects declarations removed in pi-codemode 1.2.0.
+  '@earendil-works/pi-coding-agent@1.1.0>@earendil-works/pi-codemode': '1.1.0'
+  # The newer SSO provider requires an unpublished token-providers version.
+  '@aws-sdk/token-providers': '3.1149.0'
   'brace-expansion@^5.0.0': '^5.0.5'
   'yaml@^2.0.0': '^2.8.3'
   'follow-redirects@^1.0.0': '^1.16.0'
@@ -35,6 +39,10 @@ overrides:
   '@typescript-eslint/visitor-keys@^8.71.2': '8.70.1'
 
 allowBuilds:
+  # For pi-ai. It has a preinstall with a no-op message.
+  '@google/genai': false
+  # For @google/genai. It validates the required version of the package.
+  protobufjs: true
   # For downloading the correct binary for the platform.
   '@swc/core': true
   # For vite. Its postinstall selects the platform-specific esbuild binary.
