@@ -219,7 +219,7 @@ const commitConfig = await getConfigValue('skills.commit', {
 
 #### Typing your config
 
-To get type-checked paths, extend the interfaces the package exports with [module augmentation](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation). There's one for each [namespace](#namespaces): `PiConfig`, `SkillsConfig`, `ToolsConfig`, and `ExtensionsConfig`:
+To get the type of a value from its path, extend the interfaces the package exports with [module augmentation](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation). There's one for each [namespace](#namespaces): `PiConfig`, `SkillsConfig`, `ToolsConfig`, and `ExtensionsConfig`:
 
 ```ts
 declare module '@homer0/pi-config' {
@@ -230,6 +230,14 @@ declare module '@homer0/pi-config' {
   }
 }
 ```
+
+With that, `getConfigValue` infers the type of the value from the path:
+
+```ts
+const commit = await getConfigValue('skills.commit'); // { runChecks?: boolean } | undefined
+```
+
+The path itself is not checked: any string is accepted, and the type of the value is `unknown` when it can't be resolved. If you pass a [schema](#validating-your-config), its type is used instead.
 
 ### 🧰 Tools and commands
 
