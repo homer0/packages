@@ -400,7 +400,9 @@ describe('config fns', () => {
     it('is shared through globalThis, so other copies of the package see it', () => {
       setSessionConfigOverride({ ...emptyOverride, pi: { setting: 'override' } });
 
-      expect(globalThis.__piConfigSessionOverride).toEqual({
+      const store = globalThis as { __piConfigSessionOverride?: unknown };
+
+      expect(store.__piConfigSessionOverride).toEqual({
         ...emptyOverride,
         pi: { setting: 'override' },
       });

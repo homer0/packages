@@ -1,5 +1,3 @@
-/// <reference types="./global.d.ts" />
-
 import { CONFIG_DIR_NAME, getAgentDir } from '@earendil-works/pi-coding-agent';
 import { get, merge } from '@homer0/object-utils';
 import { readFile } from 'node:fs/promises';
@@ -40,7 +38,13 @@ const EMPTY_PI_CORE_CONFIG: PiCoreConfig = {
  * passed through `ExtensionAPI`/`ctx`: Pi loads each extension with its own copy of the
  * modules it imports, so module state would not be shared between extensions. One pi
  * process is assumed to correspond to one session.
+ *
+ * This is `globalThis` typed with the property that holds the override. The assertion is
+ * the only place that needs to know about it.
  */
+const sessionStore = globalThis as typeof globalThis & {
+  __piConfigSessionOverride?: PiCoreConfig;
+};
 
 /**
  * Replaces the session-scoped config override wholesale, or clears it when `undefined`.
@@ -48,7 +52,7 @@ const EMPTY_PI_CORE_CONFIG: PiCoreConfig = {
  * @param value The new override, or `undefined` to clear it.
  */
 const setSessionConfigOverride = (value: PiCoreConfig | undefined): void => {
-  globalThis.__piConfigSessionOverride = value;
+  sessionStore.__piConfigSessionOverride = value;
 };
 
 /**
@@ -57,7 +61,7 @@ const setSessionConfigOverride = (value: PiCoreConfig | undefined): void => {
  * @returns The override, or `undefined` if there's none.
  */
 const getSessionConfigOverride = (): PiCoreConfig | undefined =>
-  globalThis.__piConfigSessionOverride;
+  sessionStore.__piConfigSessionOverride;
 
 /**
  * Clears the session-scoped config override.
@@ -65,8 +69,8 @@ const getSessionConfigOverride = (): PiCoreConfig | undefined =>
  * @returns Whether an override was actually set.
  */
 const clearSessionConfigOverride = (): boolean => {
-  const hadOverride = typeof globalThis.__piConfigSessionOverride !== 'undefined';
-  globalThis.__piConfigSessionOverride = undefined;
+  const hadOverride = typeof sessionStore.__piConfigSessionOverride !== 'undefined';
+  sessionStore.__piConfigSessionOverride = undefined;
   return hadOverride;
 };
 
