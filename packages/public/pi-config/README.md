@@ -19,7 +19,7 @@ This package provides tools and utilities that can be used to make your Pi stuff
   - [Documenting your config](#documenting-your-config)
   - [Extending configs](#extending-configs)
   - [Session override](#session-override)
-- ⚙️ [Examples](#examples)
+- ⚙️ [Examples](#%EF%B8%8F-examples)
 - 🧰 [Tools and commands](#-tools-and-commands)
   - [get_config](#get_config)
   - [set_config](#set_config)
@@ -178,7 +178,7 @@ Limitations:
 - **Whole-document override, not per-key unset.** Setting a path only replaces its value; there's no way to take a single path back to its file-based value. Clear the override entirely to go back to file-only config.
 - **Not schema-validated when set.** Neither the `/config` editor nor `set_config` validate the shape of the override against a consumer's schema. A badly-shaped override only shows up later, as an error, if a library consumer calls `getConfigValue` with a Zod `schema` for the affected path. `queryConfig` and `get_config` never validate.
 
-### Examples
+### ⚙️ Examples
 
 This section will focus on the examples as a library and not the tools provides to the agent, since that will depend on how you would tell the agent to use them through AGENTS.md and/or SKILL.md files.
 
