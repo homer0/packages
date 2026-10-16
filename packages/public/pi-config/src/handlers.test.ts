@@ -1,20 +1,30 @@
+import type { ExtensionCommandContext } from '@earendil-works/pi-coding-agent';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { ConfigReadError } from '../../types.js';
+import { ConfigReadError } from './errors.js';
 
-const { queryConfig, getSessionConfigOverride, setSessionConfigOverride } = vi.hoisted(
-  () => ({
-    queryConfig: vi.fn(),
-    getSessionConfigOverride: vi.fn(),
-    setSessionConfigOverride: vi.fn(),
-  }),
-);
-
-vi.mock('../../fns.js', () => ({
+const {
   queryConfig,
   getSessionConfigOverride,
   setSessionConfigOverride,
+  clearSessionConfigOverride,
+  showConfigWindow,
+} = vi.hoisted(() => ({
+  queryConfig: vi.fn(),
+  getSessionConfigOverride: vi.fn(),
+  setSessionConfigOverride: vi.fn(),
+  clearSessionConfigOverride: vi.fn(),
+  showConfigWindow: vi.fn(),
+}));
+
+vi.mock('./utils.js', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('./utils.js')>()),
+  queryConfig,
+  getSessionConfigOverride,
+  setSessionConfigOverride,
+  clearSessionConfigOverride,
   EMPTY_PI_CORE_CONFIG: {},
 }));
+vi.mock('./window.js', () => ({ showConfigWindow }));
 
 vi.mock('@homer0/object-utils', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@homer0/object-utils')>();
@@ -22,8 +32,8 @@ vi.mock('@homer0/object-utils', async (importOriginal) => {
 });
 
 const { set } = await import('@homer0/object-utils');
-const { handleGetConfig } = await import('./get-config.js');
-const { handleSetConfig } = await import('./set-config.js');
+const { handleConfig, handleConfigReset, handleGetConfig, handleSetConfig } =
+  await import('./handlers.js');
 
 describe('handleGetConfig', () => {
   const ctx = { cwd: '/cwd' };
@@ -247,5 +257,31 @@ describe('handleSetConfig', () => {
     expect(setSessionConfigOverride).toHaveBeenCalledWith({
       extensions: { x: { a: 1, b: 2 } },
     });
+  });
+});
+
+describe('config commands', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('/config opens the config window', async () => {
+    const ctx = {} as unknown as ExtensionCommandContext;
+
+    await handleConfig({ ctx });
+
+    expect(showConfigWindow).toHaveBeenCalledWith(ctx);
+  });
+
+  it.each([
+    [true, 'Session config override cleared.'],
+    [false, 'No session override was set.'],
+  ])('/config-reset notifies the outcome (had override: %s)', (had, message) => {
+    clearSessionConfigOverride.mockReturnValue(had);
+    const notify = vi.fn();
+
+    handleConfigReset({ ctx: { ui: { notify } } as unknown as ExtensionCommandContext });
+
+    expect(notify).toHaveBeenCalledWith(message, 'info');
   });
 });

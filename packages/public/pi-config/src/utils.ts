@@ -1,26 +1,96 @@
 import { CONFIG_DIR_NAME, getAgentDir } from '@earendil-works/pi-coding-agent';
 import { get, merge } from '@homer0/object-utils';
 import { readFile } from 'node:fs/promises';
-import { dirname, extname, join } from 'node:path';
+import { homedir } from 'node:os';
+import { dirname, extname, isAbsolute, join } from 'node:path';
 import { parse as parseYaml } from 'yaml';
-import {
-  ConfigReadError,
-  ConfigValidationError,
-  type ConfigPath,
-  type ConfigPathValue,
-  type ConfigQuery,
-  type ConfigSource,
-  type ConfigSchema,
-  type GetConfigOptions,
-  type PiCoreConfig,
-  type QueryConfigOptions,
-  type QueryConfigResult,
-  type ReadConfigResult,
+import { z } from 'zod';
+import { ConfigReadError, ConfigValidationError } from './errors.js';
+import type {
+  ConfigPath,
+  ConfigPathValue,
+  ConfigQuery,
+  ConfigSource,
+  ConfigSchema,
+  GetConfigOptions,
+  PiCoreConfig,
+  QueryConfigOptions,
+  QueryConfigResult,
+  ReadConfigResult,
 } from './types.js';
-import { resolvePiPath } from './utils/index.js';
 
+/**
+ * Resolves a path relative to the Pi agent directory.
+ *
+ * @param segments The segments of the path, relative to the agent directory.
+ * @returns The absolute path.
+ */
+const getAgentPath = (...segments: string[]): string => join(getAgentDir(), ...segments);
+
+/**
+ * Returns the error message string from any thrown value. Prettifies zod validation
+ * errors instead of surfacing their raw JSON `.message`.
+ *
+ * @param error The thrown value.
+ * @returns The message of the error, or the value as a string if it's not an error.
+ */
+const ensureErrorMessage = (error: unknown): string => {
+  if (error instanceof z.ZodError) {
+    return error.issues.map((issue) => issue.message).join('; ');
+  }
+  return error instanceof Error ? error.message : String(error);
+};
+
+/** The Pi directory, in the home of the user. */
+const PI_DIR = join(homedir(), CONFIG_DIR_NAME);
 /** The absolute path of Pi's agent directory, where the global config files live. */
 const AGENT_DIR = getAgentDir();
+/** The directory where the profiles are. */
+const PROFILES_DIR = getAgentPath('profiles');
+
+/** The prefix of the paths relative to the Pi directory. */
+const PI_PREFIX = 'pi:';
+/** The prefix of the paths relative to the agent directory. */
+const AGENT_PREFIX = 'agent:';
+/** The pattern of the paths relative to a profile; it captures the name and the path. */
+const PROFILE_PATTERN = /^profile:([^:]+):(.+)$/;
+
+/**
+ * Resolves a pi-style path reference to an absolute path.
+ *
+ * Supported formats:
+ *
+ * - `pi:<path>` — relative to the Pi directory (`~/.pi/`)
+ * - `agent:<path>` — relative to the agent directory (`~/.pi/agent/`)
+ * - `profile:<name>:<path>` — relative to a profile directory
+ *   (`~/.pi/agent/profiles/<name>/`)
+ * - Absolute path — used as-is
+ * - Anything else — resolved relative to `baseDir`
+ *
+ * @example <caption>Relative to the agent directory</caption>
+ *   resolvePiPath('agent:shared/base.yaml', '/project');
+ *
+ * @example <caption>Relative to the file that references it</caption>
+ *   resolvePiPath('../base.yaml', '/project/.pi');
+ *
+ * @param value The path reference.
+ * @param baseDir The directory to resolve the path from, when it doesn't have a prefix
+ *   and it's not absolute.
+ * @returns The absolute path.
+ */
+const resolvePiPath = (value: string, baseDir: string): string => {
+  if (value.startsWith(PI_PREFIX)) return join(PI_DIR, value.slice(PI_PREFIX.length));
+  if (value.startsWith(AGENT_PREFIX))
+    return join(AGENT_DIR, value.slice(AGENT_PREFIX.length));
+  if (isAbsolute(value)) return value;
+
+  const profileMatch = PROFILE_PATTERN.exec(value);
+  if (profileMatch) {
+    const [, profileName, profilePath] = profileMatch;
+    return join(PROFILES_DIR, profileName!, profilePath!);
+  }
+  return join(baseDir, value);
+};
 
 /**
  * The base config shape with all the top-level namespaces present, so consumers never see
@@ -501,10 +571,13 @@ const queryConfig = async (
 export {
   clearSessionConfigOverride,
   EMPTY_PI_CORE_CONFIG,
+  ensureErrorMessage,
+  getAgentPath,
   getConfig,
   getConfigValue,
   getSessionConfigOverride,
   queryConfig,
   readConfigFiles,
+  resolvePiPath,
   setSessionConfigOverride,
 };

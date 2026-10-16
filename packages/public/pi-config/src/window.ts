@@ -14,14 +14,14 @@ import {
   visibleWidth,
 } from '@earendil-works/pi-tui';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
+import type { PiCoreConfig } from './types.js';
 import {
+  ensureErrorMessage,
   getConfig,
   getSessionConfigOverride,
   readConfigFiles,
   setSessionConfigOverride,
-} from './fns.js';
-import type { PiCoreConfig } from './types.js';
-import { ensureErrorMessage } from './utils/index.js';
+} from './utils.js';
 
 /** The title shown in the top border of the window. */
 const WINDOW_TITLE = 'Config';

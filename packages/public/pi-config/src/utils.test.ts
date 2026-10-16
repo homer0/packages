@@ -11,17 +11,20 @@ import {
   type MockInstance,
 } from 'vitest';
 import { z } from 'zod';
+import { ConfigValidationError } from './errors.js';
 import {
   clearSessionConfigOverride,
   EMPTY_PI_CORE_CONFIG,
+  ensureErrorMessage,
+  getAgentPath,
   getConfig,
   getConfigValue,
   getSessionConfigOverride,
   queryConfig,
   readConfigFiles,
+  resolvePiPath,
   setSessionConfigOverride,
-} from './fns.js';
-import { ConfigValidationError } from './types.js';
+} from './utils.js';
 
 vi.mock('node:fs/promises', () => ({ readFile: vi.fn() }));
 vi.mock('@earendil-works/pi-coding-agent', async (importOriginal) => {
@@ -623,5 +626,80 @@ describe('config fns', () => {
 
       expect(result).toMatchObject({ status: 'found', value: true });
     });
+  });
+});
+
+describe('path utils', () => {
+  describe('getAgentPath', () => {
+    it('resolves segments relative to the agent directory', () => {
+      expect(getAgentPath('profiles', 'work')).toBe(
+        join(getAgentDir(), 'profiles', 'work'),
+      );
+    });
+
+    it('returns the agent directory without segments', () => {
+      expect(getAgentPath()).toBe(getAgentDir());
+    });
+  });
+
+  describe('resolvePiPath', () => {
+    const baseDir = '/base/dir';
+
+    it('resolves `pi:` paths relative to the Pi directory', () => {
+      expect(resolvePiPath('pi:shared/base.yaml', baseDir)).toBe(
+        join(homedir(), CONFIG_DIR_NAME, 'shared/base.yaml'),
+      );
+    });
+
+    it('resolves `agent:` paths relative to the agent directory', () => {
+      expect(resolvePiPath('agent:shared/base.yaml', baseDir)).toBe(
+        join(getAgentDir(), 'shared/base.yaml'),
+      );
+    });
+
+    it('resolves `profile:<name>:<path>` paths relative to the profile directory', () => {
+      expect(resolvePiPath('profile:work:base.yaml', baseDir)).toBe(
+        join(getAgentDir(), 'profiles', 'work', 'base.yaml'),
+      );
+    });
+
+    it('uses absolute paths as they are', () => {
+      expect(resolvePiPath('/shared/base.yaml', baseDir)).toBe('/shared/base.yaml');
+    });
+
+    it.each([
+      ['a relative path', '../base.yaml', '/base/base.yaml'],
+      ['a dot-relative path', './base.yaml', '/base/dir/base.yaml'],
+      ['a bare file name', 'base.yaml', '/base/dir/base.yaml'],
+      ['a profile reference without a path', 'profile:work', '/base/dir/profile:work'],
+    ])('resolves %s from the base directory', (_label, value, expected) => {
+      expect(resolvePiPath(value, baseDir)).toBe(expected);
+    });
+  });
+});
+
+describe('ensureErrorMessage', () => {
+  it('returns the message of an error', () => {
+    expect(ensureErrorMessage(new Error('something failed'))).toBe('something failed');
+  });
+
+  it('joins the issues of a zod error instead of surfacing its raw message', () => {
+    const result = z.object({ a: z.string(), b: z.number() }).safeParse({ a: 1, b: 'x' });
+    const error = result.error!;
+
+    const message = ensureErrorMessage(error);
+
+    expect(message).toBe(error.issues.map((issue) => issue.message).join('; '));
+    expect(message).toContain('; ');
+    expect(message).not.toContain('"code"');
+  });
+
+  it.each([
+    ['a string', 'plain failure', 'plain failure'],
+    ['a number', 404, '404'],
+    ['undefined', undefined, 'undefined'],
+    ['an object', { not: 'an error' }, '[object Object]'],
+  ])('converts %s to a string', (_label, value, expected) => {
+    expect(ensureErrorMessage(value)).toBe(expected);
   });
 });

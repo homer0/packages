@@ -57,7 +57,8 @@ const {
   };
 });
 
-vi.mock('./fns.js', () => ({
+vi.mock('./utils.js', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('./utils.js')>()),
   getConfig,
   readConfigFiles,
   getSessionConfigOverride,

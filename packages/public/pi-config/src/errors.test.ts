@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ConfigReadError, ConfigValidationError } from './types.js';
+import { ConfigReadError, ConfigValidationError } from './errors.js';
 
 describe('config errors', () => {
   describe('ConfigReadError', () => {

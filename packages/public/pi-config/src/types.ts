@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file -- Config error types live together with the config public types. */
 import type { z } from 'zod';
 
 /** The fallback object shape for the config namespaces, before consumers augment them. */
@@ -228,36 +227,14 @@ export type QueryConfigResult = {
   message?: string;
 };
 
-/** The error for the config files that couldn't be read or parsed. */
-export class ConfigReadError extends Error {
-  /**
-   * @param message The description of what failed.
-   * @param filePath The path of the config file that failed.
-   * @param options The error options, to preserve the original `cause`.
-   */
-  constructor(
-    message: string,
-    /** The path of the config file that failed. */
-    public readonly filePath: string,
-    options?: ErrorOptions,
-  ) {
-    super(message, options);
-    this.name = 'ConfigReadError';
-  }
-}
-
-/** The error thrown when the resolved config doesn't match the schema that was provided. */
-export class ConfigValidationError extends Error {
-  /**
-   * @param message The description of what failed.
-   * @param issues The Zod issues that explain why the value didn't match the schema.
-   */
-  constructor(
-    message: string,
-    /** The Zod issues that explain why the value didn't match the schema. */
-    public readonly issues: z.core.$ZodIssue[],
-  ) {
-    super(message);
-    this.name = 'ConfigValidationError';
-  }
-}
+/** Structured result details for the set_config tool. */
+export type SetConfigDetails = {
+  /** Whether the override was applied, or the tool failed. */
+  status: 'applied' | 'error';
+  /** The path the tool tried to set. */
+  path: string;
+  /** The value that was set. It's only there when the `status` is `applied`. */
+  value?: unknown;
+  /** The explanation of what failed. It's only there when the `status` is `error`. */
+  message?: string;
+};

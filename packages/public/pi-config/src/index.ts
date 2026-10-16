@@ -1,4 +1,4 @@
-export { getConfig, getConfigValue, queryConfig } from './fns.js';
+export { getConfig, getConfigValue, queryConfig } from './utils.js';
 export type {
   ConfigNamespace,
   ConfigPath,
@@ -17,4 +17,4 @@ export type {
   SkillsConfig,
   ToolsConfig,
 } from './types.js';
-export { ConfigValidationError } from './types.js';
+export { ConfigValidationError } from './errors.js';
