@@ -186,6 +186,7 @@ As this project is part of a monorepo, some of the tooling, like `lint-staged` a
 
 | Task          | Description                     |
 | ------------- | ------------------------------- |
+| `build`       | Builds the package.             |
 | `lint`        | Lints the package.              |
 | `lint:file`   | Lints the files you send to it. |
 | `test`        | Runs the unit tests.            |
