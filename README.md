@@ -69,6 +69,10 @@ An easy way to manage locations and build paths relative to those locations on a
 
 Config management tools, commands, and library utilities for [Pi](https://pi.dev).
 
+#### [🎭 Pi Profiles](./packages/public/pi-profiles)
+
+Turn sets of Pi skills, extensions, and context on and off per machine or project.
+
 #### [🪄 React SSR config](./packages/public/react-ssr-config)
 
 A way to have dynamic config sent from SSR and accessible in the client.
