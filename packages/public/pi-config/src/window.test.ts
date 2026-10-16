@@ -22,13 +22,16 @@ const {
 
     onSubmit?: (value: string) => void;
 
-    constructor(
-      public tui: unknown,
-      public theme: {
-        borderColor: (text: string) => string;
-        selectList: Record<string, (text: string) => string>;
-      },
-    ) {
+    tui: unknown;
+
+    theme: {
+      borderColor: (text: string) => string;
+      selectList: Record<string, (text: string) => string>;
+    };
+
+    constructor(tui: unknown, theme: EditorStub['theme']) {
+      this.tui = tui;
+      this.theme = theme;
       EditorStub.instances.push(this);
     }
 
