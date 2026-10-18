@@ -48,7 +48,7 @@
     "src/"
   ],
   "dependencies": {
-    "@eslint/compat": "^2.1.0",
+    "@eslint/compat": "^2.1.1",
     "@eslint/js": "^9.39.5",
     "@types/confusing-browser-globals": "^1.0.3",
     "confusing-browser-globals": "^1.0.11",
@@ -56,10 +56,10 @@
     "eslint-import-resolver-typescript": "^4.4.5",
     "eslint-plugin-import-x": "^4.17.1",
     "eslint-plugin-jsdoc": "^63.3.3",
-    "eslint-plugin-n": "^18.2.2",
+    "eslint-plugin-n": "^18.4.1",
     "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-sort-class-members": "^1.22.1",
-    "globals": "^17.9.0",
+    "globals": "^17.13.0",
     "typescript-eslint": "^8.65.0"
   },
   "devDependencies": {
@@ -68,12 +68,12 @@
     "@homer0/prettier-plugin-jsdoc": "^12.0.0",
     "@homer0/tsconfig": "workspace:*",
     "eslint": "catalog:",
-    "eslint-config-next": "^16.2.12",
+    "eslint-config-next": "^16.4.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "oxlint": "catalog:",
-    "prettier": "^3.9.6",
+    "prettier": "^3.9.10",
     "tsdown": "catalog:",
     "typescript": "^6.0.3"
   },
