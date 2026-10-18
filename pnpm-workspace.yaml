@@ -24,7 +24,7 @@ catalog:
   '@vitest/coverage-v8': ^5.0.4
   vite: ^8.3.4
   vitest: ^5.0.4
-  unplugin-swc: ^1.5.9
+  unplugin-swc: ^2.0.0
   jsdom: ^30.1.2
 
 overrides:
