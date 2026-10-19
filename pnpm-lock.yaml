@@ -511,9 +511,6 @@ importers:
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 5.0.4(vitest@5.0.4)
-      jimple:
-        specifier: ^1.5.0
-        version: 1.5.0
       oxlint:
         specifier: 'catalog:'
         version: 1.87.0
@@ -4179,10 +4176,6 @@ packages:
   iterator.prototype@1.1.5:
     resolution: {integrity: sha512-H0dkQoCa3b2VEeKQBOxFph+JAbcrQdE7KC0UkqwpLmv2EC4P41QXP+rqo9wYodACiG5/WM5s9oDApTU8utwj9g==}
     engines: {node: '>= 0.4'}
-
-  jimple@1.5.0:
-    resolution: {integrity: sha512-lV8T+LMLvq4qYomJvXtIoL+rwT3tQ2fjq6Bv+vgO0zEtfIw6oXlOmSbHusq5TgR5IKP2avouqWVpGFjbsWlR2Q==}
-    engines: {node: '>=4.0.0'}
 
   jiti@2.6.1:
     resolution: {integrity: sha512-ekilCSN1jwRvIbgeg/57YFh8qQDNbwDb9xT/qu2DAHbFFZUicIl4ygVaAvzveMhMVr3LnpSKTNnwt8PoOfmKhQ==}
@@ -8982,8 +8975,6 @@ snapshots:
       get-proto: 1.0.1
       has-symbols: 1.1.0
       set-function-name: 2.0.2
-
-  jimple@1.5.0: {}
 
   jiti@2.6.1: {}
 
