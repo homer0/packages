@@ -31,10 +31,10 @@ node app
 If you don't have anything managing the configurations, you would probably have something like this:
 
 ```js
-const config = (
-  await (process.NODE_ENV === 'production'
+const config = await(
+  process.NODE_ENV === 'production'
     ? import('../config/production')
-    : import('../config/development'))
+    : import('../config/development'),
 ).default;
 ```
 
@@ -258,13 +258,7 @@ config.set('person', {
   birthday: '25-09-2015',
 });
 
-/**
- * The current value of the setting would be:
- * {
- *   name: 'Rosario',
- *   birthday: '25-09-2015',
- * }
- */
+/** The current value of the setting would be: { name: 'Rosario', birthday: '25-09-2015', } */
 ```
 
 You can disable this functionality by sending a third parameter to the `set` method:
@@ -278,12 +272,7 @@ config.set(
   false,
 );
 
-/**
- * The current value of the setting would be:
- * {
- *   birthday: '25-09-2015',
- * }
- */
+/** The current value of the setting would be: { birthday: '25-09-2015', } */
 ```
 
 #### Jimple provider
