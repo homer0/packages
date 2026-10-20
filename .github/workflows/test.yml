@@ -20,6 +20,7 @@ jobs:
       - run: pnpm run build
       - run: pnpm run format:check
       - run: pnpm run lint:all
+      - run: pnpm run types:check
       - run: pnpm test -- --coverage
       - name: Coveralls for public/object-utils
         if: ${{ matrix.node == '24' }}
