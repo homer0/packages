@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/homer0/packages/compare/%40homer0%2Fnestjs-zod-lite%405.0.7...%40homer0%2Fnestjs-zod-lite%406.0.0) (2026-10-20)
+
+### Bug Fixes
+
+- **monorepo:** drop Node 22 support ([1d6f840](https://github.com/homer0/packages/commit/1d6f84040b76418fdda2e3ec1efea7bde38bb193))
+- **monorepo:** update safe dependencies ([feed5a0](https://github.com/homer0/packages/commit/feed5a0188260e51793c361e1fa490b5d4da87e6))
+- **nestjs-zod-lite:** add support for Nest 12 ([bcfa4e5](https://github.com/homer0/packages/commit/bcfa4e54391575417322885a4aef51687f9859ae))
+
+### BREAKING CHANGES
+
+- **monorepo:** Node 22 is no longer supported. Node 24 is the minimum required version now.
+
 ## [5.0.7](https://github.com/homer0/packages/compare/%40homer0%2Fnestjs-zod-lite%405.0.6...%40homer0%2Fnestjs-zod-lite%405.0.7) (2026-08-15)
 
 **Note:** Version bump only for package @homer0/nestjs-zod-lite

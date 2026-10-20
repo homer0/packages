@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 6.0.0 (2026-10-20)
+
+### Bug Fixes
+
+- **monorepo:** drop Node 22 support ([1d6f840](https://github.com/homer0/packages/commit/1d6f84040b76418fdda2e3ec1efea7bde38bb193))
+
+### BREAKING CHANGES
+
+- **monorepo:** Node 22 is no longer supported. Node 24 is the minimum required version now.
+
 ## 5.0.1 (2026-08-09)
 
 **Note:** Version bump only for package @homer0/tsconfig

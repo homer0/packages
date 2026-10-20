@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/homer0/packages/compare/%40homer0%2Foxfmt-config%401.1.3...%40homer0%2Foxfmt-config%402.0.0) (2026-10-20)
+
+### Bug Fixes
+
+- **monorepo:** drop Node 22 support ([1d6f840](https://github.com/homer0/packages/commit/1d6f84040b76418fdda2e3ec1efea7bde38bb193))
+- **monorepo:** update eslint dependencies and oxc tooling ([764541e](https://github.com/homer0/packages/commit/764541eb66a50188f41283f88da5a7298412925a))
+
+### BREAKING CHANGES
+
+- **monorepo:** Node 22 is no longer supported. Node 24 is the minimum required version now.
+
 ## [1.1.3](https://github.com/homer0/packages/compare/%40homer0%2Foxfmt-config%401.1.2...%40homer0%2Foxfmt-config%401.1.3) (2026-08-15)
 
 **Note:** Version bump only for package @homer0/oxfmt-config

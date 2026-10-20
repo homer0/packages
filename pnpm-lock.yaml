@@ -837,8 +837,8 @@ importers:
   packages/public/pi-config:
     dependencies:
       '@homer0/object-utils':
-        specifier: ^6.0.7
-        version: 6.0.7
+        specifier: ^7.0.0
+        version: link:../object-utils
       yaml:
         specifier: ^2.8.3
         version: 2.9.1
@@ -1606,10 +1606,6 @@ packages:
     peerDependenciesMeta:
       '@modelcontextprotocol/sdk':
         optional: true
-
-  '@homer0/object-utils@6.0.7':
-    resolution: {integrity: sha512-ZcdCZ7uIa7C3rKlDqAJJv/omyHVdhnQUMku+uCoD1mBhIbmAPwe8NO7Zyoqxpyv5p/XF9gkXrOJY5jncXfdxrw==}
-    engines: {node: '>=22'}
 
   '@homer0/prettier-plugin-jsdoc@12.0.0':
     resolution: {integrity: sha512-xxuZePWgU2fZWiUT1uJpXk0Ffagl7pzDlcH7FsQtEVvxuuJ4O+oPxxFuinlChrDsdEtcxAUUX9Nu8tIRo23grg==}
@@ -6832,10 +6828,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-
-  '@homer0/object-utils@6.0.7':
-    dependencies:
-      extend: 3.0.2
 
   '@homer0/prettier-plugin-jsdoc@12.0.0(prettier@3.9.10)':
     dependencies:

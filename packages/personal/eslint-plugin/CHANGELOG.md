@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [16.0.0](https://github.com/homer0/packages/compare/%40homer0%2Feslint-plugin%4015.0.7...%40homer0%2Feslint-plugin%4016.0.0) (2026-10-20)
+
+### Bug Fixes
+
+- **eslint-plugin:** update eslint-plugin-jsdoc ([de87d55](https://github.com/homer0/packages/commit/de87d55438e49268548d5148bd918ad5930bb1da))
+- **monorepo:** drop Node 22 support ([1d6f840](https://github.com/homer0/packages/commit/1d6f84040b76418fdda2e3ec1efea7bde38bb193))
+- **monorepo:** update eslint dependencies and oxc tooling ([764541e](https://github.com/homer0/packages/commit/764541eb66a50188f41283f88da5a7298412925a))
+- **monorepo:** update safe dependencies ([feed5a0](https://github.com/homer0/packages/commit/feed5a0188260e51793c361e1fa490b5d4da87e6))
+
+### BREAKING CHANGES
+
+- **monorepo:** Node 22 is no longer supported. Node 24 is the minimum required version now.
+
 ## [15.0.7](https://github.com/homer0/packages/compare/%40homer0%2Feslint-plugin%4015.0.6...%40homer0%2Feslint-plugin%4015.0.7) (2026-08-15)
 
 **Note:** Version bump only for package @homer0/eslint-plugin

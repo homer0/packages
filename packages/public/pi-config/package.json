@@ -1,6 +1,6 @@
 {
   "name": "@homer0/pi-config",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "description": "Config management building block for Pi",
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
@@ -43,7 +43,7 @@
     ]
   },
   "dependencies": {
-    "@homer0/object-utils": "^6.0.7",
+    "@homer0/object-utils": "^7.0.0",
     "yaml": "2.9.1",
     "zod": "4.6.7"
   },
@@ -58,8 +58,8 @@
     "@homer0/tsconfig": "workspace:*",
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",
-    "tsdown": "catalog:",
     "oxlint": "catalog:",
+    "tsdown": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },

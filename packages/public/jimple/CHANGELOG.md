@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [7.0.0](https://github.com/homer0/packages/compare/%40homer0%2Fjimple%406.0.7...%40homer0%2Fjimple%407.0.0) (2026-10-20)
+
+### Bug Fixes
+
+- **jimple:** remove jimple dependency ([4f05dd3](https://github.com/homer0/packages/commit/4f05dd3d1d35a25318476037ed2aa3cc067384a7))
+- **jimple:** vendor jimple v1 instead of upgrading to v2 ([1ea1f90](https://github.com/homer0/packages/commit/1ea1f9006e01f6e4d72926488e62462a78fc1e62))
+- **monorepo:** drop Node 22 support ([1d6f840](https://github.com/homer0/packages/commit/1d6f84040b76418fdda2e3ec1efea7bde38bb193))
+
+### BREAKING CHANGES
+
+- **monorepo:** Node 22 is no longer supported. Node 24 is the minimum required version now.
+
 ## [6.0.7](https://github.com/homer0/packages/compare/%40homer0%2Fjimple%406.0.6...%40homer0%2Fjimple%406.0.7) (2026-08-15)
 
 **Note:** Version bump only for package @homer0/jimple
