@@ -1,0 +1,16 @@
+{
+  "extends": "@homer0/tsconfig/tsconfig.node.json",
+  "compilerOptions": {
+    "emitDecoratorMetadata": false,
+    "outDir": "dist",
+    "incremental": false,
+    "paths": { "@tests/*": ["./tests/*"] }
+  },
+  "include": [
+    "src/**/*.ts",
+    "tests/**/*.ts",
+    "tsdown.config.ts",
+    "vitest.config.ts",
+    "oxlint.config.ts"
+  ]
+}

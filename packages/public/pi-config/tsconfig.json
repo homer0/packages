@@ -1,0 +1,12 @@
+{
+  "extends": "@homer0/tsconfig/tsconfig.node.json",
+  "compilerOptions": {
+    "emitDecoratorMetadata": false,
+    "outDir": "dist",
+    "incremental": false,
+    "paths": {
+      "@homer0/pi-config": ["./src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "tsdown.config.ts", "vitest.config.ts", "oxlint.config.ts"]
+}

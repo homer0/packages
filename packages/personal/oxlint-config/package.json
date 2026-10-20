@@ -29,7 +29,7 @@
     "src/"
   ],
   "dependencies": {
-    "globals": "^17.9.0"
+    "globals": "^17.13.0"
   },
   "devDependencies": {
     "@homer0/tsconfig": "workspace:*",
@@ -50,7 +50,7 @@
   },
   "engine-strict": true,
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "scripts": {
     "lint": "oxlint .",

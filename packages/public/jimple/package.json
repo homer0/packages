@@ -38,7 +38,6 @@
     "@homer0/oxlint-config": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
     "@vitest/coverage-v8": "catalog:",
-    "jimple": "^1.5.0",
     "oxlint": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:",
@@ -47,7 +46,7 @@
   },
   "engine-strict": true,
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "scripts": {
     "lint": "oxlint .",

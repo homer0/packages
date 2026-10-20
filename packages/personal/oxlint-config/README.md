@@ -12,7 +12,7 @@ pnpm add --save-dev @homer0/oxlint-config oxlint
 
 | Package | Version    | Notes |
 | ------- | ---------- | ----- |
-| Node.js | `>=22`     |       |
+| Node.js | `>=24`     |       |
 | Oxlint  | `>=1.77.0` |       |
 
 ## Configuration

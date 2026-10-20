@@ -2,6 +2,14 @@
 
 An extended version of the [Jimple](https://www.npmjs.com/package/jimple) lib, with extra features.
 
+## ⚠️ v2
+
+After a few years, the original Jimple library finally released a v2 version, which added types, and introduced a few design changes that are not fully compatible with the features that built here; plus, I'm not a fan of some of the choices.
+
+As of October 2026, this package vendors the original Jimple library v1 ([`1.5.0`](https://www.npmjs.com/package/jimple/v/1.5.0)) internally and I don't plan to upgrade to v2.
+
+But, maybe v2 is something that may fit your use case, so you might want to check it out directly, and give it a chance.
+
 ## 🍿 Usage
 
 > If you are wondering why I built this, go to the [Motivation](#motivation) section.

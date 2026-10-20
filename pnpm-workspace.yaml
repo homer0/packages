@@ -7,32 +7,44 @@ minimumReleaseAgeExclude:
   - '@homer0/*'
 
 catalog:
-  '@testing-library/react': ^16.3.2
+  '@earendil-works/pi-coding-agent': 1.2.0
+  '@earendil-works/pi-tui': 1.2.0
+  '@testing-library/react': ^16.3.3
   '@types/jest': ^30.0.0
-  '@types/node': ^22.20.1
-  '@types/react': ^19.2.18
-  '@types/react-dom': ^19.2.4
+  '@types/node': ^24.19.2
+  '@types/react': ^19.3.0
+  '@types/react-dom': ^19.3.0
   eslint: ^9.39.5
-  oxlint: ^1.77.0
-  react: ^19.2.8
-  react-dom: ^19.2.8
-  tsdown: 0.22.14
+  oxlint: ^1.88.0
+  react: ^19.3.0
+  react-dom: ^19.3.0
+  tsdown: 0.23.1
   typescript: ^6.0.3
 
   # Vite and Vitest
-  '@vitejs/plugin-react': ^6.0.5
-  '@vitest/coverage-v8': ^4.1.10
-  vite: ^8.2.0
-  vitest: ^4.1.10
-  unplugin-swc: ^1.5.9
-  jsdom: ^30.0.1
+  '@vitejs/plugin-react': ^6.1.2
+  '@vitest/coverage-v8': ^5.0.4
+  vite: ^8.3.4
+  vitest: ^5.0.4
+  unplugin-swc: ^2.0.0
+  jsdom: ^30.1.2
 
 overrides:
+  # Pi 1.1.0 expects declarations removed in pi-codemode 1.2.0.
+  '@earendil-works/pi-coding-agent@1.1.0>@earendil-works/pi-codemode': '1.1.0'
+  # The newer SSO provider requires an unpublished token-providers version.
+  '@aws-sdk/token-providers': '3.1149.0'
   'brace-expansion@^5.0.0': '^5.0.5'
   'yaml@^2.0.0': '^2.8.3'
   'follow-redirects@^1.0.0': '^1.16.0'
+  '@typescript-eslint/types@^8.71.2': '8.70.1'
+  '@typescript-eslint/visitor-keys@^8.71.2': '8.70.1'
 
 allowBuilds:
+  # For pi-ai. It has a preinstall with a no-op message.
+  '@google/genai': false
+  # For @google/genai. It validates the required version of the package.
+  protobufjs: true
   # For downloading the correct binary for the platform.
   '@swc/core': true
   # For vite. Its postinstall selects the platform-specific esbuild binary.

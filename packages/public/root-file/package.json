@@ -50,7 +50,7 @@
   },
   "engine-strict": true,
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "scripts": {
     "lint": "oxlint .",

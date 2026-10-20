@@ -1,0 +1,75 @@
+{
+  "name": "@homer0/pi-config",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Config management building block for Pi",
+  "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
+  "license": "MIT",
+  "keywords": [
+    "pi-package",
+    "pi",
+    "pi-extension",
+    "config"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/homer0/packages.git",
+    "directory": "packages/public/pi-config"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "main": "./dist/index.js",
+  "types": "./src/index.ts",
+  "files": [
+    "dist/",
+    "src/",
+    "!src/**/*.test.ts"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "pi": {
+    "extensions": [
+      "./dist/extensions/config.js"
+    ]
+  },
+  "dependencies": {
+    "@homer0/object-utils": "^6.0.7",
+    "yaml": "2.9.1",
+    "zod": "4.6.7"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": ">1.0.0",
+    "@earendil-works/pi-tui": ">1.0.0"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "catalog:",
+    "@earendil-works/pi-tui": "catalog:",
+    "@homer0/oxlint-config": "workspace:*",
+    "@homer0/tsconfig": "workspace:*",
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "tsdown": "catalog:",
+    "oxlint": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  },
+  "scripts": {
+    "lint": "oxlint .",
+    "lint:all": "oxlint .",
+    "lint:file": "oxlint $@",
+    "test": "vitest run $@",
+    "types:check": "tsc --noEmit",
+    "build": "tsdown",
+    "prepublishOnly": "pnpm run build"
+  }
+}

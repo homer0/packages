@@ -14,8 +14,8 @@ Using it is really simple, you call the `deferred()` function and get an object 
 Now, a reason to use this is for when you have another service/function/something asking for something that your code hasn't even started to do:
 
 ```ts
-import * as fs from 'fs/promises';
 import { deferred, type DeferredPromise } from '@homer0/deferred';
+import * as fs from 'fs/promises';
 
 class MyServiceThatLoadsAfile {
   private defer: DeferredPromise<string>;

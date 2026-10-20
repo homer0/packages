@@ -4,7 +4,7 @@
 
 - This is a pnpm workspace monorepo for unrelated personal Node packages, split between `packages/public/*` and `packages/personal/*`.
 - Releases are managed independently with Lerna; package publication/versioning is restricted to the `main` branch.
-- Use Node.js 22 or newer and pnpm 11.9.0, as declared in the root manifest.
+- Use the Node.js version from `./.nvmrc` and the pnpm version from the root `package.json` `packageManager` field.
 
 ## Project-specific gotchas
 

@@ -1,6 +1,6 @@
-import { Jimple as JimpleMod } from '../jimplemod/index.js';
+import { Jimple as JimpleOriginal } from '../original/index.js';
 
-export class Jimple extends JimpleMod {
+export class Jimple extends JimpleOriginal {
   /**
    * This is a version of the `get` method that doesn't throw if the key doesn't exist. It
    * will return `undefined` instead.
