@@ -21,13 +21,15 @@
     "provenance": true
   },
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "./src/index.ts",
   "files": [
-    "dist/"
+    "dist/",
+    "src/",
+    "!src/**/*.test.ts"
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./src/index.ts",
       "import": "./dist/index.js"
     },
     "./package.json": "./package.json"

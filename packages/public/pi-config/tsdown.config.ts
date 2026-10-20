@@ -5,13 +5,11 @@ export default defineConfig((options) => ({
   entry: ['src/index.ts', 'src/extensions/config.ts'],
   sourcemap: true,
   clean: true,
-  dts: {
-    sourcemap: false,
-  },
+  dts: false,
   format: ['esm'],
   outExtensions({ format }) {
     if (format === 'es') {
-      return { js: '.js', dts: '.d.ts' };
+      return { js: '.js' };
     }
 
     return {};
