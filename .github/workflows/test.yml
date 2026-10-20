@@ -201,6 +201,24 @@ jobs:
           flag-name: public-routes-manager
           path-to-lcov: ./packages/public/routes-manager/coverage/lcov.info
           base-path: ./packages/public/routes-manager
+      - name: Coveralls for public/pi-config
+        if: ${{ matrix.node == '24' }}
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+          flag-name: public-pi-config
+          path-to-lcov: ./packages/public/pi-config/coverage/lcov.info
+          base-path: ./packages/public/pi-config
+      - name: Coveralls for public/pi-profiles
+        if: ${{ matrix.node == '24' }}
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+          flag-name: public-pi-profiles
+          path-to-lcov: ./packages/public/pi-profiles/coverage/lcov.info
+          base-path: ./packages/public/pi-profiles
 
   finish:
     needs: build
