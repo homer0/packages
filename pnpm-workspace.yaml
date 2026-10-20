@@ -7,6 +7,8 @@ minimumReleaseAgeExclude:
   - '@homer0/*'
 
 catalog:
+  '@earendil-works/pi-coding-agent': 1.2.0
+  '@earendil-works/pi-tui': 1.2.0
   '@testing-library/react': ^16.3.3
   '@types/jest': ^30.0.0
   '@types/node': ^24.19.2

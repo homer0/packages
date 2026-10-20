@@ -50,8 +50,8 @@
     "@earendil-works/pi-tui": ">1.0.0"
   },
   "devDependencies": {
-    "@earendil-works/pi-coding-agent": "1.2.0",
-    "@earendil-works/pi-tui": "1.2.0",
+    "@earendil-works/pi-coding-agent": "catalog:",
+    "@earendil-works/pi-tui": "catalog:",
     "@homer0/oxlint-config": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
     "@types/node": "catalog:",

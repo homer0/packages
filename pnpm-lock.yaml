@@ -6,6 +6,12 @@ settings:
 
 catalogs:
   default:
+    '@earendil-works/pi-coding-agent':
+      specifier: 1.2.0
+      version: 1.2.0
+    '@earendil-works/pi-tui':
+      specifier: 1.2.0
+      version: 1.2.0
     '@testing-library/react':
       specifier: ^16.3.3
       version: 16.3.3
@@ -683,10 +689,10 @@ importers:
         version: 4.6.7
     devDependencies:
       '@earendil-works/pi-coding-agent':
-        specifier: 1.2.0
+        specifier: 'catalog:'
         version: 1.2.0(@aws-sdk/credential-provider-node@3.972.86)(@smithy/signature-v4@5.7.4)(ws@8.22.0)(zod@4.6.7)
       '@earendil-works/pi-tui':
-        specifier: 1.2.0
+        specifier: 'catalog:'
         version: 1.2.0
       '@homer0/oxlint-config':
         specifier: workspace:*
