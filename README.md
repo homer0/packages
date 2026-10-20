@@ -67,7 +67,7 @@ An easy way to manage locations and build paths relative to those locations on a
 
 #### [🎛️ Pi Config](./packages/public/pi-config)
 
-Config management tools, commands, and library utilities for Pi.
+Config management tools, commands, and library utilities for [Pi](https://pi.dev).
 
 #### [🪄 React SSR config](./packages/public/react-ssr-config)
 
