@@ -43,15 +43,15 @@
   "dependencies": {
     "@homer0/object-utils": "^6.0.7",
     "yaml": "2.9.1",
-    "zod": "4.6.5"
+    "zod": "4.6.7"
   },
   "peerDependencies": {
-    "@earendil-works/pi-coding-agent": "*",
-    "@earendil-works/pi-tui": "*"
+    "@earendil-works/pi-coding-agent": ">1.0.0",
+    "@earendil-works/pi-tui": ">1.0.0"
   },
   "devDependencies": {
-    "@earendil-works/pi-coding-agent": "1.1.0",
-    "@earendil-works/pi-tui": "1.1.0",
+    "@earendil-works/pi-coding-agent": "1.2.0",
+    "@earendil-works/pi-tui": "1.2.0",
     "@homer0/oxlint-config": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
     "@types/node": "catalog:",
