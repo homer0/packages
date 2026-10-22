@@ -400,6 +400,47 @@ describe('config fns', () => {
       expect(getSessionConfigOverride()).toBeUndefined();
     });
 
+    describe('change callback', () => {
+      const onChange = vi.fn();
+      const override = { ...emptyOverride, pi: { setting: 'a' } };
+
+      beforeEach(() => {
+        onChange.mockClear();
+      });
+
+      it('is called once with `set` when an override is set', () => {
+        setSessionConfigOverride(override, onChange);
+
+        expect(onChange).toHaveBeenCalledOnce();
+        expect(onChange).toHaveBeenCalledWith({ type: 'set' });
+      });
+
+      it('is called once with `cleared` when an override is cleared', () => {
+        setSessionConfigOverride(override);
+
+        clearSessionConfigOverride(onChange);
+
+        expect(onChange).toHaveBeenCalledOnce();
+        expect(onChange).toHaveBeenCalledWith({ type: 'cleared' });
+      });
+
+      it('is called with `cleared` when the override is set to `undefined`', () => {
+        setSessionConfigOverride(override);
+
+        setSessionConfigOverride(undefined, onChange);
+
+        expect(onChange).toHaveBeenCalledOnce();
+        expect(onChange).toHaveBeenCalledWith({ type: 'cleared' });
+      });
+
+      it('is not called when there was no override to clear', () => {
+        clearSessionConfigOverride(onChange);
+        setSessionConfigOverride(undefined, onChange);
+
+        expect(onChange).not.toHaveBeenCalled();
+      });
+    });
+
     it('is shared through globalThis, so other copies of the package see it', () => {
       setSessionConfigOverride({ ...emptyOverride, pi: { setting: 'override' } });
 

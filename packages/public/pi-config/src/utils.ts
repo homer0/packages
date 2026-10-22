@@ -13,6 +13,7 @@ import type {
   ConfigSource,
   ConfigSchema,
   GetConfigOptions,
+  OnOverrideChange,
   PiCoreConfig,
   QueryConfigOptions,
   QueryConfigResult,
@@ -120,9 +121,17 @@ const sessionStore = globalThis as typeof globalThis & {
  * Replaces the session-scoped config override wholesale, or clears it when `undefined`.
  *
  * @param value The new override, or `undefined` to clear it.
+ * @param onChange Called after the change: with `set` for a new override, and with
+ *   `cleared` for `undefined`, unless there was no override to clear.
  */
-const setSessionConfigOverride = (value: PiCoreConfig | undefined): void => {
+const setSessionConfigOverride = (
+  value: PiCoreConfig | undefined,
+  onChange?: OnOverrideChange,
+): void => {
+  const hadOverride = typeof sessionStore.__piConfigSessionOverride !== 'undefined';
   sessionStore.__piConfigSessionOverride = value;
+  if (typeof value !== 'undefined') onChange?.({ type: 'set' });
+  else if (hadOverride) onChange?.({ type: 'cleared' });
 };
 
 /**
@@ -136,11 +145,12 @@ const getSessionConfigOverride = (): PiCoreConfig | undefined =>
 /**
  * Clears the session-scoped config override.
  *
+ * @param onChange Called with `cleared` after the change, only if there was an override.
  * @returns Whether an override was actually set.
  */
-const clearSessionConfigOverride = (): boolean => {
+const clearSessionConfigOverride = (onChange?: OnOverrideChange): boolean => {
   const hadOverride = typeof sessionStore.__piConfigSessionOverride !== 'undefined';
-  sessionStore.__piConfigSessionOverride = undefined;
+  setSessionConfigOverride(undefined, onChange);
   return hadOverride;
 };
 

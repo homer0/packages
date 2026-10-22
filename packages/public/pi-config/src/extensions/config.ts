@@ -1,6 +1,7 @@
 import type { ExtensionAPI } from '@earendil-works/pi-coding-agent';
 import { Text } from '@earendil-works/pi-tui';
 import { z } from 'zod';
+import { SESSION_OVERRIDE_CHANGED_CHANNEL } from '../events.js';
 import { formatValuePreview, getQueryLabel, getUsedSourceCount } from '../format.js';
 import {
   getConfigParamsSchema,
@@ -8,7 +9,7 @@ import {
   type GetConfigParams,
   type SetConfigParams,
 } from '../schemas.js';
-import type { ConfigQuery, SetConfigDetails } from '../types.js';
+import type { ConfigQuery, OnOverrideChange, SetConfigDetails } from '../types.js';
 
 /** Module shape of the lazily loaded handlers. */
 type HandlersModule = typeof import('../handlers.js');
@@ -34,8 +35,11 @@ const loadHandlers = (): Promise<HandlersModule> => {
   return handlersModule;
 };
 
+/** The definition of a tool, as `registerTool` receives it. */
+type ToolDefinition = Parameters<ExtensionAPI['registerTool']>[0];
+
 /** Tool definition for reading resolved Pi Core config. */
-const getConfigTool: Parameters<ExtensionAPI['registerTool']>[0] = {
+const getConfigTool: ToolDefinition = {
   name: 'get_config',
   label: 'Get Config',
   description:
@@ -136,8 +140,13 @@ const getConfigTool: Parameters<ExtensionAPI['registerTool']>[0] = {
   },
 };
 
-/** Tool definition for setting an in-memory session config override. */
-const setConfigTool: Parameters<ExtensionAPI['registerTool']>[0] = {
+/**
+ * Creates the definition of the tool that sets an in-memory session config override.
+ *
+ * @param onOverrideChange Called after the tool changes the override.
+ * @returns The tool definition.
+ */
+const createSetConfigTool = (onOverrideChange: OnOverrideChange): ToolDefinition => ({
   name: 'set_config',
   label: 'Set Config',
   description:
@@ -161,7 +170,7 @@ const setConfigTool: Parameters<ExtensionAPI['registerTool']>[0] = {
    */
   async execute(_toolCallId, rawParams) {
     const { handleSetConfig } = await loadHandlers();
-    return handleSetConfig({ params: rawParams as SetConfigParams });
+    return handleSetConfig({ params: rawParams as SetConfigParams, onOverrideChange });
   },
 
   /**
@@ -205,24 +214,29 @@ const setConfigTool: Parameters<ExtensionAPI['registerTool']>[0] = {
       0,
     );
   },
-};
+});
 
 /**
  * Registers config extension tools and the `/config`/`/config-reset` commands with Pi.
  * The definitions are light; the tools' `execute` and the commands lazy-load their
- * implementation, through the shared handlers loader.
+ * implementation, through the shared handlers loader. Whenever the session override
+ * changes, it's announced on `pi.events`.
  *
  * @param pi The Pi extension API.
  */
 const config = (pi: ExtensionAPI): void => {
+  const onOverrideChange: OnOverrideChange = (change) => {
+    pi.events.emit(SESSION_OVERRIDE_CHANGED_CHANNEL, change);
+  };
+
   pi.registerTool(getConfigTool);
-  pi.registerTool(setConfigTool);
+  pi.registerTool(createSetConfigTool(onOverrideChange));
 
   pi.registerCommand('config', {
     description: 'View the effective Pi Core config and edit the session override',
     handler: async (_args, ctx) => {
       const { handleConfig } = await loadHandlers();
-      await handleConfig({ ctx });
+      await handleConfig({ ctx, onOverrideChange });
     },
   });
 
@@ -230,7 +244,7 @@ const config = (pi: ExtensionAPI): void => {
     description: 'Clear the session config override',
     handler: async (_args, ctx) => {
       const { handleConfigReset } = await loadHandlers();
-      handleConfigReset({ ctx });
+      handleConfigReset({ ctx, onOverrideChange });
     },
   });
 };

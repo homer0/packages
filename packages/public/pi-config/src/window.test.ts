@@ -129,12 +129,16 @@ describe('config window', () => {
       return Promise.resolve();
     });
     const notify = vi.fn();
+    const onOverrideChange = vi.fn();
 
-    await showConfigWindow({ hasUI: true, ui: { custom, notify } } as never);
+    await showConfigWindow(
+      { hasUI: true, ui: { custom, notify } } as never,
+      onOverrideChange,
+    );
     const component = factory!(tui, theme, {}, done);
     const editor = FakeEditor.instances.at(-1)!;
 
-    return { component, editor, theme, tui, done, custom, notify };
+    return { component, editor, theme, tui, done, custom, notify, onOverrideChange };
   };
 
   const text = (component: Component, width = WIDTH): string =>
@@ -153,7 +157,7 @@ describe('config window', () => {
       const notify = vi.fn();
       const custom = vi.fn();
 
-      await showConfigWindow({ hasUI: false, ui: { custom, notify } } as never);
+      await showConfigWindow({ hasUI: false, ui: { custom, notify } } as never, vi.fn());
 
       expect(notify).toHaveBeenCalledWith(
         '/config requires interactive mode UI',
@@ -428,20 +432,26 @@ describe('config window', () => {
       ])('clears the override with %s', async (_label, value) => {
         state.override = { pi: { source: 'old' } };
 
-        const { component, editor, theme } = await submit(value);
+        const { component, editor, theme, onOverrideChange } = await submit(value);
 
-        expect(setSessionConfigOverride).toHaveBeenCalledWith(undefined);
+        expect(setSessionConfigOverride).toHaveBeenCalledWith(
+          undefined,
+          onOverrideChange,
+        );
         expect(editor.text).toBe('');
         expect(text(component)).toContain('Session override cleared.');
         expect(theme.fg).toHaveBeenCalledWith('success', 'Session override cleared.');
       });
 
       it('applies a YAML mapping as the new override', async () => {
-        const { component, editor, theme } = await submit('pi:\n  source: typed\n');
+        const { component, editor, theme, onOverrideChange } = await submit(
+          'pi:\n  source: typed\n',
+        );
 
-        expect(setSessionConfigOverride).toHaveBeenCalledWith({
-          pi: { source: 'typed' },
-        });
+        expect(setSessionConfigOverride).toHaveBeenCalledWith(
+          { pi: { source: 'typed' } },
+          onOverrideChange,
+        );
         expect(editor.text).toBe(stringifyYaml({ pi: { source: 'typed' } }));
         expect(text(component)).toContain('Session override applied.');
         expect(theme.fg).toHaveBeenCalledWith('success', 'Session override applied.');

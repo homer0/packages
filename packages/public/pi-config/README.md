@@ -19,6 +19,7 @@ This package provides tools and utilities that can be used to make your Pi stuff
   - [Documenting your config](#documenting-your-config)
   - [Extending configs](#extending-configs)
   - [Session override](#session-override)
+  - [Change event](#change-event)
 - ⚙️ [Examples](#%EF%B8%8F-examples)
 - 🧰 [Tools and commands](#-tools-and-commands)
   - [get_config](#get_config)
@@ -177,6 +178,30 @@ Limitations:
 - **Stale reads.** Only reads that happen after the override is set will reflect it. Anything that already read or cached the config earlier in the same process won't pick it up retroactively.
 - **Whole-document override, not per-key unset.** Setting a path only replaces its value; there's no way to take a single path back to its file-based value. Clear the override entirely to go back to file-only config.
 - **Not schema-validated when set.** Neither the `/config` editor nor `set_config` validate the shape of the override against a consumer's schema. A badly-shaped override only shows up later, as an error, if a library consumer calls `getConfigValue` with a Zod `schema` for the affected path. `queryConfig` and `get_config` never validate.
+
+#### Change event
+
+When the session override changes, the extension emits an event on Pi's shared event bus (`pi.events`), so other extensions can drop what they cached from the config:
+
+| Channel                              | Payload                        |
+| ------------------------------------ | ------------------------------ |
+| `pi-config:session-override-changed` | `{ type: 'set' \| 'cleared' }` |
+
+- `set`: the override was set or replaced. It's emitted after [`set_config`](#set_config) and after a non-empty mapping is applied in the [`/config`](#-tui) window.
+- `cleared`: the override was removed. It's emitted after [`/config-reset`](#config-reset) or after emptying the editor in the window, only when there was an override to clear; if there was nothing to clear, nothing is emitted.
+- There's one event per change, emitted after the new override is in place, so reading the config from a listener already returns the new value.
+
+```ts
+import {
+  SESSION_OVERRIDE_CHANGED_CHANNEL,
+  type SessionOverrideChange,
+} from '@homer0/pi-config';
+
+pi.events.on(SESSION_OVERRIDE_CHANGED_CHANNEL, (change) => {
+  const { type } = change as SessionOverrideChange;
+  // Invalidate whatever you cached from the config.
+});
+```
 
 ### ⚙️ Examples
 

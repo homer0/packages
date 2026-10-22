@@ -22,16 +22,19 @@ const createPi = (): {
   pi: ExtensionAPI;
   commands: Map<string, Command>;
   registerTool: ReturnType<typeof vi.fn<ExtensionAPI['registerTool']>>;
+  emit: ReturnType<typeof vi.fn>;
 } => {
   const commands = new Map<string, Command>();
   const registerTool = vi.fn<ExtensionAPI['registerTool']>();
+  const emit = vi.fn();
   const pi = {
+    events: { emit },
     registerTool,
     registerCommand: vi.fn((name: string, command: Command) =>
       commands.set(name, command),
     ),
   } as unknown as ExtensionAPI;
-  return { pi, commands, registerTool };
+  return { pi, commands, registerTool, emit };
 };
 
 describe('config extension', () => {
@@ -61,12 +64,34 @@ describe('config extension', () => {
 
     await commands.get(name)!.handler('', ctx);
 
-    expect(handler).toHaveBeenCalledWith({ ctx });
+    expect(handler).toHaveBeenCalledWith({ ctx, onOverrideChange: expect.any(Function) });
   });
+
+  it.each([
+    ['config', handlers.handleConfig],
+    ['config-reset', handlers.handleConfigReset],
+  ] as const)(
+    'emits the session override change that /%s reports',
+    async (name, handler) => {
+      const { pi, commands, emit } = createPi();
+      config(pi);
+
+      await commands.get(name)!.handler('', {});
+      const { onOverrideChange } = handler.mock.calls[0]![0] as {
+        onOverrideChange: (change: { type: string }) => void;
+      };
+      onOverrideChange({ type: 'cleared' });
+
+      expect(emit).toHaveBeenCalledOnce();
+      expect(emit).toHaveBeenCalledWith('pi-config:session-override-changed', {
+        type: 'cleared',
+      });
+    },
+  );
 });
 
 describe('config tool definitions', () => {
-  const { pi: toolsPi, registerTool } = createPi();
+  const { pi: toolsPi, registerTool, emit: toolsEmit } = createPi();
   config(toolsPi);
   const [getConfigTool, setConfigTool] = registerTool.mock.calls.map(
     ([tool]) => tool,
@@ -125,6 +150,28 @@ describe('config tool definitions', () => {
     expect(actual).toBe(result);
     expect(handlers.handleSetConfig).toHaveBeenCalledWith({
       params: { path: 'a', value: 1 },
+      onOverrideChange: expect.any(Function),
+    });
+  });
+
+  it('set_config emits the session override change that its handler reports', async () => {
+    handlers.handleSetConfig.mockReturnValue({ content: [], details: {} } as never);
+
+    await setConfigTool.execute(
+      'id',
+      { path: 'a', value: 1 },
+      undefined,
+      undefined,
+      {} as never,
+    );
+    const { onOverrideChange } = handlers.handleSetConfig.mock.calls[0]![0] as {
+      onOverrideChange: (change: { type: string }) => void;
+    };
+    onOverrideChange({ type: 'set' });
+
+    expect(toolsEmit).toHaveBeenCalledOnce();
+    expect(toolsEmit).toHaveBeenCalledWith('pi-config:session-override-changed', {
+      type: 'set',
     });
   });
 
