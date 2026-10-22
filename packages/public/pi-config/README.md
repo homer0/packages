@@ -192,10 +192,11 @@ When the session override changes, the extension emits an event on Pi's shared e
 - There's one event per change, emitted after the new override is in place, so reading the config from a listener already returns the new value.
 
 ```ts
+// The channel has its own light entry point, so importing it doesn't load the config readers.
 import {
   SESSION_OVERRIDE_CHANGED_CHANNEL,
   type SessionOverrideChange,
-} from '@homer0/pi-config';
+} from '@homer0/pi-config/events';
 
 pi.events.on(SESSION_OVERRIDE_CHANGED_CHANNEL, (change) => {
   const { type } = change as SessionOverrideChange;

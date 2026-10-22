@@ -14,7 +14,8 @@ import {
   visibleWidth,
 } from '@earendil-works/pi-tui';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
-import type { OnOverrideChange, PiCoreConfig } from './types.js';
+import type { OnOverrideChange } from './events.js';
+import type { PiCoreConfig } from './types.js';
 import {
   ensureErrorMessage,
   getConfig,

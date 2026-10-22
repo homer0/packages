@@ -6,6 +6,7 @@ import { dirname, extname, isAbsolute, join } from 'node:path';
 import { parse as parseYaml } from 'yaml';
 import { z } from 'zod';
 import { ConfigReadError, ConfigValidationError } from './errors.js';
+import type { OnOverrideChange } from './events.js';
 import type {
   ConfigPath,
   ConfigPathValue,
@@ -13,7 +14,6 @@ import type {
   ConfigSource,
   ConfigSchema,
   GetConfigOptions,
-  OnOverrideChange,
   PiCoreConfig,
   QueryConfigOptions,
   QueryConfigResult,

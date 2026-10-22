@@ -1,7 +1,7 @@
 import type { ExtensionAPI } from '@earendil-works/pi-coding-agent';
 import { Text } from '@earendil-works/pi-tui';
 import { z } from 'zod';
-import { SESSION_OVERRIDE_CHANGED_CHANNEL } from '../events.js';
+import { SESSION_OVERRIDE_CHANGED_CHANNEL, type OnOverrideChange } from '../events.js';
 import { formatValuePreview, getQueryLabel, getUsedSourceCount } from '../format.js';
 import {
   getConfigParamsSchema,
@@ -9,7 +9,7 @@ import {
   type GetConfigParams,
   type SetConfigParams,
 } from '../schemas.js';
-import type { ConfigQuery, OnOverrideChange, SetConfigDetails } from '../types.js';
+import type { ConfigQuery, SetConfigDetails } from '../types.js';
 
 /** Module shape of the lazily loaded handlers. */
 type HandlersModule = typeof import('../handlers.js');

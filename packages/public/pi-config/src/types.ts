@@ -238,12 +238,3 @@ export type SetConfigDetails = {
   /** The explanation of what failed. It's only there when the `status` is `error`. */
   message?: string;
 };
-
-/** The payload of the event emitted when the session override changes. */
-export type SessionOverrideChange = {
-  /** `set` when the override was set or replaced, `cleared` when it was removed. */
-  type: 'set' | 'cleared';
-};
-
-/** A function that is told about the changes of the session override. */
-export type OnOverrideChange = (change: SessionOverrideChange) => void;
