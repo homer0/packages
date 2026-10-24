@@ -69,6 +69,10 @@ An easy way to manage locations and build paths relative to those locations on a
 
 Config management tools, commands, and library utilities for [Pi](https://pi.dev).
 
+#### [Pi In-Memory Cache](./packages/public/pi-in-memory-cache)
+
+A shared in-memory cache for Pi extensions, kept by a background daemon.
+
 #### [🎭 Pi Profiles](./packages/public/pi-profiles)
 
 Turn sets of Pi skills, extensions, and context on and off per machine or project.
