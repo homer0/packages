@@ -403,5 +403,136 @@ describe('secrets', () => {
         resolveInterpolatedValue({ value: '$secret:API_KEY', context: 'ctx' }),
       ).rejects.toThrow(new SecretNotFoundError('API_KEY'));
     });
+
+    describe('references inside a value', () => {
+      it('keeps the text around a reference exactly as it is', async () => {
+        providers['a'] = fakeProvider('a', { API_KEY: 'secret-value' });
+        vi.stubEnv('PI_SECRETS_INTERPOLATION_TEST_VAR', 'env-value');
+
+        await expect(
+          resolveInterpolatedValue({ value: 'Bearer $secret:API_KEY', context: 'ctx' }),
+        ).resolves.toBe('Bearer secret-value');
+        await expect(
+          resolveInterpolatedValue({
+            value: 'before  $env:PI_SECRETS_INTERPOLATION_TEST_VAR   after',
+            context: 'ctx',
+          }),
+        ).resolves.toBe('before  env-value   after');
+      });
+
+      it('keeps tabs and line breaks around a reference', async () => {
+        vi.stubEnv('PI_SECRETS_INTERPOLATION_TEST_VAR', 'env-value');
+
+        await expect(
+          resolveInterpolatedValue({
+            value: 'a\t$env:PI_SECRETS_INTERPOLATION_TEST_VAR\nb',
+            context: 'ctx',
+          }),
+        ).resolves.toBe('a\tenv-value\nb');
+      });
+
+      it('resolves every reference, including the ones that are next to each other', async () => {
+        providers['a'] = fakeProvider('a', { ONE: '1', TWO: '2' });
+        vi.stubEnv('PI_SECRETS_INTERPOLATION_TEST_VAR', 'env-value');
+
+        await expect(
+          resolveInterpolatedValue({
+            value: '$secret:ONE $secret:TWO $env:PI_SECRETS_INTERPOLATION_TEST_VAR',
+            context: 'ctx',
+          }),
+        ).resolves.toBe('1 2 env-value');
+      });
+
+      it('replaces a reference that is repeated everywhere it appears', async () => {
+        providers['a'] = fakeProvider('a', { ONE: '1' });
+
+        await expect(
+          resolveInterpolatedValue({
+            value: '$secret:ONE and $secret:ONE',
+            context: 'ctx',
+          }),
+        ).resolves.toBe('1 and 1');
+      });
+
+      it.each([
+        ['$', 'pa$word'],
+        ['$$', 'pa$$word'],
+        ['$&', 'a$&b'],
+        ['$`', 'a$`b'],
+        ["$'", "a$'b"],
+        ['$1', 'a$1b'],
+      ])(
+        'never reads a "%s" in what it resolves as a replacement pattern',
+        async (_label, secret) => {
+          providers['a'] = fakeProvider('a', { API_KEY: secret });
+
+          await expect(
+            resolveInterpolatedValue({
+              value: 'Bearer $secret:API_KEY done',
+              context: 'ctx',
+            }),
+          ).resolves.toBe(`Bearer ${secret} done`);
+        },
+      );
+
+      it.each([
+        ['a prefix in the middle of a word', 'x$env:PI_SECRETS_INTERPOLATION_TEST_VAR'],
+        ['an assignment', 'KEY=$env:PI_SECRETS_INTERPOLATION_TEST_VAR'],
+        ['a prefix with no name', 'cost: $env: and $secret: '],
+        ['a dollar sign that is not a prefix', 'it costs $5 or $envelope'],
+        ['a prefix of something else', '$other:NAME'],
+      ])('does not take %s as a reference', async (_label, value) => {
+        vi.stubEnv('PI_SECRETS_INTERPOLATION_TEST_VAR', 'env-value');
+
+        await expect(resolveInterpolatedValue({ value, context: 'ctx' })).resolves.toBe(
+          value,
+        );
+
+        expect(getConfigValue).not.toHaveBeenCalled();
+      });
+
+      it('keeps the punctuation that is stuck to a reference as part of its name', async () => {
+        await expect(
+          resolveInterpolatedValue({
+            value: 'Bearer $env:PI_SECRETS_INTERPOLATION_UNSET_VAR,',
+            context: 'ctx',
+          }),
+        ).rejects.toThrow(
+          'references unset environment variable "PI_SECRETS_INTERPOLATION_UNSET_VAR,".',
+        );
+      });
+
+      it('takes everything up to the next whitespace as the name, even another prefix', async () => {
+        await expect(
+          resolveInterpolatedValue({
+            value: '$env:PI_SECRETS_ONE:$env:PI_SECRETS_TWO',
+            context: 'ctx',
+          }),
+        ).rejects.toThrow(
+          'unset environment variable "PI_SECRETS_ONE:$env:PI_SECRETS_TWO"',
+        );
+      });
+
+      it('fails with the first reference that can not be resolved, in order', async () => {
+        vi.stubEnv('PI_SECRETS_INTERPOLATION_TEST_VAR', 'env-value');
+
+        await expect(
+          resolveInterpolatedValue({
+            value:
+              '$env:PI_SECRETS_INTERPOLATION_TEST_VAR $env:PI_SECRETS_UNSET_ONE $env:PI_SECRETS_UNSET_TWO',
+            context: 'ctx',
+          }),
+        ).rejects.toThrow('unset environment variable "PI_SECRETS_UNSET_ONE"');
+      });
+
+      it('fails with a secret that can not be resolved, even when it is in the middle of a text', async () => {
+        await expect(
+          resolveInterpolatedValue({
+            value: 'Bearer $secret:API_KEY done',
+            context: 'ctx',
+          }),
+        ).rejects.toThrow(new SecretNotFoundError('API_KEY'));
+      });
+    });
   });
 });

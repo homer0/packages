@@ -185,11 +185,10 @@ With `required`, it throws a `SecretNotFoundError` for the first name that could
 
 If your extension has a config value that holds a credential, like an API key, let the user write a reference instead of the value itself. `resolveInterpolatedValue` understands two prefixes:
 
-| Value           | What it resolves to                                                                                    |
+| Reference       | What it resolves to                                                                                    |
 | --------------- | ------------------------------------------------------------------------------------------------------ |
 | `$env:VAR_NAME` | The environment variable. It throws if it's not set.                                                   |
 | `$secret:NAME`  | The secret, from the [providers](#providers). It throws a `SecretNotFoundError` if no provider has it. |
-| Anything else   | The same string.                                                                                       |
 
 ```ts
 import { resolveInterpolatedValue } from '@homer0/pi-secrets';
@@ -202,7 +201,24 @@ const apiKey = await resolveInterpolatedValue({
 });
 ```
 
-It fails instead of returning an empty string, because a blank credential only shows up later as an error like a 401, far from the typo that caused it.
+A reference can be the whole value, or a part of it. The text around it is kept exactly as it is, and a value can have as many references as you need:
+
+| Value                    | Result           |
+| ------------------------ | ---------------- |
+| `$secret:API_KEY`        | `the-key`        |
+| `Bearer $secret:API_KEY` | `Bearer the-key` |
+| `$env:USER $env:HOST`    | `homer0 laptop`  |
+| `plain text`             | `plain text`     |
+
+The rules of what is a reference:
+
+- It starts with `$env:` or `$secret:`, followed by a name, and it ends at the next whitespace (a space, a tab, or a line break). The name is everything in between, so punctuation that is stuck to it, like the comma in `$env:NAME,`, is part of the name.
+- It has to be at the start of the value or after whitespace. A prefix in the middle of a word is just text: `KEY=$env:NAME` and `a$env:NAME` are left as they are.
+- The two prefixes can be mixed, and if the same reference appears twice, it's resolved each time.
+- Whatever it resolves to is used as it is. A `$` in a secret, like in `pa$$word` or `a$&b`, is never read as anything else.
+- If a reference can't be resolved, the whole call throws, and the error is about the first one that failed.
+
+It fails instead of leaving a placeholder or an empty string, because a blank credential only shows up later as an error like a 401, far from the typo that caused it.
 
 #### How the cache works
 

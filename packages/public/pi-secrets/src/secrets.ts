@@ -23,6 +23,14 @@ const ENV_PREFIX = '$env:';
 /** The prefix of a value that is read from the secret providers. */
 const SECRET_PREFIX = '$secret:';
 
+/**
+ * Finds the references in a value: `$env:NAME` and `$secret:NAME`, delimited by
+ * whitespace or by the start and the end of the value. The lookarounds keep the spaces
+ * out of the match, and it has no capture groups on purpose: the prefixes are used to
+ * parse each reference.
+ */
+const INTERPOLATION_REGEX = /(?<=^|\s)\$(?:env|secret):\S+(?=\s|$)/g;
+
 /** Options for {@link resolveInterpolatedValue}. */
 type ResolveInterpolatedValueOptions = {
   /** The value to resolve. */
@@ -33,6 +41,16 @@ type ResolveInterpolatedValueOptions = {
    * Describes what's being resolved, used only in the thrown error message (e.g. `MCP
    * header "Authorization"`).
    */
+  context: string;
+};
+
+/** Options for {@link resolveReference}. */
+type ResolveReferenceOptions = {
+  /** The reference to resolve, like `$env:NAME` or `$secret:NAME`. */
+  reference: string;
+  /** The project directory to read the secrets config from. */
+  cwd?: string;
+  /** Describes what's being resolved, for the error messages. */
   context: string;
 };
 
@@ -382,33 +400,22 @@ const getSecrets = async <const TNames extends readonly string[]>(
 };
 
 /**
- * Resolves a single config value, supporting two interpolation prefixes, shared by every
- * place that lets a user reference a credential instead of hardcoding it:
+ * Resolves one reference: reads the environment variable of an `$env:` one, or the secret
+ * of a `$secret:` one.
  *
- * - `$env:VAR_NAME` — reads from the process environment. Throws if unset.
- * - `$secret:SECRET_NAME` — reads from the configured secret providers. Throws if it can't
- *   be resolved.
- *
- * Bare strings (no recognized prefix) are returned unchanged.
- *
- * Fails closed rather than silently returning an empty/broken value: a blank credential
- * would otherwise surface as an opaque downstream failure (e.g. a 401/403 from an HTTP
- * server, or a process silently missing an env var it needs), hiding that interpolation
- * itself failed (e.g. a typo'd env var name or an unprovisioned secret).
- *
- * @param options The value, the project directory for the secrets, and what is being
+ * @param options The reference, the project directory for the secrets, and what is being
  *   resolved.
- * @returns The resolved value.
+ * @returns The value the reference points to.
  * @throws {Error} When an `$env:` variable is not set.
  * @throws {SecretNotFoundError} When a `$secret:` can't be resolved.
  */
-const resolveInterpolatedValue = async ({
-  value,
+const resolveReference = async ({
+  reference,
   cwd,
   context,
-}: ResolveInterpolatedValueOptions): Promise<string> => {
-  if (value.startsWith(ENV_PREFIX)) {
-    const varName = value.slice(ENV_PREFIX.length);
+}: ResolveReferenceOptions): Promise<string> => {
+  if (reference.startsWith(ENV_PREFIX)) {
+    const varName = reference.slice(ENV_PREFIX.length);
     // eslint-disable-next-line n/no-process-env -- $env: prefix is an explicit opt-in for env var interpolation.
     const resolved = process.env[varName];
     if (typeof resolved === 'undefined') {
@@ -417,11 +424,56 @@ const resolveInterpolatedValue = async ({
     return resolved;
   }
 
-  if (value.startsWith(SECRET_PREFIX)) {
-    return getSecret(value.slice(SECRET_PREFIX.length), { cwd, required: true });
+  return getSecret(reference.slice(SECRET_PREFIX.length), { cwd, required: true });
+};
+
+/**
+ * Resolves a config value that can have references to the environment or to the secret
+ * providers, shared by every place that lets a user point to a credential instead of
+ * hardcoding it:
+ *
+ * - `$env:VAR_NAME` — reads from the process environment. Throws if unset.
+ * - `$secret:SECRET_NAME` — reads from the configured secret providers. Throws if it can't
+ *   be resolved.
+ *
+ * A reference can be the whole value or a part of it, like `Bearer $secret:API_KEY`. It
+ * ends where the next whitespace begins, so the text around it is kept exactly as it is,
+ * and a value can have many references. Each one is resolved where it appears, so a
+ * reference that appears twice is resolved twice. A prefix that is not at the start of a
+ * word, like in `KEY=$env:NAME`, is not a reference. A value without references is
+ * returned unchanged.
+ *
+ * Fails closed rather than silently returning an empty/broken value: a blank credential
+ * would otherwise surface as an opaque downstream failure (e.g. a 401/403 from an HTTP
+ * server, or a process silently missing an env var it needs), hiding that interpolation
+ * itself failed (e.g. a typo'd env var name or an unprovisioned secret).
+ *
+ * @param options The value, the project directory for the secrets, and what is being
+ *   resolved.
+ * @returns The value, with the references replaced by what they point to.
+ * @throws {Error} When an `$env:` variable is not set.
+ * @throws {SecretNotFoundError} When a `$secret:` can't be resolved.
+ */
+const resolveInterpolatedValue = async ({
+  value,
+  cwd,
+  context,
+}: ResolveInterpolatedValueOptions): Promise<string> => {
+  let result = '';
+  let position = 0;
+  for (const match of value.matchAll(INTERPOLATION_REGEX)) {
+    const [reference] = match;
+    // The references are resolved one by one, so the error is always about the first one
+    // that fails, in the order they appear.
+    // oxlint-disable-next-line no-await-in-loop -- See above.
+    const resolved = await resolveReference({ reference, cwd, context });
+    // The value is built from the pieces instead of with `String.replace`, so a `$` in
+    // what is resolved (like `$&`) is never read as a replacement pattern.
+    result += value.slice(position, match.index) + resolved;
+    position = match.index + reference.length;
   }
 
-  return value;
+  return result + value.slice(position);
 };
 
 export { getSecret, getSecrets, resolveInterpolatedValue };
