@@ -7,7 +7,7 @@ This package provides tools and utilities that can be used to make your Pi stuff
 ## 🍿 Usage
 
 > - ⚠️ **This package is for Pi.** It reads Pi's config files and registers a Pi extension; it's not a general-purpose config loader.
-> - If you are wondering why I built this, go to the [Motivation](#motivation) section.
+> - If you are wondering why I built this, go to the [📝 Motivation](#-motivation) section.
 
 - 📦 [Installation](#-installation)
   - [As an extension](#as-an-extension)
