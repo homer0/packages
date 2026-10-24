@@ -1,6 +1,5 @@
 import type { ExtensionCommandContext } from '@earendil-works/pi-coding-agent';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { ConfigReadError } from './errors.js';
 
 const {
   queryConfig,
@@ -32,6 +31,7 @@ vi.mock('@homer0/object-utils', async (importOriginal) => {
 });
 
 const { set } = await import('@homer0/object-utils');
+const { ConfigReadError } = await import('./utils.js');
 const { handleConfig, handleConfigReset, handleGetConfig, handleSetConfig } =
   await import('./handlers.js');
 

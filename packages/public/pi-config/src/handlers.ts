@@ -1,11 +1,15 @@
 import type { ExtensionCommandContext } from '@earendil-works/pi-coding-agent';
 import { set } from '@homer0/object-utils';
-import { ConfigReadError } from './errors.js';
 import type { OnOverrideChange } from './events.js';
-import { formatValue, getQueryLabel } from './format.js';
-import type { GetConfigParams, SetConfigParams } from './schemas.js';
+import {
+  formatValue,
+  getQueryLabel,
+  type GetConfigParams,
+  type SetConfigParams,
+} from './tools.js';
 import type { ConfigQuery, PiCoreConfig, SetConfigDetails } from './types.js';
 import {
+  ConfigReadError,
   clearSessionConfigOverride,
   EMPTY_PI_CORE_CONFIG,
   getSessionConfigOverride,

@@ -1,4 +1,9 @@
-export { getConfig, getConfigValue, queryConfig } from './utils.js';
+export {
+  ConfigValidationError,
+  getConfig,
+  getConfigValue,
+  queryConfig,
+} from './utils.js';
 export type {
   ConfigNamespace,
   ConfigPath,
@@ -17,6 +22,5 @@ export type {
   SkillsConfig,
   ToolsConfig,
 } from './types.js';
-export { ConfigValidationError } from './errors.js';
 export { SESSION_OVERRIDE_CHANGED_CHANNEL } from './events.js';
 export type { SessionOverrideChange } from './events.js';

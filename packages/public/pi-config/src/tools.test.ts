@@ -4,7 +4,7 @@ import {
   formatValuePreview,
   getQueryLabel,
   getUsedSourceCount,
-} from './format.js';
+} from './tools.js';
 
 describe('config format', () => {
   describe('formatValue', () => {

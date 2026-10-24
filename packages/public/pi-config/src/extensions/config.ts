@@ -2,13 +2,15 @@ import type { ExtensionAPI } from '@earendil-works/pi-coding-agent';
 import { Text } from '@earendil-works/pi-tui';
 import { z } from 'zod';
 import { SESSION_OVERRIDE_CHANGED_CHANNEL, type OnOverrideChange } from '../events.js';
-import { formatValuePreview, getQueryLabel, getUsedSourceCount } from '../format.js';
 import {
+  formatValuePreview,
   getConfigParamsSchema,
+  getQueryLabel,
+  getUsedSourceCount,
   setConfigParamsSchema,
   type GetConfigParams,
   type SetConfigParams,
-} from '../schemas.js';
+} from '../tools.js';
 import type { ConfigQuery, SetConfigDetails } from '../types.js';
 
 /** Module shape of the lazily loaded handlers. */
