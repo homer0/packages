@@ -9,10 +9,10 @@ import {
   vi,
   type MockInstance,
 } from 'vitest';
-import { SecretNotFoundError, SecretsConfigError } from './errors.js';
 import { InfisicalSecretProvider } from './providers.js';
 import { getSecret, getSecrets } from './secrets.js';
 import type { NamedSecretProviderConfig, SecretsConfig } from './types.js';
+import { SecretNotFoundError, SecretsConfigError } from './utils.js';
 
 vi.mock('@homer0/pi-config', () => ({ getConfigValue: vi.fn() }));
 vi.mock('@homer0/pi-in-memory-cache', () => ({ getCached: vi.fn() }));

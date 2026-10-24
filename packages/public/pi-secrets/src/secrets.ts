@@ -1,7 +1,6 @@
 import { getConfigValue } from '@homer0/pi-config';
 import { getCached } from '@homer0/pi-in-memory-cache';
 import { z } from 'zod';
-import { SecretNotFoundError, SecretsConfigError } from './errors.js';
 import { InfisicalSecretProvider } from './providers.js';
 import { secretsConfigSchema } from './schemas.js';
 import type {
@@ -10,7 +9,7 @@ import type {
   SecretProvider,
   SecretsConfig,
 } from './types.js';
-import { expandPlaceholders } from './utils.js';
+import { expandPlaceholders, SecretNotFoundError, SecretsConfigError } from './utils.js';
 
 /**
  * The key a resolved secret value is cached under, scoped per provider type, provider
