@@ -77,6 +77,10 @@ A shared in-memory cache for Pi extensions, kept by a background daemon.
 
 Turn sets of Pi skills, extensions, and context on and off per machine or project.
 
+#### [Pi Secrets](./packages/public/pi-secrets)
+
+Resolve secrets from providers like Infisical for Pi extensions, tools, and skills.
+
 #### [🪄 React SSR config](./packages/public/react-ssr-config)
 
 A way to have dynamic config sent from SSR and accessible in the client.
