@@ -17,6 +17,25 @@ import { expandPlaceholders, SecretNotFoundError, SecretsConfigError } from './u
  */
 const SECRET_CACHE_KEY = 'pi-secrets:secret:<provider>:<providerName>:<secretName>';
 
+/** The prefix of a value that is read from the process environment. */
+const ENV_PREFIX = '$env:';
+
+/** The prefix of a value that is read from the secret providers. */
+const SECRET_PREFIX = '$secret:';
+
+/** Options for {@link resolveInterpolatedValue}. */
+type ResolveInterpolatedValueOptions = {
+  /** The value to resolve. */
+  value: string;
+  /** The project directory to read the secrets config from. */
+  cwd?: string;
+  /**
+   * Describes what's being resolved, used only in the thrown error message (e.g. `MCP
+   * header "Authorization"`).
+   */
+  context: string;
+};
+
 /** The values of some secrets, by name. */
 type SecretValues = Record<string, string | undefined>;
 
@@ -302,22 +321,36 @@ const resolveSecrets = async (
  * Retrieves a secret from the configured providers.
  *
  * @param name The name of the secret.
+ * @param options The project directory, and that the secret is required.
+ * @returns The value.
+ * @throws {SecretNotFoundError} When no provider has the secret.
+ * @throws {SecretsConfigError} When the main provider doesn't exist or is disabled.
+ */
+function getSecret(
+  name: string,
+  options: GetSecretOptions & { required: true },
+): Promise<string>;
+/**
+ * Retrieves a secret from the configured providers.
+ *
+ * @param name The name of the secret.
  * @param options The project directory, and whether the secret is required.
  * @returns The value, or `undefined` if no provider has it and it's not required.
  * @throws {SecretNotFoundError} When the secret is required and no provider has it.
  * @throws {SecretsConfigError} When the main provider doesn't exist or is disabled.
  */
-const getSecret = async (
+function getSecret(name: string, options?: GetSecretOptions): Promise<string | undefined>;
+async function getSecret(
   name: string,
   options: GetSecretOptions = {},
-): Promise<string | undefined> => {
+): Promise<string | undefined> {
   const value = await resolveSecret(name, options);
   if (typeof value !== 'undefined') return value;
 
   warnSecretsIssue(`Secret '${name}' could not be resolved.`);
   if (options.required) throw new SecretNotFoundError(name);
   return undefined;
-};
+}
 
 /**
  * Retrieves multiple secrets from the configured providers in one bulk lookup. The return
@@ -348,4 +381,47 @@ const getSecrets = async <const TNames extends readonly string[]>(
   return values as Record<TNames[number], string | undefined>;
 };
 
-export { getSecret, getSecrets };
+/**
+ * Resolves a single config value, supporting two interpolation prefixes, shared by every
+ * place that lets a user reference a credential instead of hardcoding it:
+ *
+ * - `$env:VAR_NAME` — reads from the process environment. Throws if unset.
+ * - `$secret:SECRET_NAME` — reads from the configured secret providers. Throws if it can't
+ *   be resolved.
+ *
+ * Bare strings (no recognized prefix) are returned unchanged.
+ *
+ * Fails closed rather than silently returning an empty/broken value: a blank credential
+ * would otherwise surface as an opaque downstream failure (e.g. a 401/403 from an HTTP
+ * server, or a process silently missing an env var it needs), hiding that interpolation
+ * itself failed (e.g. a typo'd env var name or an unprovisioned secret).
+ *
+ * @param options The value, the project directory for the secrets, and what is being
+ *   resolved.
+ * @returns The resolved value.
+ * @throws {Error} When an `$env:` variable is not set.
+ * @throws {SecretNotFoundError} When a `$secret:` can't be resolved.
+ */
+const resolveInterpolatedValue = async ({
+  value,
+  cwd,
+  context,
+}: ResolveInterpolatedValueOptions): Promise<string> => {
+  if (value.startsWith(ENV_PREFIX)) {
+    const varName = value.slice(ENV_PREFIX.length);
+    // eslint-disable-next-line n/no-process-env -- $env: prefix is an explicit opt-in for env var interpolation.
+    const resolved = process.env[varName];
+    if (typeof resolved === 'undefined') {
+      throw new Error(`${context} references unset environment variable "${varName}".`);
+    }
+    return resolved;
+  }
+
+  if (value.startsWith(SECRET_PREFIX)) {
+    return getSecret(value.slice(SECRET_PREFIX.length), { cwd, required: true });
+  }
+
+  return value;
+};
+
+export { getSecret, getSecrets, resolveInterpolatedValue };

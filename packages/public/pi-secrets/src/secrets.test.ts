@@ -5,12 +5,13 @@ import {
   beforeEach,
   describe,
   expect,
+  expectTypeOf,
   it,
   vi,
   type MockInstance,
 } from 'vitest';
 import { InfisicalSecretProvider } from './providers.js';
-import { getSecret, getSecrets } from './secrets.js';
+import { getSecret, getSecrets, resolveInterpolatedValue } from './secrets.js';
 import type { NamedSecretProviderConfig, SecretsConfig } from './types.js';
 import { SecretNotFoundError, SecretsConfigError } from './utils.js';
 
@@ -191,6 +192,18 @@ describe('secrets', () => {
       );
     });
 
+    it('is typed as a string when the secret is required, and as optional otherwise', () => {
+      providers['a'] = fakeProvider('a', { TOKEN: 'from-a' });
+
+      expectTypeOf(getSecret('TOKEN', { required: true })).toEqualTypeOf<
+        Promise<string>
+      >();
+      expectTypeOf(getSecret('TOKEN')).toEqualTypeOf<Promise<string | undefined>>();
+      expectTypeOf(getSecret('TOKEN', { required: false })).toEqualTypeOf<
+        Promise<string | undefined>
+      >();
+    });
+
     it('throws when the secret is required and no provider has it', async () => {
       await expect(getSecret('TOKEN', { required: true })).rejects.toThrow(
         new SecretNotFoundError('TOKEN'),
@@ -334,6 +347,61 @@ describe('secrets', () => {
         cwd: '/project',
         schema: expect.anything(),
       });
+    });
+  });
+
+  describe('resolveInterpolatedValue', () => {
+    it('leaves a bare string unchanged, without touching the providers', async () => {
+      await expect(
+        resolveInterpolatedValue({ value: 'plain-value', context: 'ctx' }),
+      ).resolves.toBe('plain-value');
+
+      expect(getConfigValue).not.toHaveBeenCalled();
+    });
+
+    it('resolves an $env: variable that is set', async () => {
+      vi.stubEnv('PI_SECRETS_INTERPOLATION_TEST_VAR', 'env-value');
+
+      await expect(
+        resolveInterpolatedValue({
+          value: '$env:PI_SECRETS_INTERPOLATION_TEST_VAR',
+          context: 'ctx',
+        }),
+      ).resolves.toBe('env-value');
+    });
+
+    it('fails with the given context when the $env: variable is not set', async () => {
+      await expect(
+        resolveInterpolatedValue({
+          value: '$env:PI_SECRETS_INTERPOLATION_UNSET_VAR',
+          context: 'MCP server "notion"',
+        }),
+      ).rejects.toThrow(
+        'MCP server "notion" references unset environment variable "PI_SECRETS_INTERPOLATION_UNSET_VAR".',
+      );
+    });
+
+    it('resolves a $secret: value from the providers, for the project it is given', async () => {
+      providers['a'] = fakeProvider('a', { API_KEY: 'secret-value' });
+
+      await expect(
+        resolveInterpolatedValue({
+          value: '$secret:API_KEY',
+          cwd: '/cwd',
+          context: 'ctx',
+        }),
+      ).resolves.toBe('secret-value');
+
+      expect(getConfigValue).toHaveBeenCalledWith('extensions.secrets', {
+        cwd: '/cwd',
+        schema: expect.anything(),
+      });
+    });
+
+    it('fails when a $secret: can not be resolved', async () => {
+      await expect(
+        resolveInterpolatedValue({ value: '$secret:API_KEY', context: 'ctx' }),
+      ).rejects.toThrow(new SecretNotFoundError('API_KEY'));
     });
   });
 });

@@ -30,14 +30,15 @@ pnpm add @homer0/pi-secrets
 
 It will give you access to an ESM module with the following:
 
-| Export                                                                                              | What it is                                                    |
-| --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| `getSecret`                                                                                         | Resolves one secret.                                          |
-| `getSecrets`                                                                                        | Resolves many secrets at once, with one request per provider. |
-| `SecretNotFoundError`                                                                               | The error thrown when a required secret can't be resolved.    |
-| `SecretsConfigError`                                                                                | The error thrown when the config is inconsistent.             |
-| `secretsConfigSchema`, `secretProviderConfigSchema`, `secretProviderTypeSchema`                     | The [Zod](https://zod.dev) schemas of the config.             |
-| `SecretsConfig`, `SecretProviderConfig`, `SecretProviderType`, `GetSecretOptions`, `SecretProvider` | The types.                                                    |
+| Export                                                                                              | What it is                                                                                       |
+| --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `getSecret`                                                                                         | Resolves one secret.                                                                             |
+| `getSecrets`                                                                                        | Resolves many secrets at once, with one request per provider.                                    |
+| `resolveInterpolatedValue`                                                                          | Resolves a config value that can be a reference: `$env:NAME`, `$secret:NAME`, or a plain string. |
+| `SecretNotFoundError`                                                                               | The error thrown when a required secret can't be resolved.                                       |
+| `SecretsConfigError`                                                                                | The error thrown when the config is inconsistent.                                                |
+| `secretsConfigSchema`, `secretProviderConfigSchema`, `secretProviderTypeSchema`                     | The [Zod](https://zod.dev) schemas of the config.                                                |
+| `SecretsConfig`, `SecretProviderConfig`, `SecretProviderType`, `GetSecretOptions`, `SecretProvider` | The types.                                                                                       |
 
 > The agent should not call this directly, and its tools should never return secret values. Use it from Node code that needs the secret at runtime.
 
@@ -179,6 +180,29 @@ const { API_TOKEN, DB_URL } = await getSecrets(['API_TOKEN', 'DB_URL']);
 It's better than calling `getSecret` in a loop, because each provider is asked once for all of them. The names you send are the keys of the result, and each value is a `string | undefined`.
 
 With `required`, it throws a `SecretNotFoundError` for the first name that couldn't be resolved.
+
+#### Using secrets in your own config
+
+If your extension has a config value that holds a credential, like an API key, let the user write a reference instead of the value itself. `resolveInterpolatedValue` understands two prefixes:
+
+| Value           | What it resolves to                                                                                    |
+| --------------- | ------------------------------------------------------------------------------------------------------ |
+| `$env:VAR_NAME` | The environment variable. It throws if it's not set.                                                   |
+| `$secret:NAME`  | The secret, from the [providers](#providers). It throws a `SecretNotFoundError` if no provider has it. |
+| Anything else   | The same string.                                                                                       |
+
+```ts
+import { resolveInterpolatedValue } from '@homer0/pi-secrets';
+
+const apiKey = await resolveInterpolatedValue({
+  value: config.apiKey,
+  cwd: ctx.cwd,
+  // Only used in the error message, to tell the user which value failed.
+  context: 'extensions.myExtension.apiKey',
+});
+```
+
+It fails instead of returning an empty string, because a blank credential only shows up later as an error like a 401, far from the typo that caused it.
 
 #### How the cache works
 

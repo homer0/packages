@@ -3,7 +3,7 @@ export {
   secretProviderTypeSchema,
   secretsConfigSchema,
 } from './schemas.js';
-export { getSecret, getSecrets } from './secrets.js';
+export { getSecret, getSecrets, resolveInterpolatedValue } from './secrets.js';
 export { SecretNotFoundError, SecretsConfigError } from './utils.js';
 export type {
   GetSecretOptions,

@@ -8,6 +8,7 @@ describe('public API', () => {
       'SecretsConfigError',
       'getSecret',
       'getSecrets',
+      'resolveInterpolatedValue',
       'secretProviderConfigSchema',
       'secretProviderTypeSchema',
       'secretsConfigSchema',
