@@ -23,13 +23,16 @@ const ENV_PREFIX = '$env:';
 /** The prefix of a value that is read from the secret providers. */
 const SECRET_PREFIX = '$secret:';
 
+/** The prefix of a value that is read from the config, and is resolved again. */
+const CONFIG_PREFIX = '$config:';
+
 /**
- * Finds the references in a value: `$env:NAME` and `$secret:NAME`, delimited by
- * whitespace or by the start and the end of the value. The lookarounds keep the spaces
- * out of the match, and it has no capture groups on purpose: the prefixes are used to
- * parse each reference.
+ * Finds the references in a value: `$env:NAME`, `$secret:NAME` and `$config:PATH`,
+ * delimited by whitespace or by the start and the end of the value. The lookarounds keep
+ * the spaces out of the match, and it has no capture groups on purpose: the prefixes are
+ * used to parse each reference.
  */
-const INTERPOLATION_REGEX = /(?<=^|\s)\$(?:env|secret):\S+(?=\s|$)/g;
+const INTERPOLATION_REGEX = /(?<=^|\s)\$(?:env|secret|config):\S+(?=\s|$)/g;
 
 /** Options for {@link resolveInterpolatedValue}. */
 type ResolveInterpolatedValueOptions = {
@@ -42,6 +45,33 @@ type ResolveInterpolatedValueOptions = {
    * header "Authorization"`).
    */
   context: string;
+};
+
+/** Options for {@link interpolate}. */
+type InterpolateOptions = {
+  /** The value to resolve. */
+  value: string;
+  /** The project directory to read the config from. */
+  cwd?: string;
+  /** Describes what's being resolved, for the error messages. */
+  context: string;
+  /**
+   * The config paths that led to this value, from the first one to the last, to know when
+   * a `$config:` reference goes back to one of them.
+   */
+  chain: string[];
+};
+
+/** Options for {@link readConfigPath}. */
+type ReadConfigPathOptions = {
+  /** The config path to read. */
+  path: string;
+  /** The project directory to read the config from. */
+  cwd?: string;
+  /** Describes what's being resolved, for the error messages. */
+  context: string;
+  /** The config paths that led to this one. */
+  chain: string[];
 };
 
 /** Options for {@link resolveReference}. */
@@ -400,8 +430,44 @@ const getSecrets = async <const TNames extends readonly string[]>(
 };
 
 /**
+ * Reads the value of a `$config:` path, which has to be a string. What it holds is not
+ * resolved here, because it can have references too.
+ *
+ * @param options The path, the project directory, what is being resolved, and the paths
+ *   that led here.
+ * @returns The string the path holds.
+ * @throws {SecretsConfigError} When the path is already being resolved (it goes back to
+ *   itself), it's not set, or it doesn't hold a string.
+ */
+const readConfigPath = async ({
+  path,
+  cwd,
+  context,
+  chain,
+}: ReadConfigPathOptions): Promise<string> => {
+  if (chain.includes(path)) {
+    throw new SecretsConfigError(
+      `${context} has a circular config reference: ${chain.concat(path).join(' -> ')}.`,
+    );
+  }
+
+  const configValue: unknown = await getConfigValue(path, { cwd });
+  if (typeof configValue === 'undefined') {
+    throw new SecretsConfigError(`${context} references unset config path "${path}".`);
+  }
+
+  if (typeof configValue !== 'string') {
+    throw new SecretsConfigError(
+      `${context} references config path "${path}", which is not a string.`,
+    );
+  }
+
+  return configValue;
+};
+
+/**
  * Resolves one reference: reads the environment variable of an `$env:` one, or the secret
- * of a `$secret:` one.
+ * of a `$secret:` one. What it gets is used as it is.
  *
  * @param options The reference, the project directory for the secrets, and what is being
  *   resolved.
@@ -428,45 +494,45 @@ const resolveReference = async ({
 };
 
 /**
- * Resolves a config value that can have references to the environment or to the secret
- * providers, shared by every place that lets a user point to a credential instead of
- * hardcoding it:
+ * Replaces the references of a value with what they point to. What a `$config:` reference
+ * finds is resolved again, with the path added to the chain, so a cycle is found; what a
+ * secret or an environment variable gives is not.
  *
- * - `$env:VAR_NAME` — reads from the process environment. Throws if unset.
- * - `$secret:SECRET_NAME` — reads from the configured secret providers. Throws if it can't
- *   be resolved.
- *
- * A reference can be the whole value or a part of it, like `Bearer $secret:API_KEY`. It
- * ends where the next whitespace begins, so the text around it is kept exactly as it is,
- * and a value can have many references. Each one is resolved where it appears, so a
- * reference that appears twice is resolved twice. A prefix that is not at the start of a
- * word, like in `KEY=$env:NAME`, is not a reference. A value without references is
- * returned unchanged.
- *
- * Fails closed rather than silently returning an empty/broken value: a blank credential
- * would otherwise surface as an opaque downstream failure (e.g. a 401/403 from an HTTP
- * server, or a process silently missing an env var it needs), hiding that interpolation
- * itself failed (e.g. a typo'd env var name or an unprovisioned secret).
- *
- * @param options The value, the project directory for the secrets, and what is being
- *   resolved.
- * @returns The value, with the references replaced by what they point to.
+ * @param options The value, the project directory, what is being resolved, and the config
+ *   paths that led to it.
+ * @returns The value, with the references replaced.
  * @throws {Error} When an `$env:` variable is not set.
  * @throws {SecretNotFoundError} When a `$secret:` can't be resolved.
+ * @throws {SecretsConfigError} When a `$config:` can't be resolved.
  */
-const resolveInterpolatedValue = async ({
+const interpolate = async ({
   value,
   cwd,
   context,
-}: ResolveInterpolatedValueOptions): Promise<string> => {
+  chain,
+}: InterpolateOptions): Promise<string> => {
   let result = '';
   let position = 0;
   for (const match of value.matchAll(INTERPOLATION_REGEX)) {
     const [reference] = match;
+    let resolved: string;
     // The references are resolved one by one, so the error is always about the first one
     // that fails, in the order they appear.
-    // oxlint-disable-next-line no-await-in-loop -- See above.
-    const resolved = await resolveReference({ reference, cwd, context });
+    if (reference.startsWith(CONFIG_PREFIX)) {
+      const path = reference.slice(CONFIG_PREFIX.length);
+      // oxlint-disable-next-line no-await-in-loop -- See above.
+      const configValue = await readConfigPath({ path, cwd, context, chain });
+      // oxlint-disable-next-line no-await-in-loop -- See above.
+      resolved = await interpolate({
+        value: configValue,
+        cwd,
+        context,
+        chain: chain.concat(path),
+      });
+    } else {
+      // oxlint-disable-next-line no-await-in-loop -- See above.
+      resolved = await resolveReference({ reference, cwd, context });
+    }
     // The value is built from the pieces instead of with `String.replace`, so a `$` in
     // what is resolved (like `$&`) is never read as a replacement pattern.
     result += value.slice(position, match.index) + resolved;
@@ -475,5 +541,46 @@ const resolveInterpolatedValue = async ({
 
   return result + value.slice(position);
 };
+
+/**
+ * Resolves a config value that can have references to the environment, to the secret
+ * providers, or to another place of the config, shared by every place that lets a user
+ * point to a credential instead of hardcoding it:
+ *
+ * - `$env:VAR_NAME` — reads from the process environment. Throws if unset.
+ * - `$secret:SECRET_NAME` — reads from the configured secret providers. Throws if it can't
+ *   be resolved.
+ * - `$config:some.config.path` — reads that path of the config, and resolves what it finds
+ *   with these same rules, so it can be (or have) another reference. Throws if the path
+ *   is not set, if it doesn't hold a string, or if the references go back to themselves.
+ *
+ * A reference can be the whole value or a part of it, like `Bearer $secret:API_KEY`. It
+ * ends where the next whitespace begins, so the text around it is kept exactly as it is,
+ * and a value can have many references. Each one is resolved where it appears, so a
+ * reference that appears twice is resolved twice. A prefix that is not at the start of a
+ * word, like in `KEY=$env:NAME`, is not a reference. A value without references is
+ * returned unchanged.
+ *
+ * Only what comes from the config is resolved again: the value of a secret or of an
+ * environment variable is used exactly as it is, even if it looks like a reference.
+ *
+ * Fails closed rather than silently returning an empty/broken value: a blank credential
+ * would otherwise surface as an opaque downstream failure (e.g. a 401/403 from an HTTP
+ * server, or a process silently missing an env var it needs), hiding that interpolation
+ * itself failed (e.g. a typo'd env var name or an unprovisioned secret).
+ *
+ * @param options The value, the project directory for the config and the secrets, and
+ *   what is being resolved.
+ * @returns The value, with the references replaced by what they point to.
+ * @throws {Error} When an `$env:` variable is not set.
+ * @throws {SecretNotFoundError} When a `$secret:` can't be resolved.
+ * @throws {SecretsConfigError} When a `$config:` can't be resolved.
+ */
+const resolveInterpolatedValue = ({
+  value,
+  cwd,
+  context,
+}: ResolveInterpolatedValueOptions): Promise<string> =>
+  interpolate({ value, cwd, context, chain: [] });
 
 export { getSecret, getSecrets, resolveInterpolatedValue };

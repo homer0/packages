@@ -534,5 +534,183 @@ describe('secrets', () => {
         ).rejects.toThrow(new SecretNotFoundError('API_KEY'));
       });
     });
+
+    describe('$config: references', () => {
+      /** Makes the config have the secrets config, and the given values on their paths. */
+      const mockConfigPaths = (values: Record<string, unknown>): void => {
+        vi.mocked(getConfigValue).mockImplementation((async (path: string) =>
+          path === 'extensions.secrets' ? createConfig() : values[path]) as never);
+      };
+
+      it('resolves a path that points to a secret', async () => {
+        providers['a'] = fakeProvider('a', { someName: 'the-secret' });
+        mockConfigPaths({ 'pi.custom.someKey': '$secret:someName' });
+
+        await expect(
+          resolveInterpolatedValue({
+            value: '$config:pi.custom.someKey',
+            context: 'ctx',
+          }),
+        ).resolves.toBe('the-secret');
+      });
+
+      it('resolves a path that points to an environment variable', async () => {
+        vi.stubEnv('PI_SECRETS_INTERPOLATION_TEST_VAR', 'env-value');
+        mockConfigPaths({ 'a.b': '$env:PI_SECRETS_INTERPOLATION_TEST_VAR' });
+
+        await expect(
+          resolveInterpolatedValue({ value: '$config:a.b', context: 'ctx' }),
+        ).resolves.toBe('env-value');
+      });
+
+      it('returns the string of a path that has no references', async () => {
+        mockConfigPaths({ 'a.b': 'plain text' });
+
+        await expect(
+          resolveInterpolatedValue({ value: '$config:a.b', context: 'ctx' }),
+        ).resolves.toBe('plain text');
+      });
+
+      it('resolves the references that are inside what the path holds', async () => {
+        providers['a'] = fakeProvider('a', { API_KEY: 'the-key' });
+        mockConfigPaths({ 'auth.header': 'Bearer $secret:API_KEY (v1)' });
+
+        await expect(
+          resolveInterpolatedValue({
+            value: 'Authorization: $config:auth.header',
+            context: 'ctx',
+          }),
+        ).resolves.toBe('Authorization: Bearer the-key (v1)');
+      });
+
+      it('follows a path that points to another path', async () => {
+        providers['a'] = fakeProvider('a', { someName: 'the-secret' });
+        mockConfigPaths({
+          first: '$config:second',
+          second: '$config:third',
+          third: '$secret:someName',
+        });
+
+        await expect(
+          resolveInterpolatedValue({ value: '$config:first', context: 'ctx' }),
+        ).resolves.toBe('the-secret');
+      });
+
+      it('reads the config of the project it is given', async () => {
+        mockConfigPaths({ 'a.b': 'value' });
+
+        await resolveInterpolatedValue({
+          value: '$config:a.b',
+          cwd: '/cwd',
+          context: 'ctx',
+        });
+
+        expect(getConfigValue).toHaveBeenCalledWith('a.b', { cwd: '/cwd' });
+      });
+
+      it('resolves the same path many times without taking it as a cycle', async () => {
+        mockConfigPaths({ shared: 'value', wrapper: '$config:shared $config:shared' });
+
+        await expect(
+          resolveInterpolatedValue({
+            value: '$config:shared $config:wrapper',
+            context: 'ctx',
+          }),
+        ).resolves.toBe('value value value');
+      });
+
+      it('resolves only what comes from the config, not a secret or a variable', async () => {
+        providers['a'] = fakeProvider('a', {
+          LITERAL: '$env:PI_SECRETS_INTERPOLATION_TEST_VAR',
+        });
+        vi.stubEnv('PI_SECRETS_INTERPOLATION_TEST_VAR', 'env-value');
+        vi.stubEnv('PI_SECRETS_INTERPOLATION_LOOKALIKE', '$secret:LITERAL');
+        mockConfigPaths({
+          'a.b': '$secret:LITERAL',
+          'c.d': '$env:PI_SECRETS_INTERPOLATION_LOOKALIKE',
+        });
+
+        await expect(
+          resolveInterpolatedValue({ value: '$config:a.b', context: 'ctx' }),
+        ).resolves.toBe('$env:PI_SECRETS_INTERPOLATION_TEST_VAR');
+        await expect(
+          resolveInterpolatedValue({ value: '$config:c.d', context: 'ctx' }),
+        ).resolves.toBe('$secret:LITERAL');
+      });
+
+      it('does not take a path in the middle of a word as a reference', async () => {
+        mockConfigPaths({ 'a.b': 'value' });
+
+        await expect(
+          resolveInterpolatedValue({ value: 'path=$config:a.b', context: 'ctx' }),
+        ).resolves.toBe('path=$config:a.b');
+      });
+
+      it('fails with the context when the path is not set', async () => {
+        mockConfigPaths({});
+
+        await expect(
+          resolveInterpolatedValue({ value: '$config:a.b', context: 'MCP header "X"' }),
+        ).rejects.toThrow(
+          new SecretsConfigError('MCP header "X" references unset config path "a.b".'),
+        );
+      });
+
+      it.each([
+        ['a number', 8080],
+        ['a boolean', true],
+        ['null', null],
+        ['an object', { nested: 'value' }],
+        ['a list', ['one', 'two']],
+      ])('fails when the path holds %s', async (_label, value) => {
+        mockConfigPaths({ 'a.b': value });
+
+        await expect(
+          resolveInterpolatedValue({ value: '$config:a.b', context: 'ctx' }),
+        ).rejects.toThrow(
+          new SecretsConfigError(
+            'ctx references config path "a.b", which is not a string.',
+          ),
+        );
+      });
+
+      it('fails with the chain of paths when they go back to themselves', async () => {
+        mockConfigPaths({ a: '$config:b', b: '$config:c', c: 'text $config:a' });
+
+        await expect(
+          resolveInterpolatedValue({ value: '$config:a', context: 'ctx' }),
+        ).rejects.toThrow(
+          new SecretsConfigError(
+            'ctx has a circular config reference: a -> b -> c -> a.',
+          ),
+        );
+      });
+
+      it('fails when a path points to itself', async () => {
+        mockConfigPaths({ a: '$config:a' });
+
+        await expect(
+          resolveInterpolatedValue({ value: '$config:a', context: 'ctx' }),
+        ).rejects.toThrow(
+          new SecretsConfigError('ctx has a circular config reference: a -> a.'),
+        );
+      });
+
+      it('fails when what the path points to can not be resolved', async () => {
+        mockConfigPaths({
+          'a.b': '$secret:MISSING',
+          'c.d': '$env:PI_SECRETS_INTERPOLATION_UNSET_VAR',
+        });
+
+        await expect(
+          resolveInterpolatedValue({ value: '$config:a.b', context: 'ctx' }),
+        ).rejects.toThrow(new SecretNotFoundError('MISSING'));
+        await expect(
+          resolveInterpolatedValue({ value: 'x $config:c.d', context: 'MCP header "X"' }),
+        ).rejects.toThrow(
+          'MCP header "X" references unset environment variable "PI_SECRETS_INTERPOLATION_UNSET_VAR".',
+        );
+      });
+    });
   });
 });

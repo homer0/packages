@@ -183,12 +183,13 @@ With `required`, it throws a `SecretNotFoundError` for the first name that could
 
 #### Using secrets in your own config
 
-If your extension has a config value that holds a credential, like an API key, let the user write a reference instead of the value itself. `resolveInterpolatedValue` understands two prefixes:
+If your extension has a config value that holds a credential, like an API key, let the user write a reference instead of the value itself. `resolveInterpolatedValue` understands three prefixes:
 
-| Reference       | What it resolves to                                                                                    |
-| --------------- | ------------------------------------------------------------------------------------------------------ |
-| `$env:VAR_NAME` | The environment variable. It throws if it's not set.                                                   |
-| `$secret:NAME`  | The secret, from the [providers](#providers). It throws a `SecretNotFoundError` if no provider has it. |
+| Reference       | What it resolves to                                                                                                          |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `$env:VAR_NAME` | The environment variable. It throws if it's not set.                                                                         |
+| `$secret:NAME`  | The secret, from the [providers](#providers). It throws a `SecretNotFoundError` if no provider has it.                       |
+| `$config:PATH`  | What the config has in that path, resolved again. See [Pointing to another config value](#pointing-to-another-config-value). |
 
 ```ts
 import { resolveInterpolatedValue } from '@homer0/pi-secrets';
@@ -212,13 +213,35 @@ A reference can be the whole value, or a part of it. The text around it is kept 
 
 The rules of what is a reference:
 
-- It starts with `$env:` or `$secret:`, followed by a name, and it ends at the next whitespace (a space, a tab, or a line break). The name is everything in between, so punctuation that is stuck to it, like the comma in `$env:NAME,`, is part of the name.
+- It starts with `$env:`, `$secret:` or `$config:`, followed by a name, and it ends at the next whitespace (a space, a tab, or a line break). The name is everything in between, so punctuation that is stuck to it, like the comma in `$env:NAME,`, is part of the name.
 - It has to be at the start of the value or after whitespace. A prefix in the middle of a word is just text: `KEY=$env:NAME` and `a$env:NAME` are left as they are.
-- The two prefixes can be mixed, and if the same reference appears twice, it's resolved each time.
-- Whatever it resolves to is used as it is. A `$` in a secret, like in `pa$$word` or `a$&b`, is never read as anything else.
+- The prefixes can be mixed, and if the same reference appears twice, it's resolved each time.
+- What a reference resolves to is put in the text exactly as it is. A `$` in a secret, like in `pa$$word` or `a$&b`, is never read as anything else. (A `$config:` is the one that is resolved again, see below.)
 - If a reference can't be resolved, the whole call throws, and the error is about the first one that failed.
 
 It fails instead of leaving a placeholder or an empty string, because a blank credential only shows up later as an error like a 401, far from the typo that caused it.
+
+#### Pointing to another config value
+
+`$config:PATH` reads a dot path of the config, like `pi.custom.someKey`, and resolves what it finds with the same rules. That lets you keep the reference to a secret in one place of the config, and point to it from others:
+
+```yaml
+pi:
+  custom:
+    someKey: $secret:someName
+
+extensions:
+  myExtension:
+    # Resolves to the secret named `someName`.
+    apiKey: $config:pi.custom.someKey
+```
+
+- The path is read from the same config the rest of the package uses, with the config files merged and the session override applied, for the project directory you send as `cwd`.
+- What the path holds is resolved again, so it can be a `$secret:`, an `$env:`, a text with references like `Bearer $secret:API_KEY`, or another `$config:`.
+- **Only what comes from the config is resolved again.** The value of a secret or of an environment variable is used exactly as it is, even if it looks like a reference, so a secret that contains `$env:HOME` is never expanded.
+- The path has to be set and has to hold a string. A number, a boolean, `null`, an object or a list is an error, because it can't be put in a text without guessing how.
+- If the references go back to themselves, like `a` pointing to `b` and `b` to `a`, it throws instead of looping, and the error shows the chain: `a -> b -> a`.
+- The errors of the config references are a `SecretsConfigError`. If what the path points to can't be resolved, the error is the one of that reference.
 
 #### How the cache works
 
