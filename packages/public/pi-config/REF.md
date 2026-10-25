@@ -1,14 +1,14 @@
 # Pi Package Reference
 
 Source: ~/.pi/packages/pi-config
-Source-Commit: 72e2a5072a0f36509b22e6bcc4d054fe40925573
-Updated-At: 2026-10-20T02:26:29Z
+Source-Commit: cdeec54871567adb0ac4f59fcc43b7cf5f2700ff
+Updated-At: 2026-10-25T04:48:03Z
 
 ## Copy Instructions
 
 - Preserve destination version (controlled by Lerna) and packages repository metadata, with public publishing provenance.
 
-- Publish `dist/` and `src/`, excluding `src/**/*.test.ts`. Keep runtime ESM exports and the Pi extension entrypoint in `dist/`, but point both package type entrypoints to `./src/index.ts`. Build both runtime entrypoints with tsdown, keep dts: false and prepublishOnly, and do not generate declarations.
+- Publish `dist/` and `src/`, excluding `src/**/*.test.ts`. Keep runtime ESM exports and the Pi extension entrypoint in `dist/`, but point the main package type entrypoints to `./src/index.ts`. Export `./events` with types at `./src/events.ts` and runtime ESM at `./dist/events.js`. Build the main, events, and extension runtime entrypoints with tsdown, keep dts: false and prepublishOnly, and do not generate declarations.
 
 - Resolve runtime catalog dependencies from the catalog at each source commit to explicit ranges. Use `workspace:*` for local development config packages, destination catalogs for shared tooling, and explicit source-catalog Pi development versions when no destination catalog entry exists.
 
