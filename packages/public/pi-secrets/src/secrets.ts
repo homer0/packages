@@ -601,4 +601,18 @@ const resolveInterpolatedValue = ({
 }: ResolveInterpolatedValueOptions): Promise<string> =>
   interpolate({ value, cwd, context, chain: [] });
 
-export { getSecret, getSecrets, resolveInterpolatedValue };
+/**
+ * Escapes the references of a value the way Pi reads its own config values (`$$` is a
+ * literal `$`), so Pi gives the reference back as text (`$$auth:NAME` becomes
+ * `$auth:NAME`) instead of trying to read it as an environment variable. It's for writing
+ * a reference in a file that Pi reads, like the `headers` of `models.json`, and resolving
+ * it later with {@link resolveInterpolatedValue}. It finds the references with the same
+ * rules, and everything else is left as it is.
+ *
+ * @param value A value that can have references.
+ * @returns The value, with a `$` added to each reference.
+ */
+const escapeReferences = (value: string): string =>
+  value.replace(INTERPOLATION_REGEX, (reference) => `$${reference}`);
+
+export { escapeReferences, getSecret, getSecrets, resolveInterpolatedValue };

@@ -6,6 +6,7 @@ describe('public API', () => {
     expect(Object.keys(api).toSorted()).toEqual([
       'SecretNotFoundError',
       'SecretsConfigError',
+      'escapeReferences',
       'getSecret',
       'getSecrets',
       'resolveInterpolatedValue',

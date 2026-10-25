@@ -35,6 +35,7 @@ It will give you access to an ESM module with the following:
 | `getSecret`                                                                                         | Resolves one secret.                                                                             |
 | `getSecrets`                                                                                        | Resolves many secrets at once, with one request per provider.                                    |
 | `resolveInterpolatedValue`                                                                          | Resolves a config value that can be a reference: `$env:NAME`, `$secret:NAME`, or a plain string. |
+| `escapeReferences`                                                                                  | Escapes the references of a value, to write them in a file that Pi reads.                        |
 | `SecretNotFoundError`                                                                               | The error thrown when a required secret can't be resolved.                                       |
 | `SecretsConfigError`                                                                                | The error thrown when the config is inconsistent.                                                |
 | `secretsConfigSchema`, `secretProviderConfigSchema`, `secretProviderTypeSchema`                     | The [Zod](https://zod.dev) schemas of the config.                                                |
@@ -221,6 +222,22 @@ The rules of what is a reference:
 - If a reference can't be resolved, the whole call throws, and the error is about the first one that failed.
 
 It fails instead of leaving a placeholder or an empty string, because a blank credential only shows up later as an error like a 401, far from the typo that caused it.
+
+#### Writing references in a file that Pi reads
+
+Some files are read by Pi before your extension gets a chance to resolve anything, like the `headers` of `models.json`. Pi reads `$auth:NAME` there as an environment variable of its own, and drops the value. `escapeReferences` adds a `$` to each reference, which Pi reads as a literal `$`, so it gives your extension the reference as text:
+
+```ts
+import { escapeReferences, resolveInterpolatedValue } from '@homer0/pi-secrets';
+
+escapeReferences('Bearer $secret:API_KEY'); // 'Bearer $$secret:API_KEY'
+escapeReferences('plain text'); // 'plain text'
+
+// Later, with what Pi gave back ('Bearer $secret:API_KEY'):
+await resolveInterpolatedValue({ value, context: 'models.json header' });
+```
+
+It finds references with the same rules as `resolveInterpolatedValue`, so the two can't disagree, and everything that is not a reference is left as it is.
 
 #### Pointing to another config value
 

@@ -11,7 +11,12 @@ import {
   type MockInstance,
 } from 'vitest';
 import { InfisicalSecretProvider } from './providers.js';
-import { getSecret, getSecrets, resolveInterpolatedValue } from './secrets.js';
+import {
+  escapeReferences,
+  getSecret,
+  getSecrets,
+  resolveInterpolatedValue,
+} from './secrets.js';
 import type { NamedSecretProviderConfig, SecretsConfig } from './types.js';
 import { readAuthKey, SecretNotFoundError, SecretsConfigError } from './utils.js';
 
@@ -351,6 +356,37 @@ describe('secrets', () => {
         cwd: '/project',
         schema: expect.anything(),
       });
+    });
+  });
+
+  describe('escapeReferences', () => {
+    it.each([
+      ['$auth:anthropic', '$$auth:anthropic'],
+      ['$secret:API_KEY', '$$secret:API_KEY'],
+      ['$env:TOKEN', '$$env:TOKEN'],
+      ['$config:some.path', '$$config:some.path'],
+      ['Bearer $secret:API_KEY', 'Bearer $$secret:API_KEY'],
+      ['$env:USER  $config:a.b', '$$env:USER  $$config:a.b'],
+    ])('escapes the references of %s', (value, expected) => {
+      expect(escapeReferences(value)).toBe(expected);
+    });
+
+    it.each([
+      ['plain text'],
+      [''],
+      ["!jq -r '.anthropic.key' ~/.pi/agent/auth.json"],
+      ['$TOKEN'],
+      ['pa$$word'],
+      ['key=$auth:anthropic'],
+      ['$auth:'],
+      ['$other:name'],
+    ])('leaves %s as it is', (value) => {
+      expect(escapeReferences(value)).toBe(value);
+    });
+
+    it('gives the same result every time it is called', () => {
+      expect(escapeReferences('$auth:a')).toBe('$$auth:a');
+      expect(escapeReferences('$auth:a')).toBe('$$auth:a');
     });
   });
 
