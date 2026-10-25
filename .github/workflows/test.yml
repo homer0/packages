@@ -193,7 +193,7 @@ jobs:
           flag-name: public-nestjs-zod-lite
           path-to-lcov: ./packages/public/nestjs-zod-lite/coverage/lcov.info
           base-path: ./packages/public/nestjs-zod-lite
-      - name: Coveralls for public/nestjs-zod-lite
+      - name: Coveralls for public/routes-manager
         if: ${{ matrix.node == '24' }}
         uses: coverallsapp/github-action@v2
         with:
