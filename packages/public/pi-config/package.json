@@ -1,6 +1,6 @@
 {
   "name": "@homer0/pi-config",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "description": "Config management building block for Pi",
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",

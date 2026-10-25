@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/homer0/packages/compare/%40homer0%2Fpi-config%401.1.0...%40homer0%2Fpi-config%401.2.0) (2026-10-25)
+
+### Bug Fixes
+
+- **pi-config:** merge the errors and the tool helpers into fewer files ([0123b9a](https://github.com/homer0/packages/commit/0123b9a2c195b629ed00b9dd1d0e3d46ca91ae28))
+
+### Features
+
+- **pi-config:** emit an event when the session override changes ([26e9e4f](https://github.com/homer0/packages/commit/26e9e4faac5b81d36b0ce4e1ee50a9933e247307))
+- **pi-config:** expose the session override event as a light entry point ([a6f3583](https://github.com/homer0/packages/commit/a6f358390f6578ee1fef9074be0489ba880c2558))
+
 # 1.1.0 (2026-10-20)
 
 ### Bug Fixes

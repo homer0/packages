@@ -1,6 +1,6 @@
 {
   "name": "@homer0/pi-secrets",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "description": "Resolve secrets from providers like Infisical, for Pi extensions, tools, and skills",
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",

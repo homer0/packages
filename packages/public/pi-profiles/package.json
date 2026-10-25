@@ -1,6 +1,6 @@
 {
   "name": "@homer0/pi-profiles",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "type": "module",
   "description": "Profiles for Pi: toggle sets of skills, extensions, and context per project or machine",
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
