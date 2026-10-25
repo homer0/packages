@@ -14,6 +14,7 @@ import {
   visibleWidth,
 } from '@earendil-works/pi-tui';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
+import type { OnOverrideChange } from './events.js';
 import type { PiCoreConfig } from './types.js';
 import {
   ensureErrorMessage,
@@ -133,6 +134,8 @@ type CreateConfigWindowOptions = {
   theme: Theme;
   /** Closes the window. */
   done: (result: unknown) => void;
+  /** Called when the editor saves a change of the override. */
+  onOverrideChange: OnOverrideChange;
 };
 
 /**
@@ -487,13 +490,15 @@ const createConfigWindowInputHandler =
 /**
  * Creates the `/config` window component: a 2-tab effective-config/override viewer.
  *
- * @param options The TUI, the theme, and the function to close the window.
+ * @param options The TUI, the theme, the function to close the window, and the callback
+ *   to tell about the changes of the override.
  * @returns The component.
  */
 const createConfigWindow = ({
   tui,
   theme,
   done,
+  onOverrideChange,
 }: CreateConfigWindowOptions): Component => {
   const state: ConfigWindowState = { activeTab: 0, showOverride: false, scrollOffset: 0 };
   let cachedLines: string[] | undefined;
@@ -520,7 +525,7 @@ const createConfigWindow = ({
   editor.onSubmit = (value) => {
     const { override, message } = parseOverrideInput(value);
     if (message.kind === 'success') {
-      setSessionConfigOverride(override);
+      setSessionConfigOverride(override, onOverrideChange);
       editor.setText(override ? stringifyYaml(override) : '');
     } else {
       // submitValue() clears the editor before calling onSubmit; restore the rejected
@@ -571,14 +576,19 @@ const createConfigWindow = ({
  * Opens the `/config` window, or reports that interactive UI is required.
  *
  * @param ctx The context of the command that opened the window.
+ * @param onOverrideChange Called when the window saves a change of the override.
  */
-const showConfigWindow = async (ctx: ExtensionCommandContext): Promise<void> => {
+const showConfigWindow = async (
+  ctx: ExtensionCommandContext,
+  onOverrideChange: OnOverrideChange,
+): Promise<void> => {
   if (!ctx.hasUI) {
     ctx.ui.notify('/config requires interactive mode UI', 'warning');
     return;
   }
   await ctx.ui.custom<unknown>(
-    (tui, theme, _keybindings, done) => createConfigWindow({ tui, theme, done }),
+    (tui, theme, _keybindings, done) =>
+      createConfigWindow({ tui, theme, done, onOverrideChange }),
     {
       overlay: true,
       overlayOptions: {

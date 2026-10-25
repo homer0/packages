@@ -1,6 +1,5 @@
 import type { ExtensionCommandContext } from '@earendil-works/pi-coding-agent';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { ConfigReadError } from './errors.js';
 
 const {
   queryConfig,
@@ -32,6 +31,7 @@ vi.mock('@homer0/object-utils', async (importOriginal) => {
 });
 
 const { set } = await import('@homer0/object-utils');
+const { ConfigReadError } = await import('./utils.js');
 const { handleConfig, handleConfigReset, handleGetConfig, handleSetConfig } =
   await import('./handlers.js');
 
@@ -219,7 +219,10 @@ describe('handleSetConfig', () => {
   });
 
   it('rejects an empty path', () => {
-    const result = handleSetConfig({ params: { path: '  ', value: 1 } });
+    const result = handleSetConfig({
+      params: { path: '  ', value: 1 },
+      onOverrideChange: vi.fn(),
+    });
 
     expect(result.details.status).toBe('error');
     expect(setSessionConfigOverride).not.toHaveBeenCalled();
@@ -228,7 +231,10 @@ describe('handleSetConfig', () => {
   it('reports a path that could not be set', () => {
     vi.mocked(set).mockReturnValueOnce(undefined as never);
 
-    const result = handleSetConfig({ params: { path: 'extensions.x', value: 1 } });
+    const result = handleSetConfig({
+      params: { path: 'extensions.x', value: 1 },
+      onOverrideChange: vi.fn(),
+    });
 
     expect(result.details).toEqual({
       status: 'error',
@@ -240,11 +246,17 @@ describe('handleSetConfig', () => {
   });
 
   it('applies the override at the path', () => {
-    const result = handleSetConfig({ params: { path: 'extensions.x.y', value: 2 } });
+    const onOverrideChange = vi.fn();
 
-    expect(setSessionConfigOverride).toHaveBeenCalledWith({
-      extensions: { x: { y: 2 } },
+    const result = handleSetConfig({
+      params: { path: 'extensions.x.y', value: 2 },
+      onOverrideChange,
     });
+
+    expect(setSessionConfigOverride).toHaveBeenCalledWith(
+      { extensions: { x: { y: 2 } } },
+      onOverrideChange,
+    );
     expect(result.details).toMatchObject({ status: 'applied', path: 'extensions.x.y' });
     expect(result.content[0]!.text).toBe('Session override set: extensions.x.y = 2');
   });
@@ -252,11 +264,17 @@ describe('handleSetConfig', () => {
   it('keeps an existing override when adding another path', () => {
     getSessionConfigOverride.mockReturnValue({ extensions: { x: { a: 1 } } });
 
-    handleSetConfig({ params: { path: 'extensions.x.b', value: 2 } });
+    const onOverrideChange = vi.fn();
 
-    expect(setSessionConfigOverride).toHaveBeenCalledWith({
-      extensions: { x: { a: 1, b: 2 } },
+    handleSetConfig({
+      params: { path: 'extensions.x.b', value: 2 },
+      onOverrideChange,
     });
+
+    expect(setSessionConfigOverride).toHaveBeenCalledWith(
+      { extensions: { x: { a: 1, b: 2 } } },
+      onOverrideChange,
+    );
   });
 });
 
@@ -268,9 +286,11 @@ describe('config commands', () => {
   it('/config opens the config window', async () => {
     const ctx = {} as unknown as ExtensionCommandContext;
 
-    await handleConfig({ ctx });
+    const onOverrideChange = vi.fn();
 
-    expect(showConfigWindow).toHaveBeenCalledWith(ctx);
+    await handleConfig({ ctx, onOverrideChange });
+
+    expect(showConfigWindow).toHaveBeenCalledWith(ctx, onOverrideChange);
   });
 
   it.each([
@@ -279,9 +299,14 @@ describe('config commands', () => {
   ])('/config-reset notifies the outcome (had override: %s)', (had, message) => {
     clearSessionConfigOverride.mockReturnValue(had);
     const notify = vi.fn();
+    const onOverrideChange = vi.fn();
 
-    handleConfigReset({ ctx: { ui: { notify } } as unknown as ExtensionCommandContext });
+    handleConfigReset({
+      ctx: { ui: { notify } } as unknown as ExtensionCommandContext,
+      onOverrideChange,
+    });
 
     expect(notify).toHaveBeenCalledWith(message, 'info');
+    expect(clearSessionConfigOverride).toHaveBeenCalledWith(onOverrideChange);
   });
 });

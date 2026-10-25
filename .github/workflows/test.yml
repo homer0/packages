@@ -22,211 +22,64 @@ jobs:
       - run: pnpm run lint:all
       - run: pnpm run types:check
       - run: pnpm test -- --coverage
-      - name: Coveralls for public/object-utils
+      - name: Save coverage reports
         if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: packages/public/*/coverage/lcov.info
+          if-no-files-found: error
+
+  prepare-coverage:
+    needs: build
+    runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.discover.outputs.packages }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: coverage
+          path: coverage
+      - name: Discover packages with coverage
+        id: discover
+        shell: bash
+        run: |
+          packages=$(find coverage -mindepth 3 -maxdepth 3 -type f -path 'coverage/*/coverage/lcov.info' \
+            | jq -Rsc 'split("\n") | map(select(length > 0) | split("/")[1]) | sort | unique')
+          if [[ "$packages" == '[]' ]]; then
+            echo 'No public package coverage reports found.' >&2
+            exit 1
+          fi
+          echo "packages=$packages" >> "$GITHUB_OUTPUT"
+
+  coverage:
+    needs: prepare-coverage
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(needs.prepare-coverage.outputs.packages) }}
+    name: Coveralls for public/${{ matrix.package }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v4
+        with:
+          name: coverage
+          path: packages/public
+      - uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel: true
-          flag-name: public-object-utils
-          path-to-lcov: ./packages/public/object-utils/coverage/lcov.info
-          base-path: ./packages/public/object-utils
-      - name: Coveralls for public/deep-assign
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-deep-assign
-          path-to-lcov: ./packages/public/deep-assign/coverage/lcov.info
-          base-path: ./packages/public/deep-assign
-      - name: Coveralls for public/extend-promise
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-extend-promise
-          path-to-lcov: ./packages/public/extend-promise/coverage/lcov.info
-          base-path: ./packages/public/extend-promise
-      - name: Coveralls for public/jimple
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-jimple
-          path-to-lcov: ./packages/public/jimple/coverage/lcov.info
-          base-path: ./packages/public/jimple
-      - name: Coveralls for public/deferred
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-deferred
-          path-to-lcov: ./packages/public/deferred/coverage/lcov.info
-          base-path: ./packages/public/deferred
-      - name: Coveralls for public/events-hub
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-events-hub
-          path-to-lcov: ./packages/public/events-hub/coverage/lcov.info
-          base-path: ./packages/public/events-hub
-      - name: Coveralls for public/api-utils
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-api-utils
-          path-to-lcov: ./packages/public/api-utils/coverage/lcov.info
-          base-path: ./packages/public/api-utils
-      - name: Coveralls for public/path-utils
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-path-utils
-          path-to-lcov: ./packages/public/path-utils/coverage/lcov.info
-          base-path: ./packages/public/path-utils
-      - name: Coveralls for public/env-utils
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-env-utils
-          path-to-lcov: ./packages/public/env-utils/coverage/lcov.info
-          base-path: ./packages/public/env-utils
-      - name: Coveralls for public/package-info
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-package-info
-          path-to-lcov: ./packages/public/package-info/coverage/lcov.info
-          base-path: ./packages/public/package-info
-      - name: Coveralls for public/root-file
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-root-file
-          path-to-lcov: ./packages/public/root-file/coverage/lcov.info
-          base-path: ./packages/public/root-file
-      - name: Coveralls for public/simple-logger
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-simple-logger
-          path-to-lcov: ./packages/public/simple-logger/coverage/lcov.info
-          base-path: ./packages/public/simple-logger
-      - name: Coveralls for public/error-handler
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-error-handler
-          path-to-lcov: ./packages/public/error-handler/coverage/lcov.info
-          base-path: ./packages/public/error-handler
-      - name: Coveralls for public/simple-config
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-simple-config
-          path-to-lcov: ./packages/public/simple-config/coverage/lcov.info
-          base-path: ./packages/public/simple-config
-      - name: Coveralls for public/simple-storage
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-simple-storage
-          path-to-lcov: ./packages/public/simple-storage/coverage/lcov.info
-          base-path: ./packages/public/simple-storage
-      - name: Coveralls for public/fs-cache
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-fs-cache
-          path-to-lcov: ./packages/public/fs-cache/coverage/lcov.info
-          base-path: ./packages/public/fs-cache
-      - name: Coveralls for public/ts-async-import
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-ts-async-import
-          path-to-lcov: ./packages/public/ts-async-import/coverage/lcov.info
-          base-path: ./packages/public/ts-async-import
-      - name: Coveralls for public/react-ssr-config
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-react-ssr-config
-          path-to-lcov: ./packages/public/react-ssr-config/coverage/lcov.info
-          base-path: ./packages/public/react-ssr-config
-      - name: Coveralls for public/nestjs-zod-lite
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-nestjs-zod-lite
-          path-to-lcov: ./packages/public/nestjs-zod-lite/coverage/lcov.info
-          base-path: ./packages/public/nestjs-zod-lite
-      - name: Coveralls for public/nestjs-zod-lite
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-routes-manager
-          path-to-lcov: ./packages/public/routes-manager/coverage/lcov.info
-          base-path: ./packages/public/routes-manager
-      - name: Coveralls for public/pi-config
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-pi-config
-          path-to-lcov: ./packages/public/pi-config/coverage/lcov.info
-          base-path: ./packages/public/pi-config
-      - name: Coveralls for public/pi-profiles
-        if: ${{ matrix.node == '24' }}
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-          flag-name: public-pi-profiles
-          path-to-lcov: ./packages/public/pi-profiles/coverage/lcov.info
-          base-path: ./packages/public/pi-profiles
+          flag-name: public-${{ matrix.package }}
+          file: packages/public/${{ matrix.package }}/coverage/lcov.info
+          base-path: packages/public/${{ matrix.package }}
 
   finish:
-    needs: build
+    needs: coverage
     runs-on: ubuntu-latest
     steps:
       - name: Coveralls Finished
         uses: coverallsapp/github-action@v2
         with:
-          github-token: ${{ secrets.github_token }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel-finished: true

@@ -1,10 +1,15 @@
 import type { ExtensionCommandContext } from '@earendil-works/pi-coding-agent';
 import { set } from '@homer0/object-utils';
-import { ConfigReadError } from './errors.js';
-import { formatValue, getQueryLabel } from './format.js';
-import type { GetConfigParams, SetConfigParams } from './schemas.js';
+import type { OnOverrideChange } from './events.js';
+import {
+  formatValue,
+  getQueryLabel,
+  type GetConfigParams,
+  type SetConfigParams,
+} from './tools.js';
 import type { ConfigQuery, PiCoreConfig, SetConfigDetails } from './types.js';
 import {
+  ConfigReadError,
   clearSessionConfigOverride,
   EMPTY_PI_CORE_CONFIG,
   getSessionConfigOverride,
@@ -146,16 +151,18 @@ export const handleGetConfig = async ({
 type HandleSetConfigOptions = {
   /** The parameters the model sent. */
   params: SetConfigParams;
+  /** Called after the override is set. */
+  onOverrideChange: OnOverrideChange;
 };
 
 /**
  * Executes the `set_config` tool: applies an in-memory session config override.
  *
- * @param options The parameters of the call.
+ * @param options The parameters of the call, and the callback to tell about the change.
  * @returns The result of the tool, with the text for the model and the details for the
  *   TUI. Failures are reported in the result, they don't throw.
  */
-export const handleSetConfig = ({ params }: HandleSetConfigOptions) => {
+export const handleSetConfig = ({ params, onOverrideChange }: HandleSetConfigOptions) => {
   const path = params.path.trim();
 
   if (!path) {
@@ -177,7 +184,7 @@ export const handleSetConfig = ({ params }: HandleSetConfigOptions) => {
     };
   }
 
-  setSessionConfigOverride(updated);
+  setSessionConfigOverride(updated, onOverrideChange);
   const text = `Session override set: ${path} = ${JSON.stringify(params.value)}`;
   return {
     content: [{ type: 'text' as const, text }],
@@ -193,31 +200,41 @@ export const handleSetConfig = ({ params }: HandleSetConfigOptions) => {
 type HandleConfigOptions = {
   /** The context of the command. */
   ctx: ExtensionCommandContext;
+  /** Called when the window saves a change of the override. */
+  onOverrideChange: OnOverrideChange;
 };
 
 /**
  * Handles `/config`: opens the config window.
  *
- * @param options The context of the command.
+ * @param options The context of the command, and the callback to tell about the changes.
  */
-export const handleConfig = async ({ ctx }: HandleConfigOptions): Promise<void> => {
-  await showConfigWindow(ctx);
+export const handleConfig = async ({
+  ctx,
+  onOverrideChange,
+}: HandleConfigOptions): Promise<void> => {
+  await showConfigWindow(ctx, onOverrideChange);
 };
 
 /** Options for {@link handleConfigReset}. */
 type HandleConfigResetOptions = {
   /** The context of the command. */
   ctx: ExtensionCommandContext;
+  /** Called when there was an override and it was cleared. */
+  onOverrideChange: OnOverrideChange;
 };
 
 /**
  * Handles `/config-reset`: clears the session config override, and tells the user if
  * there was one.
  *
- * @param options The context of the command.
+ * @param options The context of the command, and the callback to tell about the change.
  */
-export const handleConfigReset = ({ ctx }: HandleConfigResetOptions): void => {
-  const hadOverride = clearSessionConfigOverride();
+export const handleConfigReset = ({
+  ctx,
+  onOverrideChange,
+}: HandleConfigResetOptions): void => {
+  const hadOverride = clearSessionConfigOverride(onOverrideChange);
   ctx.ui.notify(
     hadOverride ? 'Session config override cleared.' : 'No session override was set.',
     'info',

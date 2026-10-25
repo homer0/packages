@@ -2,7 +2,7 @@ import { defineConfig } from 'tsdown';
 
 export default defineConfig((options) => ({
   minify: !options.watch,
-  entry: ['src/index.ts', 'src/extensions/config.ts'],
+  entry: ['src/index.ts', 'src/events.ts', 'src/extensions/config.ts'],
   sourcemap: true,
   clean: true,
   dts: false,

@@ -6,7 +6,8 @@ You may run Pi in multiple environments, with different requirements, different 
 
 ## 🍿 Usage
 
-> ⚠️ **This package is for Pi.** It registers a Pi extension and reads Pi's directories; it's not a general-purpose profile manager.
+> - ⚠️ **This package is for Pi.** It registers a Pi extension and reads Pi's directories; it's not a general-purpose profile manager.
+> - If you are wondering why I built this, go to the [📝 Motivation](#-motivation) section.
 
 - 📦 [Installation](#-installation)
   - [As an extension](#as-an-extension)

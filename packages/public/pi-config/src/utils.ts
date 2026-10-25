@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file -- The config errors live together. */
 import { CONFIG_DIR_NAME, getAgentDir } from '@earendil-works/pi-coding-agent';
 import { get, merge } from '@homer0/object-utils';
 import { readFile } from 'node:fs/promises';
@@ -5,7 +6,7 @@ import { homedir } from 'node:os';
 import { dirname, extname, isAbsolute, join } from 'node:path';
 import { parse as parseYaml } from 'yaml';
 import { z } from 'zod';
-import { ConfigReadError, ConfigValidationError } from './errors.js';
+import type { OnOverrideChange } from './events.js';
 import type {
   ConfigPath,
   ConfigPathValue,
@@ -43,6 +44,39 @@ const ensureErrorMessage = (error: unknown): string => {
 
 /** The Pi directory, in the home of the user. */
 const PI_DIR = join(homedir(), CONFIG_DIR_NAME);
+/** The error for the config files that couldn't be read or parsed. */
+class ConfigReadError extends Error {
+  /** The path of the config file that failed. */
+  readonly filePath: string;
+
+  /**
+   * @param message The description of what failed.
+   * @param filePath The path of the config file that failed.
+   * @param options The error options, to preserve the original `cause`.
+   */
+  constructor(message: string, filePath: string, options?: ErrorOptions) {
+    super(message, options);
+    this.filePath = filePath;
+    this.name = 'ConfigReadError';
+  }
+}
+
+/** The error thrown when the resolved config doesn't match the schema that was provided. */
+class ConfigValidationError extends Error {
+  /** The Zod issues that explain why the value didn't match the schema. */
+  readonly issues: z.core.$ZodIssue[];
+
+  /**
+   * @param message The description of what failed.
+   * @param issues The Zod issues that explain why the value didn't match the schema.
+   */
+  constructor(message: string, issues: z.core.$ZodIssue[]) {
+    super(message);
+    this.issues = issues;
+    this.name = 'ConfigValidationError';
+  }
+}
+
 /** The absolute path of Pi's agent directory, where the global config files live. */
 const AGENT_DIR = getAgentDir();
 /** The directory where the profiles are. */
@@ -120,9 +154,17 @@ const sessionStore = globalThis as typeof globalThis & {
  * Replaces the session-scoped config override wholesale, or clears it when `undefined`.
  *
  * @param value The new override, or `undefined` to clear it.
+ * @param onChange Called after the change: with `set` for a new override, and with
+ *   `cleared` for `undefined`, unless there was no override to clear.
  */
-const setSessionConfigOverride = (value: PiCoreConfig | undefined): void => {
+const setSessionConfigOverride = (
+  value: PiCoreConfig | undefined,
+  onChange?: OnOverrideChange,
+): void => {
+  const hadOverride = typeof sessionStore.__piConfigSessionOverride !== 'undefined';
   sessionStore.__piConfigSessionOverride = value;
+  if (typeof value !== 'undefined') onChange?.({ type: 'set' });
+  else if (hadOverride) onChange?.({ type: 'cleared' });
 };
 
 /**
@@ -136,11 +178,12 @@ const getSessionConfigOverride = (): PiCoreConfig | undefined =>
 /**
  * Clears the session-scoped config override.
  *
+ * @param onChange Called with `cleared` after the change, only if there was an override.
  * @returns Whether an override was actually set.
  */
-const clearSessionConfigOverride = (): boolean => {
+const clearSessionConfigOverride = (onChange?: OnOverrideChange): boolean => {
   const hadOverride = typeof sessionStore.__piConfigSessionOverride !== 'undefined';
-  sessionStore.__piConfigSessionOverride = undefined;
+  setSessionConfigOverride(undefined, onChange);
   return hadOverride;
 };
 
@@ -570,6 +613,8 @@ const queryConfig = async (
 
 export {
   clearSessionConfigOverride,
+  ConfigReadError,
+  ConfigValidationError,
   EMPTY_PI_CORE_CONFIG,
   ensureErrorMessage,
   getAgentPath,

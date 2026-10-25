@@ -32,6 +32,10 @@
       "types": "./src/index.ts",
       "import": "./dist/index.js"
     },
+    "./events": {
+      "types": "./src/events.ts",
+      "import": "./dist/events.js"
+    },
     "./package.json": "./package.json"
   },
   "engines": {

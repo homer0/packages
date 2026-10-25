@@ -11,9 +11,10 @@ import {
   type MockInstance,
 } from 'vitest';
 import { z } from 'zod';
-import { ConfigValidationError } from './errors.js';
 import {
   clearSessionConfigOverride,
+  ConfigReadError,
+  ConfigValidationError,
   EMPTY_PI_CORE_CONFIG,
   ensureErrorMessage,
   getAgentPath,
@@ -400,6 +401,47 @@ describe('config fns', () => {
       expect(getSessionConfigOverride()).toBeUndefined();
     });
 
+    describe('change callback', () => {
+      const onChange = vi.fn();
+      const override = { ...emptyOverride, pi: { setting: 'a' } };
+
+      beforeEach(() => {
+        onChange.mockClear();
+      });
+
+      it('is called once with `set` when an override is set', () => {
+        setSessionConfigOverride(override, onChange);
+
+        expect(onChange).toHaveBeenCalledOnce();
+        expect(onChange).toHaveBeenCalledWith({ type: 'set' });
+      });
+
+      it('is called once with `cleared` when an override is cleared', () => {
+        setSessionConfigOverride(override);
+
+        clearSessionConfigOverride(onChange);
+
+        expect(onChange).toHaveBeenCalledOnce();
+        expect(onChange).toHaveBeenCalledWith({ type: 'cleared' });
+      });
+
+      it('is called with `cleared` when the override is set to `undefined`', () => {
+        setSessionConfigOverride(override);
+
+        setSessionConfigOverride(undefined, onChange);
+
+        expect(onChange).toHaveBeenCalledOnce();
+        expect(onChange).toHaveBeenCalledWith({ type: 'cleared' });
+      });
+
+      it('is not called when there was no override to clear', () => {
+        clearSessionConfigOverride(onChange);
+        setSessionConfigOverride(undefined, onChange);
+
+        expect(onChange).not.toHaveBeenCalled();
+      });
+    });
+
     it('is shared through globalThis, so other copies of the package see it', () => {
       setSessionConfigOverride({ ...emptyOverride, pi: { setting: 'override' } });
 
@@ -701,5 +743,40 @@ describe('ensureErrorMessage', () => {
     ['an object', { not: 'an error' }, '[object Object]'],
   ])('converts %s to a string', (_label, value, expected) => {
     expect(ensureErrorMessage(value)).toBe(expected);
+  });
+});
+
+describe('config errors', () => {
+  describe('ConfigReadError', () => {
+    it('keeps the message, the file path and the cause', () => {
+      const cause = new Error('original');
+
+      const error = new ConfigReadError('could not read', '/x/config.json', { cause });
+
+      expect(error).toBeInstanceOf(Error);
+      expect(error.name).toBe('ConfigReadError');
+      expect(error.message).toBe('could not read');
+      expect(error.filePath).toBe('/x/config.json');
+      expect(error.cause).toBe(cause);
+    });
+
+    it('does not need a cause', () => {
+      const error = new ConfigReadError('could not read', '/x/config.json');
+
+      expect(error.cause).toBeUndefined();
+    });
+  });
+
+  describe('ConfigValidationError', () => {
+    it('keeps the message and the validation issues', () => {
+      const issues = [{ code: 'custom', message: 'bad', path: ['pi'] }] as never;
+
+      const error = new ConfigValidationError('does not match', issues);
+
+      expect(error).toBeInstanceOf(Error);
+      expect(error.name).toBe('ConfigValidationError');
+      expect(error.message).toBe('does not match');
+      expect(error.issues).toBe(issues);
+    });
   });
 });
