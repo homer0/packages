@@ -218,12 +218,17 @@ describe('resolveEnabledProfiles', () => {
     });
     vi.mocked(existsSync).mockImplementation((path) => path === '/scripts/b.sh');
     mockScriptOutput('true');
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
     const EXPECTED_LENGTH = 2;
     const result = await resolveEnabledProfiles({ cwd: '/cwd' });
 
     expect(new Set(result)).toEqual(new Set(['a', 'b']));
     expect(result).toHaveLength(EXPECTED_LENGTH);
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Could not resolve enabledIf script for "c"'),
+    );
+    warnSpy.mockRestore();
   });
 
   it('uses the current directory and the console reporter when it gets no options', async () => {
