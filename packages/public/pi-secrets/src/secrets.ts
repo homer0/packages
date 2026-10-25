@@ -9,7 +9,12 @@ import type {
   SecretProvider,
   SecretsConfig,
 } from './types.js';
-import { expandPlaceholders, SecretNotFoundError, SecretsConfigError } from './utils.js';
+import {
+  expandPlaceholders,
+  readAuthKey,
+  SecretNotFoundError,
+  SecretsConfigError,
+} from './utils.js';
 
 /**
  * The key a resolved secret value is cached under, scoped per provider type, provider
@@ -26,13 +31,16 @@ const SECRET_PREFIX = '$secret:';
 /** The prefix of a value that is read from the config, and is resolved again. */
 const CONFIG_PREFIX = '$config:';
 
+/** The prefix of a value that is read from the `auth.json` of the agent directory. */
+const AUTH_PREFIX = '$auth:';
+
 /**
- * Finds the references in a value: `$env:NAME`, `$secret:NAME` and `$config:PATH`,
- * delimited by whitespace or by the start and the end of the value. The lookarounds keep
- * the spaces out of the match, and it has no capture groups on purpose: the prefixes are
- * used to parse each reference.
+ * Finds the references in a value: `$env:NAME`, `$secret:NAME`, `$config:PATH` and
+ * `$auth:NAME`, delimited by whitespace or by the start and the end of the value. The
+ * lookarounds keep the spaces out of the match, and it has no capture groups on purpose:
+ * the prefixes are used to parse each reference.
  */
-const INTERPOLATION_REGEX = /(?<=^|\s)\$(?:env|secret|config):\S+(?=\s|$)/g;
+const INTERPOLATION_REGEX = /(?<=^|\s)\$(?:env|secret|config|auth):\S+(?=\s|$)/g;
 
 /** Options for {@link resolveInterpolatedValue}. */
 type ResolveInterpolatedValueOptions = {
@@ -466,13 +474,14 @@ const readConfigPath = async ({
 };
 
 /**
- * Resolves one reference: reads the environment variable of an `$env:` one, or the secret
- * of a `$secret:` one. What it gets is used as it is.
+ * Resolves one reference: reads the environment variable of an `$env:` one, the key of an
+ * `auth.json` entry of an `$auth:` one, or the secret of a `$secret:` one. What it gets
+ * is used as it is.
  *
  * @param options The reference, the project directory for the secrets, and what is being
  *   resolved.
  * @returns The value the reference points to.
- * @throws {Error} When an `$env:` variable is not set.
+ * @throws {Error} When an `$env:` variable is not set, or an `$auth:` key can't be read.
  * @throws {SecretNotFoundError} When a `$secret:` can't be resolved.
  */
 const resolveReference = async ({
@@ -490,6 +499,10 @@ const resolveReference = async ({
     return resolved;
   }
 
+  if (reference.startsWith(AUTH_PREFIX)) {
+    return readAuthKey({ name: reference.slice(AUTH_PREFIX.length), context });
+  }
+
   return getSecret(reference.slice(SECRET_PREFIX.length), { cwd, required: true });
 };
 
@@ -501,7 +514,7 @@ const resolveReference = async ({
  * @param options The value, the project directory, what is being resolved, and the config
  *   paths that led to it.
  * @returns The value, with the references replaced.
- * @throws {Error} When an `$env:` variable is not set.
+ * @throws {Error} When an `$env:` variable is not set, or an `$auth:` key can't be read.
  * @throws {SecretNotFoundError} When a `$secret:` can't be resolved.
  * @throws {SecretsConfigError} When a `$config:` can't be resolved.
  */
@@ -553,6 +566,10 @@ const interpolate = async ({
  * - `$config:some.config.path` — reads that path of the config, and resolves what it finds
  *   with these same rules, so it can be (or have) another reference. Throws if the path
  *   is not set, if it doesn't hold a string, or if the references go back to themselves.
+ * - `$auth:NAME` — reads the `key` of that entry of the `auth.json` of the agent directory,
+ *   resolved the way Pi does: it can be a literal, have `$VAR` references to environment
+ *   variables, or be a shell command that starts with `!`. Throws if the file or the
+ *   entry can't be read, or if the key can't be resolved.
  *
  * A reference can be the whole value or a part of it, like `Bearer $secret:API_KEY`. It
  * ends where the next whitespace begins, so the text around it is kept exactly as it is,
@@ -561,8 +578,9 @@ const interpolate = async ({
  * word, like in `KEY=$env:NAME`, is not a reference. A value without references is
  * returned unchanged.
  *
- * Only what comes from the config is resolved again: the value of a secret or of an
- * environment variable is used exactly as it is, even if it looks like a reference.
+ * Only what comes from the config is resolved again: the value of a secret, of an
+ * environment variable or of an auth key is used exactly as it is, even if it looks like
+ * a reference.
  *
  * Fails closed rather than silently returning an empty/broken value: a blank credential
  * would otherwise surface as an opaque downstream failure (e.g. a 401/403 from an HTTP
@@ -572,7 +590,7 @@ const interpolate = async ({
  * @param options The value, the project directory for the config and the secrets, and
  *   what is being resolved.
  * @returns The value, with the references replaced by what they point to.
- * @throws {Error} When an `$env:` variable is not set.
+ * @throws {Error} When an `$env:` variable is not set, or an `$auth:` key can't be read.
  * @throws {SecretNotFoundError} When a `$secret:` can't be resolved.
  * @throws {SecretsConfigError} When a `$config:` can't be resolved.
  */

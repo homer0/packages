@@ -43,7 +43,11 @@
     "undici": "^8.12.3",
     "zod": "4.6.7"
   },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": ">1.0.0"
+  },
   "devDependencies": {
+    "@earendil-works/pi-coding-agent": "catalog:",
     "@homer0/oxlint-config": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
     "@types/ms": "2.1.0",

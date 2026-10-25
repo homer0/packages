@@ -981,6 +981,9 @@ importers:
         specifier: 4.6.7
         version: 4.6.7
     devDependencies:
+      '@earendil-works/pi-coding-agent':
+        specifier: 'catalog:'
+        version: 1.2.0(@aws-sdk/credential-provider-node@3.972.86)(@smithy/signature-v4@5.7.4)(supports-color@7.2.0)(ws@8.22.0)(zod@4.6.7)
       '@homer0/oxlint-config':
         specifier: workspace:*
         version: link:../../personal/oxlint-config

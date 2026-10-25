@@ -183,13 +183,14 @@ With `required`, it throws a `SecretNotFoundError` for the first name that could
 
 #### Using secrets in your own config
 
-If your extension has a config value that holds a credential, like an API key, let the user write a reference instead of the value itself. `resolveInterpolatedValue` understands three prefixes:
+If your extension has a config value that holds a credential, like an API key, let the user write a reference instead of the value itself. `resolveInterpolatedValue` understands four prefixes:
 
 | Reference       | What it resolves to                                                                                                          |
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | `$env:VAR_NAME` | The environment variable. It throws if it's not set.                                                                         |
 | `$secret:NAME`  | The secret, from the [providers](#providers). It throws a `SecretNotFoundError` if no provider has it.                       |
 | `$config:PATH`  | What the config has in that path, resolved again. See [Pointing to another config value](#pointing-to-another-config-value). |
+| `$auth:NAME`    | The key of that entry of Pi's `auth.json`. See [Using the keys of Pi's auth.json](#using-the-keys-of-pis-authjson).          |
 
 ```ts
 import { resolveInterpolatedValue } from '@homer0/pi-secrets';
@@ -213,7 +214,7 @@ A reference can be the whole value, or a part of it. The text around it is kept 
 
 The rules of what is a reference:
 
-- It starts with `$env:`, `$secret:` or `$config:`, followed by a name, and it ends at the next whitespace (a space, a tab, or a line break). The name is everything in between, so punctuation that is stuck to it, like the comma in `$env:NAME,`, is part of the name.
+- It starts with `$env:`, `$secret:`, `$config:` or `$auth:`, followed by a name, and it ends at the next whitespace (a space, a tab, or a line break). The name is everything in between, so punctuation that is stuck to it, like the comma in `$env:NAME,`, is part of the name.
 - It has to be at the start of the value or after whitespace. A prefix in the middle of a word is just text: `KEY=$env:NAME` and `a$env:NAME` are left as they are.
 - The prefixes can be mixed, and if the same reference appears twice, it's resolved each time.
 - What a reference resolves to is put in the text exactly as it is. A `$` in a secret, like in `pa$$word` or `a$&b`, is never read as anything else. (A `$config:` is the one that is resolved again, see below.)
@@ -238,10 +239,38 @@ extensions:
 
 - The path is read from the same config the rest of the package uses, with the config files merged and the session override applied, for the project directory you send as `cwd`.
 - What the path holds is resolved again, so it can be a `$secret:`, an `$env:`, a text with references like `Bearer $secret:API_KEY`, or another `$config:`.
-- **Only what comes from the config is resolved again.** The value of a secret or of an environment variable is used exactly as it is, even if it looks like a reference, so a secret that contains `$env:HOME` is never expanded.
+- **Only what comes from the config is resolved again.** The value of a secret, of an environment variable or of an auth key is used exactly as it is, even if it looks like a reference, so a secret that contains `$env:HOME` is never expanded.
 - The path has to be set and has to hold a string. A number, a boolean, `null`, an object or a list is an error, because it can't be put in a text without guessing how.
 - If the references go back to themselves, like `a` pointing to `b` and `b` to `a`, it throws instead of looping, and the error shows the chain: `a -> b -> a`.
 - The errors of the config references are a `SecretsConfigError`. If what the path points to can't be resolved, the error is the one of that reference.
+
+#### Using the keys of Pi's auth.json
+
+`$auth:NAME` reads the `key` of the entry `NAME` of `<agent directory>/auth.json`, the file where Pi keeps the credentials you save with `/login`. The names are the ids of the providers, like `anthropic`, so you don't have to copy a key that Pi already has:
+
+```yaml
+extensions:
+  litellm:
+    management:
+      key: $auth:regal-litellm
+```
+
+The agent directory is the one Pi uses, `~/.pi/agent` unless the `PI_CODING_AGENT_DIR` environment variable says otherwise. This is why the package has `@earendil-works/pi-coding-agent` as a peer dependency.
+
+The `key` is resolved the way Pi resolves it, so what you get is the key Pi itself would use for that entry:
+
+| What the `key` is                  | What you get                                                                                                                             |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `sk-abc`                           | The same text.                                                                                                                           |
+| `$MY_TOKEN` or `${MY_TOKEN}`       | The environment variable. The `env` object of the entry has priority over the process environment, and an empty value counts as not set. |
+| `pa$$word`, `a$!b`                 | `pa$word` and `a!b`: `$$` is a `$`, and `$!` is a `!`.                                                                                   |
+| `!security find-generic-password…` | The output of the command, without the spaces around it.                                                                                 |
+
+- A command runs in the shell with a limit of 10 seconds. If it fails, times out or prints nothing, it's an error. Its output is kept for the life of the process, so it doesn't run again, but a failure is not remembered, and the next call tries again. Pi remembers the failures; this package doesn't.
+- The commands are run with the default shell of Node. On Windows, Pi uses the shell you configured in its settings instead; this package doesn't.
+- The key is used exactly as it is: it's not resolved again, even if it looks like a reference.
+- It throws an error that says which entry it was, and never shows the command, if the file can't be read or is not valid JSON, if the entry doesn't exist or has no `key` (like an OAuth credential, which has tokens instead), or if the key can't be resolved.
+- `auth.json` is read every time, so a key you change is picked up without restarting anything.
 
 #### How the cache works
 

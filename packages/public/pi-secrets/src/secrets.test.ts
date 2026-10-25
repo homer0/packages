@@ -13,11 +13,15 @@ import {
 import { InfisicalSecretProvider } from './providers.js';
 import { getSecret, getSecrets, resolveInterpolatedValue } from './secrets.js';
 import type { NamedSecretProviderConfig, SecretsConfig } from './types.js';
-import { SecretNotFoundError, SecretsConfigError } from './utils.js';
+import { readAuthKey, SecretNotFoundError, SecretsConfigError } from './utils.js';
 
 vi.mock('@homer0/pi-config', () => ({ getConfigValue: vi.fn() }));
 vi.mock('@homer0/pi-in-memory-cache', () => ({ getCached: vi.fn() }));
 vi.mock('./providers.js', () => ({ InfisicalSecretProvider: vi.fn() }));
+vi.mock('./utils.js', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('./utils.js')>()),
+  readAuthKey: vi.fn(),
+}));
 
 describe('secrets', () => {
   type FakeProvider = {
@@ -532,6 +536,82 @@ describe('secrets', () => {
             context: 'ctx',
           }),
         ).rejects.toThrow(new SecretNotFoundError('API_KEY'));
+      });
+    });
+
+    describe('$auth: references', () => {
+      beforeEach(() => {
+        vi.mocked(readAuthKey).mockReset();
+      });
+
+      it('resolves the key of an entry of auth.json, describing what is resolved', async () => {
+        vi.mocked(readAuthKey).mockResolvedValue('sk-the-key');
+
+        await expect(
+          resolveInterpolatedValue({
+            value: '$auth:anthropic',
+            context: 'MCP header "X"',
+          }),
+        ).resolves.toBe('sk-the-key');
+
+        expect(readAuthKey).toHaveBeenCalledExactlyOnceWith({
+          name: 'anthropic',
+          context: 'MCP header "X"',
+        });
+        expect(getConfigValue).not.toHaveBeenCalled();
+      });
+
+      it('keeps the text around it, and mixes with the other references', async () => {
+        vi.mocked(readAuthKey).mockResolvedValue('sk-the-key');
+        providers['a'] = fakeProvider('a', { API_KEY: 'secret-value' });
+
+        await expect(
+          resolveInterpolatedValue({
+            value: 'Bearer $auth:anthropic and $secret:API_KEY',
+            context: 'ctx',
+          }),
+        ).resolves.toBe('Bearer sk-the-key and secret-value');
+      });
+
+      it('uses the key as it is, even if it looks like a reference', async () => {
+        vi.stubEnv('PI_SECRETS_INTERPOLATION_TEST_VAR', 'env-value');
+        vi.mocked(readAuthKey).mockResolvedValue(
+          '$env:PI_SECRETS_INTERPOLATION_TEST_VAR',
+        );
+
+        await expect(
+          resolveInterpolatedValue({ value: '$auth:anthropic', context: 'ctx' }),
+        ).resolves.toBe('$env:PI_SECRETS_INTERPOLATION_TEST_VAR');
+      });
+
+      it('can be what a $config: path points to', async () => {
+        vi.mocked(readAuthKey).mockResolvedValue('sk-the-key');
+        vi.mocked(getConfigValue).mockImplementation((async (path: string) =>
+          path === 'a.b' ? 'Bearer $auth:anthropic' : undefined) as never);
+
+        await expect(
+          resolveInterpolatedValue({ value: '$config:a.b', context: 'ctx' }),
+        ).resolves.toBe('Bearer sk-the-key');
+      });
+
+      it('lets the error of the key through', async () => {
+        vi.mocked(readAuthKey).mockRejectedValue(
+          new Error(
+            'ctx references auth entry "anthropic", but the file is not valid JSON.',
+          ),
+        );
+
+        await expect(
+          resolveInterpolatedValue({ value: 'x $auth:anthropic', context: 'ctx' }),
+        ).rejects.toThrow('references auth entry "anthropic"');
+      });
+
+      it('does not take it as a reference in the middle of a word', async () => {
+        await expect(
+          resolveInterpolatedValue({ value: 'key=$auth:anthropic', context: 'ctx' }),
+        ).resolves.toBe('key=$auth:anthropic');
+
+        expect(readAuthKey).not.toHaveBeenCalled();
       });
     });
 
