@@ -201,6 +201,7 @@ Or in a reference: `$secret[aws-main]:production/acme/service#internal.api_key`.
 - A secret or a key that doesn't exist is not an error: the provider doesn't have it, so the next one is tried. Any other failure, like a denied permission, is a warning and the next provider is tried too.
 - It's an error when the secret is binary, when a key path is used on a secret that is not valid JSON, or when the path ends in something that is not a string or a number. The messages have the name of the secret and the path, never its value.
 - `getSecrets` makes one request for each secret id, in parallel: the names that point to keys of the same secret share it.
+- The requests of `getSecrets` are made in parallel, and the call is all or nothing: if one secret id fails (for example a denied permission or a binary secret), the whole call fails for this provider. The names of all the secrets of that call that are not cached come back as not found from it, with a warning for each one, and the next provider is tried.
 
 ### ⚙️ Examples
 
