@@ -136,6 +136,7 @@ describe('listeners', () => {
         names: ['p1'],
         packages: ['pkg'],
         skillPaths: ['s1'],
+        promptPaths: ['p1'],
       });
       resolveProfilePackageResources.mockResolvedValue({
         skillPaths: ['s2'],
@@ -145,7 +146,7 @@ describe('listeners', () => {
 
       await expect(handleResourcesDiscover({ ctx })).resolves.toEqual({
         skillPaths: ['s1', 's2'],
-        promptPaths: ['pr'],
+        promptPaths: ['p1', 'pr'],
         themePaths: ['t'],
       });
     });

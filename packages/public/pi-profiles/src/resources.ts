@@ -32,6 +32,7 @@ const PROFILES_DIR = getAgentPath('profiles');
 const PACKAGES_FILENAME = 'packages.json';
 const AGENTS_FILENAME = 'AGENTS.md';
 const SKILLS_DIRNAME = 'skills';
+const PROMPTS_DIRNAME = 'prompts';
 
 /** Factory function signature exported by a pi extension module. */
 type ExtensionFactory = (pi: ExtensionAPI) => void | Promise<void>;
@@ -108,9 +109,9 @@ const readProfilePackages = async (
 };
 
 /**
- * Discovers what every enabled profile exposes: its `skills` directory, its `AGENTS.md`
- * context file, and its declared packages. Whatever can't be read is reported through
- * `onError` and skipped.
+ * Discovers what every enabled profile exposes: its `skills` and `prompts` directories,
+ * its `AGENTS.md` context file, and its declared packages. Whatever can't be read is
+ * reported through `onError` and skipped.
  *
  * @param options The directory to resolve from, and where to report non-fatal issues.
  * @returns The names of the profiles and what they expose.
@@ -123,6 +124,7 @@ export const discoverProfileResources = async (
   const resources: ProfileResources = {
     names,
     skillPaths: [],
+    promptPaths: [],
     agentsFiles: [],
     packages: [],
   };
@@ -132,10 +134,12 @@ export const discoverProfileResources = async (
   for (const name of names) {
     const profileDir = join(PROFILES_DIR, name);
     const skillsPath = join(profileDir, SKILLS_DIRNAME);
+    const promptsPath = join(profileDir, PROMPTS_DIRNAME);
     const agentsPath = join(profileDir, AGENTS_FILENAME);
     const packagesPath = join(profileDir, PACKAGES_FILENAME);
 
     if (isDirectory(skillsPath)) resources.skillPaths.push(skillsPath);
+    if (isDirectory(promptsPath)) resources.promptPaths.push(promptsPath);
 
     if (existsSync(agentsPath)) {
       try {

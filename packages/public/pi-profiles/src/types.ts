@@ -28,6 +28,8 @@ export type ProfileResources = {
   names: string[];
   /** The `skills` directories of the enabled profiles that have one. */
   skillPaths: string[];
+  /** The `prompts` directories of the enabled profiles that have one. */
+  promptPaths: string[];
   /** The `AGENTS.md` files of the enabled profiles, with their content. */
   agentsFiles: Array<{ path: string; content: string }>;
   /** The absolute paths of the packages the enabled profiles declare. */
