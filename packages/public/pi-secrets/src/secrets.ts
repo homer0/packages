@@ -1,6 +1,7 @@
 import { getConfigValue } from '@homer0/pi-config';
 import { getCached } from '@homer0/pi-in-memory-cache';
 import { z } from 'zod';
+import { AwsSecretProvider } from './providers/aws/provider.js';
 import { InfisicalSecretProvider } from './providers/infisical/provider.js';
 import { secretsConfigSchema } from './schemas.js';
 import type {
@@ -143,6 +144,7 @@ const createProvider = (
     case 'infisical':
       return new InfisicalSecretProvider(providerConfig, secretsConfig);
     case 'aws':
+      return new AwsSecretProvider(providerConfig, secretsConfig);
     case '1password':
       throw new SecretsConfigError(
         `The secret provider type '${type}' is not implemented yet.`,

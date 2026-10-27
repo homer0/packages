@@ -37,6 +37,8 @@
     "node": ">=24"
   },
   "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.1155.0",
+    "@homer0/object-utils": "^7.0.0",
     "@homer0/pi-config": "workspace:^",
     "@homer0/pi-in-memory-cache": "workspace:^",
     "ms": "2.1.3",

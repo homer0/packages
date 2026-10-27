@@ -10,6 +10,7 @@ import {
   vi,
   type MockInstance,
 } from 'vitest';
+import { AwsSecretProvider } from './providers/aws/provider.js';
 import { InfisicalSecretProvider } from './providers/infisical/provider.js';
 import {
   escapeReferences,
@@ -22,6 +23,7 @@ import { readAuthKey, SecretNotFoundError, SecretsConfigError } from './utils.js
 
 vi.mock('@homer0/pi-config', () => ({ getConfigValue: vi.fn() }));
 vi.mock('@homer0/pi-in-memory-cache', () => ({ getCached: vi.fn() }));
+vi.mock('./providers/aws/provider.js', () => ({ AwsSecretProvider: vi.fn() }));
 vi.mock('./providers/infisical/provider.js', () => ({
   InfisicalSecretProvider: vi.fn(),
 }));
@@ -347,21 +349,41 @@ describe('secrets', () => {
       );
     });
 
-    it.each(['aws', '1password'])(
-      'throws when the %s provider has no implementation yet',
-      async (type) => {
-        const entry = { credentials: {}, enabled: true };
-        vi.mocked(getConfigValue).mockResolvedValue(
-          createConfig({ registry: { a: { ...entry, type } } } as never) as never,
-        );
+    it('throws when the 1password provider has no implementation yet', async () => {
+      const entry = { credentials: {}, enabled: true };
+      vi.mocked(getConfigValue).mockResolvedValue(
+        createConfig({
+          registry: { a: { ...entry, type: '1password' } },
+        } as never) as never,
+      );
 
-        await expect(getSecret('TOKEN')).rejects.toThrow(
-          new SecretsConfigError(
-            `The secret provider type '${type}' is not implemented yet.`,
-          ),
-        );
-      },
-    );
+      await expect(getSecret('TOKEN')).rejects.toThrow(
+        new SecretsConfigError(
+          "The secret provider type '1password' is not implemented yet.",
+        ),
+      );
+    });
+
+    it('resolves the secrets of an aws provider with it', async () => {
+      const awsProvider = fakeProvider('a', { TOKEN: 'from-aws' });
+      // eslint-disable-next-line prefer-arrow-callback, func-names -- `new AwsSecretProvider()` needs a constructable function, which an arrow is not.
+      vi.mocked(AwsSecretProvider).mockImplementation(function () {
+        return awsProvider as never;
+      });
+      const entry = { credentials: { region: 'us-east-1' }, enabled: true };
+      vi.mocked(getConfigValue).mockResolvedValue(
+        createConfig({ registry: { a: { ...entry, type: 'aws' } } } as never) as never,
+      );
+
+      await expect(getSecret('TOKEN')).resolves.toBe('from-aws');
+
+      expect(AwsSecretProvider).toHaveBeenCalledExactlyOnceWith(
+        expect.objectContaining({ name: 'a', type: 'aws' }),
+        expect.objectContaining({ cacheTtl: 10_000 }),
+      );
+      expect(InfisicalSecretProvider).not.toHaveBeenCalled();
+      expect(awsProvider.close).toHaveBeenCalledOnce();
+    });
   });
 
   describe('getSecrets', () => {

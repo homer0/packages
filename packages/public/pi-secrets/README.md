@@ -1,6 +1,6 @@
 # 🔐 Pi Secrets
 
-Resolve secrets from providers like [Infisical](https://infisical.com), for [Pi](https://pi.dev) extensions, tools, and skills.
+Resolve secrets from providers like [Infisical](https://infisical.com) and [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/), for [Pi](https://pi.dev) extensions, tools, and skills.
 
 Instead of putting a token in a config file or an environment variable, you name the secret and this package gets it from a provider, caches it for a short time, and falls back to another provider if the first one fails.
 
@@ -15,6 +15,7 @@ Instead of putting a token in a config file or an environment variable, you name
   - [Provider order](#provider-order)
   - [Local credentials](#local-credentials)
   - [Infisical](#infisical)
+  - [AWS Secrets Manager](#aws-secrets-manager)
 - ⚙️ [Examples](#%EF%B8%8F-examples)
 - 🔒 [Security](#-security)
 - 🤘 [Development](#-development)
@@ -97,7 +98,7 @@ Each provider in the registry has:
 | `enabled`     | Disabled providers are skipped. The main one has to be enabled.          |
 | `credentials` | What the implementation needs to log in. It's different for each `type`. |
 
-Right now, only `infisical` can resolve secrets. A provider of another `type` is valid in the config, but using it throws a `SecretsConfigError`.
+Right now, only `infisical` and `aws` can resolve secrets. A provider of another `type` is valid in the config, but using it throws a `SecretsConfigError`.
 
 #### Provider order
 
@@ -153,6 +154,53 @@ The Infisical provider uses [Universal Auth](https://infisical.com/docs/document
 
 - The secrets that are imported in the project are included. If a key is both local and imported, the local one wins.
 - The access token is kept in the process for as long as Infisical says it lives, so it's not asked for again on every call.
+
+#### AWS Secrets Manager
+
+The `aws` provider reads the secrets of [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/). It has no `url`:
+
+```yaml
+extensions:
+  secrets:
+    providers:
+      main: infisical-main
+      registry:
+        aws-main:
+          type: aws
+          enabled: true
+          credentials:
+            region: us-east-1
+            profile: work
+```
+
+| Credential | Required | What it is                                                                                                                                                                                                                        |
+| ---------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `region`   | Yes      | The AWS region of the secrets. There is no default, so it never reads from a region you didn't choose.                                                                                                                            |
+| `profile`  | No       | The [named profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) to log in with. Without it, the default credential chain of the AWS SDK is used (environment variables, SSO, an instance role...). |
+
+The identity needs the `secretsmanager:GetSecretValue` permission on the secrets you read.
+
+The name of a secret is its id in AWS (the name or the ARN), with an optional key path after a `#`, to pick a key of a JSON secret:
+
+| Name                                       | What it resolves to                                                 |
+| ------------------------------------------ | ------------------------------------------------------------------- |
+| `production/acme/service`                  | The whole text of the secret.                                       |
+| `production/acme/service#api_key`          | The key `api_key` of the JSON secret.                               |
+| `production/acme/service#internal.api_key` | The key `api_key` of the object `internal`, inside the JSON secret. |
+
+```ts
+const apiKey = await getSecret('production/acme/service#internal.api_key', {
+  provider: 'aws-main',
+});
+```
+
+Or in a reference: `$secret[aws-main]:production/acme/service#internal.api_key`.
+
+- The name is split at the last `#`, because AWS doesn't allow it in the ids. The key path is split at the dots, so a key that has a dot in its name can't be picked. An item of a list is picked by its index, like `keys.0`.
+- The value of a key has to be a string or a number (a number is returned as text).
+- A secret or a key that doesn't exist is not an error: the provider doesn't have it, so the next one is tried. Any other failure, like a denied permission, is a warning and the next provider is tried too.
+- It's an error when the secret is binary, when a key path is used on a secret that is not valid JSON, or when the path ends in something that is not a string or a number. The messages have the name of the secret and the path, never its value.
+- `getSecrets` makes one request for each secret id, in parallel: the names that point to keys of the same secret share it.
 
 ### ⚙️ Examples
 
