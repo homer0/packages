@@ -28,6 +28,12 @@ export type GetSecretOptions = {
   cwd?: string;
   /** Whether to throw a `SecretNotFoundError` when a secret can't be resolved. */
   required?: boolean;
+  /**
+   * The name, in the registry, of the provider to try first. It's a preference: the other
+   * providers are still tried after it, in the usual order, if it doesn't have the
+   * secret. It has to be in the registry, and enabled.
+   */
+  provider?: string;
 };
 
 /** What a secret provider implements. */

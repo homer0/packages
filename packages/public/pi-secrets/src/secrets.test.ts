@@ -195,6 +195,88 @@ describe('secrets', () => {
       expect(vi.mocked(InfisicalSecretProvider)).toHaveBeenCalledOnce();
     });
 
+    describe('with a preferred provider', () => {
+      it('tries it before the main provider', async () => {
+        providers['a'] = fakeProvider('a', { TOKEN: 'from-a' });
+        providers['b'] = fakeProvider('b', { TOKEN: 'from-b' });
+
+        await expect(getSecret('TOKEN', { provider: 'b' })).resolves.toBe('from-b');
+
+        expect(providers['a']!.getSecret).not.toHaveBeenCalled();
+        expect(providers['b']!.close).toHaveBeenCalledOnce();
+      });
+
+      it('falls through to the main and fallback providers when it lacks the secret', async () => {
+        const entry = {
+          type: 'infisical',
+          url: 'https://x.test',
+          credentials: {},
+        } as const;
+        providers['c'] = fakeProvider('c', { TOKEN: 'from-c' });
+        vi.mocked(getConfigValue).mockResolvedValue(
+          createConfig({
+            registry: {
+              a: { ...entry, enabled: true },
+              b: { ...entry, enabled: true },
+              c: { ...entry, enabled: true },
+            },
+            fallbackOrder: ['c'],
+          }) as never,
+        );
+        providers['a'] = fakeProvider('a');
+
+        await expect(getSecret('TOKEN', { provider: 'b' })).resolves.toBe('from-c');
+
+        expect(providers['b']!.getSecret).toHaveBeenCalledOnce();
+        expect(providers['a']!.getSecret).toHaveBeenCalledOnce();
+        expect(providers['c']!.getSecret).toHaveBeenCalledOnce();
+      });
+
+      it('does not try it twice when it is the main provider', async () => {
+        await getSecret('TOKEN', { provider: 'a' });
+
+        expect(providers['a']!.getSecret).toHaveBeenCalledOnce();
+        expect(providers['b']!.getSecret).toHaveBeenCalledOnce();
+        expect(vi.mocked(InfisicalSecretProvider)).toHaveBeenCalledTimes(2);
+      });
+
+      it('does not try it twice when it is in the fallback order', async () => {
+        await getSecret('TOKEN', { provider: 'b' });
+
+        expect(providers['a']!.getSecret).toHaveBeenCalledOnce();
+        expect(providers['b']!.getSecret).toHaveBeenCalledOnce();
+        expect(vi.mocked(InfisicalSecretProvider)).toHaveBeenCalledTimes(2);
+      });
+
+      it('throws when it is not in the registry', async () => {
+        await expect(getSecret('TOKEN', { provider: 'ghost' })).rejects.toThrow(
+          new SecretsConfigError('Preferred secret provider not found: ghost'),
+        );
+        expect(InfisicalSecretProvider).not.toHaveBeenCalled();
+      });
+
+      it('throws when it is disabled', async () => {
+        const entry = {
+          type: 'infisical',
+          url: 'https://x.test',
+          credentials: {},
+        } as const;
+        vi.mocked(getConfigValue).mockResolvedValue(
+          createConfig({
+            registry: {
+              a: { ...entry, enabled: true },
+              b: { ...entry, enabled: false },
+            },
+          }) as never,
+        );
+
+        await expect(getSecret('TOKEN', { provider: 'b' })).rejects.toThrow(
+          new SecretsConfigError('Preferred secret provider is disabled: b'),
+        );
+        expect(InfisicalSecretProvider).not.toHaveBeenCalled();
+      });
+    });
+
     it('warns and returns undefined when no provider has the secret', async () => {
       await expect(getSecret('TOKEN')).resolves.toBeUndefined();
 
@@ -320,6 +402,35 @@ describe('secrets', () => {
         'pi-secrets:secret:infisical:a:ONE',
         'pi-secrets:secret:infisical:a:TWO',
       ]);
+    });
+
+    describe('with a preferred provider', () => {
+      it('asks it first, and the next providers only for the names still pending', async () => {
+        providers['a'] = fakeProvider('a', { ONE: '1', TWO: 'from-a' });
+        providers['b'] = fakeProvider('b', { TWO: '2' });
+
+        const values = await getSecrets(['ONE', 'TWO'] as const, { provider: 'b' });
+
+        expect(values).toEqual({ ONE: '1', TWO: '2' });
+        expect(providers['b']!.getSecrets).toHaveBeenCalledExactlyOnceWith([
+          'ONE',
+          'TWO',
+        ]);
+        expect(providers['a']!.getSecrets).toHaveBeenCalledExactlyOnceWith(['ONE']);
+      });
+
+      it('does not ask it twice', async () => {
+        await getSecrets(['ONE'] as const, { provider: 'a' });
+
+        expect(providers['a']!.getSecrets).toHaveBeenCalledOnce();
+        expect(vi.mocked(InfisicalSecretProvider)).toHaveBeenCalledTimes(2);
+      });
+
+      it('throws when it is not in the registry', async () => {
+        await expect(getSecrets(['ONE'] as const, { provider: 'ghost' })).rejects.toThrow(
+          new SecretsConfigError('Preferred secret provider not found: ghost'),
+        );
+      });
     });
 
     it('reports a provider that fails, and leaves its names pending', async () => {

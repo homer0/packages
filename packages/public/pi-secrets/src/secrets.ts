@@ -159,14 +159,20 @@ const getProviderConfig = (
 };
 
 /**
- * Gets the configs of the providers to try, in order: the main one, and then the enabled
- * ones from `fallbackOrder` (or the whole registry if there's none).
+ * Gets the configs of the providers to try, in order: the preferred one, if there is one,
+ * then the main one, and then the enabled ones from `fallbackOrder` (or the whole
+ * registry if there's none). A provider is only listed once.
  *
  * @param config The resolved config of the secrets.
+ * @param preferred The name of the provider to try first.
  * @returns The configs of the providers.
  * @throws {SecretsConfigError} When the main provider doesn't exist or is disabled.
+ * @throws {SecretsConfigError} When the preferred provider doesn't exist or is disabled.
  */
-const getProviderConfigs = (config: SecretsConfig): NamedSecretProviderConfig[] => {
+const getProviderConfigs = (
+  config: SecretsConfig,
+  preferred?: string,
+): NamedSecretProviderConfig[] => {
   const { fallbackOrder, main, registry } = config.providers;
   const mainProvider = getProviderConfig(config, main);
   if (!mainProvider)
@@ -183,8 +189,18 @@ const getProviderConfigs = (config: SecretsConfig): NamedSecretProviderConfig[] 
 
     return [provider];
   });
+  const providers = [mainProvider].concat(fallbackProviders);
+  if (typeof preferred === 'undefined') return providers;
 
-  return [mainProvider].concat(fallbackProviders);
+  const preferredProvider = getProviderConfig(config, preferred);
+  if (!preferredProvider)
+    throw new SecretsConfigError(`Preferred secret provider not found: ${preferred}`);
+  if (!preferredProvider.enabled)
+    throw new SecretsConfigError(`Preferred secret provider is disabled: ${preferred}`);
+
+  return [preferredProvider].concat(
+    providers.filter((provider) => provider.name !== preferred),
+  );
 };
 
 /**
@@ -299,7 +315,7 @@ const tryProviderBulk = async ({
 };
 
 /**
- * Resolves a secret, trying each configured provider in order.
+ * Resolves a secret, trying each configured provider in order, the preferred one first.
  *
  * @param name The name of the secret.
  * @param options The options of the lookup.
@@ -317,7 +333,7 @@ const resolveSecret = async (
   if (!config) return undefined;
 
   // oxlint-disable-next-line no-unreachable-loop -- An unresolved provider falls through its finally block to try the next provider.
-  for (const providerConfig of getProviderConfigs(config)) {
+  for (const providerConfig of getProviderConfigs(config, options.provider)) {
     const provider = createProvider(providerConfig, config);
     try {
       const value = await tryProvider({ provider, name, cacheTtlMs: config.cacheTtl });
@@ -355,7 +371,7 @@ const resolveSecrets = async (
   let pending = names.slice();
 
   // oxlint-disable-next-line no-unreachable-loop -- Pending names fall through the finally block to try the next provider.
-  for (const providerConfig of getProviderConfigs(config)) {
+  for (const providerConfig of getProviderConfigs(config, options.provider)) {
     if (pending.length === 0) break;
 
     const provider = createProvider(providerConfig, config);
@@ -385,7 +401,8 @@ const resolveSecrets = async (
  * @param options The project directory, and that the secret is required.
  * @returns The value.
  * @throws {SecretNotFoundError} When no provider has the secret.
- * @throws {SecretsConfigError} When the main provider doesn't exist or is disabled.
+ * @throws {SecretsConfigError} When the main provider, or the preferred one, doesn't
+ *   exist or is disabled.
  */
 function getSecret(
   name: string,
@@ -398,7 +415,8 @@ function getSecret(
  * @param options The project directory, and whether the secret is required.
  * @returns The value, or `undefined` if no provider has it and it's not required.
  * @throws {SecretNotFoundError} When the secret is required and no provider has it.
- * @throws {SecretsConfigError} When the main provider doesn't exist or is disabled.
+ * @throws {SecretsConfigError} When the main provider, or the preferred one, doesn't
+ *   exist or is disabled.
  */
 function getSecret(name: string, options?: GetSecretOptions): Promise<string | undefined>;
 async function getSecret(
@@ -423,7 +441,8 @@ async function getSecret(
  * @param options The project directory, and whether the secrets are required.
  * @returns The values by name, `undefined` for the ones no provider has.
  * @throws {SecretNotFoundError} When the secrets are required and one is missing.
- * @throws {SecretsConfigError} When the main provider doesn't exist or is disabled.
+ * @throws {SecretsConfigError} When the main provider, or the preferred one, doesn't
+ *   exist or is disabled.
  */
 const getSecrets = async <const TNames extends readonly string[]>(
   names: TNames,

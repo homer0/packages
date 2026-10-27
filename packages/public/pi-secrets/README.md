@@ -110,6 +110,18 @@ A provider that fails, or that doesn't have the secret, is passed over and the n
 
 If the main provider is not in the registry or is disabled, it's a `SecretsConfigError`.
 
+#### Preferred provider
+
+To try a provider before the others, pass its name in the `provider` option of `getSecret` or `getSecrets`:
+
+```ts
+const token = await getSecret('API_TOKEN', { provider: 'infisical-backup' });
+```
+
+It's a preference, not a restriction: that provider goes first, and then the order above applies. If it doesn't have the secret, the next one is tried. The provider doesn't have to be in `fallbackOrder`: any enabled provider of the registry can be preferred. A provider is never tried twice, so if it's also the main one, or is in `fallbackOrder`, it's only asked first.
+
+If the preferred provider is not in the registry or is disabled, it's a `SecretsConfigError`. Without the option, nothing changes.
+
 #### Local credentials
 
 Because the registry is a dictionary, a `config.local` file can override the credentials of one provider without repeating the rest of the config:
