@@ -1,6 +1,6 @@
 # 🔐 Pi Secrets
 
-Resolve secrets from providers like [Infisical](https://infisical.com) and [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/), for [Pi](https://pi.dev) extensions, tools, and skills.
+Resolve secrets from providers like [Infisical](https://infisical.com) [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/) and [1Password](https://1password.com), for [Pi](https://pi.dev) extensions, tools, and skills.
 
 Instead of putting a token in a config file or an environment variable, you name the secret and this package gets it from a provider, caches it for a short time, and falls back to another provider if the first one fails.
 
@@ -16,6 +16,7 @@ Instead of putting a token in a config file or an environment variable, you name
   - [Local credentials](#local-credentials)
   - [Infisical](#infisical)
   - [AWS Secrets Manager](#aws-secrets-manager)
+  - [1Password](#1password)
 - ⚙️ [Examples](#%EF%B8%8F-examples)
 - 🔒 [Security](#-security)
 - 🤘 [Development](#-development)
@@ -97,8 +98,6 @@ Each provider in the registry has:
 | `url`         | The base URL of the provider. Only for `infisical`, where it's required. |
 | `enabled`     | Disabled providers are skipped. The main one has to be enabled.          |
 | `credentials` | What the implementation needs to log in. It's different for each `type`. |
-
-Right now, only `infisical` and `aws` can resolve secrets. A provider of another `type` is valid in the config, but using it throws a `SecretsConfigError`.
 
 #### Provider order
 
@@ -202,6 +201,64 @@ Or in a reference: `$secret[aws-main]:production/acme/service#internal.api_key`.
 - It's an error when the secret is binary, when a key path is used on a secret that is not valid JSON, or when the path ends in something that is not a string or a number. The messages have the name of the secret and the path, never its value.
 - `getSecrets` makes one request for each secret id, in parallel: the names that point to keys of the same secret share it.
 - The requests of `getSecrets` are made in parallel, and the call is all or nothing: if one secret id fails (for example a denied permission or a binary secret), the whole call fails for this provider. The names of all the secrets of that call that are not cached come back as not found from it, with a warning for each one, and the next provider is tried.
+
+#### 1Password
+
+The `1password` provider reads secrets from [1Password](https://1password.com) with its [SDK](https://developer.1password.com/docs/sdks/). It needs no server and no binary, and it has no `url`. It can log in with a service account, or with the desktop app:
+
+```yaml
+extensions:
+  secrets:
+    providers:
+      main: op-service
+      fallbackOrder:
+        - op-desktop
+      registry:
+        # With a service account
+        op-service:
+          type: 1password
+          enabled: true
+          credentials:
+            serviceAccountToken: ops_...
+        # With the 1Password desktop app
+        op-desktop:
+          type: 1password
+          enabled: true
+          credentials:
+            accountName: my.1password.com
+```
+
+Set `serviceAccountToken` or `accountName`, one of them: both, neither or an empty one is a config error.
+
+| Credential            | What it is                                                                                                                                                   |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `serviceAccountToken` | The token of a [service account](https://developer.1password.com/docs/sdks/concepts#1password-service-account).                                              |
+| `accountName`         | The account of the [desktop app](https://developer.1password.com/docs/sdks/concepts#1password-desktop-app), as shown at the top of its sidebar, or its UUID. |
+
+- **Service accounts** can only read the vaults they were given access to, and they can't read the built-in Personal, Private or Employee vaults. They have hourly and daily [rate limits](https://developer.1password.com/docs/service-accounts/rate-limits): when one is reached, the provider fails and the next one is tried.
+- **The desktop app** has to be set up for the SDKs: in its settings, under Developer, turn on **Integrate with 1Password SDKs**. The first request shows an authorization prompt in the app. The access expires after 10 minutes of inactivity, or when the account is locked, and then the next request asks for it again.
+
+The name of a secret is a [secret reference](https://developer.1password.com/docs/cli/secret-reference-syntax/): `op://vault/item/field`, or `op://vault/item/section/field`. The vault, the item and the field can be names or IDs. A query like `?attribute=otp` is part of the name, and it's passed as it is:
+
+| Name                                      | What it resolves to                     |
+| ----------------------------------------- | --------------------------------------- |
+| `op://Private/GitHub/token`               | The field `token` of the item `GitHub`. |
+| `op://Private/GitHub/token?attribute=otp` | The one-time password of that field.    |
+
+```ts
+const token = await getSecret('op://Engineering/GitHub/token', {
+  provider: 'op-service',
+});
+```
+
+Or in a reference: `$secret[op-service]:op://Engineering/GitHub/token`. A reference ends at the next whitespace, so a name with spaces can only be used with `getSecret` and `getSecrets`.
+
+- A name that doesn't start with `op://` is not an error: the provider doesn't have it, without a request, so the next provider is tried. That lets you mix it with other providers that use other kinds of names.
+- A vault, an item or a field that doesn't exist is not found, so the next provider is tried too.
+- Other problems with a reference, like a name that is not valid or that matches more than one item, are an error, and the message has the name and the kind of problem, never a value. With `getSecrets`, the whole call fails for this provider, like with the other providers.
+- Login and rate limit failures are errors too, and the next provider is tried.
+- `getSecret` and `getSecrets` use one request for all the names.
+- The client of the SDK is created once for each service account token or desktop account, and it's shared by every call, because logging in has limits, or asks for approval. If the session is over, a new one is created in the next call.
 
 ### ⚙️ Examples
 

@@ -3,6 +3,7 @@ import { getCached } from '@homer0/pi-in-memory-cache';
 import { z } from 'zod';
 import { AwsSecretProvider } from './providers/aws/provider.js';
 import { InfisicalSecretProvider } from './providers/infisical/provider.js';
+import { OnePasswordSecretProvider } from './providers/onepassword/provider.js';
 import { secretsConfigSchema } from './schemas.js';
 import type {
   GetSecretOptions,
@@ -132,8 +133,7 @@ type TryProviderBulkOptions = {
  * @param providerConfig The config of the provider, with its name.
  * @param secretsConfig The resolved config of the secrets.
  * @returns The provider.
- * @throws {SecretsConfigError} When the type of the provider is not supported, or it has
- *   no implementation yet.
+ * @throws {SecretsConfigError} When the type of the provider is not supported.
  */
 const createProvider = (
   providerConfig: NamedSecretProviderConfig,
@@ -146,9 +146,7 @@ const createProvider = (
     case 'aws':
       return new AwsSecretProvider(providerConfig, secretsConfig);
     case '1password':
-      throw new SecretsConfigError(
-        `The secret provider type '${type}' is not implemented yet.`,
-      );
+      return new OnePasswordSecretProvider(providerConfig, secretsConfig);
     default:
       throw new SecretsConfigError(`Unsupported secret provider type: ${type}`);
   }

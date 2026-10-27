@@ -12,6 +12,7 @@ import {
 } from 'vitest';
 import { AwsSecretProvider } from './providers/aws/provider.js';
 import { InfisicalSecretProvider } from './providers/infisical/provider.js';
+import { OnePasswordSecretProvider } from './providers/onepassword/provider.js';
 import {
   escapeReferences,
   getSecret,
@@ -24,6 +25,9 @@ import { readAuthKey, SecretNotFoundError, SecretsConfigError } from './utils.js
 vi.mock('@homer0/pi-config', () => ({ getConfigValue: vi.fn() }));
 vi.mock('@homer0/pi-in-memory-cache', () => ({ getCached: vi.fn() }));
 vi.mock('./providers/aws/provider.js', () => ({ AwsSecretProvider: vi.fn() }));
+vi.mock('./providers/onepassword/provider.js', () => ({
+  OnePasswordSecretProvider: vi.fn(),
+}));
 vi.mock('./providers/infisical/provider.js', () => ({
   InfisicalSecretProvider: vi.fn(),
 }));
@@ -349,19 +353,27 @@ describe('secrets', () => {
       );
     });
 
-    it('throws when the 1password provider has no implementation yet', async () => {
-      const entry = { credentials: {}, enabled: true };
+    it('resolves the secrets of a 1password provider with it', async () => {
+      const onePasswordProvider = fakeProvider('a', { TOKEN: 'from-1password' });
+      // eslint-disable-next-line prefer-arrow-callback, func-names -- `new OnePasswordSecretProvider()` needs a constructable function, which an arrow is not.
+      vi.mocked(OnePasswordSecretProvider).mockImplementation(function () {
+        return onePasswordProvider as never;
+      });
+      const entry = { credentials: { accountName: 'me' }, enabled: true };
       vi.mocked(getConfigValue).mockResolvedValue(
         createConfig({
           registry: { a: { ...entry, type: '1password' } },
         } as never) as never,
       );
 
-      await expect(getSecret('TOKEN')).rejects.toThrow(
-        new SecretsConfigError(
-          "The secret provider type '1password' is not implemented yet.",
-        ),
+      await expect(getSecret('TOKEN')).resolves.toBe('from-1password');
+
+      expect(OnePasswordSecretProvider).toHaveBeenCalledExactlyOnceWith(
+        expect.objectContaining({ name: 'a', type: '1password' }),
+        expect.objectContaining({ cacheTtl: 10_000 }),
       );
+      expect(InfisicalSecretProvider).not.toHaveBeenCalled();
+      expect(onePasswordProvider.close).toHaveBeenCalledOnce();
     });
 
     it('resolves the secrets of an aws provider with it', async () => {
