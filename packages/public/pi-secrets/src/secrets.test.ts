@@ -496,6 +496,10 @@ describe('secrets', () => {
       ['$config:some.path', '$$config:some.path'],
       ['Bearer $secret:API_KEY', 'Bearer $$secret:API_KEY'],
       ['$env:USER  $config:a.b', '$$env:USER  $$config:a.b'],
+      ['$secret[aws]:API_KEY', '$$secret[aws]:API_KEY'],
+      ['Bearer $secret[aws]:op://vault/item', 'Bearer $$secret[aws]:op://vault/item'],
+      ['$secret[a]:ONE $secret:TWO', '$$secret[a]:ONE $$secret:TWO'],
+      ['$secret[]:API_KEY', '$$secret[]:API_KEY'],
     ])('escapes the references of %s', (value, expected) => {
       expect(escapeReferences(value)).toBe(expected);
     });
@@ -509,6 +513,8 @@ describe('secrets', () => {
       ['key=$auth:anthropic'],
       ['$auth:'],
       ['$other:name'],
+      ['key=$secret[aws]:API_KEY'],
+      ['$env[aws]:NAME'],
     ])('leaves %s as it is', (value) => {
       expect(escapeReferences(value)).toBe(value);
     });
@@ -780,6 +786,141 @@ describe('secrets', () => {
       });
     });
 
+    describe('$secret[provider]: references', () => {
+      it('asks that provider first, and falls through to the others', async () => {
+        providers['a'] = fakeProvider('a', { API_KEY: 'from-a', ONLY_A: 'only-a' });
+        providers['b'] = fakeProvider('b', { API_KEY: 'from-b' });
+
+        await expect(
+          resolveInterpolatedValue({ value: '$secret[b]:API_KEY', context: 'ctx' }),
+        ).resolves.toBe('from-b');
+        await expect(
+          resolveInterpolatedValue({ value: '$secret[b]:ONLY_A', context: 'ctx' }),
+        ).resolves.toBe('only-a');
+
+        expect(providers['b']!.getSecret).toHaveBeenCalledWith('API_KEY');
+      });
+
+      it('resolves a provider that is not in the fallback order, end to end', async () => {
+        const entry = {
+          type: 'infisical',
+          url: 'https://x.test',
+          credentials: {},
+        } as const;
+        providers['c'] = fakeProvider('c', { API_KEY: 'from-c' });
+        vi.mocked(getConfigValue).mockResolvedValue(
+          createConfig({
+            registry: {
+              a: { ...entry, enabled: true },
+              b: { ...entry, enabled: true },
+              c: { ...entry, enabled: true },
+            },
+            fallbackOrder: ['b'],
+          }) as never,
+        );
+
+        await expect(
+          resolveInterpolatedValue({
+            value: 'Bearer $secret[c]:API_KEY',
+            context: 'ctx',
+          }),
+        ).resolves.toBe('Bearer from-c');
+        expect(providers['a']!.getSecret).not.toHaveBeenCalled();
+      });
+
+      it('keeps the name as it is, with any character after the colon', async () => {
+        providers['b'] = fakeProvider('b', {
+          'op://vault/item/field': 'one',
+          'app/key@v1': 'two',
+        });
+
+        await expect(
+          resolveInterpolatedValue({
+            value: '$secret[b]:op://vault/item/field $secret[b]:app/key@v1',
+            context: 'ctx',
+          }),
+        ).resolves.toBe('one two');
+      });
+
+      it('works inside a larger text, and more than once in a value', async () => {
+        providers['a'] = fakeProvider('a', { ONE: '1' });
+        providers['b'] = fakeProvider('b', { TWO: '2' });
+
+        await expect(
+          resolveInterpolatedValue({
+            value: 'Bearer $secret[b]:TWO and $secret:ONE $secret[b]:TWO',
+            context: 'ctx',
+          }),
+        ).resolves.toBe('Bearer 2 and 1 2');
+      });
+
+      it('is not a reference in the middle of a word', async () => {
+        await expect(
+          resolveInterpolatedValue({ value: 'KEY=$secret[b]:API_KEY', context: 'ctx' }),
+        ).resolves.toBe('KEY=$secret[b]:API_KEY');
+      });
+
+      it('throws the error of a provider that is not in the registry', async () => {
+        await expect(
+          resolveInterpolatedValue({ value: '$secret[ghost]:API_KEY', context: 'ctx' }),
+        ).rejects.toThrow(
+          new SecretsConfigError('Preferred secret provider not found: ghost'),
+        );
+      });
+
+      it('throws the error of a provider that is disabled', async () => {
+        const entry = {
+          type: 'infisical',
+          url: 'https://x.test',
+          credentials: {},
+        } as const;
+        vi.mocked(getConfigValue).mockResolvedValue(
+          createConfig({
+            registry: {
+              a: { ...entry, enabled: true },
+              b: { ...entry, enabled: false },
+            },
+          }) as never,
+        );
+
+        await expect(
+          resolveInterpolatedValue({ value: '$secret[b]:API_KEY', context: 'ctx' }),
+        ).rejects.toThrow(
+          new SecretsConfigError('Preferred secret provider is disabled: b'),
+        );
+      });
+
+      it.each([
+        ['an empty provider', '$secret[]:API_KEY'],
+        ['an unclosed bracket', '$secret[b:API_KEY'],
+        ['an unclosed bracket with nothing else', '$secret['],
+        ['a missing name', '$secret[b]:'],
+        ['a missing colon', '$secret[b]API_KEY'],
+        ['whitespace-free garbage after the bracket', '$secret[b]]:API_KEY'],
+        ['a missing name and colon', '$secret[b]'],
+      ])('fails with %s', async (_label, value) => {
+        await expect(resolveInterpolatedValue({ value, context: 'ctx' })).rejects.toThrow(
+          new SecretsConfigError(
+            `ctx has a malformed secret reference "${value}", it should be $secret[provider]:NAME.`,
+          ),
+        );
+        expect(InfisicalSecretProvider).not.toHaveBeenCalled();
+      });
+
+      it('does not take a provider in $env:, $auth: or $config: references', async () => {
+        vi.stubEnv('PI_SECRETS_INTERPOLATION_TEST_VAR', 'env-value');
+
+        await expect(
+          resolveInterpolatedValue({
+            value: '$env[b]:PI_SECRETS_INTERPOLATION_TEST_VAR $auth[b]:x $config[b]:a.b',
+            context: 'ctx',
+          }),
+        ).resolves.toBe(
+          '$env[b]:PI_SECRETS_INTERPOLATION_TEST_VAR $auth[b]:x $config[b]:a.b',
+        );
+      });
+    });
+
     describe('$config: references', () => {
       /** Makes the config have the secrets config, and the given values on their paths. */
       const mockConfigPaths = (values: Record<string, unknown>): void => {
@@ -797,6 +938,23 @@ describe('secrets', () => {
             context: 'ctx',
           }),
         ).resolves.toBe('the-secret');
+      });
+
+      it('resolves a $secret[provider]: that the path holds, with the same rules', async () => {
+        providers['a'] = fakeProvider('a', { API_KEY: 'from-a' });
+        providers['b'] = fakeProvider('b', { API_KEY: 'from-b' });
+        mockConfigPaths({
+          'auth.header': 'Bearer $secret[b]:API_KEY',
+          'auth.outer': '$config:auth.header',
+          'auth.bad': '$secret[]:API_KEY',
+        });
+
+        await expect(
+          resolveInterpolatedValue({ value: '$config:auth.outer', context: 'ctx' }),
+        ).resolves.toBe('Bearer from-b');
+        await expect(
+          resolveInterpolatedValue({ value: '$config:auth.bad', context: 'ctx' }),
+        ).rejects.toThrow(SecretsConfigError);
       });
 
       it('resolves a path that points to an environment variable', async () => {

@@ -25,7 +25,7 @@ const SECRET_CACHE_KEY = 'pi-secrets:secret:<provider>:<providerName>:<secretNam
 /** The prefix of a value that is read from the process environment. */
 const ENV_PREFIX = '$env:';
 
-/** The prefix of a value that is read from the secret providers. */
+/** The prefix of a value that is read from the secret providers, without a provider. */
 const SECRET_PREFIX = '$secret:';
 
 /** The prefix of a value that is read from the config, and is resolved again. */
@@ -35,12 +35,22 @@ const CONFIG_PREFIX = '$config:';
 const AUTH_PREFIX = '$auth:';
 
 /**
- * Finds the references in a value: `$env:NAME`, `$secret:NAME`, `$config:PATH` and
- * `$auth:NAME`, delimited by whitespace or by the start and the end of the value. The
+ * Finds the references in a value: `$env:NAME`, `$secret:NAME`, `$secret[provider]:NAME`,
+ * `$config:PATH` and `$auth:NAME`, delimited by whitespace or by the start and the end of
+ * the value. Anything that starts with `$secret[` is a reference, even if it's malformed,
+ * so {@link parseSecretReference} can report it instead of leaving it as text. The
  * lookarounds keep the spaces out of the match, and it has no capture groups on purpose:
  * the prefixes are used to parse each reference.
  */
-const INTERPOLATION_REGEX = /(?<=^|\s)\$(?:env|secret|config|auth):\S+(?=\s|$)/g;
+const INTERPOLATION_REGEX =
+  /(?<=^|\s)\$(?:(?:env|secret|config|auth):\S+|secret\[\S*)(?=\s|$)/g;
+
+/**
+ * Parses a `$secret[provider]:NAME` reference. The provider is a key of the registry, so
+ * it has no whitespace and no `]`; the name is everything up to the end of the
+ * reference.
+ */
+const SECRET_WITH_PROVIDER_REGEX = /^\$secret\[([^\s\]]+)\]:(\S+)$/;
 
 /** Options for {@link resolveInterpolatedValue}. */
 type ResolveInterpolatedValueOptions = {
@@ -84,7 +94,7 @@ type ReadConfigPathOptions = {
 
 /** Options for {@link resolveReference}. */
 type ResolveReferenceOptions = {
-  /** The reference to resolve, like `$env:NAME` or `$secret:NAME`. */
+  /** The reference to resolve, like `$env:NAME` or `$secret[provider]:NAME`. */
   reference: string;
   /** The project directory to read the secrets config from. */
   cwd?: string;
@@ -497,16 +507,61 @@ const readConfigPath = async ({
   return configValue;
 };
 
+/** What a `$secret:` or `$secret[provider]:` reference points to. */
+type SecretReference = {
+  /** The name of the secret. */
+  name: string;
+  /** The name, in the registry, of the provider to try first. */
+  provider?: string;
+};
+
+/** Options for {@link parseSecretReference}. */
+type ParseSecretReferenceOptions = {
+  /** The reference to parse, like `$secret:NAME` or `$secret[provider]:NAME`. */
+  reference: string;
+  /** Describes what's being resolved, for the error messages. */
+  context: string;
+};
+
+/**
+ * Parses a `$secret:` or `$secret[provider]:` reference.
+ *
+ * @param options The reference, and what is being resolved.
+ * @returns The name of the secret, and the provider if the reference has one.
+ * @throws {SecretsConfigError} When a `$secret[provider]:` reference is malformed.
+ */
+const parseSecretReference = ({
+  reference,
+  context,
+}: ParseSecretReferenceOptions): SecretReference => {
+  if (reference.startsWith(SECRET_PREFIX)) {
+    return { name: reference.slice(SECRET_PREFIX.length) };
+  }
+
+  const match = SECRET_WITH_PROVIDER_REGEX.exec(reference);
+  if (!match) {
+    throw new SecretsConfigError(
+      `${context} has a malformed secret reference "${reference}", it should be $secret[provider]:NAME.`,
+    );
+  }
+
+  const [, provider, name] = match;
+  return { name: name!, provider: provider! };
+};
+
 /**
  * Resolves one reference: reads the environment variable of an `$env:` one, the key of an
- * `auth.json` entry of an `$auth:` one, or the secret of a `$secret:` one. What it gets
- * is used as it is.
+ * `auth.json` entry of an `$auth:` one, or the secret of a `$secret:` or
+ * `$secret[provider]:` one, where the provider is tried first. What it gets is used as it
+ * is.
  *
  * @param options The reference, the project directory for the secrets, and what is being
  *   resolved.
  * @returns The value the reference points to.
  * @throws {Error} When an `$env:` variable is not set, or an `$auth:` key can't be read.
  * @throws {SecretNotFoundError} When a `$secret:` can't be resolved.
+ * @throws {SecretsConfigError} When a `$secret[provider]:` is malformed, or its provider
+ *   doesn't exist or is disabled.
  */
 const resolveReference = async ({
   reference,
@@ -527,7 +582,8 @@ const resolveReference = async ({
     return readAuthKey({ name: reference.slice(AUTH_PREFIX.length), context });
   }
 
-  return getSecret(reference.slice(SECRET_PREFIX.length), { cwd, required: true });
+  const { name, provider } = parseSecretReference({ reference, context });
+  return getSecret(name, { cwd, required: true, provider });
 };
 
 /**
@@ -540,7 +596,9 @@ const resolveReference = async ({
  * @returns The value, with the references replaced.
  * @throws {Error} When an `$env:` variable is not set, or an `$auth:` key can't be read.
  * @throws {SecretNotFoundError} When a `$secret:` can't be resolved.
- * @throws {SecretsConfigError} When a `$config:` can't be resolved.
+ * @throws {SecretsConfigError} When a `$config:` can't be resolved, or a
+ *   `$secret[provider]:` is malformed or has a provider that doesn't exist or is
+ *   disabled.
  */
 const interpolate = async ({
   value,
@@ -587,6 +645,10 @@ const interpolate = async ({
  * - `$env:VAR_NAME` — reads from the process environment. Throws if unset.
  * - `$secret:SECRET_NAME` — reads from the configured secret providers. Throws if it can't
  *   be resolved.
+ * - `$secret[provider]:SECRET_NAME` — the same, but tries that provider of the registry
+ *   first. It doesn't have to be in the fallback order, and if it doesn't have the secret
+ *   the others are tried. Throws if the provider doesn't exist or is disabled, or if the
+ *   reference is malformed (no provider, an unclosed bracket, no name).
  * - `$config:some.config.path` — reads that path of the config, and resolves what it finds
  *   with these same rules, so it can be (or have) another reference. Throws if the path
  *   is not set, if it doesn't hold a string, or if the references go back to themselves.
@@ -616,7 +678,9 @@ const interpolate = async ({
  * @returns The value, with the references replaced by what they point to.
  * @throws {Error} When an `$env:` variable is not set, or an `$auth:` key can't be read.
  * @throws {SecretNotFoundError} When a `$secret:` can't be resolved.
- * @throws {SecretsConfigError} When a `$config:` can't be resolved.
+ * @throws {SecretsConfigError} When a `$config:` can't be resolved, or a
+ *   `$secret[provider]:` is malformed or has a provider that doesn't exist or is
+ *   disabled.
  */
 const resolveInterpolatedValue = ({
   value,

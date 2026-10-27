@@ -30,16 +30,16 @@ pnpm add @homer0/pi-secrets
 
 It will give you access to an ESM module with the following:
 
-| Export                                                                                              | What it is                                                                                       |
-| --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `getSecret`                                                                                         | Resolves one secret.                                                                             |
-| `getSecrets`                                                                                        | Resolves many secrets at once, with one request per provider.                                    |
-| `resolveInterpolatedValue`                                                                          | Resolves a config value that can be a reference: `$env:NAME`, `$secret:NAME`, or a plain string. |
-| `escapeReferences`                                                                                  | Escapes the references of a value, to write them in a file that Pi reads.                        |
-| `SecretNotFoundError`                                                                               | The error thrown when a required secret can't be resolved.                                       |
-| `SecretsConfigError`                                                                                | The error thrown when the config is inconsistent.                                                |
-| `secretsConfigSchema`, `secretProviderConfigSchema`, `secretProviderTypeSchema`                     | The [Zod](https://zod.dev) schemas of the config.                                                |
-| `SecretsConfig`, `SecretProviderConfig`, `SecretProviderType`, `GetSecretOptions`, `SecretProvider` | The types.                                                                                       |
+| Export                                                                                              | What it is                                                                                                                 |
+| --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `getSecret`                                                                                         | Resolves one secret.                                                                                                       |
+| `getSecrets`                                                                                        | Resolves many secrets at once, with one request per provider.                                                              |
+| `resolveInterpolatedValue`                                                                          | Resolves a config value that can be a reference: `$env:NAME`, `$secret:NAME`, `$secret[provider]:NAME`, or a plain string. |
+| `escapeReferences`                                                                                  | Escapes the references of a value, to write them in a file that Pi reads.                                                  |
+| `SecretNotFoundError`                                                                               | The error thrown when a required secret can't be resolved.                                                                 |
+| `SecretsConfigError`                                                                                | The error thrown when the config is inconsistent.                                                                          |
+| `secretsConfigSchema`, `secretProviderConfigSchema`, `secretProviderTypeSchema`                     | The [Zod](https://zod.dev) schemas of the config.                                                                          |
+| `SecretsConfig`, `SecretProviderConfig`, `SecretProviderType`, `GetSecretOptions`, `SecretProvider` | The types.                                                                                                                 |
 
 > The agent should not call this directly, and its tools should never return secret values. Use it from Node code that needs the secret at runtime.
 
@@ -198,14 +198,15 @@ With `required`, it throws a `SecretNotFoundError` for the first name that could
 
 #### Using secrets in your own config
 
-If your extension has a config value that holds a credential, like an API key, let the user write a reference instead of the value itself. `resolveInterpolatedValue` understands four prefixes:
+If your extension has a config value that holds a credential, like an API key, let the user write a reference instead of the value itself. `resolveInterpolatedValue` understands four prefixes, and `$secret` can choose its provider:
 
-| Reference       | What it resolves to                                                                                                          |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `$env:VAR_NAME` | The environment variable. It throws if it's not set.                                                                         |
-| `$secret:NAME`  | The secret, from the [providers](#providers). It throws a `SecretNotFoundError` if no provider has it.                       |
-| `$config:PATH`  | What the config has in that path, resolved again. See [Pointing to another config value](#pointing-to-another-config-value). |
-| `$auth:NAME`    | The key of that entry of Pi's `auth.json`. See [Using the keys of Pi's auth.json](#using-the-keys-of-pis-authjson).          |
+| Reference                | What it resolves to                                                                                                          |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| `$env:VAR_NAME`          | The environment variable. It throws if it's not set.                                                                         |
+| `$secret:NAME`           | The secret, from the [providers](#providers). It throws a `SecretNotFoundError` if no provider has it.                       |
+| `$secret[PROVIDER]:NAME` | The secret, trying the provider `PROVIDER` first. See [Choosing the provider](#choosing-the-provider).                       |
+| `$config:PATH`           | What the config has in that path, resolved again. See [Pointing to another config value](#pointing-to-another-config-value). |
+| `$auth:NAME`             | The key of that entry of Pi's `auth.json`. See [Using the keys of Pi's auth.json](#using-the-keys-of-pis-authjson).          |
 
 ```ts
 import { resolveInterpolatedValue } from '@homer0/pi-secrets';
@@ -220,22 +221,35 @@ const apiKey = await resolveInterpolatedValue({
 
 A reference can be the whole value, or a part of it. The text around it is kept exactly as it is, and a value can have as many references as you need:
 
-| Value                    | Result           |
-| ------------------------ | ---------------- |
-| `$secret:API_KEY`        | `the-key`        |
-| `Bearer $secret:API_KEY` | `Bearer the-key` |
-| `$env:USER $env:HOST`    | `homer0 laptop`  |
-| `plain text`             | `plain text`     |
+| Value                         | Result           |
+| ----------------------------- | ---------------- |
+| `$secret:API_KEY`             | `the-key`        |
+| `Bearer $secret:API_KEY`      | `Bearer the-key` |
+| `Bearer $secret[aws]:API_KEY` | `Bearer the-key` |
+| `$env:USER $env:HOST`         | `homer0 laptop`  |
+| `plain text`                  | `plain text`     |
 
 The rules of what is a reference:
 
-- It starts with `$env:`, `$secret:`, `$config:` or `$auth:`, followed by a name, and it ends at the next whitespace (a space, a tab, or a line break). The name is everything in between, so punctuation that is stuck to it, like the comma in `$env:NAME,`, is part of the name.
+- It starts with `$env:`, `$secret:`, `$secret[provider]:`, `$config:` or `$auth:`, followed by a name, and it ends at the next whitespace (a space, a tab, or a line break). The name is everything in between, so punctuation that is stuck to it, like the comma in `$env:NAME,`, is part of the name.
 - It has to be at the start of the value or after whitespace. A prefix in the middle of a word is just text: `KEY=$env:NAME` and `a$env:NAME` are left as they are.
+- Anything that starts with `$secret[` is a reference, even if it's malformed, and a malformed one is an error instead of text. See [Choosing the provider](#choosing-the-provider).
 - The prefixes can be mixed, and if the same reference appears twice, it's resolved each time.
 - What a reference resolves to is put in the text exactly as it is. A `$` in a secret, like in `pa$$word` or `a$&b`, is never read as anything else. (A `$config:` is the one that is resolved again, see below.)
 - If a reference can't be resolved, the whole call throws, and the error is about the first one that failed.
 
 It fails instead of leaving a placeholder or an empty string, because a blank credential only shows up later as an error like a 401, far from the typo that caused it.
+
+#### Choosing the provider
+
+`$secret[provider]:NAME` tries the provider `provider` first, like the [`provider` option](#preferred-provider) of `getSecret`, which is what it uses. The name is everything after the colon, so it can have any character, like the `op://vault/item/field` references of 1Password or the `@` that AWS allows. A plain `$secret:NAME` works as it always did.
+
+- `provider` is the name of the provider in the registry, so it has no whitespace and no `]`. It has to be enabled, but it doesn't have to be in `fallbackOrder`.
+- It's a preference, not a restriction: if that provider doesn't have the secret, the main one and the ones in `fallbackOrder` are tried. If none has it, it throws a `SecretNotFoundError`.
+- If the provider is not in the registry or is disabled, it throws a `SecretsConfigError`. It's never taken as text.
+- A malformed reference is a `SecretsConfigError` too, instead of text: `$secret[]:NAME` (no provider), `$secret[provider:NAME` (an unclosed bracket) and `$secret[provider]:` or `$secret[provider]` (no name).
+- `$env:`, `$config:` and `$auth:` don't take a provider.
+- What a `$config:` path holds is resolved with the same rules, so it can have `$secret[provider]:NAME`.
 
 #### Writing references in a file that Pi reads
 
@@ -245,6 +259,7 @@ Some files are read by Pi before your extension gets a chance to resolve anythin
 import { escapeReferences, resolveInterpolatedValue } from '@homer0/pi-secrets';
 
 escapeReferences('Bearer $secret:API_KEY'); // 'Bearer $$secret:API_KEY'
+escapeReferences('Bearer $secret[aws]:API_KEY'); // 'Bearer $$secret[aws]:API_KEY'
 escapeReferences('plain text'); // 'plain text'
 
 // Later, with what Pi gave back ('Bearer $secret:API_KEY'):
