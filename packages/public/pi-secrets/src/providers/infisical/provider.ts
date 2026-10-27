@@ -4,8 +4,8 @@ import type {
   NamedSecretProviderConfig,
   SecretProvider,
   SecretsConfig,
-} from './types.js';
-import { getCachedValue, MS_PER_SECOND, setCachedValue } from './utils.js';
+} from '../../types.js';
+import { getCachedValue, MS_PER_SECOND, setCachedValue } from '../../utils.js';
 
 /** Runtime schema for Infisical Universal Auth credentials. */
 const infisicalCredentialsSchema = z.object({
@@ -117,7 +117,10 @@ export class InfisicalSecretProvider implements SecretProvider {
    * @param secretsConfig The resolved config of the secrets.
    * @throws {ZodError} When the credentials are not valid.
    */
-  constructor(providerConfig: NamedSecretProviderConfig, secretsConfig: SecretsConfig) {
+  constructor(
+    providerConfig: NamedSecretProviderConfig<'infisical'>,
+    secretsConfig: SecretsConfig,
+  ) {
     this.secretsConfig = secretsConfig;
     this.name = providerConfig.name;
     this.baseUrl = trimTrailingSlashes(providerConfig.url);

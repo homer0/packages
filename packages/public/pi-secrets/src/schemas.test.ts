@@ -32,8 +32,15 @@ describe('schemas', () => {
       expect(secretProviderConfigSchema.parse(provider)).toEqual(provider);
     });
 
+    it.each(['aws', '1password'])('accepts a %s provider without a url', (type) => {
+      const value = { type, credentials: {}, enabled: true };
+
+      expect(secretProviderConfigSchema.parse(value)).toEqual(value);
+    });
+
     it.each([
       ['an unsupported type', { ...provider, type: 'vault' }],
+      ['an infisical provider without a url', { ...provider, url: undefined }],
       ['a url that is not a url', { ...provider, url: 'not a url' }],
       ['no credentials', { ...provider, credentials: undefined }],
       ['no enabled flag', { ...provider, enabled: undefined }],

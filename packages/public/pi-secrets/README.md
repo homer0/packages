@@ -92,10 +92,12 @@ Each provider in the registry has:
 
 | Option        | What it does                                                             |
 | ------------- | ------------------------------------------------------------------------ |
-| `type`        | The implementation. Right now, only `infisical`.                         |
-| `url`         | The base URL of the provider.                                            |
+| `type`        | The implementation: `infisical`, `aws` or `1password`.                   |
+| `url`         | The base URL of the provider. Only for `infisical`, where it's required. |
 | `enabled`     | Disabled providers are skipped. The main one has to be enabled.          |
 | `credentials` | What the implementation needs to log in. It's different for each `type`. |
+
+Right now, only `infisical` can resolve secrets. A provider of another `type` is valid in the config, but using it throws a `SecretsConfigError`.
 
 #### Provider order
 

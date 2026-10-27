@@ -1,7 +1,7 @@
 import { getConfigValue } from '@homer0/pi-config';
 import { getCached } from '@homer0/pi-in-memory-cache';
 import { z } from 'zod';
-import { InfisicalSecretProvider } from './providers.js';
+import { InfisicalSecretProvider } from './providers/infisical/provider.js';
 import { secretsConfigSchema } from './schemas.js';
 import type {
   GetSecretOptions,
@@ -121,19 +121,24 @@ type TryProviderBulkOptions = {
  * @param providerConfig The config of the provider, with its name.
  * @param secretsConfig The resolved config of the secrets.
  * @returns The provider.
- * @throws {SecretsConfigError} When the type of the provider is not supported.
+ * @throws {SecretsConfigError} When the type of the provider is not supported, or it has
+ *   no implementation yet.
  */
 const createProvider = (
   providerConfig: NamedSecretProviderConfig,
   secretsConfig: SecretsConfig,
 ): SecretProvider => {
-  switch (providerConfig.type) {
+  const { type } = providerConfig;
+  switch (type) {
     case 'infisical':
       return new InfisicalSecretProvider(providerConfig, secretsConfig);
-    default:
+    case 'aws':
+    case '1password':
       throw new SecretsConfigError(
-        `Unsupported secret provider type: ${providerConfig.type}`,
+        `The secret provider type '${type}' is not implemented yet.`,
       );
+    default:
+      throw new SecretsConfigError(`Unsupported secret provider type: ${type}`);
   }
 };
 

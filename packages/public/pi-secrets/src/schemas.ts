@@ -1,4 +1,7 @@
 import { z } from 'zod';
+import { awsConfig } from './providers/aws/config.js';
+import { infisicalConfig } from './providers/infisical/config.js';
+import { onePasswordConfig } from './providers/onepassword/config.js';
 import { ms, type TimeStringUnitLike } from './utils.js';
 
 /** The default time-to-live of the cached secret values, in milliseconds (10 seconds). */
@@ -13,19 +16,18 @@ export const timeUnitLikeSchema = z
   .transform((val) => ms(val as TimeStringUnitLike));
 
 /** Supported secret provider implementations. */
-export const secretProviderTypeSchema = z.literal('infisical');
+export const secretProviderTypeSchema = z.enum([
+  infisicalConfig.type,
+  awsConfig.type,
+  onePasswordConfig.type,
+]);
 
-/** Runtime schema for one configured secret provider. */
-export const secretProviderConfigSchema = z.object({
-  /** The implementation of the provider. */
-  type: secretProviderTypeSchema,
-  /** The base URL of the provider. */
-  url: z.url(),
-  /** The credentials, which depend on the type of provider. */
-  credentials: z.record(z.string(), z.unknown()),
-  /** Whether the provider can be used. */
-  enabled: z.boolean(),
-});
+/** Runtime schema for one configured secret provider, by `type`. */
+export const secretProviderConfigSchema = z.discriminatedUnion('type', [
+  infisicalConfig.schema,
+  awsConfig.schema,
+  onePasswordConfig.schema,
+]);
 
 /** Runtime schema for the `extensions.secrets` config. */
 export const secretsConfigSchema = z.object({

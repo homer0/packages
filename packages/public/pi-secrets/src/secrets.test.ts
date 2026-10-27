@@ -10,7 +10,7 @@ import {
   vi,
   type MockInstance,
 } from 'vitest';
-import { InfisicalSecretProvider } from './providers.js';
+import { InfisicalSecretProvider } from './providers/infisical/provider.js';
 import {
   escapeReferences,
   getSecret,
@@ -22,7 +22,9 @@ import { readAuthKey, SecretNotFoundError, SecretsConfigError } from './utils.js
 
 vi.mock('@homer0/pi-config', () => ({ getConfigValue: vi.fn() }));
 vi.mock('@homer0/pi-in-memory-cache', () => ({ getCached: vi.fn() }));
-vi.mock('./providers.js', () => ({ InfisicalSecretProvider: vi.fn() }));
+vi.mock('./providers/infisical/provider.js', () => ({
+  InfisicalSecretProvider: vi.fn(),
+}));
 vi.mock('./utils.js', async (importOriginal) => ({
   ...(await importOriginal<typeof import('./utils.js')>()),
   readAuthKey: vi.fn(),
@@ -262,6 +264,22 @@ describe('secrets', () => {
         new SecretsConfigError('Unsupported secret provider type: vault'),
       );
     });
+
+    it.each(['aws', '1password'])(
+      'throws when the %s provider has no implementation yet',
+      async (type) => {
+        const entry = { credentials: {}, enabled: true };
+        vi.mocked(getConfigValue).mockResolvedValue(
+          createConfig({ registry: { a: { ...entry, type } } } as never) as never,
+        );
+
+        await expect(getSecret('TOKEN')).rejects.toThrow(
+          new SecretsConfigError(
+            `The secret provider type '${type}' is not implemented yet.`,
+          ),
+        );
+      },
+    );
   });
 
   describe('getSecrets', () => {

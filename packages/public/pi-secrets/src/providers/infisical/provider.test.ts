@@ -1,7 +1,7 @@
 import { Agent, fetch } from 'undici';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { InfisicalSecretProvider } from './providers.js';
-import type { SecretsConfig } from './types.js';
+import type { SecretsConfig } from '../../types.js';
+import { InfisicalSecretProvider } from './provider.js';
 
 vi.mock('undici', () => ({ Agent: vi.fn(), fetch: vi.fn() }));
 

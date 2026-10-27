@@ -12,7 +12,8 @@ export type SecretProviderType = z.infer<typeof secretProviderTypeSchema>;
 export type SecretProviderConfig = z.infer<typeof secretProviderConfigSchema>;
 
 /** The config of a secret provider, with the name it has in the registry. */
-export type NamedSecretProviderConfig = SecretProviderConfig & { name: string };
+export type NamedSecretProviderConfig<T extends SecretProviderType = SecretProviderType> =
+  Extract<SecretProviderConfig, { type: T }> & { name: string };
 
 /** The resolved `extensions.secrets` config. */
 export type SecretsConfig = z.infer<typeof secretsConfigSchema>;
