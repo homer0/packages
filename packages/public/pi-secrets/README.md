@@ -1,6 +1,6 @@
 # 🔐 Pi Secrets
 
-Resolve secrets from providers like [Infisical](https://infisical.com) [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/) and [1Password](https://1password.com), for [Pi](https://pi.dev) extensions, tools, and skills.
+Resolve secrets from providers like [Infisical](https://infisical.com), [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/) and [1Password](https://1password.com), for [Pi](https://pi.dev) extensions, tools, and skills.
 
 Instead of putting a token in a config file or an environment variable, you name the secret and this package gets it from a provider, caches it for a short time, and falls back to another provider if the first one fails.
 
