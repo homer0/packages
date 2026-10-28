@@ -11,6 +11,8 @@ import {
   type MockInstance,
 } from 'vitest';
 import { AwsSecretProvider } from './providers/aws/provider.js';
+import { loadCustomSecretProviderClass } from './providers/custom/loader.js';
+import { CustomSecretProviderWrapper } from './providers/custom/provider.js';
 import { InfisicalSecretProvider } from './providers/infisical/provider.js';
 import { OnePasswordSecretProvider } from './providers/onepassword/provider.js';
 import {
@@ -25,6 +27,12 @@ import { readAuthKey, SecretNotFoundError, SecretsConfigError } from './utils.js
 vi.mock('@homer0/pi-config', () => ({ getConfigValue: vi.fn() }));
 vi.mock('@homer0/pi-in-memory-cache', () => ({ getCached: vi.fn() }));
 vi.mock('./providers/aws/provider.js', () => ({ AwsSecretProvider: vi.fn() }));
+vi.mock('./providers/custom/loader.js', () => ({
+  loadCustomSecretProviderClass: vi.fn(),
+}));
+vi.mock('./providers/custom/provider.js', () => ({
+  CustomSecretProviderWrapper: vi.fn(),
+}));
 vi.mock('./providers/onepassword/provider.js', () => ({
   OnePasswordSecretProvider: vi.fn(),
 }));
@@ -374,6 +382,113 @@ describe('secrets', () => {
       );
       expect(InfisicalSecretProvider).not.toHaveBeenCalled();
       expect(onePasswordProvider.close).toHaveBeenCalledOnce();
+    });
+
+    describe('with a custom provider', () => {
+      const entry = { type: 'custom', enabled: true, file: 'agent:keychain.ts' } as const;
+      const providerClass = class {};
+
+      beforeEach(() => {
+        vi.mocked(loadCustomSecretProviderClass).mockResolvedValue(
+          providerClass as never,
+        );
+      });
+
+      it('resolves the secrets with the class of its file', async () => {
+        const customProvider = fakeProvider('a', { TOKEN: 'from-custom' });
+        // eslint-disable-next-line prefer-arrow-callback, func-names -- `new CustomSecretProviderWrapper()` needs a constructable function, which an arrow is not.
+        vi.mocked(CustomSecretProviderWrapper).mockImplementation(function () {
+          return customProvider as never;
+        });
+        vi.mocked(getConfigValue).mockResolvedValue(
+          createConfig({ registry: { a: entry } } as never) as never,
+        );
+
+        await expect(getSecret('TOKEN')).resolves.toBe('from-custom');
+
+        expect(loadCustomSecretProviderClass).toHaveBeenCalledExactlyOnceWith(
+          'agent:keychain.ts',
+        );
+        expect(CustomSecretProviderWrapper).toHaveBeenCalledExactlyOnceWith({
+          providerConfig: { ...entry, name: 'a' },
+          secretsConfig: expect.objectContaining({ cacheTtl: 10_000 }),
+          providerClass,
+        });
+        expect(InfisicalSecretProvider).not.toHaveBeenCalled();
+        expect(customProvider.close).toHaveBeenCalledOnce();
+      });
+
+      it('resolves many secrets with it', async () => {
+        const customProvider = fakeProvider('a', { ONE: '1', TWO: '2' });
+        // eslint-disable-next-line prefer-arrow-callback, func-names -- `new CustomSecretProviderWrapper()` needs a constructable function, which an arrow is not.
+        vi.mocked(CustomSecretProviderWrapper).mockImplementation(function () {
+          return customProvider as never;
+        });
+        vi.mocked(getConfigValue).mockResolvedValue(
+          createConfig({ registry: { a: entry } } as never) as never,
+        );
+
+        await expect(getSecrets(['ONE', 'TWO'])).resolves.toEqual({ ONE: '1', TWO: '2' });
+
+        expect(customProvider.close).toHaveBeenCalledOnce();
+      });
+
+      it('lets a config error of the file propagate, without trying the next provider', async () => {
+        vi.mocked(loadCustomSecretProviderClass).mockRejectedValue(
+          new SecretsConfigError('The custom provider file was not found: /x.ts'),
+        );
+        vi.mocked(getConfigValue).mockResolvedValue(
+          createConfig({
+            registry: {
+              a: entry,
+              b: {
+                type: 'infisical',
+                url: 'https://x.test',
+                credentials: {},
+                enabled: true,
+              },
+            },
+          } as never) as never,
+        );
+
+        await expect(getSecret('TOKEN')).rejects.toThrow(
+          new SecretsConfigError('The custom provider file was not found: /x.ts'),
+        );
+        await expect(getSecrets(['TOKEN'])).rejects.toThrow(SecretsConfigError);
+
+        expect(InfisicalSecretProvider).not.toHaveBeenCalled();
+      });
+
+      it('warns and tries the next provider when the custom one fails to resolve', async () => {
+        const failing = fakeProvider('a');
+        failing.getSecret.mockRejectedValue(new Error('keychain locked'));
+        // eslint-disable-next-line prefer-arrow-callback, func-names -- `new CustomSecretProviderWrapper()` needs a constructable function, which an arrow is not.
+        vi.mocked(CustomSecretProviderWrapper).mockImplementation(function () {
+          return failing as never;
+        });
+        providers['b'] = fakeProvider('b', { TOKEN: 'from-b' });
+        vi.mocked(getConfigValue).mockResolvedValue(
+          createConfig({
+            registry: {
+              a: entry,
+              b: {
+                type: 'infisical',
+                url: 'https://x.test',
+                credentials: {},
+                enabled: true,
+              },
+            },
+          } as never) as never,
+        );
+
+        await expect(getSecret('TOKEN')).resolves.toBe('from-b');
+
+        expect(warn).toHaveBeenCalledWith(
+          "[pi-secrets] Provider 'a' failed to resolve a secret.",
+          expect.any(Error),
+        );
+        expect(failing.close).toHaveBeenCalledOnce();
+      });
     });
 
     it('resolves the secrets of an aws provider with it', async () => {

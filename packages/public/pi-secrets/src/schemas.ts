@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { awsConfig } from './providers/aws/config.js';
+import { customConfig } from './providers/custom/config.js';
 import { infisicalConfig } from './providers/infisical/config.js';
 import { onePasswordConfig } from './providers/onepassword/config.js';
 import { ms, type TimeStringUnitLike } from './utils.js';
@@ -20,6 +21,7 @@ export const secretProviderTypeSchema = z.enum([
   infisicalConfig.type,
   awsConfig.type,
   onePasswordConfig.type,
+  customConfig.type,
 ]);
 
 /** Runtime schema for one configured secret provider, by `type`. */
@@ -27,6 +29,7 @@ export const secretProviderConfigSchema = z.discriminatedUnion('type', [
   infisicalConfig.schema,
   awsConfig.schema,
   onePasswordConfig.schema,
+  customConfig.schema,
 ]);
 
 /** Runtime schema for the `extensions.secrets` config. */

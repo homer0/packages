@@ -32,16 +32,16 @@ pnpm add @homer0/pi-secrets
 
 It will give you access to an ESM module with the following:
 
-| Export                                                                                              | What it is                                                                                                                 |
-| --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `getSecret`                                                                                         | Resolves one secret.                                                                                                       |
-| `getSecrets`                                                                                        | Resolves many secrets at once, with one request per provider.                                                              |
-| `resolveInterpolatedValue`                                                                          | Resolves a config value that can be a reference: `$env:NAME`, `$secret:NAME`, `$secret[provider]:NAME`, or a plain string. |
-| `escapeReferences`                                                                                  | Escapes the references of a value, to write them in a file that Pi reads.                                                  |
-| `SecretNotFoundError`                                                                               | The error thrown when a required secret can't be resolved.                                                                 |
-| `SecretsConfigError`                                                                                | The error thrown when the config is inconsistent.                                                                          |
-| `secretsConfigSchema`, `secretProviderConfigSchema`, `secretProviderTypeSchema`                     | The [Zod](https://zod.dev) schemas of the config.                                                                          |
-| `SecretsConfig`, `SecretProviderConfig`, `SecretProviderType`, `GetSecretOptions`, `SecretProvider` | The types.                                                                                                                 |
+| Export                                                                                                                                                     | What it is                                                                                                                 |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `getSecret`                                                                                                                                                | Resolves one secret.                                                                                                       |
+| `getSecrets`                                                                                                                                               | Resolves many secrets at once, with one request per provider.                                                              |
+| `resolveInterpolatedValue`                                                                                                                                 | Resolves a config value that can be a reference: `$env:NAME`, `$secret:NAME`, `$secret[provider]:NAME`, or a plain string. |
+| `escapeReferences`                                                                                                                                         | Escapes the references of a value, to write them in a file that Pi reads.                                                  |
+| `SecretNotFoundError`                                                                                                                                      | The error thrown when a required secret can't be resolved.                                                                 |
+| `SecretsConfigError`                                                                                                                                       | The error thrown when the config is inconsistent.                                                                          |
+| `secretsConfigSchema`, `secretProviderConfigSchema`, `secretProviderTypeSchema`                                                                            | The [Zod](https://zod.dev) schemas of the config.                                                                          |
+| `SecretsConfig`, `SecretProviderConfig`, `SecretProviderType`, `GetSecretOptions`, `SecretProvider`, `CustomSecretProvider`, `CustomSecretProviderContext` | The types.                                                                                                                 |
 
 > The agent should not call this directly, and its tools should never return secret values. Use it from Node code that needs the secret at runtime.
 
@@ -94,10 +94,12 @@ Each provider in the registry has:
 
 | Option        | What it does                                                             |
 | ------------- | ------------------------------------------------------------------------ |
-| `type`        | The implementation: `infisical`, `aws` or `1password`.                   |
+| `type`        | The implementation: `infisical`, `aws`, `1password` or `custom`.         |
 | `url`         | The base URL of the provider. Only for `infisical`, where it's required. |
 | `enabled`     | Disabled providers are skipped. The main one has to be enabled.          |
 | `credentials` | What the implementation needs to log in. It's different for each `type`. |
+| `file`        | The file with your class. Only for `custom`, where it's required.        |
+| `data`        | What your class receives. Only for `custom`, where it's optional.        |
 
 #### Provider order
 
@@ -424,6 +426,82 @@ The `key` is resolved the way Pi resolves it, so what you get is the key Pi itse
 - It throws an error that says which entry it was, and never shows the command, if the file can't be read or is not valid JSON, if the entry doesn't exist or has no `key` (like an OAuth credential, which has tokens instead), or if the key can't be resolved.
 - `auth.json` is read every time, so a key you change is picked up without restarting anything.
 
+#### Custom providers
+
+The `custom` provider loads a class from a file you wrote, so you can read secrets from somewhere the other providers don't cover, like the keychain of your system or an internal service:
+
+```yaml
+extensions:
+  secrets:
+    providers:
+      main: keychain
+      registry:
+        keychain:
+          type: custom
+          enabled: true
+          file: agent:secrets/keychain.ts
+          data:
+            credentials:
+              username: homer0
+```
+
+| Option | What it is                                                                                                 |
+| ------ | ---------------------------------------------------------------------------------------------------------- |
+| `file` | The path of the file, with a [prefix](#the-prefix-is-required). Required.                                  |
+| `data` | Anything you want your class to receive, an object. It's passed as it is, without validating it. Optional. |
+
+The default export of the file has to be a class. It's created with `new`, with the name that the provider has in the registry and its `data` (an empty object if the config has none). Use `implements` with the types of this package to get the signatures; the import is erased, so the file doesn't need the package at runtime:
+
+```ts
+import type {
+  CustomSecretProvider,
+  CustomSecretProviderContext,
+} from '@homer0/pi-secrets';
+
+export default class KeychainProvider implements CustomSecretProvider {
+  private readonly username: string;
+
+  constructor({ data }: CustomSecretProviderContext) {
+    const credentials = data['credentials'] as { username: string };
+    this.username = credentials.username;
+  }
+
+  async getSecret(name: string): Promise<string | undefined> {
+    // Return `undefined` if you don't have it, so the next provider is tried.
+    return lookUpInKeychain(this.username, name);
+  }
+}
+```
+
+| Method              | Required | What it does                                                                                                                        |
+| ------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `getSecret(name)`   | Yes      | Resolves one secret. Return `undefined` if you don't have it.                                                                       |
+| `getSecrets(names)` | No       | Resolves many at once, and returns an object with the values by name. Without it, `getSecret` is called for each name, in parallel. |
+| `close()`           | No       | Releases what you hold, like connections. It's called after each lookup.                                                            |
+
+- **The constructor can't be async.** Do what you need (like logging in) lazily, inside the methods. A new instance is created for each lookup, so keep what is expensive at module level, like the clients of the other providers.
+- **The methods have to be defined in the class**, as in the example. Methods that are properties of the instance, like `getSecret = async () => {}`, are not supported: the class is checked in its prototype, once, when the file is loaded, and it's rejected if `getSecret` is not there, or if `getSecrets` or `close` are there and are not functions. Nothing is checked after the class is created.
+- **The file can be TypeScript.** It's loaded with [jiti](https://github.com/unjs/jiti), so enums and imports without the extension work.
+- **There is no hot reload.** The class is loaded once per process, and a file that was loaded is not read again: restart Pi after editing it. A file that couldn't be loaded, for example because it doesn't exist yet or it's not valid, is tried again in the next lookup.
+- **A constructor that throws stops the resolution**: the error is not caught and the next provider is not tried, like with invalid credentials in the other providers. Use it to validate `data`. Runtime failures, like a service that is down, belong in the methods.
+- **Errors in your methods**, like any provider error, are a warning, and the next provider is tried. Problems with the file itself are config errors: they throw a `SecretsConfigError`, and the next provider is not tried.
+
+##### The prefix is required
+
+`file` has to start with one of the prefixes of [`@homer0/pi-config`](../pi-config/README.md#resolving-paths):
+
+| Prefix            | Where it points to                    |
+| ----------------- | ------------------------------------- |
+| `pi:`             | The Pi directory (`~/.pi/`).          |
+| `agent:`          | The agent directory (`~/.pi/agent/`). |
+| `profile:<name>:` | The directory of a profile.           |
+
+Absolute paths, relative paths, and paths that end up outside of the Pi directory and the agent directory, even with `..` (like `agent:../../code/some-repo/x.ts`), are a `SecretsConfigError`. A `..` that stays inside is fine: `agent:a/../b.ts` is `agent:b.ts`. The paths are compared once normalized, and symbolic links are not followed.
+
+This is on purpose: the config can also come from a project (`<project>/.pi/config.yaml`), and a repository that you cloned must not be able to make Pi run its own code. The prefixes only point inside your Pi installation, which is where you put the files you trust.
+
+> The class runs in the Pi process, with the same permissions as Pi: it can read your files, use the network and run commands. Only point `file` to code you wrote or reviewed.
+
 #### How the cache works
 
 The values are cached in the [in-memory cache](https://www.npmjs.com/package/@homer0/pi-in-memory-cache), so they are shared by every process that uses it, not just the one that asked. They live for `cacheTtl`, and a secret that was not found is never cached.
@@ -434,6 +512,7 @@ The values are cached in the [in-memory cache](https://www.npmjs.com/package/@ho
 - Keep the credentials in a `config.local` file, which you can leave out of your repository.
 - The values are kept in the memory of the cache daemon, not on disk.
 - `skipTLSVerify` turns off a protection: don't use it with servers you don't control.
+- A custom provider runs your code with the permissions of Pi. Its file has to be inside your Pi directory or agent directory, so a project config can't point to code of a repository; see [Custom providers](#custom-providers).
 
 ### 🤘 Development
 

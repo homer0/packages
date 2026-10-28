@@ -980,6 +980,9 @@ importers:
       '@homer0/pi-in-memory-cache':
         specifier: workspace:^
         version: link:../pi-in-memory-cache
+      jiti:
+        specifier: 2.7.0
+        version: 2.7.0
       ms:
         specifier: 2.1.3
         version: 2.1.3

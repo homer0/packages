@@ -2,6 +2,8 @@ import { getConfigValue } from '@homer0/pi-config';
 import { getCached } from '@homer0/pi-in-memory-cache';
 import { z } from 'zod';
 import { AwsSecretProvider } from './providers/aws/provider.js';
+import { loadCustomSecretProviderClass } from './providers/custom/loader.js';
+import { CustomSecretProviderWrapper } from './providers/custom/provider.js';
 import { InfisicalSecretProvider } from './providers/infisical/provider.js';
 import { OnePasswordSecretProvider } from './providers/onepassword/provider.js';
 import { secretsConfigSchema } from './schemas.js';
@@ -133,12 +135,14 @@ type TryProviderBulkOptions = {
  * @param providerConfig The config of the provider, with its name.
  * @param secretsConfig The resolved config of the secrets.
  * @returns The provider.
- * @throws {SecretsConfigError} When the type of the provider is not supported.
+ * @throws {SecretsConfigError} When the type of the provider is not supported, or it's a
+ *   custom provider whose file is not valid, doesn't exist or doesn't have a valid
+ *   class.
  */
-const createProvider = (
+const createProvider = async (
   providerConfig: NamedSecretProviderConfig,
   secretsConfig: SecretsConfig,
-): SecretProvider => {
+): Promise<SecretProvider> => {
   const { type } = providerConfig;
   switch (type) {
     case 'infisical':
@@ -147,6 +151,14 @@ const createProvider = (
       return new AwsSecretProvider(providerConfig, secretsConfig);
     case '1password':
       return new OnePasswordSecretProvider(providerConfig, secretsConfig);
+    case 'custom': {
+      const providerClass = await loadCustomSecretProviderClass(providerConfig.file);
+      return new CustomSecretProviderWrapper({
+        providerConfig,
+        secretsConfig,
+        providerClass,
+      });
+    }
     default:
       throw new SecretsConfigError(`Unsupported secret provider type: ${type}`);
   }
@@ -344,7 +356,7 @@ const resolveSecret = async (
 
   // oxlint-disable-next-line no-unreachable-loop -- An unresolved provider falls through its finally block to try the next provider.
   for (const providerConfig of getProviderConfigs(config, options.provider)) {
-    const provider = createProvider(providerConfig, config);
+    const provider = await createProvider(providerConfig, config);
     try {
       const value = await tryProvider({ provider, name, cacheTtlMs: config.cacheTtl });
       if (typeof value !== 'undefined') return value;
@@ -384,7 +396,7 @@ const resolveSecrets = async (
   for (const providerConfig of getProviderConfigs(config, options.provider)) {
     if (pending.length === 0) break;
 
-    const provider = createProvider(providerConfig, config);
+    const provider = await createProvider(providerConfig, config);
     try {
       const resolved = await tryProviderBulk({
         provider,
