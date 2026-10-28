@@ -86,8 +86,35 @@ const PROFILES_DIR = getAgentPath('profiles');
 const PI_PREFIX = 'pi:';
 /** The prefix of the paths relative to the agent directory. */
 const AGENT_PREFIX = 'agent:';
+/** The prefix of the paths relative to a profile. */
+const PROFILE_PREFIX = 'profile:';
 /** The pattern of the paths relative to a profile; it captures the name and the path. */
 const PROFILE_PATTERN = /^profile:([^:]+):(.+)$/;
+
+/**
+ * Resolves a path that starts with a pi-style prefix.
+ *
+ * @param value The path reference.
+ * @returns The absolute path, or `undefined` if the value has no prefix, or it's a
+ *   profile reference without a path.
+ */
+const resolvePrefix = (value: string): string | undefined => {
+  if (value.startsWith(PI_PREFIX)) return join(PI_DIR, value.slice(PI_PREFIX.length));
+  if (value.startsWith(AGENT_PREFIX))
+    return join(AGENT_DIR, value.slice(AGENT_PREFIX.length));
+
+  const profileMatch = PROFILE_PATTERN.exec(value);
+  if (!profileMatch) return undefined;
+
+  const [, profileName, profilePath] = profileMatch;
+  return join(PROFILES_DIR, profileName!, profilePath!);
+};
+
+/** The options to resolve a path reference without accepting paths that have no prefix. */
+export type PrefixedOnlyOptions = {
+  /** Only accept paths that start with a pi-style prefix. */
+  prefixedOnly: true;
+};
 
 /**
  * Resolves a pi-style path reference to an absolute path.
@@ -101,29 +128,48 @@ const PROFILE_PATTERN = /^profile:([^:]+):(.+)$/;
  * - Absolute path — used as-is
  * - Anything else — resolved relative to `baseDir`
  *
+ * With `{ prefixedOnly: true }` instead of `baseDir`, only the prefixed formats are
+ * accepted: absolute and relative paths throw, and so does a prefix without a path. It
+ * only resolves: it doesn't check that the result stays inside the directory of the
+ * prefix (`agent:../x.ts` is outside of it), nor that the file exists, so the caller has
+ * to apply its own restrictions.
+ *
  * @example <caption>Relative to the agent directory</caption>
  *   resolvePiPath('agent:shared/base.yaml', '/project');
  *
  * @example <caption>Relative to the file that references it</caption>
  *   resolvePiPath('../base.yaml', '/project/.pi');
  *
+ * @example <caption>Only prefixed paths</caption>
+ *   resolvePiPath('agent:secrets/keychain.ts', { prefixedOnly: true });
+ *
  * @param value The path reference.
- * @param baseDir The directory to resolve the path from, when it doesn't have a prefix
- *   and it's not absolute.
+ * @param baseDirOrOptions The directory to resolve the path from, when it doesn't have a
+ *   prefix and it's not absolute; or the options to only accept prefixed paths.
  * @returns The absolute path.
+ * @throws With `prefixedOnly`, if the value doesn't start with one of the prefixes, or
+ *   the path after the prefix is empty.
  */
-const resolvePiPath = (value: string, baseDir: string): string => {
-  if (value.startsWith(PI_PREFIX)) return join(PI_DIR, value.slice(PI_PREFIX.length));
-  if (value.startsWith(AGENT_PREFIX))
-    return join(AGENT_DIR, value.slice(AGENT_PREFIX.length));
-  if (isAbsolute(value)) return value;
-
-  const profileMatch = PROFILE_PATTERN.exec(value);
-  if (profileMatch) {
-    const [, profileName, profilePath] = profileMatch;
-    return join(PROFILES_DIR, profileName!, profilePath!);
+const resolvePiPath = (
+  value: string,
+  baseDirOrOptions: string | PrefixedOnlyOptions,
+): string => {
+  const resolved = resolvePrefix(value);
+  if (typeof baseDirOrOptions === 'string') {
+    if (resolved) return resolved;
+    return isAbsolute(value) ? value : join(baseDirOrOptions, value);
   }
-  return join(baseDir, value);
+
+  if (resolved && value !== PI_PREFIX && value !== AGENT_PREFIX) return resolved;
+
+  const hasPrefix = [PI_PREFIX, AGENT_PREFIX, PROFILE_PREFIX].some((prefix) =>
+    value.startsWith(prefix),
+  );
+  throw new Error(
+    hasPrefix
+      ? `Invalid path "${value}": the path after the prefix is empty.`
+      : `Invalid path "${value}": it must start with \`${PI_PREFIX}\`, \`${AGENT_PREFIX}\` or \`${PROFILE_PREFIX}<name>:\`.`,
+  );
 };
 
 /**

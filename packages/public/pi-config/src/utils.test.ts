@@ -718,6 +718,69 @@ describe('path utils', () => {
       expect(resolvePiPath(value, baseDir)).toBe(expected);
     });
   });
+
+  describe('resolvePiPath with prefixedOnly', () => {
+    const piDir = join(homedir(), CONFIG_DIR_NAME);
+    const agentDir = getAgentDir();
+    const prefixedOnly = { prefixedOnly: true } as const;
+
+    it('resolves `pi:` paths relative to the Pi directory', () => {
+      expect(resolvePiPath('pi:secrets/keychain.ts', prefixedOnly)).toBe(
+        join(piDir, 'secrets/keychain.ts'),
+      );
+    });
+
+    it('resolves `agent:` paths relative to the agent directory', () => {
+      expect(resolvePiPath('agent:secrets/keychain.ts', prefixedOnly)).toBe(
+        join(agentDir, 'secrets/keychain.ts'),
+      );
+    });
+
+    it('resolves `profile:<name>:<path>` paths relative to the profile directory', () => {
+      expect(resolvePiPath('profile:work:secrets/keychain.ts', prefixedOnly)).toBe(
+        join(agentDir, 'profiles', 'work', 'secrets/keychain.ts'),
+      );
+    });
+
+    it.each([
+      ['an absolute path', '/etc/keychain.ts'],
+      ['a relative path', '../keychain.ts'],
+      ['a dot-relative path', './keychain.ts'],
+      ['a bare file name', 'keychain.ts'],
+      ['an empty value', ''],
+      ['a prefix with the wrong case', 'Agent:keychain.ts'],
+      ['a prefix after a path', './agent:keychain.ts'],
+    ])('throws for %s', (_label, value) => {
+      expect(() => resolvePiPath(value, prefixedOnly)).toThrow(
+        `Invalid path "${value}": it must start with`,
+      );
+    });
+
+    it.each([
+      ['pi:'],
+      ['agent:'],
+      ['profile:work'],
+      ['profile:work:'],
+      ['profile::x.ts'],
+    ])('throws for an empty path in `%s`', (value) => {
+      expect(() => resolvePiPath(value, prefixedOnly)).toThrow(
+        `Invalid path "${value}": the path after the prefix is empty.`,
+      );
+    });
+
+    it('does not restrict the path to the directory of the prefix', () => {
+      expect(resolvePiPath('agent:../x.ts', prefixedOnly)).toBe(
+        join(agentDir, '..', 'x.ts'),
+      );
+      expect(resolvePiPath('profile:..:x.ts', prefixedOnly)).toBe(join(agentDir, 'x.ts'));
+    });
+
+    it('normalizes `..` segments', () => {
+      expect(resolvePiPath('agent:a/b/../c.ts', prefixedOnly)).toBe(
+        join(agentDir, 'a/c.ts'),
+      );
+    });
+  });
 });
 
 describe('ensureErrorMessage', () => {
