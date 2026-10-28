@@ -260,7 +260,7 @@ Or in a reference: `$secret[op-service]:op://Engineering/GitHub/token`. A refere
 - Other problems with a reference, like a name that is not valid or that matches more than one item, are an error, and the message has the name and the kind of problem, never a value. With `getSecrets`, the whole call fails for this provider, like with the other providers.
 - Login and rate limit failures are errors too, and the next provider is tried.
 - `getSecret` and `getSecrets` use one request for all the names.
-- The client of the SDK is created once for each service account token or desktop account, and it's shared by every call, because logging in has limits, or asks for approval. If the session is over, a new one is created in the next call.
+- The client of the SDK is created once for each service account token or desktop account, and it's shared by every call, and by every extension of the Pi process, because logging in has limits, or asks for approval. If the session is over, a new one is created in the next call.
 
 ### ⚙️ Examples
 
@@ -479,10 +479,10 @@ export default class KeychainProvider implements CustomSecretProvider {
 | `getSecrets(names)` | No       | Resolves many at once, and returns an object with the values by name. Without it, `getSecret` is called for each name, in parallel. |
 | `close()`           | No       | Releases what you hold, like connections. It's called after each lookup.                                                            |
 
-- **The constructor can't be async.** Do what you need (like logging in) lazily, inside the methods. A new instance is created for each lookup, so keep what is expensive at module level, like the clients of the other providers.
+- **The constructor can't be async.** Do what you need (like logging in) lazily, inside the methods. A new instance is created for each lookup, so keep what is expensive at module level, like the clients of the other providers: the file is evaluated once for the whole Pi process, and the extensions that use this package share it.
 - **The methods have to be defined in the class**, as in the example. Methods that are properties of the instance, like `getSecret = async () => {}`, are not supported: the class is checked in its prototype, once, when the file is loaded, and it's rejected if `getSecret` is not there, or if `getSecrets` or `close` are there and are not functions. Nothing is checked after the class is created.
 - **The file can be TypeScript.** It's loaded with [jiti](https://github.com/unjs/jiti), so enums and imports without the extension work.
-- **There is no hot reload.** The class is loaded once per process, and a file that was loaded is not read again: restart Pi after editing it. A file that couldn't be loaded, for example because it doesn't exist yet or it's not valid, is tried again in the next lookup.
+- **There is no hot reload.** The class is loaded once per Pi process, shared by every extension that uses this package, and a file that was loaded is not read again: restart Pi after editing it. A skill runs in its own process, so it loads the file every time. A file that couldn't be loaded, for example because it doesn't exist yet or it's not valid, is tried again in the next lookup.
 - **A constructor that throws stops the resolution**: the error is not caught and the next provider is not tried, like with invalid credentials in the other providers. Use it to validate `data`. Runtime failures, like a service that is down, belong in the methods.
 - **Errors in your methods**, like any provider error, are a warning, and the next provider is tried. Problems with the file itself are config errors: they throw a `SecretsConfigError`, and the next provider is not tried.
 

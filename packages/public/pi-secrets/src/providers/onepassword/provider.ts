@@ -47,10 +47,22 @@ const onePasswordCredentialsSchema = z.union(
 export type OnePasswordCredentials = z.infer<typeof onePasswordCredentialsSchema>;
 
 /**
- * The clients that are open, by credentials, as promises so a call that comes while the
- * client is being created waits for it. They are shared by all the providers.
+ * `globalThis`, typed with the property that holds the clients. Pi loads each extension
+ * with its own copy of the modules it imports, so a module variable would not be shared
+ * between extensions, and each one would log in again.
  */
-const clients = new Map<string, Promise<Client>>();
+const clientsStore = globalThis as typeof globalThis & {
+  __piSecretsOnePasswordClients?: Map<string, Promise<Client>>;
+};
+
+/**
+ * The clients that are open, by credentials, as promises so a call that comes while the
+ * client is being created waits for it. They are shared by all the providers, in every
+ * extension.
+ */
+const clients =
+  clientsStore.__piSecretsOnePasswordClients ?? new Map<string, Promise<Client>>();
+clientsStore.__piSecretsOnePasswordClients = clients;
 
 /**
  * Creates the key a client is shared under. The token is hashed, so it's not kept as a

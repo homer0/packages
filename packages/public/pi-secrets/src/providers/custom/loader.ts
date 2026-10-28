@@ -10,8 +10,23 @@ import type { CustomSecretProviderClass } from './types.js';
 /** The methods of the class that are not required, but have to be functions if present. */
 const OPTIONAL_METHODS = ['getSecrets', 'close'] as const;
 
-/** The classes that were loaded, or are being loaded, by the path of their file. */
-const loadedClasses = new Map<string, Promise<CustomSecretProviderClass>>();
+/**
+ * `globalThis`, typed with the property that holds the classes. Pi loads each extension
+ * with its own copy of the modules it imports, so a module variable would not be shared
+ * between extensions, and each one would load the file again.
+ */
+const classesStore = globalThis as typeof globalThis & {
+  __piSecretsCustomClasses?: Map<string, Promise<CustomSecretProviderClass>>;
+};
+
+/**
+ * The classes that were loaded, or are being loaded, by the path of their file. They are
+ * shared by every extension.
+ */
+const loadedClasses =
+  classesStore.__piSecretsCustomClasses ??
+  new Map<string, Promise<CustomSecretProviderClass>>();
+classesStore.__piSecretsCustomClasses = loadedClasses;
 
 /**
  * Gets the message of a thrown value.

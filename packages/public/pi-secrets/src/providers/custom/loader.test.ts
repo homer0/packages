@@ -321,6 +321,19 @@ describe('loadCustomSecretProviderClass', () => {
       expect(createJiti).toHaveBeenCalledTimes(2);
     });
 
+    it('is shared with another copy of the module, like the one of another extension', async () => {
+      await writeFixture(join(agentDir, 'cache-copy.ts'), VALID);
+      const first = await loadCustomSecretProviderClass('agent:cache-copy.ts');
+
+      vi.resetModules();
+      const copy = await import('./loader.js');
+      const second = await copy.loadCustomSecretProviderClass('agent:cache-copy.ts');
+
+      expect(copy.loadCustomSecretProviderClass).not.toBe(loadCustomSecretProviderClass);
+      expect(second).toBe(first);
+      expect(createJiti).toHaveBeenCalledOnce();
+    });
+
     it('checks the path every time, even for a class that is loaded', async () => {
       await loadCustomSecretProviderClass('agent:valid.ts');
 

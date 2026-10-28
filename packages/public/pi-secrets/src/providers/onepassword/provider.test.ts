@@ -290,6 +290,22 @@ describe('OnePasswordSecretProvider', () => {
       expect(createClient).toHaveBeenCalledOnce();
     });
 
+    it('is shared with another copy of the module, like the one of another extension', async () => {
+      const credentials = { serviceAccountToken: nextToken() };
+      await createProvider({ credentials }).getSecret('op://vault/item/field');
+
+      vi.resetModules();
+      const copy = await import('./provider.js');
+      const copyProvider = new copy.OnePasswordSecretProvider(
+        { name: 'op-copy', type: '1password', enabled: true, credentials },
+        secretsConfig,
+      );
+      await copyProvider.getSecret('op://vault/item/field');
+
+      expect(copy.OnePasswordSecretProvider).not.toBe(OnePasswordSecretProvider);
+      expect(createClient).toHaveBeenCalledOnce();
+    });
+
     it('is shared by the calls that are made while it is being created', async () => {
       const credentials = { serviceAccountToken: nextToken() };
 
