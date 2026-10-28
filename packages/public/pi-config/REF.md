@@ -1,8 +1,8 @@
 # Pi Package Reference
 
 Source: ~/.pi/packages/pi-config
-Source-Commit: cdeec54871567adb0ac4f59fcc43b7cf5f2700ff
-Updated-At: 2026-10-25T04:48:03Z
+Source-Commit: fbb253d54f7f4cd6cf16322cf8bce0fcbedd7146
+Updated-At: 2026-10-28T06:12:47Z
 
 ## Copy Instructions
 
