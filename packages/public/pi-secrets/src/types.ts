@@ -12,7 +12,8 @@ export type SecretProviderType = z.infer<typeof secretProviderTypeSchema>;
 export type SecretProviderConfig = z.infer<typeof secretProviderConfigSchema>;
 
 /** The config of a secret provider, with the name it has in the registry. */
-export type NamedSecretProviderConfig = SecretProviderConfig & { name: string };
+export type NamedSecretProviderConfig<T extends SecretProviderType = SecretProviderType> =
+  Extract<SecretProviderConfig, { type: T }> & { name: string };
 
 /** The resolved `extensions.secrets` config. */
 export type SecretsConfig = z.infer<typeof secretsConfigSchema>;
@@ -27,6 +28,12 @@ export type GetSecretOptions = {
   cwd?: string;
   /** Whether to throw a `SecretNotFoundError` when a secret can't be resolved. */
   required?: boolean;
+  /**
+   * The name, in the registry, of the provider to try first. It's a preference: the other
+   * providers are still tried after it, in the usual order, if it doesn't have the
+   * secret. It has to be in the registry, and enabled.
+   */
+  provider?: string;
 };
 
 /** What a secret provider implements. */

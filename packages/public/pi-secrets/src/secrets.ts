@@ -1,7 +1,11 @@
 import { getConfigValue } from '@homer0/pi-config';
 import { getCached } from '@homer0/pi-in-memory-cache';
 import { z } from 'zod';
-import { InfisicalSecretProvider } from './providers.js';
+import { AwsSecretProvider } from './providers/aws/provider.js';
+import { loadCustomSecretProviderClass } from './providers/custom/loader.js';
+import { CustomSecretProviderWrapper } from './providers/custom/provider.js';
+import { InfisicalSecretProvider } from './providers/infisical/provider.js';
+import { OnePasswordSecretProvider } from './providers/onepassword/provider.js';
 import { secretsConfigSchema } from './schemas.js';
 import type {
   GetSecretOptions,
@@ -25,7 +29,7 @@ const SECRET_CACHE_KEY = 'pi-secrets:secret:<provider>:<providerName>:<secretNam
 /** The prefix of a value that is read from the process environment. */
 const ENV_PREFIX = '$env:';
 
-/** The prefix of a value that is read from the secret providers. */
+/** The prefix of a value that is read from the secret providers, without a provider. */
 const SECRET_PREFIX = '$secret:';
 
 /** The prefix of a value that is read from the config, and is resolved again. */
@@ -35,12 +39,22 @@ const CONFIG_PREFIX = '$config:';
 const AUTH_PREFIX = '$auth:';
 
 /**
- * Finds the references in a value: `$env:NAME`, `$secret:NAME`, `$config:PATH` and
- * `$auth:NAME`, delimited by whitespace or by the start and the end of the value. The
+ * Finds the references in a value: `$env:NAME`, `$secret:NAME`, `$secret[provider]:NAME`,
+ * `$config:PATH` and `$auth:NAME`, delimited by whitespace or by the start and the end of
+ * the value. Anything that starts with `$secret[` is a reference, even if it's malformed,
+ * so {@link parseSecretReference} can report it instead of leaving it as text. The
  * lookarounds keep the spaces out of the match, and it has no capture groups on purpose:
  * the prefixes are used to parse each reference.
  */
-const INTERPOLATION_REGEX = /(?<=^|\s)\$(?:env|secret|config|auth):\S+(?=\s|$)/g;
+const INTERPOLATION_REGEX =
+  /(?<=^|\s)\$(?:(?:env|secret|config|auth):\S+|secret\[\S*)(?=\s|$)/g;
+
+/**
+ * Parses a `$secret[provider]:NAME` reference. The provider is a key of the registry, so
+ * it has no whitespace and no `]`; the name is everything up to the end of the
+ * reference.
+ */
+const SECRET_WITH_PROVIDER_REGEX = /^\$secret\[([^\s\]]+)\]:(\S+)$/;
 
 /** Options for {@link resolveInterpolatedValue}. */
 type ResolveInterpolatedValueOptions = {
@@ -84,7 +98,7 @@ type ReadConfigPathOptions = {
 
 /** Options for {@link resolveReference}. */
 type ResolveReferenceOptions = {
-  /** The reference to resolve, like `$env:NAME` or `$secret:NAME`. */
+  /** The reference to resolve, like `$env:NAME` or `$secret[provider]:NAME`. */
   reference: string;
   /** The project directory to read the secrets config from. */
   cwd?: string;
@@ -121,19 +135,32 @@ type TryProviderBulkOptions = {
  * @param providerConfig The config of the provider, with its name.
  * @param secretsConfig The resolved config of the secrets.
  * @returns The provider.
- * @throws {SecretsConfigError} When the type of the provider is not supported.
+ * @throws {SecretsConfigError} When the type of the provider is not supported, or it's a
+ *   custom provider whose file is not valid, doesn't exist or doesn't have a valid
+ *   class.
  */
-const createProvider = (
+const createProvider = async (
   providerConfig: NamedSecretProviderConfig,
   secretsConfig: SecretsConfig,
-): SecretProvider => {
-  switch (providerConfig.type) {
+): Promise<SecretProvider> => {
+  const { type } = providerConfig;
+  switch (type) {
     case 'infisical':
       return new InfisicalSecretProvider(providerConfig, secretsConfig);
+    case 'aws':
+      return new AwsSecretProvider(providerConfig, secretsConfig);
+    case '1password':
+      return new OnePasswordSecretProvider(providerConfig, secretsConfig);
+    case 'custom': {
+      const providerClass = await loadCustomSecretProviderClass(providerConfig.file);
+      return new CustomSecretProviderWrapper({
+        providerConfig,
+        secretsConfig,
+        providerClass,
+      });
+    }
     default:
-      throw new SecretsConfigError(
-        `Unsupported secret provider type: ${providerConfig.type}`,
-      );
+      throw new SecretsConfigError(`Unsupported secret provider type: ${type}`);
   }
 };
 
@@ -154,14 +181,20 @@ const getProviderConfig = (
 };
 
 /**
- * Gets the configs of the providers to try, in order: the main one, and then the enabled
- * ones from `fallbackOrder` (or the whole registry if there's none).
+ * Gets the configs of the providers to try, in order: the preferred one, if there is one,
+ * then the main one, and then the enabled ones from `fallbackOrder` (or the whole
+ * registry if there's none). A provider is only listed once.
  *
  * @param config The resolved config of the secrets.
+ * @param preferred The name of the provider to try first.
  * @returns The configs of the providers.
  * @throws {SecretsConfigError} When the main provider doesn't exist or is disabled.
+ * @throws {SecretsConfigError} When the preferred provider doesn't exist or is disabled.
  */
-const getProviderConfigs = (config: SecretsConfig): NamedSecretProviderConfig[] => {
+const getProviderConfigs = (
+  config: SecretsConfig,
+  preferred?: string,
+): NamedSecretProviderConfig[] => {
   const { fallbackOrder, main, registry } = config.providers;
   const mainProvider = getProviderConfig(config, main);
   if (!mainProvider)
@@ -178,8 +211,18 @@ const getProviderConfigs = (config: SecretsConfig): NamedSecretProviderConfig[] 
 
     return [provider];
   });
+  const providers = [mainProvider].concat(fallbackProviders);
+  if (typeof preferred === 'undefined') return providers;
 
-  return [mainProvider].concat(fallbackProviders);
+  const preferredProvider = getProviderConfig(config, preferred);
+  if (!preferredProvider)
+    throw new SecretsConfigError(`Preferred secret provider not found: ${preferred}`);
+  if (!preferredProvider.enabled)
+    throw new SecretsConfigError(`Preferred secret provider is disabled: ${preferred}`);
+
+  return [preferredProvider].concat(
+    providers.filter((provider) => provider.name !== preferred),
+  );
 };
 
 /**
@@ -294,7 +337,7 @@ const tryProviderBulk = async ({
 };
 
 /**
- * Resolves a secret, trying each configured provider in order.
+ * Resolves a secret, trying each configured provider in order, the preferred one first.
  *
  * @param name The name of the secret.
  * @param options The options of the lookup.
@@ -312,8 +355,8 @@ const resolveSecret = async (
   if (!config) return undefined;
 
   // oxlint-disable-next-line no-unreachable-loop -- An unresolved provider falls through its finally block to try the next provider.
-  for (const providerConfig of getProviderConfigs(config)) {
-    const provider = createProvider(providerConfig, config);
+  for (const providerConfig of getProviderConfigs(config, options.provider)) {
+    const provider = await createProvider(providerConfig, config);
     try {
       const value = await tryProvider({ provider, name, cacheTtlMs: config.cacheTtl });
       if (typeof value !== 'undefined') return value;
@@ -350,10 +393,10 @@ const resolveSecrets = async (
   let pending = names.slice();
 
   // oxlint-disable-next-line no-unreachable-loop -- Pending names fall through the finally block to try the next provider.
-  for (const providerConfig of getProviderConfigs(config)) {
+  for (const providerConfig of getProviderConfigs(config, options.provider)) {
     if (pending.length === 0) break;
 
-    const provider = createProvider(providerConfig, config);
+    const provider = await createProvider(providerConfig, config);
     try {
       const resolved = await tryProviderBulk({
         provider,
@@ -380,7 +423,8 @@ const resolveSecrets = async (
  * @param options The project directory, and that the secret is required.
  * @returns The value.
  * @throws {SecretNotFoundError} When no provider has the secret.
- * @throws {SecretsConfigError} When the main provider doesn't exist or is disabled.
+ * @throws {SecretsConfigError} When the main provider, or the preferred one, doesn't
+ *   exist or is disabled.
  */
 function getSecret(
   name: string,
@@ -393,7 +437,8 @@ function getSecret(
  * @param options The project directory, and whether the secret is required.
  * @returns The value, or `undefined` if no provider has it and it's not required.
  * @throws {SecretNotFoundError} When the secret is required and no provider has it.
- * @throws {SecretsConfigError} When the main provider doesn't exist or is disabled.
+ * @throws {SecretsConfigError} When the main provider, or the preferred one, doesn't
+ *   exist or is disabled.
  */
 function getSecret(name: string, options?: GetSecretOptions): Promise<string | undefined>;
 async function getSecret(
@@ -418,7 +463,8 @@ async function getSecret(
  * @param options The project directory, and whether the secrets are required.
  * @returns The values by name, `undefined` for the ones no provider has.
  * @throws {SecretNotFoundError} When the secrets are required and one is missing.
- * @throws {SecretsConfigError} When the main provider doesn't exist or is disabled.
+ * @throws {SecretsConfigError} When the main provider, or the preferred one, doesn't
+ *   exist or is disabled.
  */
 const getSecrets = async <const TNames extends readonly string[]>(
   names: TNames,
@@ -473,16 +519,61 @@ const readConfigPath = async ({
   return configValue;
 };
 
+/** What a `$secret:` or `$secret[provider]:` reference points to. */
+type SecretReference = {
+  /** The name of the secret. */
+  name: string;
+  /** The name, in the registry, of the provider to try first. */
+  provider?: string;
+};
+
+/** Options for {@link parseSecretReference}. */
+type ParseSecretReferenceOptions = {
+  /** The reference to parse, like `$secret:NAME` or `$secret[provider]:NAME`. */
+  reference: string;
+  /** Describes what's being resolved, for the error messages. */
+  context: string;
+};
+
+/**
+ * Parses a `$secret:` or `$secret[provider]:` reference.
+ *
+ * @param options The reference, and what is being resolved.
+ * @returns The name of the secret, and the provider if the reference has one.
+ * @throws {SecretsConfigError} When a `$secret[provider]:` reference is malformed.
+ */
+const parseSecretReference = ({
+  reference,
+  context,
+}: ParseSecretReferenceOptions): SecretReference => {
+  if (reference.startsWith(SECRET_PREFIX)) {
+    return { name: reference.slice(SECRET_PREFIX.length) };
+  }
+
+  const match = SECRET_WITH_PROVIDER_REGEX.exec(reference);
+  if (!match) {
+    throw new SecretsConfigError(
+      `${context} has a malformed secret reference "${reference}", it should be $secret[provider]:NAME.`,
+    );
+  }
+
+  const [, provider, name] = match;
+  return { name: name!, provider: provider! };
+};
+
 /**
  * Resolves one reference: reads the environment variable of an `$env:` one, the key of an
- * `auth.json` entry of an `$auth:` one, or the secret of a `$secret:` one. What it gets
- * is used as it is.
+ * `auth.json` entry of an `$auth:` one, or the secret of a `$secret:` or
+ * `$secret[provider]:` one, where the provider is tried first. What it gets is used as it
+ * is.
  *
  * @param options The reference, the project directory for the secrets, and what is being
  *   resolved.
  * @returns The value the reference points to.
  * @throws {Error} When an `$env:` variable is not set, or an `$auth:` key can't be read.
  * @throws {SecretNotFoundError} When a `$secret:` can't be resolved.
+ * @throws {SecretsConfigError} When a `$secret[provider]:` is malformed, or its provider
+ *   doesn't exist or is disabled.
  */
 const resolveReference = async ({
   reference,
@@ -503,7 +594,8 @@ const resolveReference = async ({
     return readAuthKey({ name: reference.slice(AUTH_PREFIX.length), context });
   }
 
-  return getSecret(reference.slice(SECRET_PREFIX.length), { cwd, required: true });
+  const { name, provider } = parseSecretReference({ reference, context });
+  return getSecret(name, { cwd, required: true, provider });
 };
 
 /**
@@ -516,7 +608,9 @@ const resolveReference = async ({
  * @returns The value, with the references replaced.
  * @throws {Error} When an `$env:` variable is not set, or an `$auth:` key can't be read.
  * @throws {SecretNotFoundError} When a `$secret:` can't be resolved.
- * @throws {SecretsConfigError} When a `$config:` can't be resolved.
+ * @throws {SecretsConfigError} When a `$config:` can't be resolved, or a
+ *   `$secret[provider]:` is malformed or has a provider that doesn't exist or is
+ *   disabled.
  */
 const interpolate = async ({
   value,
@@ -563,6 +657,10 @@ const interpolate = async ({
  * - `$env:VAR_NAME` — reads from the process environment. Throws if unset.
  * - `$secret:SECRET_NAME` — reads from the configured secret providers. Throws if it can't
  *   be resolved.
+ * - `$secret[provider]:SECRET_NAME` — the same, but tries that provider of the registry
+ *   first. It doesn't have to be in the fallback order, and if it doesn't have the secret
+ *   the others are tried. Throws if the provider doesn't exist or is disabled, or if the
+ *   reference is malformed (no provider, an unclosed bracket, no name).
  * - `$config:some.config.path` — reads that path of the config, and resolves what it finds
  *   with these same rules, so it can be (or have) another reference. Throws if the path
  *   is not set, if it doesn't hold a string, or if the references go back to themselves.
@@ -592,7 +690,9 @@ const interpolate = async ({
  * @returns The value, with the references replaced by what they point to.
  * @throws {Error} When an `$env:` variable is not set, or an `$auth:` key can't be read.
  * @throws {SecretNotFoundError} When a `$secret:` can't be resolved.
- * @throws {SecretsConfigError} When a `$config:` can't be resolved.
+ * @throws {SecretsConfigError} When a `$config:` can't be resolved, or a
+ *   `$secret[provider]:` is malformed or has a provider that doesn't exist or is
+ *   disabled.
  */
 const resolveInterpolatedValue = ({
   value,

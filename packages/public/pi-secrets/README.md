@@ -1,6 +1,6 @@
 # 🔐 Pi Secrets
 
-Resolve secrets from providers like [Infisical](https://infisical.com), for [Pi](https://pi.dev) extensions, tools, and skills.
+Resolve secrets from providers like [Infisical](https://infisical.com), [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/) and [1Password](https://1password.com), for [Pi](https://pi.dev) extensions, tools, and skills.
 
 Instead of putting a token in a config file or an environment variable, you name the secret and this package gets it from a provider, caches it for a short time, and falls back to another provider if the first one fails.
 
@@ -15,6 +15,8 @@ Instead of putting a token in a config file or an environment variable, you name
   - [Provider order](#provider-order)
   - [Local credentials](#local-credentials)
   - [Infisical](#infisical)
+  - [AWS Secrets Manager](#aws-secrets-manager)
+  - [1Password](#1password)
 - ⚙️ [Examples](#%EF%B8%8F-examples)
 - 🔒 [Security](#-security)
 - 🤘 [Development](#-development)
@@ -30,16 +32,16 @@ pnpm add @homer0/pi-secrets
 
 It will give you access to an ESM module with the following:
 
-| Export                                                                                              | What it is                                                                                       |
-| --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `getSecret`                                                                                         | Resolves one secret.                                                                             |
-| `getSecrets`                                                                                        | Resolves many secrets at once, with one request per provider.                                    |
-| `resolveInterpolatedValue`                                                                          | Resolves a config value that can be a reference: `$env:NAME`, `$secret:NAME`, or a plain string. |
-| `escapeReferences`                                                                                  | Escapes the references of a value, to write them in a file that Pi reads.                        |
-| `SecretNotFoundError`                                                                               | The error thrown when a required secret can't be resolved.                                       |
-| `SecretsConfigError`                                                                                | The error thrown when the config is inconsistent.                                                |
-| `secretsConfigSchema`, `secretProviderConfigSchema`, `secretProviderTypeSchema`                     | The [Zod](https://zod.dev) schemas of the config.                                                |
-| `SecretsConfig`, `SecretProviderConfig`, `SecretProviderType`, `GetSecretOptions`, `SecretProvider` | The types.                                                                                       |
+| Export                                                                                                                                                     | What it is                                                                                                                 |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `getSecret`                                                                                                                                                | Resolves one secret.                                                                                                       |
+| `getSecrets`                                                                                                                                               | Resolves many secrets at once, with one request per provider.                                                              |
+| `resolveInterpolatedValue`                                                                                                                                 | Resolves a config value that can be a reference: `$env:NAME`, `$secret:NAME`, `$secret[provider]:NAME`, or a plain string. |
+| `escapeReferences`                                                                                                                                         | Escapes the references of a value, to write them in a file that Pi reads.                                                  |
+| `SecretNotFoundError`                                                                                                                                      | The error thrown when a required secret can't be resolved.                                                                 |
+| `SecretsConfigError`                                                                                                                                       | The error thrown when the config is inconsistent.                                                                          |
+| `secretsConfigSchema`, `secretProviderConfigSchema`, `secretProviderTypeSchema`                                                                            | The [Zod](https://zod.dev) schemas of the config.                                                                          |
+| `SecretsConfig`, `SecretProviderConfig`, `SecretProviderType`, `GetSecretOptions`, `SecretProvider`, `CustomSecretProvider`, `CustomSecretProviderContext` | The types.                                                                                                                 |
 
 > The agent should not call this directly, and its tools should never return secret values. Use it from Node code that needs the secret at runtime.
 
@@ -92,10 +94,12 @@ Each provider in the registry has:
 
 | Option        | What it does                                                             |
 | ------------- | ------------------------------------------------------------------------ |
-| `type`        | The implementation. Right now, only `infisical`.                         |
-| `url`         | The base URL of the provider.                                            |
+| `type`        | The implementation: `infisical`, `aws`, `1password` or `custom`.         |
+| `url`         | The base URL of the provider. Only for `infisical`, where it's required. |
 | `enabled`     | Disabled providers are skipped. The main one has to be enabled.          |
 | `credentials` | What the implementation needs to log in. It's different for each `type`. |
+| `file`        | The file with your class. Only for `custom`, where it's required.        |
+| `data`        | What your class receives. Only for `custom`, where it's optional.        |
 
 #### Provider order
 
@@ -107,6 +111,18 @@ Both `getSecret` and `getSecrets` go through the providers in this order:
 A provider that fails, or that doesn't have the secret, is passed over and the next one is tried. The first value that is found wins. With `getSecrets`, each provider is only asked for the names that are still pending, with one request for all of them.
 
 If the main provider is not in the registry or is disabled, it's a `SecretsConfigError`.
+
+#### Preferred provider
+
+To try a provider before the others, pass its name in the `provider` option of `getSecret` or `getSecrets`:
+
+```ts
+const token = await getSecret('API_TOKEN', { provider: 'infisical-backup' });
+```
+
+It's a preference, not a restriction: that provider goes first, and then the order above applies. If it doesn't have the secret, the next one is tried. The provider doesn't have to be in `fallbackOrder`: any enabled provider of the registry can be preferred. A provider is never tried twice, so if it's also the main one, or is in `fallbackOrder`, it's only asked first.
+
+If the preferred provider is not in the registry or is disabled, it's a `SecretsConfigError`. Without the option, nothing changes.
 
 #### Local credentials
 
@@ -139,6 +155,112 @@ The Infisical provider uses [Universal Auth](https://infisical.com/docs/document
 
 - The secrets that are imported in the project are included. If a key is both local and imported, the local one wins.
 - The access token is kept in the process for as long as Infisical says it lives, so it's not asked for again on every call.
+
+#### AWS Secrets Manager
+
+The `aws` provider reads the secrets of [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/). It has no `url`:
+
+```yaml
+extensions:
+  secrets:
+    providers:
+      main: infisical-main
+      registry:
+        aws-main:
+          type: aws
+          enabled: true
+          credentials:
+            region: us-east-1
+            profile: work
+```
+
+| Credential | Required | What it is                                                                                                                                                                                                                        |
+| ---------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `region`   | Yes      | The AWS region of the secrets. There is no default, so it never reads from a region you didn't choose.                                                                                                                            |
+| `profile`  | No       | The [named profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) to log in with. Without it, the default credential chain of the AWS SDK is used (environment variables, SSO, an instance role...). |
+
+The identity needs the `secretsmanager:GetSecretValue` permission on the secrets you read.
+
+The name of a secret is its id in AWS (the name or the ARN), with an optional key path after a `#`, to pick a key of a JSON secret:
+
+| Name                                       | What it resolves to                                                 |
+| ------------------------------------------ | ------------------------------------------------------------------- |
+| `production/acme/service`                  | The whole text of the secret.                                       |
+| `production/acme/service#api_key`          | The key `api_key` of the JSON secret.                               |
+| `production/acme/service#internal.api_key` | The key `api_key` of the object `internal`, inside the JSON secret. |
+
+```ts
+const apiKey = await getSecret('production/acme/service#internal.api_key', {
+  provider: 'aws-main',
+});
+```
+
+Or in a reference: `$secret[aws-main]:production/acme/service#internal.api_key`.
+
+- The name is split at the last `#`, because AWS doesn't allow it in the ids. The key path is split at the dots, so a key that has a dot in its name can't be picked. An item of a list is picked by its index, like `keys.0`.
+- The value of a key has to be a string or a number (a number is returned as text).
+- A secret or a key that doesn't exist is not an error: the provider doesn't have it, so the next one is tried. Any other failure, like a denied permission, is a warning and the next provider is tried too.
+- It's an error when the secret is binary, when a key path is used on a secret that is not valid JSON, or when the path ends in something that is not a string or a number. The messages have the name of the secret and the path, never its value.
+- `getSecrets` makes one request for each secret id, in parallel: the names that point to keys of the same secret share it.
+- The requests of `getSecrets` are made in parallel, and the call is all or nothing: if one secret id fails (for example a denied permission or a binary secret), the whole call fails for this provider. The names of all the secrets of that call that are not cached come back as not found from it, with a warning for each one, and the next provider is tried.
+
+#### 1Password
+
+The `1password` provider reads secrets from [1Password](https://1password.com) with its [SDK](https://developer.1password.com/docs/sdks/). It needs no server and no binary, and it has no `url`. It can log in with a service account, or with the desktop app:
+
+```yaml
+extensions:
+  secrets:
+    providers:
+      main: op-service
+      fallbackOrder:
+        - op-desktop
+      registry:
+        # With a service account
+        op-service:
+          type: 1password
+          enabled: true
+          credentials:
+            serviceAccountToken: ops_...
+        # With the 1Password desktop app
+        op-desktop:
+          type: 1password
+          enabled: true
+          credentials:
+            accountName: my.1password.com
+```
+
+Set `serviceAccountToken` or `accountName`, one of them: both, neither or an empty one is a config error.
+
+| Credential            | What it is                                                                                                                                                   |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `serviceAccountToken` | The token of a [service account](https://developer.1password.com/docs/sdks/concepts#1password-service-account).                                              |
+| `accountName`         | The account of the [desktop app](https://developer.1password.com/docs/sdks/concepts#1password-desktop-app), as shown at the top of its sidebar, or its UUID. |
+
+- **Service accounts** can only read the vaults they were given access to, and they can't read the built-in Personal, Private or Employee vaults. They have hourly and daily [rate limits](https://developer.1password.com/docs/service-accounts/rate-limits) that depend on your plan: for the reads, from 1,000 an hour per token (1,000 a day for the whole account on the personal and Families plans) to 10,000 an hour and 50,000 a day on Business. When one is reached, the provider fails and the next one is tried. Each lookup that is not in the cache is a request, so on a small plan raise `cacheTtl`, like `5m`, and remember that a secret that is not found is never cached.
+- **The desktop app** has to be set up for the SDKs: in its settings, under Developer, turn on **Integrate with 1Password SDKs**. The first request shows an authorization prompt in the app. The access expires after 10 minutes of inactivity, or when the account is locked, and then the next request asks for it again.
+
+The name of a secret is a [secret reference](https://developer.1password.com/docs/cli/secret-reference-syntax/): `op://vault/item/field`, or `op://vault/item/section/field`. The vault, the item and the field can be names or IDs. A query like `?attribute=otp` is part of the name, and it's passed as it is:
+
+| Name                                      | What it resolves to                     |
+| ----------------------------------------- | --------------------------------------- |
+| `op://Private/GitHub/token`               | The field `token` of the item `GitHub`. |
+| `op://Private/GitHub/token?attribute=otp` | The one-time password of that field.    |
+
+```ts
+const token = await getSecret('op://Engineering/GitHub/token', {
+  provider: 'op-service',
+});
+```
+
+Or in a reference: `$secret[op-service]:op://Engineering/GitHub/token`. A reference ends at the next whitespace, so a name with spaces can only be used with `getSecret` and `getSecrets`.
+
+- A name that doesn't start with `op://` is not an error: the provider doesn't have it, without a request, so the next provider is tried. That lets you mix it with other providers that use other kinds of names.
+- A vault, an item or a field that doesn't exist is not found, so the next provider is tried too.
+- Other problems with a reference, like a name that is not valid or that matches more than one item, are an error, and the message has the name and the kind of problem, never a value. With `getSecrets`, the whole call fails for this provider, like with the other providers.
+- Login and rate limit failures are errors too, and the next provider is tried.
+- `getSecret` and `getSecrets` use one request for all the names.
+- The client of the SDK is created once for each service account token or desktop account, and it's shared by every call, and by every extension of the Pi process, because logging in has limits, or asks for approval. If the session is over, a new one is created in the next call.
 
 ### ⚙️ Examples
 
@@ -184,14 +306,15 @@ With `required`, it throws a `SecretNotFoundError` for the first name that could
 
 #### Using secrets in your own config
 
-If your extension has a config value that holds a credential, like an API key, let the user write a reference instead of the value itself. `resolveInterpolatedValue` understands four prefixes:
+If your extension has a config value that holds a credential, like an API key, let the user write a reference instead of the value itself. `resolveInterpolatedValue` understands four prefixes, and `$secret` can choose its provider:
 
-| Reference       | What it resolves to                                                                                                          |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `$env:VAR_NAME` | The environment variable. It throws if it's not set.                                                                         |
-| `$secret:NAME`  | The secret, from the [providers](#providers). It throws a `SecretNotFoundError` if no provider has it.                       |
-| `$config:PATH`  | What the config has in that path, resolved again. See [Pointing to another config value](#pointing-to-another-config-value). |
-| `$auth:NAME`    | The key of that entry of Pi's `auth.json`. See [Using the keys of Pi's auth.json](#using-the-keys-of-pis-authjson).          |
+| Reference                | What it resolves to                                                                                                          |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| `$env:VAR_NAME`          | The environment variable. It throws if it's not set.                                                                         |
+| `$secret:NAME`           | The secret, from the [providers](#providers). It throws a `SecretNotFoundError` if no provider has it.                       |
+| `$secret[PROVIDER]:NAME` | The secret, trying the provider `PROVIDER` first. See [Choosing the provider](#choosing-the-provider).                       |
+| `$config:PATH`           | What the config has in that path, resolved again. See [Pointing to another config value](#pointing-to-another-config-value). |
+| `$auth:NAME`             | The key of that entry of Pi's `auth.json`. See [Using the keys of Pi's auth.json](#using-the-keys-of-pis-authjson).          |
 
 ```ts
 import { resolveInterpolatedValue } from '@homer0/pi-secrets';
@@ -206,22 +329,35 @@ const apiKey = await resolveInterpolatedValue({
 
 A reference can be the whole value, or a part of it. The text around it is kept exactly as it is, and a value can have as many references as you need:
 
-| Value                    | Result           |
-| ------------------------ | ---------------- |
-| `$secret:API_KEY`        | `the-key`        |
-| `Bearer $secret:API_KEY` | `Bearer the-key` |
-| `$env:USER $env:HOST`    | `homer0 laptop`  |
-| `plain text`             | `plain text`     |
+| Value                         | Result           |
+| ----------------------------- | ---------------- |
+| `$secret:API_KEY`             | `the-key`        |
+| `Bearer $secret:API_KEY`      | `Bearer the-key` |
+| `Bearer $secret[aws]:API_KEY` | `Bearer the-key` |
+| `$env:USER $env:HOST`         | `homer0 laptop`  |
+| `plain text`                  | `plain text`     |
 
 The rules of what is a reference:
 
-- It starts with `$env:`, `$secret:`, `$config:` or `$auth:`, followed by a name, and it ends at the next whitespace (a space, a tab, or a line break). The name is everything in between, so punctuation that is stuck to it, like the comma in `$env:NAME,`, is part of the name.
+- It starts with `$env:`, `$secret:`, `$secret[provider]:`, `$config:` or `$auth:`, followed by a name, and it ends at the next whitespace (a space, a tab, or a line break). The name is everything in between, so punctuation that is stuck to it, like the comma in `$env:NAME,`, is part of the name.
 - It has to be at the start of the value or after whitespace. A prefix in the middle of a word is just text: `KEY=$env:NAME` and `a$env:NAME` are left as they are.
+- Anything that starts with `$secret[` is a reference, even if it's malformed, and a malformed one is an error instead of text. See [Choosing the provider](#choosing-the-provider).
 - The prefixes can be mixed, and if the same reference appears twice, it's resolved each time.
 - What a reference resolves to is put in the text exactly as it is. A `$` in a secret, like in `pa$$word` or `a$&b`, is never read as anything else. (A `$config:` is the one that is resolved again, see below.)
 - If a reference can't be resolved, the whole call throws, and the error is about the first one that failed.
 
 It fails instead of leaving a placeholder or an empty string, because a blank credential only shows up later as an error like a 401, far from the typo that caused it.
+
+#### Choosing the provider
+
+`$secret[provider]:NAME` tries the provider `provider` first, like the [`provider` option](#preferred-provider) of `getSecret`, which is what it uses. The name is everything after the colon, so it can have any character, like the `op://vault/item/field` references of 1Password or the `@` that AWS allows. A plain `$secret:NAME` works as it always did.
+
+- `provider` is the name of the provider in the registry, so it has no whitespace and no `]`. It has to be enabled, but it doesn't have to be in `fallbackOrder`.
+- It's a preference, not a restriction: if that provider doesn't have the secret, the main one and the ones in `fallbackOrder` are tried. If none has it, it throws a `SecretNotFoundError`.
+- If the provider is not in the registry or is disabled, it throws a `SecretsConfigError`. It's never taken as text.
+- A malformed reference is a `SecretsConfigError` too, instead of text: `$secret[]:NAME` (no provider), `$secret[provider:NAME` (an unclosed bracket) and `$secret[provider]:` or `$secret[provider]` (no name).
+- `$env:`, `$config:` and `$auth:` don't take a provider.
+- What a `$config:` path holds is resolved with the same rules, so it can have `$secret[provider]:NAME`.
 
 #### Writing references in a file that Pi reads
 
@@ -231,6 +367,7 @@ Some files are read by Pi before your extension gets a chance to resolve anythin
 import { escapeReferences, resolveInterpolatedValue } from '@homer0/pi-secrets';
 
 escapeReferences('Bearer $secret:API_KEY'); // 'Bearer $$secret:API_KEY'
+escapeReferences('Bearer $secret[aws]:API_KEY'); // 'Bearer $$secret[aws]:API_KEY'
 escapeReferences('plain text'); // 'plain text'
 
 // Later, with what Pi gave back ('Bearer $secret:API_KEY'):
@@ -289,6 +426,82 @@ The `key` is resolved the way Pi resolves it, so what you get is the key Pi itse
 - It throws an error that says which entry it was, and never shows the command, if the file can't be read or is not valid JSON, if the entry doesn't exist or has no `key` (like an OAuth credential, which has tokens instead), or if the key can't be resolved.
 - `auth.json` is read every time, so a key you change is picked up without restarting anything.
 
+#### Custom providers
+
+The `custom` provider loads a class from a file you wrote, so you can read secrets from somewhere the other providers don't cover, like the keychain of your system or an internal service:
+
+```yaml
+extensions:
+  secrets:
+    providers:
+      main: keychain
+      registry:
+        keychain:
+          type: custom
+          enabled: true
+          file: agent:secrets/keychain.ts
+          data:
+            credentials:
+              username: homer0
+```
+
+| Option | What it is                                                                                                 |
+| ------ | ---------------------------------------------------------------------------------------------------------- |
+| `file` | The path of the file, with a [prefix](#the-prefix-is-required). Required.                                  |
+| `data` | Anything you want your class to receive, an object. It's passed as it is, without validating it. Optional. |
+
+The default export of the file has to be a class. It's created with `new`, with the name that the provider has in the registry and its `data` (an empty object if the config has none). Use `implements` with the types of this package to get the signatures; the import is erased, so the file doesn't need the package at runtime:
+
+```ts
+import type {
+  CustomSecretProvider,
+  CustomSecretProviderContext,
+} from '@homer0/pi-secrets';
+
+export default class KeychainProvider implements CustomSecretProvider {
+  private readonly username: string;
+
+  constructor({ data }: CustomSecretProviderContext) {
+    const credentials = data['credentials'] as { username: string };
+    this.username = credentials.username;
+  }
+
+  async getSecret(name: string): Promise<string | undefined> {
+    // Return `undefined` if you don't have it, so the next provider is tried.
+    return lookUpInKeychain(this.username, name);
+  }
+}
+```
+
+| Method              | Required | What it does                                                                                                                        |
+| ------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `getSecret(name)`   | Yes      | Resolves one secret. Return `undefined` if you don't have it.                                                                       |
+| `getSecrets(names)` | No       | Resolves many at once, and returns an object with the values by name. Without it, `getSecret` is called for each name, in parallel. |
+| `close()`           | No       | Releases what you hold, like connections. It's called after each lookup.                                                            |
+
+- **The constructor can't be async.** Do what you need (like logging in) lazily, inside the methods. A new instance is created for each lookup, so keep what is expensive at module level, like the clients of the other providers: the file is evaluated once for the whole Pi process, and the extensions that use this package share it.
+- **The methods have to be defined in the class**, as in the example. Methods that are properties of the instance, like `getSecret = async () => {}`, are not supported: the class is checked in its prototype, once, when the file is loaded, and it's rejected if `getSecret` is not there, or if `getSecrets` or `close` are there and are not functions. Nothing is checked after the class is created.
+- **The file can be TypeScript.** It's loaded with [jiti](https://github.com/unjs/jiti), so enums and imports without the extension work.
+- **There is no hot reload.** The class is loaded once per Pi process, shared by every extension that uses this package, and a file that was loaded is not read again: restart Pi after editing it. A skill runs in its own process, so it loads the file every time. A file that couldn't be loaded, for example because it doesn't exist yet or it's not valid, is tried again in the next lookup.
+- **A constructor that throws stops the resolution**: the error is not caught and the next provider is not tried, like with invalid credentials in the other providers. Use it to validate `data`. Runtime failures, like a service that is down, belong in the methods.
+- **Errors in your methods**, like any provider error, are a warning, and the next provider is tried. Problems with the file itself are config errors: they throw a `SecretsConfigError`, and the next provider is not tried.
+
+##### The prefix is required
+
+`file` has to start with one of the prefixes of [`@homer0/pi-config`](../pi-config/README.md#resolving-paths):
+
+| Prefix            | Where it points to                    |
+| ----------------- | ------------------------------------- |
+| `pi:`             | The Pi directory (`~/.pi/`).          |
+| `agent:`          | The agent directory (`~/.pi/agent/`). |
+| `profile:<name>:` | The directory of a profile.           |
+
+Absolute paths, relative paths, and paths that end up outside of the Pi directory and the agent directory, even with `..` (like `agent:../../code/some-repo/x.ts`), are a `SecretsConfigError`. A `..` that stays inside is fine: `agent:a/../b.ts` is `agent:b.ts`. The paths are compared once normalized, and symbolic links are not followed.
+
+This is on purpose: the config can also come from a project (`<project>/.pi/config.yaml`), and a repository that you cloned must not be able to make Pi run its own code. The prefixes only point inside your Pi installation, which is where you put the files you trust.
+
+> The class runs in the Pi process, with the same permissions as Pi: it can read your files, use the network and run commands. Only point `file` to code you wrote or reviewed.
+
 #### How the cache works
 
 The values are cached in the [in-memory cache](https://www.npmjs.com/package/@homer0/pi-in-memory-cache), so they are shared by every process that uses it, not just the one that asked. They live for `cacheTtl`, and a secret that was not found is never cached.
@@ -299,6 +512,7 @@ The values are cached in the [in-memory cache](https://www.npmjs.com/package/@ho
 - Keep the credentials in a `config.local` file, which you can leave out of your repository.
 - The values are kept in the memory of the cache daemon, not on disk.
 - `skipTLSVerify` turns off a protection: don't use it with servers you don't control.
+- A custom provider runs your code with the permissions of Pi. Its file has to be inside your Pi directory or agent directory, so a project config can't point to code of a repository; see [Custom providers](#custom-providers).
 
 ### 🤘 Development
 

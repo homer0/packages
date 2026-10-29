@@ -11,6 +11,10 @@ export {
 } from './secrets.js';
 export { SecretNotFoundError, SecretsConfigError } from './utils.js';
 export type {
+  CustomSecretProvider,
+  CustomSecretProviderContext,
+} from './providers/custom/types.js';
+export type {
   GetSecretOptions,
   SecretProvider,
   SecretProviderConfig,

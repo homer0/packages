@@ -36,11 +36,11 @@ pi install npm:@homer0/pi-profiles
 
 This will make Pi do the following in every session, for the profiles that are enabled:
 
-| When                | What it does                                                                                      |
-| ------------------- | ------------------------------------------------------------------------------------------------- |
-| Session start       | Shows the enabled profiles above the editor, and loads the extensions of their packages.          |
-| Resources discovery | Adds the skills of the profiles, and the skills, prompts, and themes of their packages.           |
-| Before the agent    | Appends the `AGENTS.md` of each profile to the system prompt, under a `# Profile Context` header. |
+| When                | What it does                                                                                        |
+| ------------------- | --------------------------------------------------------------------------------------------------- |
+| Session start       | Shows the enabled profiles above the editor, and loads the extensions of their packages.            |
+| Resources discovery | Adds the skills and prompts of the profiles, and the skills, prompts, and themes of their packages. |
+| Before the agent    | Appends the `AGENTS.md` of each profile to the system prompt, under a `# Profile Context` header.   |
 
 It also adds the [`/profiles-status`](#profiles-status) command.
 
@@ -74,6 +74,7 @@ profiles/
 └── work/
     ├── AGENTS.md       # Extra instructions for the agent
     ├── packages.json   # The packages to load
+    ├── prompts/        # Prompt templates that are only available with this profile
     └── skills/         # Skills that are only available with this profile
 ```
 

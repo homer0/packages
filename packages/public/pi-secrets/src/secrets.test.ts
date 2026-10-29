@@ -10,7 +10,11 @@ import {
   vi,
   type MockInstance,
 } from 'vitest';
-import { InfisicalSecretProvider } from './providers.js';
+import { AwsSecretProvider } from './providers/aws/provider.js';
+import { loadCustomSecretProviderClass } from './providers/custom/loader.js';
+import { CustomSecretProviderWrapper } from './providers/custom/provider.js';
+import { InfisicalSecretProvider } from './providers/infisical/provider.js';
+import { OnePasswordSecretProvider } from './providers/onepassword/provider.js';
 import {
   escapeReferences,
   getSecret,
@@ -22,7 +26,19 @@ import { readAuthKey, SecretNotFoundError, SecretsConfigError } from './utils.js
 
 vi.mock('@homer0/pi-config', () => ({ getConfigValue: vi.fn() }));
 vi.mock('@homer0/pi-in-memory-cache', () => ({ getCached: vi.fn() }));
-vi.mock('./providers.js', () => ({ InfisicalSecretProvider: vi.fn() }));
+vi.mock('./providers/aws/provider.js', () => ({ AwsSecretProvider: vi.fn() }));
+vi.mock('./providers/custom/loader.js', () => ({
+  loadCustomSecretProviderClass: vi.fn(),
+}));
+vi.mock('./providers/custom/provider.js', () => ({
+  CustomSecretProviderWrapper: vi.fn(),
+}));
+vi.mock('./providers/onepassword/provider.js', () => ({
+  OnePasswordSecretProvider: vi.fn(),
+}));
+vi.mock('./providers/infisical/provider.js', () => ({
+  InfisicalSecretProvider: vi.fn(),
+}));
 vi.mock('./utils.js', async (importOriginal) => ({
   ...(await importOriginal<typeof import('./utils.js')>()),
   readAuthKey: vi.fn(),
@@ -193,6 +209,88 @@ describe('secrets', () => {
       expect(vi.mocked(InfisicalSecretProvider)).toHaveBeenCalledOnce();
     });
 
+    describe('with a preferred provider', () => {
+      it('tries it before the main provider', async () => {
+        providers['a'] = fakeProvider('a', { TOKEN: 'from-a' });
+        providers['b'] = fakeProvider('b', { TOKEN: 'from-b' });
+
+        await expect(getSecret('TOKEN', { provider: 'b' })).resolves.toBe('from-b');
+
+        expect(providers['a']!.getSecret).not.toHaveBeenCalled();
+        expect(providers['b']!.close).toHaveBeenCalledOnce();
+      });
+
+      it('falls through to the main and fallback providers when it lacks the secret', async () => {
+        const entry = {
+          type: 'infisical',
+          url: 'https://x.test',
+          credentials: {},
+        } as const;
+        providers['c'] = fakeProvider('c', { TOKEN: 'from-c' });
+        vi.mocked(getConfigValue).mockResolvedValue(
+          createConfig({
+            registry: {
+              a: { ...entry, enabled: true },
+              b: { ...entry, enabled: true },
+              c: { ...entry, enabled: true },
+            },
+            fallbackOrder: ['c'],
+          }) as never,
+        );
+        providers['a'] = fakeProvider('a');
+
+        await expect(getSecret('TOKEN', { provider: 'b' })).resolves.toBe('from-c');
+
+        expect(providers['b']!.getSecret).toHaveBeenCalledOnce();
+        expect(providers['a']!.getSecret).toHaveBeenCalledOnce();
+        expect(providers['c']!.getSecret).toHaveBeenCalledOnce();
+      });
+
+      it('does not try it twice when it is the main provider', async () => {
+        await getSecret('TOKEN', { provider: 'a' });
+
+        expect(providers['a']!.getSecret).toHaveBeenCalledOnce();
+        expect(providers['b']!.getSecret).toHaveBeenCalledOnce();
+        expect(vi.mocked(InfisicalSecretProvider)).toHaveBeenCalledTimes(2);
+      });
+
+      it('does not try it twice when it is in the fallback order', async () => {
+        await getSecret('TOKEN', { provider: 'b' });
+
+        expect(providers['a']!.getSecret).toHaveBeenCalledOnce();
+        expect(providers['b']!.getSecret).toHaveBeenCalledOnce();
+        expect(vi.mocked(InfisicalSecretProvider)).toHaveBeenCalledTimes(2);
+      });
+
+      it('throws when it is not in the registry', async () => {
+        await expect(getSecret('TOKEN', { provider: 'ghost' })).rejects.toThrow(
+          new SecretsConfigError('Preferred secret provider not found: ghost'),
+        );
+        expect(InfisicalSecretProvider).not.toHaveBeenCalled();
+      });
+
+      it('throws when it is disabled', async () => {
+        const entry = {
+          type: 'infisical',
+          url: 'https://x.test',
+          credentials: {},
+        } as const;
+        vi.mocked(getConfigValue).mockResolvedValue(
+          createConfig({
+            registry: {
+              a: { ...entry, enabled: true },
+              b: { ...entry, enabled: false },
+            },
+          }) as never,
+        );
+
+        await expect(getSecret('TOKEN', { provider: 'b' })).rejects.toThrow(
+          new SecretsConfigError('Preferred secret provider is disabled: b'),
+        );
+        expect(InfisicalSecretProvider).not.toHaveBeenCalled();
+      });
+    });
+
     it('warns and returns undefined when no provider has the secret', async () => {
       await expect(getSecret('TOKEN')).resolves.toBeUndefined();
 
@@ -262,6 +360,157 @@ describe('secrets', () => {
         new SecretsConfigError('Unsupported secret provider type: vault'),
       );
     });
+
+    it('resolves the secrets of a 1password provider with it', async () => {
+      const onePasswordProvider = fakeProvider('a', { TOKEN: 'from-1password' });
+      // eslint-disable-next-line prefer-arrow-callback, func-names -- `new OnePasswordSecretProvider()` needs a constructable function, which an arrow is not.
+      vi.mocked(OnePasswordSecretProvider).mockImplementation(function () {
+        return onePasswordProvider as never;
+      });
+      const entry = { credentials: { accountName: 'me' }, enabled: true };
+      vi.mocked(getConfigValue).mockResolvedValue(
+        createConfig({
+          registry: { a: { ...entry, type: '1password' } },
+        } as never) as never,
+      );
+
+      await expect(getSecret('TOKEN')).resolves.toBe('from-1password');
+
+      expect(OnePasswordSecretProvider).toHaveBeenCalledExactlyOnceWith(
+        expect.objectContaining({ name: 'a', type: '1password' }),
+        expect.objectContaining({ cacheTtl: 10_000 }),
+      );
+      expect(InfisicalSecretProvider).not.toHaveBeenCalled();
+      expect(onePasswordProvider.close).toHaveBeenCalledOnce();
+    });
+
+    describe('with a custom provider', () => {
+      const entry = { type: 'custom', enabled: true, file: 'agent:keychain.ts' } as const;
+      const providerClass = class {};
+
+      beforeEach(() => {
+        vi.mocked(loadCustomSecretProviderClass).mockResolvedValue(
+          providerClass as never,
+        );
+      });
+
+      it('resolves the secrets with the class of its file', async () => {
+        const customProvider = fakeProvider('a', { TOKEN: 'from-custom' });
+        // eslint-disable-next-line prefer-arrow-callback, func-names -- `new CustomSecretProviderWrapper()` needs a constructable function, which an arrow is not.
+        vi.mocked(CustomSecretProviderWrapper).mockImplementation(function () {
+          return customProvider as never;
+        });
+        vi.mocked(getConfigValue).mockResolvedValue(
+          createConfig({ registry: { a: entry } } as never) as never,
+        );
+
+        await expect(getSecret('TOKEN')).resolves.toBe('from-custom');
+
+        expect(loadCustomSecretProviderClass).toHaveBeenCalledExactlyOnceWith(
+          'agent:keychain.ts',
+        );
+        expect(CustomSecretProviderWrapper).toHaveBeenCalledExactlyOnceWith({
+          providerConfig: { ...entry, name: 'a' },
+          secretsConfig: expect.objectContaining({ cacheTtl: 10_000 }),
+          providerClass,
+        });
+        expect(InfisicalSecretProvider).not.toHaveBeenCalled();
+        expect(customProvider.close).toHaveBeenCalledOnce();
+      });
+
+      it('resolves many secrets with it', async () => {
+        const customProvider = fakeProvider('a', { ONE: '1', TWO: '2' });
+        // eslint-disable-next-line prefer-arrow-callback, func-names -- `new CustomSecretProviderWrapper()` needs a constructable function, which an arrow is not.
+        vi.mocked(CustomSecretProviderWrapper).mockImplementation(function () {
+          return customProvider as never;
+        });
+        vi.mocked(getConfigValue).mockResolvedValue(
+          createConfig({ registry: { a: entry } } as never) as never,
+        );
+
+        await expect(getSecrets(['ONE', 'TWO'])).resolves.toEqual({ ONE: '1', TWO: '2' });
+
+        expect(customProvider.close).toHaveBeenCalledOnce();
+      });
+
+      it('lets a config error of the file propagate, without trying the next provider', async () => {
+        vi.mocked(loadCustomSecretProviderClass).mockRejectedValue(
+          new SecretsConfigError('The custom provider file was not found: /x.ts'),
+        );
+        vi.mocked(getConfigValue).mockResolvedValue(
+          createConfig({
+            registry: {
+              a: entry,
+              b: {
+                type: 'infisical',
+                url: 'https://x.test',
+                credentials: {},
+                enabled: true,
+              },
+            },
+          } as never) as never,
+        );
+
+        await expect(getSecret('TOKEN')).rejects.toThrow(
+          new SecretsConfigError('The custom provider file was not found: /x.ts'),
+        );
+        await expect(getSecrets(['TOKEN'])).rejects.toThrow(SecretsConfigError);
+
+        expect(InfisicalSecretProvider).not.toHaveBeenCalled();
+      });
+
+      it('warns and tries the next provider when the custom one fails to resolve', async () => {
+        const failing = fakeProvider('a');
+        failing.getSecret.mockRejectedValue(new Error('keychain locked'));
+        // eslint-disable-next-line prefer-arrow-callback, func-names -- `new CustomSecretProviderWrapper()` needs a constructable function, which an arrow is not.
+        vi.mocked(CustomSecretProviderWrapper).mockImplementation(function () {
+          return failing as never;
+        });
+        providers['b'] = fakeProvider('b', { TOKEN: 'from-b' });
+        vi.mocked(getConfigValue).mockResolvedValue(
+          createConfig({
+            registry: {
+              a: entry,
+              b: {
+                type: 'infisical',
+                url: 'https://x.test',
+                credentials: {},
+                enabled: true,
+              },
+            },
+          } as never) as never,
+        );
+
+        await expect(getSecret('TOKEN')).resolves.toBe('from-b');
+
+        expect(warn).toHaveBeenCalledWith(
+          "[pi-secrets] Provider 'a' failed to resolve a secret.",
+          expect.any(Error),
+        );
+        expect(failing.close).toHaveBeenCalledOnce();
+      });
+    });
+
+    it('resolves the secrets of an aws provider with it', async () => {
+      const awsProvider = fakeProvider('a', { TOKEN: 'from-aws' });
+      // eslint-disable-next-line prefer-arrow-callback, func-names -- `new AwsSecretProvider()` needs a constructable function, which an arrow is not.
+      vi.mocked(AwsSecretProvider).mockImplementation(function () {
+        return awsProvider as never;
+      });
+      const entry = { credentials: { region: 'us-east-1' }, enabled: true };
+      vi.mocked(getConfigValue).mockResolvedValue(
+        createConfig({ registry: { a: { ...entry, type: 'aws' } } } as never) as never,
+      );
+
+      await expect(getSecret('TOKEN')).resolves.toBe('from-aws');
+
+      expect(AwsSecretProvider).toHaveBeenCalledExactlyOnceWith(
+        expect.objectContaining({ name: 'a', type: 'aws' }),
+        expect.objectContaining({ cacheTtl: 10_000 }),
+      );
+      expect(InfisicalSecretProvider).not.toHaveBeenCalled();
+      expect(awsProvider.close).toHaveBeenCalledOnce();
+    });
   });
 
   describe('getSecrets', () => {
@@ -302,6 +551,35 @@ describe('secrets', () => {
         'pi-secrets:secret:infisical:a:ONE',
         'pi-secrets:secret:infisical:a:TWO',
       ]);
+    });
+
+    describe('with a preferred provider', () => {
+      it('asks it first, and the next providers only for the names still pending', async () => {
+        providers['a'] = fakeProvider('a', { ONE: '1', TWO: 'from-a' });
+        providers['b'] = fakeProvider('b', { TWO: '2' });
+
+        const values = await getSecrets(['ONE', 'TWO'] as const, { provider: 'b' });
+
+        expect(values).toEqual({ ONE: '1', TWO: '2' });
+        expect(providers['b']!.getSecrets).toHaveBeenCalledExactlyOnceWith([
+          'ONE',
+          'TWO',
+        ]);
+        expect(providers['a']!.getSecrets).toHaveBeenCalledExactlyOnceWith(['ONE']);
+      });
+
+      it('does not ask it twice', async () => {
+        await getSecrets(['ONE'] as const, { provider: 'a' });
+
+        expect(providers['a']!.getSecrets).toHaveBeenCalledOnce();
+        expect(vi.mocked(InfisicalSecretProvider)).toHaveBeenCalledTimes(2);
+      });
+
+      it('throws when it is not in the registry', async () => {
+        await expect(getSecrets(['ONE'] as const, { provider: 'ghost' })).rejects.toThrow(
+          new SecretsConfigError('Preferred secret provider not found: ghost'),
+        );
+      });
     });
 
     it('reports a provider that fails, and leaves its names pending', async () => {
@@ -367,6 +645,10 @@ describe('secrets', () => {
       ['$config:some.path', '$$config:some.path'],
       ['Bearer $secret:API_KEY', 'Bearer $$secret:API_KEY'],
       ['$env:USER  $config:a.b', '$$env:USER  $$config:a.b'],
+      ['$secret[aws]:API_KEY', '$$secret[aws]:API_KEY'],
+      ['Bearer $secret[aws]:op://vault/item', 'Bearer $$secret[aws]:op://vault/item'],
+      ['$secret[a]:ONE $secret:TWO', '$$secret[a]:ONE $$secret:TWO'],
+      ['$secret[]:API_KEY', '$$secret[]:API_KEY'],
     ])('escapes the references of %s', (value, expected) => {
       expect(escapeReferences(value)).toBe(expected);
     });
@@ -380,6 +662,8 @@ describe('secrets', () => {
       ['key=$auth:anthropic'],
       ['$auth:'],
       ['$other:name'],
+      ['key=$secret[aws]:API_KEY'],
+      ['$env[aws]:NAME'],
     ])('leaves %s as it is', (value) => {
       expect(escapeReferences(value)).toBe(value);
     });
@@ -651,6 +935,141 @@ describe('secrets', () => {
       });
     });
 
+    describe('$secret[provider]: references', () => {
+      it('asks that provider first, and falls through to the others', async () => {
+        providers['a'] = fakeProvider('a', { API_KEY: 'from-a', ONLY_A: 'only-a' });
+        providers['b'] = fakeProvider('b', { API_KEY: 'from-b' });
+
+        await expect(
+          resolveInterpolatedValue({ value: '$secret[b]:API_KEY', context: 'ctx' }),
+        ).resolves.toBe('from-b');
+        await expect(
+          resolveInterpolatedValue({ value: '$secret[b]:ONLY_A', context: 'ctx' }),
+        ).resolves.toBe('only-a');
+
+        expect(providers['b']!.getSecret).toHaveBeenCalledWith('API_KEY');
+      });
+
+      it('resolves a provider that is not in the fallback order, end to end', async () => {
+        const entry = {
+          type: 'infisical',
+          url: 'https://x.test',
+          credentials: {},
+        } as const;
+        providers['c'] = fakeProvider('c', { API_KEY: 'from-c' });
+        vi.mocked(getConfigValue).mockResolvedValue(
+          createConfig({
+            registry: {
+              a: { ...entry, enabled: true },
+              b: { ...entry, enabled: true },
+              c: { ...entry, enabled: true },
+            },
+            fallbackOrder: ['b'],
+          }) as never,
+        );
+
+        await expect(
+          resolveInterpolatedValue({
+            value: 'Bearer $secret[c]:API_KEY',
+            context: 'ctx',
+          }),
+        ).resolves.toBe('Bearer from-c');
+        expect(providers['a']!.getSecret).not.toHaveBeenCalled();
+      });
+
+      it('keeps the name as it is, with any character after the colon', async () => {
+        providers['b'] = fakeProvider('b', {
+          'op://vault/item/field': 'one',
+          'app/key@v1': 'two',
+        });
+
+        await expect(
+          resolveInterpolatedValue({
+            value: '$secret[b]:op://vault/item/field $secret[b]:app/key@v1',
+            context: 'ctx',
+          }),
+        ).resolves.toBe('one two');
+      });
+
+      it('works inside a larger text, and more than once in a value', async () => {
+        providers['a'] = fakeProvider('a', { ONE: '1' });
+        providers['b'] = fakeProvider('b', { TWO: '2' });
+
+        await expect(
+          resolveInterpolatedValue({
+            value: 'Bearer $secret[b]:TWO and $secret:ONE $secret[b]:TWO',
+            context: 'ctx',
+          }),
+        ).resolves.toBe('Bearer 2 and 1 2');
+      });
+
+      it('is not a reference in the middle of a word', async () => {
+        await expect(
+          resolveInterpolatedValue({ value: 'KEY=$secret[b]:API_KEY', context: 'ctx' }),
+        ).resolves.toBe('KEY=$secret[b]:API_KEY');
+      });
+
+      it('throws the error of a provider that is not in the registry', async () => {
+        await expect(
+          resolveInterpolatedValue({ value: '$secret[ghost]:API_KEY', context: 'ctx' }),
+        ).rejects.toThrow(
+          new SecretsConfigError('Preferred secret provider not found: ghost'),
+        );
+      });
+
+      it('throws the error of a provider that is disabled', async () => {
+        const entry = {
+          type: 'infisical',
+          url: 'https://x.test',
+          credentials: {},
+        } as const;
+        vi.mocked(getConfigValue).mockResolvedValue(
+          createConfig({
+            registry: {
+              a: { ...entry, enabled: true },
+              b: { ...entry, enabled: false },
+            },
+          }) as never,
+        );
+
+        await expect(
+          resolveInterpolatedValue({ value: '$secret[b]:API_KEY', context: 'ctx' }),
+        ).rejects.toThrow(
+          new SecretsConfigError('Preferred secret provider is disabled: b'),
+        );
+      });
+
+      it.each([
+        ['an empty provider', '$secret[]:API_KEY'],
+        ['an unclosed bracket', '$secret[b:API_KEY'],
+        ['an unclosed bracket with nothing else', '$secret['],
+        ['a missing name', '$secret[b]:'],
+        ['a missing colon', '$secret[b]API_KEY'],
+        ['whitespace-free garbage after the bracket', '$secret[b]]:API_KEY'],
+        ['a missing name and colon', '$secret[b]'],
+      ])('fails with %s', async (_label, value) => {
+        await expect(resolveInterpolatedValue({ value, context: 'ctx' })).rejects.toThrow(
+          new SecretsConfigError(
+            `ctx has a malformed secret reference "${value}", it should be $secret[provider]:NAME.`,
+          ),
+        );
+        expect(InfisicalSecretProvider).not.toHaveBeenCalled();
+      });
+
+      it('does not take a provider in $env:, $auth: or $config: references', async () => {
+        vi.stubEnv('PI_SECRETS_INTERPOLATION_TEST_VAR', 'env-value');
+
+        await expect(
+          resolveInterpolatedValue({
+            value: '$env[b]:PI_SECRETS_INTERPOLATION_TEST_VAR $auth[b]:x $config[b]:a.b',
+            context: 'ctx',
+          }),
+        ).resolves.toBe(
+          '$env[b]:PI_SECRETS_INTERPOLATION_TEST_VAR $auth[b]:x $config[b]:a.b',
+        );
+      });
+    });
+
     describe('$config: references', () => {
       /** Makes the config have the secrets config, and the given values on their paths. */
       const mockConfigPaths = (values: Record<string, unknown>): void => {
@@ -668,6 +1087,23 @@ describe('secrets', () => {
             context: 'ctx',
           }),
         ).resolves.toBe('the-secret');
+      });
+
+      it('resolves a $secret[provider]: that the path holds, with the same rules', async () => {
+        providers['a'] = fakeProvider('a', { API_KEY: 'from-a' });
+        providers['b'] = fakeProvider('b', { API_KEY: 'from-b' });
+        mockConfigPaths({
+          'auth.header': 'Bearer $secret[b]:API_KEY',
+          'auth.outer': '$config:auth.header',
+          'auth.bad': '$secret[]:API_KEY',
+        });
+
+        await expect(
+          resolveInterpolatedValue({ value: '$config:auth.outer', context: 'ctx' }),
+        ).resolves.toBe('Bearer from-b');
+        await expect(
+          resolveInterpolatedValue({ value: '$config:auth.bad', context: 'ctx' }),
+        ).rejects.toThrow(SecretsConfigError);
       });
 
       it('resolves a path that points to an environment variable', async () => {

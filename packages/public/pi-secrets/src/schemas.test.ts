@@ -32,8 +32,40 @@ describe('schemas', () => {
       expect(secretProviderConfigSchema.parse(provider)).toEqual(provider);
     });
 
+    it.each(['aws', '1password'])('accepts a %s provider without a url', (type) => {
+      const value = { type, credentials: {}, enabled: true };
+
+      expect(secretProviderConfigSchema.parse(value)).toEqual(value);
+    });
+
+    describe('with a custom provider', () => {
+      const custom = { type: 'custom', enabled: true, file: 'agent:secrets/keychain.ts' };
+
+      it('accepts a file without data', () => {
+        expect(secretProviderConfigSchema.parse(custom)).toEqual(custom);
+      });
+
+      it('accepts data and keeps it as it is', () => {
+        const value = { ...custom, data: { credentials: { username: 'homer0' }, n: 1 } };
+
+        expect(secretProviderConfigSchema.parse(value)).toEqual(value);
+      });
+
+      it.each([
+        ['no file', { ...custom, file: undefined }],
+        ['an empty file', { ...custom, file: '' }],
+        ['a file that is not a string', { ...custom, file: 1 }],
+        ['no enabled flag', { ...custom, enabled: undefined }],
+        ['data that is not an object', { ...custom, data: 'text' }],
+        ['data that is an array', { ...custom, data: [] }],
+      ])('rejects %s', (_label, value) => {
+        expect(secretProviderConfigSchema.safeParse(value).success).toBe(false);
+      });
+    });
+
     it.each([
       ['an unsupported type', { ...provider, type: 'vault' }],
+      ['an infisical provider without a url', { ...provider, url: undefined }],
       ['a url that is not a url', { ...provider, url: 'not a url' }],
       ['no credentials', { ...provider, credentials: undefined }],
       ['no enabled flag', { ...provider, enabled: undefined }],

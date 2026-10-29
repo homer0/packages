@@ -73,6 +73,10 @@ Config management tools, commands, and library utilities for [Pi](https://pi.dev
 
 A shared in-memory cache for Pi extensions, kept by a background daemon.
 
+#### [Pi Install pnpm Package](./packages/public/pi-install-pnpm-package)
+
+Install and uninstall pnpm-backed Pi packages from slash commands in a pnpm workspace.
+
 #### [🎭 Pi Profiles](./packages/public/pi-profiles)
 
 Turn sets of Pi skills, extensions, and context on and off per machine or project.

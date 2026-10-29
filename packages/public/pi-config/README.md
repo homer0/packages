@@ -60,11 +60,12 @@ pnpm add @homer0/pi-config
 
 Installing it as a dependency will give you access to an ESM module with the following functions:
 
-| Function         | What it does                                 |
-| ---------------- | -------------------------------------------- |
-| `getConfig`      | Reads the full resolved config.              |
-| `getConfigValue` | Reads a single config value by its path.     |
-| `queryConfig`    | Queries the config using a structured query. |
+| Function         | What it does                                                                                        |
+| ---------------- | --------------------------------------------------------------------------------------------------- |
+| `getConfig`      | Reads the full resolved config.                                                                     |
+| `getConfigValue` | Reads a single config value by its path.                                                            |
+| `queryConfig`    | Queries the config using a structured query.                                                        |
+| `resolvePiPath`  | Resolves a `pi:`, `agent:` or `profile:<name>:` path (and, by default, absolute and relative ones). |
 
 ### 🧙 Configs
 
@@ -155,6 +156,24 @@ A few more details:
 - The base file is loaded first and the file that extends it is merged on top, so the current file always wins.
 - The `extends` key is removed from the resolved config.
 - Chains work: a base file can extend another one. Circular references are detected and logged as warnings, without breaking the loading of the config.
+
+#### Resolving paths
+
+If your code needs to accept a path from a config (for example, a file to load) and you only want the prefixed forms, use `resolvePiPath`, the same function `extends` uses, with `{ prefixedOnly: true }`. With it, absolute and relative paths are not accepted:
+
+```ts
+import { resolvePiPath } from '@homer0/pi-config';
+
+resolvePiPath('agent:secrets/keychain.ts', { prefixedOnly: true }); // <agent dir>/secrets/keychain.ts
+resolvePiPath('profile:work:tools/lint.ts', { prefixedOnly: true }); // <agent dir>/profiles/work/tools/lint.ts
+resolvePiPath('/etc/keychain.ts', { prefixedOnly: true }); // throws: no prefix
+resolvePiPath('agent:', { prefixedOnly: true }); // throws: empty path
+resolvePiPath('../base.yaml', '/project/.pi'); // /project/base.yaml, the default (what `extends` does)
+```
+
+It throws an error, that includes the value, when the path doesn't start with `pi:`, `agent:` or `profile:<name>:`, or when the path after the prefix is empty.
+
+It only resolves. It doesn't check that the result stays inside the directory of the prefix (`agent:../x.ts` is `x.ts` in the parent of the agent directory), that the file exists or that it's safe to use. If the path may come from a config you don't control, apply those restrictions in your code.
 
 #### Session override
 

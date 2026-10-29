@@ -1,8 +1,8 @@
 # Pi Package Reference
 
 Source: ~/.pi/packages/pi-profiles
-Source-Commit: d0f5a9d91b667fb22321776af6dff2327a1979c3
-Updated-At: 2026-10-25T04:57:42Z
+Source-Commit: 083d6952e7f76c8f2ad71eea48bd1a730bd2425d
+Updated-At: 2026-10-29T04:47:36Z
 
 ## Copy Instructions
 

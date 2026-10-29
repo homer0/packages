@@ -79,21 +79,23 @@ describe('discoverProfileResources', () => {
     expect(resources).toEqual({
       names: [],
       skillPaths: [],
+      promptPaths: [],
       agentsFiles: [],
       packages: [],
     });
     expect(existsSync).not.toHaveBeenCalled();
   });
 
-  it('collects the skills dir and AGENTS.md content for each enabled profile', async () => {
+  it('collects the skills and prompts dirs and AGENTS.md content for each enabled profile', async () => {
     vi.mocked(resolveEnabledProfiles).mockResolvedValue(['demo']);
     const profileDir = join(PROFILES_DIR, 'demo');
     const skillsPath = join(profileDir, 'skills');
+    const promptsPath = join(profileDir, 'prompts');
     const agentsPath = join(profileDir, 'AGENTS.md');
 
     vi.mocked(existsSync).mockImplementation((path) => path === agentsPath);
     vi.mocked(statSync).mockImplementation((path) => {
-      if (path === skillsPath)
+      if (path === skillsPath || path === promptsPath)
         return { isDirectory: () => true } as ReturnType<typeof statSync>;
       throw new Error('ENOENT');
     });
@@ -103,6 +105,7 @@ describe('discoverProfileResources', () => {
 
     expect(resources.names).toEqual(['demo']);
     expect(resources.skillPaths).toEqual([skillsPath]);
+    expect(resources.promptPaths).toEqual([promptsPath]);
     expect(resources.agentsFiles).toEqual([
       { path: agentsPath, content: '# Demo profile context' },
     ]);

@@ -5,6 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   expandPlaceholders,
   getCachedValue,
+  getPackageVersion,
   MAX_TIMEOUT,
   ms,
   readAuthKey,
@@ -95,6 +96,12 @@ describe('utils', () => {
 
       vi.advanceTimersByTime(1);
       expect(getCachedValue('cache:long')).toBeUndefined();
+    });
+  });
+
+  describe('getPackageVersion', () => {
+    it('returns the version of the package', () => {
+      expect(getPackageVersion()).toMatch(/^\d+\.\d+\.\d+/u);
     });
   });
 

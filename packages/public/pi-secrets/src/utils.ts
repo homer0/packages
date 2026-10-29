@@ -3,6 +3,7 @@ import { getAgentDir } from '@earendil-works/pi-coding-agent';
 import originalMs from 'ms';
 import { execSync } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
 import { join } from 'node:path';
 import { z } from 'zod';
 
@@ -301,6 +302,18 @@ const readAuthKey = async ({ name, context }: ReadAuthKeyOptions): Promise<strin
   }
 
   throw new Error(`${prefix}, whose key is a command that failed or printed nothing.`);
+};
+
+/**
+ * Gets the version of this package. The `package.json` is one level above this module,
+ * both when it runs from `src` and when it's bundled into `dist`.
+ *
+ * @returns The version.
+ * @throws {ZodError} When the `package.json` has no version.
+ */
+export const getPackageVersion = (): string => {
+  const packageJson: unknown = createRequire(import.meta.url)('../package.json');
+  return z.object({ version: z.string() }).parse(packageJson).version;
 };
 
 export {

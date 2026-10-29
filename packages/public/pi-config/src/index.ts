@@ -3,6 +3,7 @@ export {
   getConfig,
   getConfigValue,
   queryConfig,
+  resolvePiPath,
 } from './utils.js';
 export type {
   ConfigNamespace,
@@ -22,5 +23,6 @@ export type {
   SkillsConfig,
   ToolsConfig,
 } from './types.js';
+export type { PrefixedOnlyOptions } from './utils.js';
 export { SESSION_OVERRIDE_CHANGED_CHANNEL } from './events.js';
 export type { SessionOverrideChange } from './events.js';

@@ -91,7 +91,7 @@ export const handleResourcesDiscover = async ({
 
   return {
     skillPaths: [...resources.skillPaths, ...packageResources.skillPaths],
-    promptPaths: packageResources.promptPaths,
+    promptPaths: [...resources.promptPaths, ...packageResources.promptPaths],
     themePaths: packageResources.themePaths,
   };
 };
