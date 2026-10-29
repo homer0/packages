@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/homer0/packages/compare/%40homer0%2Fpi-config%401.2.0...%40homer0%2Fpi-config%401.3.0) (2026-10-29)
+
+### Features
+
+- **pi-config:** export resolvePiPath with a prefixed-only mode ([16529ca](https://github.com/homer0/packages/commit/16529ca498ae0141448488a3e51b388bfbae685c))
+
 # [1.2.0](https://github.com/homer0/packages/compare/%40homer0%2Fpi-config%401.1.0...%40homer0%2Fpi-config%401.2.0) (2026-10-25)
 
 ### Bug Fixes

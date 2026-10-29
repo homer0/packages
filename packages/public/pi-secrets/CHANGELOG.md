@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/homer0/packages/compare/%40homer0%2Fpi-secrets%401.1.0...%40homer0%2Fpi-secrets%401.2.0) (2026-10-29)
+
+### Bug Fixes
+
+- **pi-secrets:** share the provider state between extensions ([2611b3f](https://github.com/homer0/packages/commit/2611b3fe92f567bc0142410f11db35326eee4981))
+
+### Features
+
+- **pi-secrets:** add a provider option to getSecret and getSecrets ([c071a46](https://github.com/homer0/packages/commit/c071a46a0f72b95d3e0902a18c3351d1b08ded62))
+- **pi-secrets:** add the 1Password provider ([f32ecb6](https://github.com/homer0/packages/commit/f32ecb693f1573f2fdaef21134e367e924afc9eb))
+- **pi-secrets:** add the AWS Secrets Manager provider ([efa7d21](https://github.com/homer0/packages/commit/efa7d219ace1202b31cf30061490682ad8c46914))
+- **pi-secrets:** add the custom provider type ([d7a0898](https://github.com/homer0/packages/commit/d7a0898366748305ce8c4d116b774bb012baeda9))
+- **pi-secrets:** support $secret[provider]:NAME in references ([7f93c81](https://github.com/homer0/packages/commit/7f93c81a4fa0fd0b6e193947871878a77e87b0d6))
+
 # 1.1.0 (2026-10-25)
 
 ### Bug Fixes
