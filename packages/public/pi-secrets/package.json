@@ -1,6 +1,6 @@
 {
   "name": "@homer0/pi-secrets",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "type": "module",
   "description": "Resolve secrets from providers like Infisical, AWS Secrets Manager and 1Password, for Pi extensions, tools, and skills",
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",

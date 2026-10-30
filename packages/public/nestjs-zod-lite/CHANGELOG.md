@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 6.0.1 (2026-10-30)
+
+### Bug Fixes
+
+- **monorepo:** update workspace dependencies ([3134385](https://github.com/homer0/packages/commit/3134385a3b298c73083238d0e8546229e9ddf9bf))
+
 # [6.0.0](https://github.com/homer0/packages/compare/%40homer0%2Fnestjs-zod-lite%405.0.7...%40homer0%2Fnestjs-zod-lite%406.0.0) (2026-10-20)
 
 ### Bug Fixes
