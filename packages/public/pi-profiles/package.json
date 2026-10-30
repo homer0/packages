@@ -44,8 +44,8 @@
   },
   "dependencies": {
     "@homer0/pi-config": "workspace:^",
-    "jiti": "2.7.0",
-    "zod": "4.6.7"
+    "jiti": "^2.7.0",
+    "zod": "^4.6.7"
   },
   "peerDependencies": {
     "@earendil-works/pi-coding-agent": ">1.0.0"

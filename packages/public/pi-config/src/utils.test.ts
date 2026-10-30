@@ -596,6 +596,11 @@ describe('config fns', () => {
 
     it.each([
       [{ path: 'pi.setting' }, 'p'],
+      [{ path: 'pi.setting', scope: 'all' as const, name: '' }, 'p'],
+      [{ path: 'pi.setting', scope: 'pi' as const }, 'p'],
+      [{ path: 'pi.setting', name: 'x' }, 'p'],
+      [{ path: 'pi.setting', scope: 'skill' as const }, 'p'],
+      [{ path: 'pi.setting', scope: 'tool' as const, name: 'bash' }, 'p'],
       [{ scope: 'pi' as const }, { setting: 'p' }],
       [{ scope: 'skills' as const }, { commit: { runChecks: true } }],
       [{ scope: 'tools' as const }, { bash: { timeout: 10 } }],
@@ -635,8 +640,7 @@ describe('config fns', () => {
     });
 
     it.each([
-      [{ path: 'pi', scope: 'pi' as const }, 'Use either path or scope/name, not both.'],
-      [{ path: 'pi', name: 'x' }, 'Use either path or scope/name, not both.'],
+      [{ path: '', scope: 'skill' as const }, "scope 'skill' requires name."],
       [{ scope: 'skill' as const }, "scope 'skill' requires name."],
       [{ scope: 'tool' as const }, "scope 'tool' requires name."],
       [{ scope: 'extension' as const }, "scope 'extension' requires name."],

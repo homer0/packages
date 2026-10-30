@@ -50,6 +50,14 @@ This will expose the following tools and commands to your Pi agent:
 
 ⚠️: When using `get_config`, secret-looking values will be redacted in the output. To access those, you'll have to get them using the library functions like `getConfigValue` or `queryConfig`.
 
+##### pi-install-pnpm-package
+
+If you are using my pnpm setup with [`@homer0/pi-install-pnpm-package`](https://www.npmjs.com/package/@homer0/pi-install-pnpm-package), you can install this package with:
+
+```text
+/install-pi-pnpm-package @homer0/pi-config
+```
+
 #### As a library
 
 ```bash
@@ -297,6 +305,8 @@ Reads the resolved config: the files, plus the [session override](#session-overr
 | `path`    | A dot-path to read, like `skills.commit.runChecks`.                                                                                                               |
 | `scope`   | What to read: `all`, a whole namespace (`pi`, `skills`, `tools`, `extensions`), or a single integration (`skill`, `tool`, `extension`, which also need a `name`). |
 | `name`    | The name of the skill, tool, or extension, for the `skill`, `tool`, and `extension` scopes.                                                                       |
+
+A non-empty `path` takes priority over `scope` and `name`: when it is set, those parameters are ignored. Without a path, `scope` and `name` keep their usual validation rules.
 
 The agent should use the narrowest query that answers its question:
 

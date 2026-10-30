@@ -6,7 +6,9 @@ export const getConfigParamsSchema = z.object({
   path: z
     .string()
     .optional()
-    .describe('Dot-path to read, for example skills.commit.runChecks.'),
+    .describe(
+      'Dot-path to read, for example skills.commit.runChecks. A non-empty path takes priority over scope and name.',
+    ),
   scope: z
     .enum(['all', 'pi', 'skills', 'tools', 'extensions', 'skill', 'tool', 'extension'])
     .optional()

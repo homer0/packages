@@ -31,6 +31,14 @@ pi install npm:@homer0/pi-in-memory-cache
 
 This will add the [commands](#-commands) to manage the daemon. The daemon itself doesn't start with Pi: it starts the first time something uses the cache.
 
+##### pi-install-pnpm-package
+
+If you are using my pnpm setup with [`@homer0/pi-install-pnpm-package`](https://www.npmjs.com/package/@homer0/pi-install-pnpm-package), you can install this package with:
+
+```text
+/install-pi-pnpm-package @homer0/pi-in-memory-cache
+```
+
 #### As a library
 
 ```bash

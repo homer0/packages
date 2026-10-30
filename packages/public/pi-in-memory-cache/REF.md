@@ -1,8 +1,8 @@
 # Pi Package Reference
 
 Source: ~/.pi/packages/pi-in-memory-cache
-Source-Commit: d8c38f99afdcaf59579888b4346e08ac3cc0c590
-Updated-At: 2026-10-25T05:09:57Z
+Source-Commit: 5113d68e0cdc9c1252524b0196a6be9425de3b1e
+Updated-At: 2026-10-30T04:31:38Z
 
 ## Copy Instructions
 

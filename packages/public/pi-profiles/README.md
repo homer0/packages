@@ -44,6 +44,14 @@ This will make Pi do the following in every session, for the profiles that are e
 
 It also adds the [`/profiles-status`](#profiles-status) command.
 
+##### pi-install-pnpm-package
+
+If you are using my pnpm setup with [`@homer0/pi-install-pnpm-package`](https://www.npmjs.com/package/@homer0/pi-install-pnpm-package), you can install this package with:
+
+```text
+/install-pi-pnpm-package @homer0/pi-profiles
+```
+
 #### As a library
 
 ```bash

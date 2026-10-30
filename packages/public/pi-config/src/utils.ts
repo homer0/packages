@@ -456,8 +456,7 @@ const getConfigPath = (query: ConfigQuery): string | undefined => {
  * @returns The description of the problem, or `undefined` if the query is valid.
  */
 const validateConfigQuery = (query: ConfigQuery): string | undefined => {
-  if (query.path && (query.scope || query.name))
-    return 'Use either path or scope/name, not both.';
+  if (query.path) return undefined;
 
   if (
     (query.scope === 'skill' || query.scope === 'tool' || query.scope === 'extension') &&
