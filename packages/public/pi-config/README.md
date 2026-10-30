@@ -306,6 +306,8 @@ Reads the resolved config: the files, plus the [session override](#session-overr
 | `scope`   | What to read: `all`, a whole namespace (`pi`, `skills`, `tools`, `extensions`), or a single integration (`skill`, `tool`, `extension`, which also need a `name`). |
 | `name`    | The name of the skill, tool, or extension, for the `skill`, `tool`, and `extension` scopes.                                                                       |
 
+A non-empty `path` takes priority over `scope` and `name`: when it is set, those parameters are ignored. Without a path, `scope` and `name` keep their usual validation rules.
+
 The agent should use the narrowest query that answers its question:
 
 ```json
