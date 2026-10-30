@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/homer0/packages/compare/%40homer0%2Fpi-config%401.3.0...%40homer0%2Fpi-config%401.3.1) (2026-10-30)
+
+### Bug Fixes
+
+- **monorepo:** use range in the prod deps ([567d390](https://github.com/homer0/packages/commit/567d390416b29b027adc5c6361a79fb94409af97))
+- **pi-config:** prioritize path over scope and name ([dd94979](https://github.com/homer0/packages/commit/dd94979e5a776356ec1f07af22d2901b7b5d28f5))
+
 # [1.3.0](https://github.com/homer0/packages/compare/%40homer0%2Fpi-config%401.2.0...%40homer0%2Fpi-config%401.3.0) (2026-10-29)
 
 ### Features
