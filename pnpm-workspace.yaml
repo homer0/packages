@@ -36,8 +36,6 @@ overrides:
   '@aws-sdk/token-providers': '3.1149.0'
   'brace-expansion@^5.0.0': '^5.0.5'
   'follow-redirects@^1.0.0': '^1.16.0'
-  '@typescript-eslint/types@^8.71.2': '8.70.1'
-  '@typescript-eslint/visitor-keys@^8.71.2': '8.70.1'
 
 allowBuilds:
   # For pi-ai. It has a preinstall with a no-op message.
