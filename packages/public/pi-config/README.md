@@ -50,6 +50,14 @@ This will expose the following tools and commands to your Pi agent:
 
 ⚠️: When using `get_config`, secret-looking values will be redacted in the output. To access those, you'll have to get them using the library functions like `getConfigValue` or `queryConfig`.
 
+##### pi-install-pnpm-package
+
+If you are using my pnpm setup with [`@homer0/pi-install-pnpm-package`](https://www.npmjs.com/package/@homer0/pi-install-pnpm-package), you can install this package with:
+
+```text
+/install-pi-pnpm-package @homer0/pi-config
+```
+
 #### As a library
 
 ```bash
