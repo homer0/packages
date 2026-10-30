@@ -65,6 +65,10 @@ A tiny service that reads the contents of the project's `package.json`, sync & a
 
 An easy way to manage locations and build paths relative to those locations on a Node app.
 
+#### [Pi Assessment](./packages/public/pi-assessment)
+
+Assess past Pi sessions for preferences, corrections, and persistent workflow improvements.
+
 #### [🎛️ Pi Config](./packages/public/pi-config)
 
 Config management tools, commands, and library utilities for [Pi](https://pi.dev).

@@ -1,0 +1,69 @@
+{
+  "name": "@homer0/pi-assessment",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Pi extension and skill to assess a past session: pick it, extract its transcript, and review it for persistent improvements",
+  "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
+  "license": "MIT",
+  "keywords": [
+    "pi",
+    "extension",
+    "skill",
+    "assessment",
+    "session"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/homer0/packages.git",
+    "directory": "packages/public/pi-assessment"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "files": [
+    "dist",
+    "src",
+    "skills",
+    "!src/**/*.test.ts"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "pi": {
+    "extensions": [
+      "./dist/pi-assessment.js"
+    ],
+    "skills": [
+      "./skills"
+    ]
+  },
+  "dependencies": {
+    "yaml": "2.9.1"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-ai": ">1.0.0",
+    "@earendil-works/pi-coding-agent": ">1.0.0"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-ai": "1.4.0",
+    "@earendil-works/pi-coding-agent": "catalog:",
+    "@homer0/oxlint-config": "workspace:*",
+    "@homer0/tsconfig": "workspace:*",
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "oxlint": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "lint": "oxlint .",
+    "lint:all": "oxlint .",
+    "lint:file": "oxlint $@",
+    "test": "vitest run $@",
+    "types:check": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build"
+  }
+}
