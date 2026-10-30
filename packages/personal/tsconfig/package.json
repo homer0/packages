@@ -1,6 +1,6 @@
 {
   "name": "@homer0/tsconfig",
-  "description": "My custom configurations for TypeScript",
+  "description": "My custom configurations for TypeScript.",
   "version": "6.0.0",
   "repository": {
     "type": "git",

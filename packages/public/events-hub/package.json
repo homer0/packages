@@ -1,6 +1,6 @@
 {
   "name": "@homer0/events-hub",
-  "description": "A simple implementation of a pubsub service for handling events",
+  "description": "A simple implementation of a pubsub service for handling events.",
   "version": "7.0.0",
   "repository": {
     "type": "git",

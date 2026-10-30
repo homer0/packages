@@ -1,6 +1,6 @@
 {
   "name": "@homer0/error-handler",
-  "description": "Captures uncaught exceptions and unhandled rejections in order to log them to the console",
+  "description": "Captures uncaught exceptions and unhandled rejections in order to log them to the console.",
   "version": "7.0.0",
   "repository": {
     "type": "git",

@@ -1,6 +1,6 @@
 {
   "name": "@homer0/deferred",
-  "description": "Small utility to create a deferred promise",
+  "description": "Small utility to create a deferred promise.",
   "version": "8.0.0",
   "repository": {
     "type": "git",

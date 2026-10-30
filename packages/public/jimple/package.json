@@ -1,6 +1,6 @@
 {
   "name": "@homer0/jimple",
-  "description": "An extended version of the Jimple lib, with extra features",
+  "description": "An extended version of the Jimple lib, with extra features.",
   "version": "7.0.0",
   "repository": {
     "type": "git",

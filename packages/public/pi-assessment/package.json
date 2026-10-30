@@ -2,7 +2,7 @@
   "name": "@homer0/pi-assessment",
   "version": "1.1.0",
   "type": "module",
-  "description": "Pi extension and skill to assess a past session: pick it, extract its transcript, and review it for persistent improvements",
+  "description": "Pi extension and skill to assess a past session: pick it, extract its transcript, and review it for persistent improvements.",
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
   "license": "MIT",
   "keywords": [

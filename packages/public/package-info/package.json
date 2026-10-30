@@ -1,6 +1,6 @@
 {
   "name": "@homer0/package-info",
-  "description": "Gets the content of the project's package.json",
+  "description": "Gets the content of the project's package.json.",
   "version": "7.0.0",
   "repository": {
     "type": "git",

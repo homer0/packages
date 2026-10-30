@@ -2,7 +2,7 @@
   "name": "@homer0/pi-config",
   "version": "1.3.1",
   "type": "module",
-  "description": "Config management building block for Pi",
+  "description": "Config management building block for Pi.",
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
   "license": "MIT",
   "keywords": [
