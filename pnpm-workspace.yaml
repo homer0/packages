@@ -33,7 +33,6 @@ overrides:
   # Pi 1.1.0 expects declarations removed in pi-codemode 1.2.0.
   '@earendil-works/pi-coding-agent@1.1.0>@earendil-works/pi-codemode': '1.1.0'
   'brace-expansion@^5.0.0': '^5.0.5'
-  'follow-redirects@^1.0.0': '^1.16.0'
 
 allowBuilds:
   # For pi-ai. It has a preinstall with a no-op message.
