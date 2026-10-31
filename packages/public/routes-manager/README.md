@@ -6,6 +6,8 @@ The main feature of this library is the typing, as it will auto complete the nam
 
 ## 🍿 Usage
 
+> If you are wondering why I built this, go to the [Motivation](#motivation) section.
+
 - ⚙️ [Setup](#%EF%B8%8F-setup)
 - 🛤️ [Defining a route](#%EF%B8%8F-defining-a-route)
 - ⚡️ [Using groups](#%EF%B8%8F-using-groups)
