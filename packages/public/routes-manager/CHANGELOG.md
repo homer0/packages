@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.0.2 (2026-10-31)
+
+### Bug Fixes
+
+- **routes-manager:** force release ([3a3876c](https://github.com/homer0/packages/commit/3a3876ce1fc8fc1f4f9c7bb87f8b0e4039ba3942))
+
 ## 5.0.1 (2026-10-31)
 
 ### Bug Fixes
