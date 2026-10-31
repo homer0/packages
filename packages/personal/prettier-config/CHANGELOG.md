@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.0.2 (2026-10-31)
+
+### Bug Fixes
+
+- **monorepo:** trigger releases on all packages ([5702722](https://github.com/homer0/packages/commit/57027224ce59f6baed72922e7a7aa3eae929f157))
+
 ## 2.0.1 (2026-04-26)
 
 **Note:** Version bump only for package @homer0/prettier-config

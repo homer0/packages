@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.0.1 (2026-10-31)
+
+### Bug Fixes
+
+- **monorepo:** trigger releases on all packages ([5702722](https://github.com/homer0/packages/commit/57027224ce59f6baed72922e7a7aa3eae929f157))
+- **react-ssr-config:** add missing publishConfig ([cdf49b3](https://github.com/homer0/packages/commit/cdf49b3bebc9ee70da00da08e277e92ee37a9566))
+
 # [5.0.0](https://github.com/homer0/packages/compare/%40homer0%2Freact-ssr-config%404.0.7...%40homer0%2Freact-ssr-config%405.0.0) (2026-10-20)
 
 ### Bug Fixes

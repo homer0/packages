@@ -1,6 +1,6 @@
 {
   "name": "@homer0/pi-install-pnpm-package",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "type": "module",
   "description": "Install and uninstall pnpm-backed Pi packages from slash commands, in a Pi config repo that uses a pnpm workspace.",
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",

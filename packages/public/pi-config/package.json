@@ -1,6 +1,6 @@
 {
   "name": "@homer0/pi-config",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "type": "module",
   "description": "Config management building block for Pi.",
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
@@ -47,7 +47,7 @@
     ]
   },
   "dependencies": {
-    "@homer0/object-utils": "^7.0.0",
+    "@homer0/object-utils": "^7.0.1",
     "yaml": "^2.9.1",
     "zod": "^4.6.7"
   },

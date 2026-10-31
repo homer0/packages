@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 5.0.1 (2026-10-31)
+
+### Bug Fixes
+
+- **monorepo:** trigger releases on all packages ([5702722](https://github.com/homer0/packages/commit/57027224ce59f6baed72922e7a7aa3eae929f157))
+- **routes-manager:** add missing publishConfig ([fc5098a](https://github.com/homer0/packages/commit/fc5098ad0288dc81095ae5a9c1489bd44e16378a))
+
 # [5.0.0](https://github.com/homer0/packages/compare/%40homer0%2Froutes-manager%404.0.7...%40homer0%2Froutes-manager%405.0.0) (2026-10-20)
 
 ### Bug Fixes

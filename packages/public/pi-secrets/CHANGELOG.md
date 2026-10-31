@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/homer0/packages/compare/%40homer0%2Fpi-secrets%401.2.0...%40homer0%2Fpi-secrets%401.2.2) (2026-10-31)
+
+### Bug Fixes
+
+- **monorepo:** trigger releases on all packages ([5702722](https://github.com/homer0/packages/commit/57027224ce59f6baed72922e7a7aa3eae929f157))
+- **monorepo:** update workspace dependencies ([3134385](https://github.com/homer0/packages/commit/3134385a3b298c73083238d0e8546229e9ddf9bf))
+- **monorepo:** use range in the prod deps ([567d390](https://github.com/homer0/packages/commit/567d390416b29b027adc5c6361a79fb94409af97))
+
 ## [1.2.1](https://github.com/homer0/packages/compare/%40homer0%2Fpi-secrets%401.2.0...%40homer0%2Fpi-secrets%401.2.1) (2026-10-30)
 
 ### Bug Fixes
