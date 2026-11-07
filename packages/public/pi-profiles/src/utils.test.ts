@@ -363,19 +363,28 @@ describe('runScript', () => {
   });
 
   const getExecArgs = (): unknown[] => vi.mocked(execFile).mock.calls[0]!.slice(0, 2);
+  const getExecOptions = (): unknown => vi.mocked(execFile).mock.calls[0]![2];
 
   it('runs `.sh` scripts with bash', async () => {
     mockScriptOutput('true\n');
 
-    await expect(runScript('/scripts/check.sh')).resolves.toBe(true);
+    await expect(runScript('/scripts/check.sh', '/cwd')).resolves.toBe(true);
 
     expect(getExecArgs()).toEqual(['bash', ['/scripts/check.sh']]);
+  });
+
+  it('runs the script from the given directory', async () => {
+    mockScriptOutput('true');
+
+    await runScript('/scripts/check.sh', '/cwd');
+
+    expect(getExecOptions()).toEqual({ cwd: '/cwd' });
   });
 
   it('runs `.ts` scripts with jiti', async () => {
     mockScriptOutput('true');
 
-    await runScript('/scripts/check.ts');
+    await runScript('/scripts/check.ts', '/cwd');
 
     expect(getExecArgs()).toEqual(['bash', ['-c', `${JITI_BIN} "/scripts/check.ts"`]]);
   });
@@ -383,7 +392,7 @@ describe('runScript', () => {
   it('runs any other script with node', async () => {
     mockScriptOutput('true');
 
-    await runScript('/scripts/check.js');
+    await runScript('/scripts/check.js', '/cwd');
 
     expect(getExecArgs()).toEqual(['bash', ['-c', 'node "/scripts/check.js"']]);
   });
@@ -391,7 +400,7 @@ describe('runScript', () => {
   it('is false when the output is not exactly "true"', async () => {
     mockScriptOutput('yes');
 
-    await expect(runScript('/scripts/check.sh')).resolves.toBe(false);
+    await expect(runScript('/scripts/check.sh', '/cwd')).resolves.toBe(false);
   });
 
   it('warns and is false when the script fails', async () => {
@@ -402,7 +411,7 @@ describe('runScript', () => {
     });
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
-    await expect(runScript('/scripts/check.sh')).resolves.toBe(false);
+    await expect(runScript('/scripts/check.sh', '/cwd')).resolves.toBe(false);
 
     expect(warnSpy).toHaveBeenCalledWith(
       '[pi-profiles] Script failed: /scripts/check.sh',

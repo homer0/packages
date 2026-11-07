@@ -126,7 +126,7 @@ This alternative complements `pi.profiles.enabled`, so the values you can give e
 
 Regarding the script,
 
-1. It will be executed from the Pi directory.
+1. It will be executed from the project directory, so it can inspect it (for example, to enable a profile only inside certain folders).
 2. The script can be `.sh` to run with `bash`, `.ts` to run with `jiti`, or any other extension that runs with `node`.
 3. The path can be relative or absolute. A relative path is looked up in the project directory, then in the agent directory, and then in the Pi directory. The first one that has it wins.
    3.a. If the script is not found in any of these locations, the profile is not enabled, and a warning is issued.

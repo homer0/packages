@@ -149,6 +149,7 @@ describe('discoverProfileResources', () => {
       join(profileDir, 'pkg-c'),
       '/abs/pkg-d',
     ]);
+    expect(runScript).toHaveBeenCalledWith('/scripts/c.sh', '/cwd');
   });
 
   it('warns and skips a package whose enabledIf script can not be resolved', async () => {

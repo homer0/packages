@@ -164,13 +164,14 @@ export const resolveScriptPath = (
 };
 
 /**
- * Runs a script from the Pi directory: `.sh` with bash, `.ts` with jiti, and anything
+ * Runs a script from the given directory: `.sh` with bash, `.ts` with jiti, and anything
  * else with node. If it fails, it warns and counts as `false`.
  *
  * @param scriptPath The absolute path of the script.
+ * @param cwd The directory to run the script from (the project directory).
  * @returns Whether the script printed `true`.
  */
-export const runScript = async (scriptPath: string): Promise<boolean> => {
+export const runScript = async (scriptPath: string, cwd: string): Promise<boolean> => {
   const ext = extname(scriptPath);
   let args: string[];
   if (ext === '.sh') {
@@ -181,7 +182,7 @@ export const runScript = async (scriptPath: string): Promise<boolean> => {
     args = ['-c', `node "${scriptPath}"`];
   }
   try {
-    const { stdout } = await execFileAsync('bash', args, { cwd: REPO_DIR });
+    const { stdout } = await execFileAsync('bash', args, { cwd });
     return stdout.trim() === 'true';
   } catch (error) {
     warnProfilesIssue(`Script failed: ${scriptPath}`, error);
@@ -194,7 +195,8 @@ export const runScript = async (scriptPath: string): Promise<boolean> => {
  * Entries set to `false`, and scripts that can't be found, are skipped.
  *
  * @param enabledIf The `enabledIf` entries, from profile name to script path.
- * @param cwd The directory to resolve relative script paths against first.
+ * @param cwd The directory to resolve relative script paths against first, and to run the
+ *   scripts from.
  * @returns The names of the profiles that passed.
  */
 export const evaluateEnabledIf = async (
@@ -210,7 +212,7 @@ export const evaluateEnabledIf = async (
           `Could not resolve enabledIf script for "${name}": ${scriptPath}`,
         );
       } else {
-        const passed = await runScript(resolved);
+        const passed = await runScript(resolved, cwd);
         if (passed) results.push(name);
       }
     }

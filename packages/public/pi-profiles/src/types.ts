@@ -13,7 +13,8 @@ import type { ProfilesConfig } from './schemas.js';
  */
 export type ProfileLibOptions = {
   /**
-   * Working directory used to resolve config files and `enabledIf` scripts.
+   * Working directory used to resolve config files and `enabledIf` scripts. It's also the
+   * directory the `enabledIf` scripts are run from.
    *
    * @default process.cwd()
    */
