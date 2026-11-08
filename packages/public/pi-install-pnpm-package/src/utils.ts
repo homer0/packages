@@ -1,21 +1,66 @@
-import { CONFIG_DIR_NAME } from '@earendil-works/pi-coding-agent';
+import { CONFIG_DIR_NAME, getAgentDir } from '@earendil-works/pi-coding-agent';
 import { execFile } from 'node:child_process';
+import { existsSync } from 'node:fs';
 import { mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
-import { dirname, join } from 'node:path';
+import { dirname, join, relative } from 'node:path';
 import { promisify } from 'node:util';
 import { parse } from 'yaml';
 
+/** The name of the pnpm workspace manifest. */
+const WORKSPACE_FILENAME = 'pnpm-workspace.yaml';
+
+/** Options for {@link resolveRoots}. */
+export type ResolveRootsOptions = {
+  /** The agent directory of Pi. */
+  agentDir: string;
+  /** The root to use when there's no workspace in the agent directory or above it. */
+  fallbackRoot: string;
+};
+
+/** Where the pi configuration repo is, and where the agent is inside of it. */
+export type Roots = {
+  /** The root of the repo: the directory with the pnpm workspace. */
+  repoRoot: string;
+  /**
+   * The path of the agent directory relative to the root; empty when the root is the
+   * agent directory itself.
+   */
+  agentFolder: string;
+};
+
+/**
+ * Finds the root of the pi configuration repo. It's the agent directory when that has the
+ * pnpm workspace (the repo is the agent), or its parent when that has it (the usual
+ * `~/.pi` with the agent in `agent`). It doesn't look any further up, so an unrelated
+ * workspace can't be picked by accident.
+ *
+ * @param options The agent directory and the fallback root.
+ * @returns The root of the repo and the agent directory relative to it.
+ */
+export const resolveRoots = ({ agentDir, fallbackRoot }: ResolveRootsOptions): Roots => {
+  const repoRoot =
+    [agentDir, dirname(agentDir)].find((directory) =>
+      existsSync(join(directory, WORKSPACE_FILENAME)),
+    ) || fallbackRoot;
+  return { repoRoot, agentFolder: relative(repoRoot, agentDir) };
+};
+
+const roots = resolveRoots({
+  agentDir: getAgentDir(),
+  fallbackRoot: join(homedir(), CONFIG_DIR_NAME),
+});
+
 /** Root directory for the pi configuration repo. */
-export const REPO_ROOT = join(homedir(), CONFIG_DIR_NAME);
+export const REPO_ROOT = roots.repoRoot;
 /** Workspace manifest containing the pnpm catalog. */
-export const WORKSPACE_PATH = join(REPO_ROOT, 'pnpm-workspace.yaml');
+export const WORKSPACE_PATH = join(REPO_ROOT, WORKSPACE_FILENAME);
 /**
  * The reason for these folder vars is that the installer needs the real path to the pnpm
  * extensions' package.json (for adding and removing dependencies), but the settings
  * package paths are relative to the agent folder.
  */
-const AGENT_FOLDER = 'agent';
+const AGENT_FOLDER = roots.agentFolder;
 const PROFILES_FOLDER = 'profiles';
 const EXTENSIONS_FOLDER = 'extensions';
 const PNPM_FOLDER = 'pnpm';
@@ -82,7 +127,7 @@ const GLOBAL_PATHS: InstallPaths = {
   installCommitFiles: [
     'pnpm-workspace.yaml',
     'pnpm-lock.yaml',
-    'agent/settings.json',
+    join(AGENT_FOLDER, 'settings.json'),
     join(PNPM_EXTENSION_DIR, 'package.json'),
   ],
 };
@@ -103,7 +148,7 @@ type DependenciesManifest = { dependencies?: Record<string, string> };
 
 /** Parse pnpm workspace YAML. */
 const parseWorkspace = (workspace: string): WorkspaceConfig =>
-  (parse(workspace) ?? {}) as WorkspaceConfig;
+  (parse(workspace) || {}) as WorkspaceConfig;
 
 /** Read pnpm's minimum release age setting from workspace YAML. */
 const readMinimumReleaseAgeValue = (workspace: WorkspaceConfig): number =>
@@ -198,7 +243,7 @@ export const resolveVersion = async (
     'dist-tags'?: Record<string, string>;
   };
 
-  const versions = Object.keys(data.versions ?? {}).filter(isStableSemver);
+  const versions = Object.keys(data.versions || {}).filter(isStableSemver);
   if (versions.length === 0) throw new Error(`No stable versions found for ${name}`);
 
   const cutoff = Date.now() - minimumReleaseAgeMinutes * 60 * 1000;
@@ -286,7 +331,7 @@ export const addCatalogDependency = async (
   name: string,
 ): Promise<void> => {
   const pkg = JSON.parse(await readFile(packageJsonPath, 'utf8')) as DependenciesManifest;
-  pkg.dependencies = { ...(pkg.dependencies ?? {}), [name]: 'catalog:' };
+  pkg.dependencies = { ...(pkg.dependencies || {}), [name]: 'catalog:' };
   pkg.dependencies = Object.fromEntries(
     Object.entries(pkg.dependencies).sort(([a], [b]) => a.localeCompare(b)),
   );
@@ -324,7 +369,7 @@ export const addPackageEntry = async (
 ): Promise<void> => {
   const settings = JSON.parse(await readFile(filePath, 'utf8')) as PackageRegistry;
   settings.packages = Array.from(
-    new Set([...(settings.packages ?? []), packagePath]),
+    new Set([...(settings.packages || []), packagePath]),
   ).sort();
   await writeJson(filePath, settings);
 };
@@ -342,7 +387,7 @@ export const removePackageEntry = async (
 ): Promise<void> => {
   const settings = JSON.parse(await readFile(filePath, 'utf8')) as PackageRegistry;
   const normalizedPackagePath = normalizePath(packagePath);
-  settings.packages = (settings.packages ?? []).filter(
+  settings.packages = (settings.packages || []).filter(
     (item) => normalizePath(item) !== normalizedPackagePath,
   );
   await writeJson(filePath, settings);
@@ -443,7 +488,7 @@ const isPackageRegistered = async ({
   try {
     const raw = JSON.parse(await readFile(filePath, 'utf8')) as PackageRegistry;
     const normalized = normalizePath(`${prefix}${name}`);
-    return (raw.packages ?? []).some((pkg) => normalizePath(pkg) === normalized);
+    return (raw.packages || []).some((pkg) => normalizePath(pkg) === normalized);
   } catch {
     // A registry that is missing or invalid doesn't have the package registered.
     return false;
