@@ -1,8 +1,8 @@
 # Pi Package Reference
 
 Source: ~/.pi/packages/pi-install-pnpm-package
-Source-Commit: 6f6aeaa43a6b2e3946ad64c1bd9314f2772632cc
-Updated-At: 2026-10-29T04:28:33Z
+Source-Commit: 08732fb412cf39cf9797f96628058300cf34248a
+Updated-At: 2026-11-08T06:19:00Z
 
 ## Copy Instructions
 
@@ -15,3 +15,5 @@ Updated-At: 2026-10-29T04:28:33Z
 - Add the package to the root README and regenerate the destination lockfile without copying source resolutions. Preserve existing local workspace links; if installation switches one to a registry resolution, restore the link and remove unused registry entries, then verify with a frozen-lockfile install. Retain the destination release-age policy and compatibility overrides.
 
 - Preserve approved upstream code and style during replay, including import ordering, type assertions, module-scope test types, and existing error handling. Apply the JS/TS checklist to integration adaptations.
+
+- Keep the destination Node engine at `>=24` while this workspace targets Node 24; replay source Node 26 migration commits without changing that requirement.
