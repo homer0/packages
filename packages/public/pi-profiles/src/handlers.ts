@@ -7,6 +7,7 @@ import type {
   ResourcesDiscoverResult,
   SessionStartEvent,
 } from '@earendil-works/pi-coding-agent';
+import { PROFILES_LOADED_CHANNEL, type ProfilesLoaded } from '@homer0/pi-config/events';
 import {
   discoverProfileResources,
   loadProfileExtensions,
@@ -132,7 +133,9 @@ type HandleSessionStartOptions = {
 
 /**
  * Handler for `session_start`: announces the enabled profiles, records the discovered
- * ones in `runtime.state`, and loads the extensions of their packages.
+ * ones in `runtime.state`, tells the rest of the extensions which ones were loaded, and
+ * loads the extensions of their packages. The event goes out before the packages are
+ * loaded, so what they read from the config already includes the profiles.
  *
  * @param options The runtime, the event, and the context.
  */
@@ -145,6 +148,8 @@ export const handleSessionStart = async ({
   await announceConfiguredProfiles(pi, ctx);
   const resources = await discoverProfileResources(forSession(ctx));
   state.sessionProfiles = resources.names;
+  const loaded: ProfilesLoaded = { profiles: resources.names };
+  pi.events.emit(PROFILES_LOADED_CHANNEL, loaded);
   if (resources.packages.length > 0) {
     await loadProfileExtensions(pi, {
       packages: resources.packages,

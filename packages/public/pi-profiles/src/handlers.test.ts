@@ -94,7 +94,7 @@ describe('listeners', () => {
     it('announces the enabled profiles, records the discovered ones and loads packages', async () => {
       resolveEnabledProfiles.mockResolvedValue(['p1']);
       discoverProfileResources.mockResolvedValue({ names: ['p1'], packages: ['pkg'] });
-      const pi = {} as unknown as ExtensionAPI;
+      const pi = { events: { emit: vi.fn() } } as unknown as ExtensionAPI;
       const runtime = createRuntime(pi);
 
       await handleSessionStart({ runtime, event, ctx });
@@ -114,13 +114,51 @@ describe('listeners', () => {
       discoverProfileResources.mockResolvedValue({ names: [], packages: [] });
 
       await handleSessionStart({
-        runtime: createRuntime({} as unknown as ExtensionAPI),
+        runtime: createRuntime({ events: { emit: vi.fn() } } as unknown as ExtensionAPI),
         event,
         ctx,
       });
 
       expect(showAnnouncementWidget).not.toHaveBeenCalled();
       expect(loadProfileExtensions).not.toHaveBeenCalled();
+    });
+
+    it('announces the loaded profiles, in the order they were loaded', async () => {
+      resolveEnabledProfiles.mockResolvedValue(['b', 'a']);
+      discoverProfileResources.mockResolvedValue({ names: ['b', 'a'], packages: [] });
+      const emit = vi.fn();
+      const pi = { events: { emit } } as unknown as ExtensionAPI;
+
+      await handleSessionStart({ runtime: createRuntime(pi), event, ctx });
+
+      expect(emit).toHaveBeenCalledOnce();
+      expect(emit).toHaveBeenCalledWith('pi-profiles:profiles-loaded', {
+        profiles: ['b', 'a'],
+      });
+    });
+
+    it('announces an empty list when no profile is loaded, so a previous one is dropped', async () => {
+      resolveEnabledProfiles.mockResolvedValue([]);
+      discoverProfileResources.mockResolvedValue({ names: [], packages: [] });
+      const emit = vi.fn();
+      const pi = { events: { emit } } as unknown as ExtensionAPI;
+
+      await handleSessionStart({ runtime: createRuntime(pi), event, ctx });
+
+      expect(emit).toHaveBeenCalledWith('pi-profiles:profiles-loaded', { profiles: [] });
+    });
+
+    it('announces the profiles before it loads the extensions of their packages', async () => {
+      resolveEnabledProfiles.mockResolvedValue(['p1']);
+      discoverProfileResources.mockResolvedValue({ names: ['p1'], packages: ['pkg'] });
+      const calls: string[] = [];
+      const emit = vi.fn(() => calls.push('emit'));
+      loadProfileExtensions.mockImplementation(() => calls.push('load'));
+      const pi = { events: { emit } } as unknown as ExtensionAPI;
+
+      await handleSessionStart({ runtime: createRuntime(pi), event, ctx });
+
+      expect(calls).toEqual(['emit', 'load']);
     });
   });
 

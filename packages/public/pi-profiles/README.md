@@ -18,6 +18,7 @@ You may run Pi in multiple environments, with different requirements, different 
   - [Enabling profiles](#enabling-profiles)
   - [Conditional profiles](#conditional-profiles)
   - [Packages](#packages)
+  - [Config](#config)
 - 🧰 [Commands](#-commands)
   - [/profiles-status](#profiles-status)
 - ⚙️ [Examples](#%EF%B8%8F-examples)
@@ -81,6 +82,7 @@ Each profile is a folder inside the `profiles` folder of the Pi agent directory 
 profiles/
 └── work/
     ├── AGENTS.md       # Extra instructions for the agent
+    ├── config.yaml     # Config that is only part of the config while the profile is loaded
     ├── packages.json   # The packages to load
     ├── prompts/        # Prompt templates that are only available with this profile
     └── skills/         # Skills that are only available with this profile
@@ -162,6 +164,12 @@ Just like in `settings.json`, you have a `packages` array with the paths to the 
 ```
 
 Packages are loaded the same way Pi loads the ones defined in the main `settings.json` file. So, yes, they support extensions, skills, prompts, and themes.
+
+#### Config
+
+A profile can have a `config.{json,yml,yaml}` file with config that only applies while the profile is loaded. This package doesn't read it: when the profiles of a session are known, it announces them on Pi's event bus (`pi.events`), in the channel `pi-profiles:profiles-loaded`, with a payload like `{ profiles: ['work', 'dev'] }`, in the order they were loaded. The extension of [`@homer0/pi-config`](https://www.npmjs.com/package/@homer0/pi-config) listens to it and adds the files to the config, so it has to be installed for this to work.
+
+The event goes out before the extensions of the profile packages are loaded, so they already read the config with the profile files included. Read the `pi-config` README to know where the files go in the merge order, and which keys are ignored (`pi.profiles` can't be set from a profile).
 
 ### 🧰 Commands
 
