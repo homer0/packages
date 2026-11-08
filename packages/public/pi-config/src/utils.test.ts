@@ -11,6 +11,7 @@ import {
   type MockInstance,
 } from 'vitest';
 import { z } from 'zod';
+import { LOADED_PROFILES_ENV, setLoadedProfiles } from './loadedProfiles.js';
 import {
   clearSessionConfigOverride,
   ConfigReadError,
@@ -66,6 +67,8 @@ describe('config fns', () => {
 
   beforeEach(() => {
     vi.mocked(getAgentDir).mockReturnValue('/agent');
+    // Whatever `setLoadedProfiles` publishes during a test is undone with the stub.
+    vi.stubEnv(LOADED_PROFILES_ENV, '');
     vi.mocked(readFile).mockReset();
     mockConfigFiles({});
     // eslint-disable-next-line no-console -- The tests need to see the warnings that the config reading logs.
@@ -74,6 +77,8 @@ describe('config fns', () => {
 
   afterEach(() => {
     setSessionConfigOverride(undefined);
+    setLoadedProfiles([]);
+    vi.unstubAllEnvs();
     vi.restoreAllMocks();
   });
 
@@ -467,7 +472,7 @@ describe('config fns', () => {
     it('is not part of what readConfigFiles returns', async () => {
       setSessionConfigOverride({ ...emptyOverride, pi: { setting: 'override' } });
 
-      const { config } = await readConfigFiles({ cwd }.cwd);
+      const { config } = await readConfigFiles(cwd);
 
       expect(config.pi).toEqual({});
     });
@@ -510,6 +515,154 @@ describe('config fns', () => {
         used: true,
       });
       expect(sources[9]).toMatchObject({ scope: 'project', local: true });
+    });
+
+    it('puts the config files of the loaded profiles between the global and the project ones', async () => {
+      setLoadedProfiles(['a']);
+
+      const { sources } = await readConfigFiles(cwd);
+
+      expect(sources.map(({ path }) => path)).toEqual([
+        '/agent/config.json',
+        '/agent/config.yml',
+        '/agent/config.yaml',
+        '/agent/config.local.json',
+        '/agent/config.local.yml',
+        '/agent/config.local.yaml',
+        '/agent/profiles/a/config.json',
+        '/agent/profiles/a/config.yml',
+        '/agent/profiles/a/config.yaml',
+        projectConfigPath,
+        join(projectDir, 'config.yml'),
+        join(projectDir, 'config.yaml'),
+        projectLocalConfigPath,
+        join(projectDir, 'config.local.yml'),
+        join(projectDir, 'config.local.yaml'),
+      ]);
+      expect(sources[6]).toMatchObject({ scope: 'profile', local: false });
+    });
+
+    it('includes the profiles that Pi passed through the environment', async () => {
+      Reflect.deleteProperty(globalThis, '__piConfigLoadedProfiles');
+      vi.stubEnv(LOADED_PROFILES_ENV, '["a","b"]');
+      mockConfigFiles({
+        '/agent/profiles/a/config.json': { pi: { name: 'a' } },
+        '/agent/profiles/b/config.json': { pi: { name: 'b', onlyB: true } },
+      });
+
+      const { config } = await readConfigFiles(cwd);
+
+      expect(config.pi).toEqual({ name: 'a', onlyB: true });
+    });
+
+    it('does not look for config.local files in the profiles', async () => {
+      setLoadedProfiles(['a', 'b']);
+
+      const { sources } = await readConfigFiles(cwd);
+
+      const profilePaths = sources
+        .filter((source) => source.scope === 'profile')
+        .map(({ path }) => path);
+      expect(profilePaths.some((path) => path.includes('config.local'))).toBe(false);
+    });
+
+    it('visits the profiles in the reverse of the order they were loaded', async () => {
+      setLoadedProfiles(['a', 'b', 'c']);
+
+      const { sources } = await readConfigFiles(cwd);
+
+      const profileNames = sources
+        .filter((source) => source.scope === 'profile' && source.path.endsWith('.json'))
+        .map(({ path }) => path.split('/').at(-2));
+      expect(profileNames).toEqual(['c', 'b', 'a']);
+    });
+
+    it('lets the profile that was loaded first win over the ones loaded after it', async () => {
+      setLoadedProfiles(['a', 'b']);
+      mockConfigFiles({
+        '/agent/profiles/a/config.json': { pi: { name: 'a', onlyA: true } },
+        '/agent/profiles/b/config.json': { pi: { name: 'b', onlyB: true } },
+      });
+
+      const { config } = await readConfigFiles(cwd);
+
+      expect(config.pi).toEqual({ name: 'a', onlyA: true, onlyB: true });
+    });
+
+    it('applies the profiles after the global files and before the project ones', async () => {
+      setLoadedProfiles(['a']);
+      mockConfigFiles({
+        '/agent/config.local.json': {
+          pi: { fromGlobal: 1, fromProfile: 1, fromProject: 1 },
+        },
+        '/agent/profiles/a/config.json': { pi: { fromProfile: 2, fromProject: 2 } },
+        [projectConfigPath]: { pi: { fromProject: 3 } },
+      });
+
+      const { config } = await readConfigFiles(cwd);
+
+      expect(config.pi).toEqual({ fromGlobal: 1, fromProfile: 2, fromProject: 3 });
+    });
+
+    it('ignores `pi.profiles` in the config files of the profiles', async () => {
+      setLoadedProfiles(['a']);
+      mockConfigFiles({
+        '/agent/config.json': { pi: { profiles: { enabled: ['a'] } } },
+        '/agent/profiles/a/config.json': {
+          pi: { profiles: { enabled: ['a', 'x'], enabledIf: { y: 'y.sh' } }, other: 1 },
+        },
+      });
+
+      const { config } = await readConfigFiles(cwd);
+
+      expect(config.pi).toEqual({ profiles: { enabled: ['a'] }, other: 1 });
+    });
+
+    it('does not let a profile overwrite entries of the global `pi.profiles.enabled`', async () => {
+      setLoadedProfiles(['a']);
+      mockConfigFiles({
+        '/agent/config.json': { pi: { profiles: { enabled: ['workshop', 'herdr'] } } },
+        '/agent/profiles/a/config.json': { pi: { profiles: { enabled: ['regal'] } } },
+      });
+
+      const { config } = await readConfigFiles(cwd);
+
+      expect(config.pi).toEqual({ profiles: { enabled: ['workshop', 'herdr'] } });
+    });
+
+    it('ignores `pi.profiles` in what a profile config extends', async () => {
+      setLoadedProfiles(['a']);
+      mockConfigFiles({
+        '/agent/profiles/a/config.json': { extends: './base.json', pi: { other: 1 } },
+        '/agent/profiles/a/base.json': { pi: { profiles: { enabled: ['x'] }, base: 1 } },
+      });
+
+      const { config } = await readConfigFiles(cwd);
+
+      expect(config.pi).toEqual({ other: 1, base: 1 });
+    });
+
+    it('keeps `pi.profiles` from the global and the project files', async () => {
+      setLoadedProfiles(['a']);
+      mockConfigFiles({
+        '/agent/config.json': { pi: { profiles: { enabled: ['a'] } } },
+        [projectConfigPath]: { pi: { profiles: { enabledIf: { b: 'b.sh' } } } },
+      });
+
+      const { config } = await readConfigFiles(cwd);
+
+      expect(config.pi).toEqual({
+        profiles: { enabled: ['a'], enabledIf: { b: 'b.sh' } },
+      });
+    });
+
+    it('does not break a profile config that has no `pi` namespace', async () => {
+      setLoadedProfiles(['a']);
+      mockConfigFiles({ '/agent/profiles/a/config.json': { skills: { s: { v: 1 } } } });
+
+      const { config } = await readConfigFiles(cwd);
+
+      expect(config.skills).toEqual({ s: { v: 1 } });
     });
 
     it('looks for the project config in the current directory by default', async () => {

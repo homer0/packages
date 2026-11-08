@@ -14,6 +14,7 @@ This package provides tools and utilities that can be used to make your Pi stuff
   - [As a library](#as-a-library)
 - 🧙 [Configs](#-configs)
   - [File locations](#file-locations)
+  - [Profile configs](#profile-configs)
   - [Merging](#merging)
   - [Namespaces](#namespaces)
   - [Documenting your config](#documenting-your-config)
@@ -79,11 +80,12 @@ Installing it as a dependency will give you access to an ESM module with the fol
 
 #### File locations
 
-The config files can be written in JSON or YAML format, and the way the package will be read and merged follows a specific order, with later files overriding earlier ones. It will start in the global Pi directory and then look for project-specific config files (`<project>/.pi/`):
+The config files can be written in JSON or YAML format, and the way the package will be read and merged follows a specific order, with later files overriding earlier ones. It will start in the global Pi directory, then look for the config of the [loaded profiles](#profile-configs), and finally for project-specific config files (`<project>/.pi/`):
 
 ```txt
 ~/<agent>/config.{json,yml,yaml}
 ~/<agent>/config.local.{json,yml,yaml}
+~/<agent>/profiles/<name>/config.{json,yml,yaml}  (for each loaded profile)
 <project>/.pi/config.{json,yml,yaml}
 <project>/.pi/config.local.{json,yml,yaml}
 ```
@@ -91,6 +93,18 @@ The config files can be written in JSON or YAML format, and the way the package 
 > The `<agent>` directory is given by Pi's `getAgentDir()` function, so it doesn't matter what you name it or where it is located; Pi will resolve it correctly.
 
 The idea with the `.local.{json,yml,yaml}` files is that they are meant for local overrides that should not be committed to version control.
+
+#### Profile configs
+
+If you use [`@homer0/pi-profiles`](https://www.npmjs.com/package/@homer0/pi-profiles), each profile can have its own `config.{json,yml,yaml}` file, and it will be part of the config while the profile is loaded. There's nothing to set up: when `pi-profiles` loads the profiles of a session, it announces them on Pi's event bus (`pi.events`), and the extension of this package starts including their files.
+
+A few things to know:
+
+- The files go after the global ones and before the project ones, so a project can still override a profile, and a profile can override your global config.
+- Profiles only have a `config` file; `config.local` files are not read inside profiles.
+- If several profiles are loaded, the one that was loaded first wins: it's the one merged last.
+- `pi.profiles` is ignored in these files.
+- The config files are read when you read the config. Anything that read it before the profiles were announced won't include them.
 
 #### Merging
 
@@ -190,6 +204,7 @@ On top of the files, there's one more layer: the session override. It only lives
 ```txt
 ~/<agent>/config.{json,yml,yaml}
 ~/<agent>/config.local.{json,yml,yaml}
+~/<agent>/profiles/<name>/config.{json,yml,yaml}  (for each loaded profile)
 <project>/.pi/config.{json,yml,yaml}
 <project>/.pi/config.local.{json,yml,yaml}
 session override (in-memory, if set)

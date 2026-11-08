@@ -1,7 +1,12 @@
 import type { ExtensionAPI } from '@earendil-works/pi-coding-agent';
 import { Text } from '@earendil-works/pi-tui';
 import { z } from 'zod';
-import { SESSION_OVERRIDE_CHANGED_CHANNEL, type OnOverrideChange } from '../events.js';
+import {
+  PROFILES_LOADED_CHANNEL,
+  SESSION_OVERRIDE_CHANGED_CHANNEL,
+  type OnOverrideChange,
+} from '../events.js';
+import { profileNamesSchema, setLoadedProfiles } from '../loadedProfiles.js';
 import {
   formatValuePreview,
   getConfigParamsSchema,
@@ -219,10 +224,17 @@ const createSetConfigTool = (onOverrideChange: OnOverrideChange): ToolDefinition
 });
 
 /**
+ * The shape of the payload of the event that announces the loaded profiles. The names
+ * that couldn't be the name of a directory are dropped.
+ */
+const profilesLoadedSchema = z.object({ profiles: profileNamesSchema });
+
+/**
  * Registers config extension tools and the `/config`/`/config-reset` commands with Pi.
  * The definitions are light; the tools' `execute` and the commands lazy-load their
  * implementation, through the shared handlers loader. Whenever the session override
- * changes, it's announced on `pi.events`.
+ * changes, it's announced on `pi.events`. It also listens for the loaded profiles, so
+ * their config files are part of the config from then on.
  *
  * @param pi The Pi extension API.
  */
@@ -230,6 +242,13 @@ const config = (pi: ExtensionAPI): void => {
   const onOverrideChange: OnOverrideChange = (change) => {
     pi.events.emit(SESSION_OVERRIDE_CHANGED_CHANNEL, change);
   };
+
+  // The profiles are stored synchronously (no lazy import), so a read that follows the
+  // event right away already includes the files of the profiles.
+  pi.events.on(PROFILES_LOADED_CHANNEL, (data) => {
+    const payload = profilesLoadedSchema.safeParse(data);
+    if (payload.success) setLoadedProfiles(payload.data.profiles);
+  });
 
   pi.registerTool(getConfigTool);
   pi.registerTool(createSetConfigTool(onOverrideChange));

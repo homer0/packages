@@ -124,8 +124,11 @@ export type ConfigSource = {
   exists: boolean;
   /** Whether the file was used to build the resolved config. */
   used: boolean;
-  /** Whether the file is in the global agent directory or in the project. */
-  scope: 'global' | 'project';
+  /**
+   * Whether the file is in the global agent directory, in a loaded profile, or in the
+   * project.
+   */
+  scope: 'global' | 'profile' | 'project';
   /** Whether it's a `config.local` file, meant for overrides that shouldn't be committed. */
   local: boolean;
 };

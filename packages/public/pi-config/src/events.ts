@@ -7,5 +7,14 @@ export type SessionOverrideChange = {
   type: 'set' | 'cleared';
 };
 
+/** The channel of `pi.events` where the profiles loaded for the session are announced. */
+export const PROFILES_LOADED_CHANNEL = 'pi-profiles:profiles-loaded';
+
+/** The payload of the event emitted when the profiles of the session are loaded. */
+export type ProfilesLoaded = {
+  /** The names of the loaded profiles, in the order they were loaded. */
+  profiles: string[];
+};
+
 /** A function that is told about the changes of the session override. */
 export type OnOverrideChange = (change: SessionOverrideChange) => void;
