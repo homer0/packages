@@ -16,7 +16,7 @@
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
     "@types/node": "catalog:",
-    "oxfmt": "^0.74.0",
+    "oxfmt": "^0.75.0",
     "oxlint": "catalog:",
     "husky": "^9.1.7",
     "leasot": "^14.4.0",
