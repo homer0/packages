@@ -7,8 +7,8 @@ minimumReleaseAgeExclude:
   - '@homer0/*'
 
 catalog:
-  '@earendil-works/pi-coding-agent': 1.4.0
-  '@earendil-works/pi-tui': 1.4.0
+  '@earendil-works/pi-coding-agent': 1.5.0
+  '@earendil-works/pi-tui': 1.5.0
   '@testing-library/react': ^16.3.3
   '@types/jest': ^30.0.0
   '@types/node': ^24.19.2
@@ -24,9 +24,9 @@ catalog:
 
   # Vite and Vitest
   '@vitejs/plugin-react': ^6.1.2
-  '@vitest/coverage-v8': ^5.0.5
+  '@vitest/coverage-v8': ^5.1.0
   vite: ^8.3.5
-  vitest: ^5.0.5
+  vitest: ^5.1.0
   unplugin-swc: ^2.0.0
   jsdom: ^30.1.3
 
