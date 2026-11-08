@@ -24,5 +24,5 @@ export type {
   ToolsConfig,
 } from './types.js';
 export type { PrefixedOnlyOptions } from './utils.js';
-export { SESSION_OVERRIDE_CHANGED_CHANNEL } from './events.js';
-export type { SessionOverrideChange } from './events.js';
+export { PROFILES_LOADED_CHANNEL, SESSION_OVERRIDE_CHANGED_CHANNEL } from './events.js';
+export type { ProfilesLoaded, SessionOverrideChange } from './events.js';

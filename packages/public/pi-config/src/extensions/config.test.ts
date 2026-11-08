@@ -3,7 +3,9 @@ import type {
   ExtensionCommandContext,
 } from '@earendil-works/pi-coding-agent';
 import type { Text } from '@earendil-works/pi-tui';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { PROFILES_LOADED_CHANNEL } from '../events.js';
+import { getLoadedProfiles, setLoadedProfiles } from '../loadedProfiles.js';
 import config from './config.js';
 
 const handlers = vi.hoisted(() => ({
@@ -23,18 +25,20 @@ const createPi = (): {
   commands: Map<string, Command>;
   registerTool: ReturnType<typeof vi.fn<ExtensionAPI['registerTool']>>;
   emit: ReturnType<typeof vi.fn>;
+  on: ReturnType<typeof vi.fn>;
 } => {
   const commands = new Map<string, Command>();
   const registerTool = vi.fn<ExtensionAPI['registerTool']>();
   const emit = vi.fn();
+  const on = vi.fn();
   const pi = {
-    events: { emit },
+    events: { emit, on },
     registerTool,
     registerCommand: vi.fn((name: string, command: Command) =>
       commands.set(name, command),
     ),
   } as unknown as ExtensionAPI;
-  return { pi, commands, registerTool, emit };
+  return { pi, commands, registerTool, emit, on };
 };
 
 describe('config extension', () => {
@@ -52,6 +56,66 @@ describe('config extension', () => {
       'set_config',
     ]);
     expect([...commands.keys()].toSorted()).toEqual(['config', 'config-reset']);
+  });
+
+  describe('loaded profiles', () => {
+    afterEach(() => {
+      setLoadedProfiles([]);
+    });
+
+    /** Registers the extension and gives back the listener it put on the profiles channel. */
+    const getProfilesListener = (): ((data: unknown) => void) => {
+      const { pi, on } = createPi();
+      config(pi);
+      const call = on.mock.calls.find(([channel]) => channel === PROFILES_LOADED_CHANNEL);
+      return call![1] as (data: unknown) => void;
+    };
+
+    it('listens to the channel where the loaded profiles are announced', () => {
+      const { pi, on } = createPi();
+
+      config(pi);
+
+      expect(on).toHaveBeenCalledWith(
+        'pi-profiles:profiles-loaded',
+        expect.any(Function),
+      );
+    });
+
+    it('stores the loaded profiles, right away', () => {
+      getProfilesListener()({ profiles: ['a', 'b'] });
+
+      expect(getLoadedProfiles()).toEqual(['a', 'b']);
+    });
+
+    it('replaces the profiles with an empty list', () => {
+      const listener = getProfilesListener();
+      listener({ profiles: ['a'] });
+
+      listener({ profiles: [] });
+
+      expect(getLoadedProfiles()).toEqual([]);
+    });
+
+    it('drops the names that could point outside the profiles directory', () => {
+      getProfilesListener()({
+        profiles: ['ok', '', '.', '..', '../x', 'a/b', 'a\\b'],
+      });
+
+      expect(getLoadedProfiles()).toEqual(['ok']);
+    });
+
+    it.each([[undefined], [null], ['a'], [{}], [{ profiles: 'a' }], [{ profiles: [1] }]])(
+      'ignores a payload with the wrong shape: %j',
+      (payload) => {
+        const listener = getProfilesListener();
+        listener({ profiles: ['a'] });
+
+        listener(payload);
+
+        expect(getLoadedProfiles()).toEqual(['a']);
+      },
+    );
   });
 
   it.each([

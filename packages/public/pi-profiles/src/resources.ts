@@ -51,18 +51,27 @@ const isDirectory = (path: string): boolean => {
   }
 };
 
+/** Options for {@link resolvePackageEntry}. */
+type ResolvePackageEntryOptions = {
+  /** The entry from the profile's `packages.json`. */
+  entry: PackageEntry;
+  /** The directory of the profile, to resolve the script against. */
+  profileDir: string;
+  /** The directory to run the `enabledIf` script from (the project directory). */
+  cwd: string;
+};
+
 /**
  * Resolves a single package entry to a path, evaluating its `enabledIf` condition if it
  * has one.
  *
- * @param entry The entry from the profile's `packages.json`.
- * @param profileDir The directory of the profile, to resolve the script against.
+ * @param options The entry to resolve, and the directories to resolve and run from.
  * @returns The path of the package, or `undefined` if it's turned off.
  */
 const resolvePackageEntry = async (
-  entry: PackageEntry,
-  profileDir: string,
+  options: ResolvePackageEntryOptions,
 ): Promise<string | undefined> => {
+  const { entry, profileDir, cwd } = options;
   if (typeof entry === 'string') return entry;
   const { path: pkgPath, enabledIf } = entry;
   if (enabledIf === false || enabledIf === 'false') return undefined;
@@ -73,21 +82,31 @@ const resolvePackageEntry = async (
     );
     return undefined;
   }
-  return (await runScript(resolved)) ? pkgPath : undefined;
+  return (await runScript(resolved, cwd)) ? pkgPath : undefined;
+};
+
+/** Options for {@link readProfilePackages}. */
+type ReadProfilePackagesOptions = {
+  /** The path of the profile's `packages.json`. */
+  packagesPath: string;
+  /** The directory to run the `enabledIf` scripts from (the project directory). */
+  cwd: string;
+  /** Where to report non-fatal issues. */
+  onError: (message: string) => void;
 };
 
 /**
  * Reads the packages a profile declares, evaluating the `enabledIf` condition of each. If
  * the file is invalid, it reports it through `onError` and the profile has no packages.
  *
- * @param packagesPath The path of the profile's `packages.json`.
- * @param onError Where to report non-fatal issues.
+ * @param options The file to read, the directory to run scripts from, and where to report
+ *   non-fatal issues.
  * @returns The paths of the packages, as declared.
  */
 const readProfilePackages = async (
-  packagesPath: string,
-  onError: (message: string) => void,
+  options: ReadProfilePackagesOptions,
 ): Promise<string[]> => {
+  const { packagesPath, cwd, onError } = options;
   if (!existsSync(packagesPath)) return [];
   const profileDir = dirname(packagesPath);
 
@@ -96,7 +115,7 @@ const readProfilePackages = async (
     const { packages } = profilePackagesSchema.parse(parsed);
     const results: string[] = [];
     for (const entry of packages) {
-      const pkgPath = await resolvePackageEntry(entry, profileDir);
+      const pkgPath = await resolvePackageEntry({ entry, profileDir, cwd });
       if (typeof pkgPath !== 'undefined') results.push(pkgPath);
     }
     return results;
@@ -119,6 +138,7 @@ const readProfilePackages = async (
 export const discoverProfileResources = async (
   options: ProfileLibOptions = {},
 ): Promise<ProfileResources> => {
+  const cwd = options.cwd ?? process.cwd();
   const onError = options.onError ?? ((message: string) => warnProfilesIssue(message));
   const names = await resolveEnabledProfiles(options);
   const resources: ProfileResources = {
@@ -154,7 +174,7 @@ export const discoverProfileResources = async (
       }
     }
 
-    const profilePackages = await readProfilePackages(packagesPath, onError);
+    const profilePackages = await readProfilePackages({ packagesPath, cwd, onError });
     resources.packages.push(
       ...profilePackages.map((pkg) => (isAbsolute(pkg) ? pkg : join(profileDir, pkg))),
     );

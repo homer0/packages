@@ -1,12 +1,13 @@
 /* eslint-disable max-classes-per-file -- The config errors live together. */
 import { CONFIG_DIR_NAME, getAgentDir } from '@earendil-works/pi-coding-agent';
-import { get, merge } from '@homer0/object-utils';
+import { get, merge, remove } from '@homer0/object-utils';
 import { readFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { dirname, extname, isAbsolute, join } from 'node:path';
 import { parse as parseYaml } from 'yaml';
 import { z } from 'zod';
 import type { OnOverrideChange } from './events.js';
+import { getLoadedProfiles } from './loadedProfiles.js';
 import type {
   ConfigPath,
   ConfigPathValue,
@@ -408,8 +409,23 @@ const getConfigFileVariants = (
   }));
 
 /**
- * Gets the config file candidates, in merge order: global files first, then the project
- * ones, with the `config.local` files after their `config` counterparts.
+ * Gets the config file candidates of the loaded profiles, in merge order. The profiles
+ * are visited in the reverse of the order they were loaded, so the one that was loaded
+ * first is merged last and wins. Profiles only have `config` files, not `config.local`.
+ *
+ * @returns The candidates.
+ */
+const getProfileConfigFilePaths = (): ConfigSource[] =>
+  getLoadedProfiles()
+    .toReversed()
+    .flatMap((name) =>
+      getConfigFileVariants(join(PROFILES_DIR, name), 'config', 'profile', false),
+    );
+
+/**
+ * Gets the config file candidates, in merge order: global files first, then the ones of
+ * the loaded profiles, then the project ones, with the `config.local` files after their
+ * `config` counterparts.
  *
  * @param cwd The project directory.
  * @returns The candidates.
@@ -417,6 +433,7 @@ const getConfigFileVariants = (
 const getConfigFilePaths = (cwd: string): ConfigSource[] => [
   ...getConfigFileVariants(AGENT_DIR, 'config', 'global', false),
   ...getConfigFileVariants(AGENT_DIR, 'config.local', 'global', true),
+  ...getProfileConfigFilePaths(),
   ...getConfigFileVariants(join(cwd, CONFIG_DIR_NAME), 'config', 'project', false),
   ...getConfigFileVariants(join(cwd, CONFIG_DIR_NAME), 'config.local', 'project', true),
 ];
@@ -499,7 +516,8 @@ const validateConfigValue = <TValue>(
 };
 
 /**
- * Reads the global and the project config files, and merges them in order.
+ * Reads the global, the loaded profiles' and the project config files, and merges them in
+ * order.
  *
  * @param cwd The project directory.
  * @returns The resolved config, without the session override, and the status of each file
@@ -513,7 +531,20 @@ const readConfigFiles = async (cwd = process.cwd()): Promise<ReadConfigResult> =
     const result = await readConfigResolvingExtends(source.path);
     if (!result.exists && result.error) logConfigReadError(result.error);
     sources.push({ ...source, exists: result.exists, used: result.exists });
-    if (result.exists) configs.push(result.value);
+    if (result.exists) {
+      /**
+       * Profiles can't set `pi.profiles`: which profiles are enabled is resolved from
+       * that key, and the profiles are only announced after the first resolution. So the
+       * later resolutions (every turn, for example) would read it and disagree with the
+       * first one, and, since arrays are merged by index, the `enabled` list of a profile
+       * would overwrite entries of the global list.
+       */
+      configs.push(
+        source.scope === 'profile'
+          ? remove(result.value, 'pi.profiles') || result.value
+          : result.value,
+      );
+    }
   }
 
   return {

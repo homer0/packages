@@ -1,6 +1,8 @@
 import { execFile } from 'node:child_process';
+import { existsSync } from 'node:fs';
 import { mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { join } from 'node:path';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   GLOBAL_LOCATION,
   REPO_ROOT,
@@ -16,11 +18,17 @@ import {
   removeFromWorkspaceCatalog,
   removePackageEntry,
   resolveInstallPaths,
+  resolveRoots,
   resolveVersion,
   run,
   versionSpec,
 } from './utils.js';
 
+vi.mock('@earendil-works/pi-coding-agent', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@earendil-works/pi-coding-agent')>()),
+  getAgentDir: vi.fn(() => '/home/test/.pi/agent'),
+}));
+vi.mock('node:fs', () => ({ existsSync: vi.fn(() => false) }));
 vi.mock('node:os', () => ({ homedir: vi.fn(() => '/home/test') }));
 vi.mock('node:child_process', () => ({ execFile: vi.fn() }));
 vi.mock('node:fs/promises', () => ({
@@ -75,6 +83,136 @@ describe('utils', () => {
       expect(REPO_ROOT).toBe('/home/test/.pi');
       expect(WORKSPACE_PATH).toBe('/home/test/.pi/pnpm-workspace.yaml');
       expect(GLOBAL_LOCATION).toBe('Global');
+    });
+  });
+
+  describe('when the pnpm workspace is in the agent directory', () => {
+    /** Loads the module again, with a workspace in the agent directory. */
+    const loadWithAgentAsRoot = async (): Promise<typeof import('./utils.js')> => {
+      vi.mocked(existsSync).mockImplementation(
+        (path) => path === '/home/test/.pi/agent/pnpm-workspace.yaml',
+      );
+      vi.resetModules();
+      return import('./utils.js');
+    };
+
+    afterEach(() => {
+      vi.mocked(existsSync).mockReturnValue(false);
+    });
+
+    it('uses the agent directory as the root of the repo', async () => {
+      const utils = await loadWithAgentAsRoot();
+
+      expect(utils.REPO_ROOT).toBe('/home/test/.pi/agent');
+      expect(utils.WORKSPACE_PATH).toBe('/home/test/.pi/agent/pnpm-workspace.yaml');
+    });
+
+    it('builds the global paths without an agent folder', async () => {
+      const utils = await loadWithAgentAsRoot();
+
+      const paths = await utils.resolveInstallPaths();
+
+      expect(paths).toEqual({
+        extensionPackagePath: '/home/test/.pi/agent/extensions/pnpm/package.json',
+        pnpmExtensionPackagePrefix: './extensions/pnpm/node_modules/',
+        settingsPath: '/home/test/.pi/agent/settings.json',
+        installCommitFiles: [
+          'pnpm-workspace.yaml',
+          'pnpm-lock.yaml',
+          'settings.json',
+          'extensions/pnpm/package.json',
+        ],
+      });
+    });
+
+    it('builds the paths of a profile without an agent folder', async () => {
+      const utils = await loadWithAgentAsRoot();
+
+      expect(utils.profilePaths('regal')).toEqual({
+        extensionPackagePath:
+          '/home/test/.pi/agent/profiles/regal/extensions/pnpm/package.json',
+        pnpmExtensionPackagePrefix: './profiles/regal/extensions/pnpm/node_modules/',
+        settingsPath: '/home/test/.pi/agent/profiles/regal/packages.json',
+        installCommitFiles: [
+          'pnpm-workspace.yaml',
+          'pnpm-lock.yaml',
+          'profiles/regal/packages.json',
+          'profiles/regal/extensions/pnpm/package.json',
+        ],
+      });
+    });
+
+    it('lists the profiles from the agent directory', async () => {
+      const utils = await loadWithAgentAsRoot();
+      vi.mocked(readdir).mockResolvedValue([
+        { name: 'regal', isDirectory: () => true },
+      ] as never);
+
+      await utils.listProfiles();
+
+      expect(readdir).toHaveBeenCalledWith('/home/test/.pi/agent/profiles', {
+        withFileTypes: true,
+      });
+    });
+  });
+
+  describe('resolveRoots', () => {
+    const fallbackRoot = '/home/test/.pi';
+    const agentDir = '/home/test/.pi/agent';
+
+    /** Makes `existsSync` say that only the workspaces of the given directories exist. */
+    const withWorkspaceIn = (...directories: string[]): void => {
+      const manifests = directories.map((directory) =>
+        join(directory, 'pnpm-workspace.yaml'),
+      );
+      vi.mocked(existsSync).mockImplementation((path) =>
+        manifests.includes(String(path)),
+      );
+    };
+
+    afterEach(() => {
+      vi.mocked(existsSync).mockReturnValue(false);
+    });
+
+    it('uses the parent of the agent directory when that has the workspace', () => {
+      withWorkspaceIn('/home/test/.pi');
+
+      expect(resolveRoots({ agentDir, fallbackRoot })).toEqual({
+        repoRoot: '/home/test/.pi',
+        agentFolder: 'agent',
+      });
+    });
+
+    it('uses the agent directory itself when that has the workspace', () => {
+      withWorkspaceIn(agentDir);
+
+      expect(resolveRoots({ agentDir, fallbackRoot })).toEqual({
+        repoRoot: agentDir,
+        agentFolder: '',
+      });
+    });
+
+    it('prefers the agent directory when both have a workspace', () => {
+      withWorkspaceIn('/home/test/.pi', agentDir);
+
+      expect(resolveRoots({ agentDir, fallbackRoot }).repoRoot).toBe(agentDir);
+    });
+
+    it('does not look above the parent of the agent directory', () => {
+      withWorkspaceIn('/home/test', '/');
+
+      expect(resolveRoots({ agentDir, fallbackRoot })).toEqual({
+        repoRoot: fallbackRoot,
+        agentFolder: 'agent',
+      });
+    });
+
+    it('falls back to the pi directory of the home when there is no workspace', () => {
+      withWorkspaceIn();
+
+      expect(resolveRoots({ agentDir: '/somewhere/agent', fallbackRoot }).repoRoot).toBe(
+        fallbackRoot,
+      );
     });
   });
 

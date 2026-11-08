@@ -50,6 +50,8 @@ Since this is the package that will manage the installation of extensions throug
 
 > All these steps assume that you are in `~/.pi` and your agent is `~/.pi/agent`.
 
+> If your repo is the agent directory itself (the `pnpm-workspace.yaml` is in your agent directory, `~/.pi/agent` for example), run the steps from there and drop the `agent/` prefix from the paths: `extensions/*`, `profiles/*/extensions/*`, `./extensions/pnpm`, `settings.json`. The installer looks for the `pnpm-workspace.yaml` in the agent directory (the one Pi uses, which follows `PI_CODING_AGENT_DIR`) and then in its parent.
+
 1. Tell pnpm that the extensions directory will contain packages. If you don't have a `pnpm-workspace.yaml` yet, create one in the root of your Pi directory.
 
 ```yaml
