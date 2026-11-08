@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.1.4 (2026-11-08)
+
+**Note:** Version bump only for package @homer0/pi-in-memory-cache
+
 ## [1.1.3](https://github.com/homer0/packages/compare/%40homer0%2Fpi-in-memory-cache%401.1.1...%40homer0%2Fpi-in-memory-cache%401.1.3) (2026-10-31)
 
 ### Bug Fixes

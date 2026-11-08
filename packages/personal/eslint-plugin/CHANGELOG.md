@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 16.0.3 (2026-11-08)
+
+### Bug Fixes
+
+- **eslint-plugin:** update eslint dependencies ([fcecc3b](https://github.com/homer0/packages/commit/fcecc3b0c48480512181cc25498887df018e15f7))
+
 ## 16.0.2 (2026-10-31)
 
 ### Bug Fixes

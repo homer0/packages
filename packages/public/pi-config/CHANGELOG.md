@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.4.0 (2026-11-08)
+
+### Bug Fixes
+
+- **pi-config:** use workspace object-utils dependency ([be34b79](https://github.com/homer0/packages/commit/be34b79de4e4f2ded69569df265d46c52c0ffdba))
+
+### Features
+
+- **pi-config:** add the config files of the loaded profiles ([d0fde5f](https://github.com/homer0/packages/commit/d0fde5faa272da00cf966a96143e29d598cc3edd))
+
 ## [1.3.2](https://github.com/homer0/packages/compare/%40homer0%2Fpi-config%401.3.0...%40homer0%2Fpi-config%401.3.2) (2026-10-31)
 
 ### Bug Fixes

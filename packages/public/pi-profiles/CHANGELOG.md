@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.3.0 (2026-11-08)
+
+### Bug Fixes
+
+- **pi-profiles:** run enabledIf scripts from the project directory ([944d030](https://github.com/homer0/packages/commit/944d03019cb52a45fefd4471e58d71c6d47879bd))
+
+### Features
+
+- **pi-profiles:** announce the loaded profiles on the event bus ([3c65df9](https://github.com/homer0/packages/commit/3c65df928a68ff4a1e7bcdbeb144d6d973097d02))
+
 ## [1.2.2](https://github.com/homer0/packages/compare/%40homer0%2Fpi-profiles%401.2.0...%40homer0%2Fpi-profiles%401.2.2) (2026-10-31)
 
 ### Bug Fixes

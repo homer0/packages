@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.1.3 (2026-11-08)
+
+### Bug Fixes
+
+- **pi-install-pnpm-package:** support a repo root that is the agent directory ([e3c9c94](https://github.com/homer0/packages/commit/e3c9c947c1c78c4827f7a6b9daa3fbe65fe09da2))
+
 ## [1.1.2](https://github.com/homer0/packages/compare/%40homer0%2Fpi-install-pnpm-package%401.1.0...%40homer0%2Fpi-install-pnpm-package%401.1.2) (2026-10-31)
 
 ### Bug Fixes

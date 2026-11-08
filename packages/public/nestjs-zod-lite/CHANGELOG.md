@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 6.0.3 (2026-11-08)
+
+**Note:** Version bump only for package @homer0/nestjs-zod-lite
+
 ## 6.0.2 (2026-10-31)
 
 ### Bug Fixes

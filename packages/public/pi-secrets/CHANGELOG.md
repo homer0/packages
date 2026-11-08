@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.2.3 (2026-11-08)
+
+### Bug Fixes
+
+- **pi-secrets:** align aws sdk and workspace dependencies ([3b9766e](https://github.com/homer0/packages/commit/3b9766e337a9677116aaeaf1499f5838da697151))
+
 ## [1.2.2](https://github.com/homer0/packages/compare/%40homer0%2Fpi-secrets%401.2.0...%40homer0%2Fpi-secrets%401.2.2) (2026-10-31)
 
 ### Bug Fixes

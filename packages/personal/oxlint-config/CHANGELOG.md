@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 3.0.2 (2026-11-08)
+
+### Bug Fixes
+
+- **oxlint-config:** update globals to 17.14.0 ([b3b7ada](https://github.com/homer0/packages/commit/b3b7ada0f822ec3ba5f3e26244de9cc3f86fc181))
+
 ## 3.0.1 (2026-10-31)
 
 ### Bug Fixes
