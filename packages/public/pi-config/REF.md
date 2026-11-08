@@ -1,8 +1,8 @@
 # Pi Package Reference
 
 Source: ~/.pi/packages/pi-config
-Source-Commit: d674930a0955de877bdd60d2ec88063fdc5d6e96
-Updated-At: 2026-10-30T05:05:06Z
+Source-Commit: ddcef47819db0cd89de4bc38d01d708f20f175d9
+Updated-At: 2026-11-08T06:10:05Z
 
 ## Copy Instructions
 
@@ -23,3 +23,5 @@ Updated-At: 2026-10-30T05:05:06Z
 - Source commit `72e2a5072a0f36509b22e6bcc4d054fe40925573` uses `>1.0.0` for both Pi peer dependencies; preserve that exact range for this source commit (it excludes `1.0.0`), but follow intentional upstream range changes in future replays. Its catalogs resolve Pi development dependencies to `1.2.0` and Zod to `4.6.7`. The retained Pi `1.1.0`-specific `pi-codemode` override is now inactive. pnpm also deduplicates ignore from `7.0.6` to the existing `7.0.8` resolution.
 
 - Preserve approved source style during replay, including grouped exports, multi-parameter helpers, direct undefined comparisons, import ordering, and hoisted module-scope Vitest setup. Limit edits to integration/build adaptations unless a source change requires reconciliation.
+
+- Keep the destination Node engine at `>=24` while this workspace targets Node 24; replay source Node 26 migration commits without changing that requirement.
