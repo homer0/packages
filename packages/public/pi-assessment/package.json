@@ -46,7 +46,7 @@
     "@earendil-works/pi-coding-agent": ">1.0.0"
   },
   "devDependencies": {
-    "@earendil-works/pi-ai": "1.4.0",
+    "@earendil-works/pi-ai": "1.5.0",
     "@earendil-works/pi-coding-agent": "catalog:",
     "@homer0/oxlint-config": "workspace:*",
     "@homer0/tsconfig": "workspace:*",
