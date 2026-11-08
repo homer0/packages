@@ -1,8 +1,8 @@
 # Pi Package Reference
 
 Source: ~/.pi/packages/pi-profiles
-Source-Commit: 1cf61dc1a48edda451cb2fb5009f8de260b700ea
-Updated-At: 2026-10-30T04:32:00Z
+Source-Commit: c453064c424ddddeca3aa7eee63126956af8c992
+Updated-At: 2026-11-08T06:10:05Z
 
 ## Copy Instructions
 
@@ -21,3 +21,5 @@ Updated-At: 2026-10-30T04:32:00Z
 - During the initial import, historical Zod 4.6.5 dependencies coincided with a TypeScript heap exhaustion. After replaying the final commit, reinstalling with Zod 4.6.7, and deduplicating the dependency graph, the normal type check passed without source changes or a larger heap. Revalidate type checks on the fully replayed dependency graph; do not add type shims or enable declaration generation as a workaround.
 
 - Preserve approved source style during replay rather than add unrelated refactors, including source import ordering, module-scope shared test helpers and hoisted mocks, existing comments, and type shapes. Apply the JS/TS checklist to adaptations.
+
+- Keep the destination Node engine at `>=24` while this workspace targets Node 24; replay source Node 26 migration commits without changing that requirement.
